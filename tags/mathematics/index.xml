@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mathematics on Dataholic</title>
+    <link>/tags/mathematics/</link>
+    <description>Recent content in Mathematics on Dataholic</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 08 Jan 2020 15:38:12 +0800</lastBuildDate><atom:link href="/tags/mathematics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>draw the complex function</title>
+      <link>/post/2020-01/complex_function/</link>
+      <pubDate>Wed, 08 Jan 2020 15:38:12 +0800</pubDate>
+      
+      <guid>/post/2020-01/complex_function/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;complex-function&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;complex function&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;복소수 함수(complex function)&lt;/code&gt;를 이용한 시각화의 대표적인 것에 &lt;code&gt;망델브로 세트&lt;/code&gt;가 있다. 이번에 소개할 이미지도 몇 개의 복소수 함수를 좌표에 출력한 이미지다.&lt;/p&gt;
+&lt;div id=&#34;rz-z3-frac-0.2-0.11iz3&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;&lt;span class=&#34;math inline&#34;&gt;\(R(z) = z^3 + \frac{-0.2 + 0.11i}{z^3}\)&lt;/span&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(R(z) = z^3 + \frac{-0.2 + 0.11i}{z^3}\)&lt;/span&gt;를 이용한 색상이 없는 이미지다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-1&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/complex_01.png&#34; alt=&#34;blank image&#34; width=&#34;70%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 1: blank image
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;상기 이미지에 heat.colors 함수의 팔레트 색상을 입힌 이미지다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-2&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/complex_02.png&#34; alt=&#34;heat.colors 팔레트&#34; width=&#34;70%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 2: heat.colors 팔레트
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;rz-z2---frac0.6z&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;&lt;span class=&#34;math inline&#34;&gt;\(R(z) = z^2 - \frac{0.6}{z}\)&lt;/span&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(R(z) = z^2 - \frac{0.6}{z}\)&lt;/span&gt;를 이용한 색상이 없는 이미지다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-3&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/complex_03.png&#34; alt=&#34;blank image&#34; width=&#34;70%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 3: blank image
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;상기 이미지에 topo.colors 함수의 팔레트 색상을 입힌 이미지다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-4&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/complex_04.png&#34; alt=&#34;topo.colors 팔레트&#34; width=&#34;70%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 4: topo.colors 팔레트
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;상기 이미지에 terrain.colors 함수의 팔레트 색상을 입힌 이미지다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-5&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/complex_05.png&#34; alt=&#34;terrain.colors 팔레트&#34; width=&#34;70%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 5: terrain.colors 팔레트
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;참고-리소스&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;참고 리소스&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;아티클 : &lt;a href=&#34;https://www.maa.org/sites/default/files/pdf/Mathhorizons/pdfs/ColoringPage_MH_Nov17.pdf&#34; target=&#34;_blank&#34;&gt;https://www.maa.org/sites/default/files/pdf/Mathhorizons/pdfs/ColoringPage_MH_Nov17.pdf&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;소스 : &lt;a href=&#34;https://a-blog-from-sydney.blogspot.com/2020/01/complex-coloring-and-contour-levels.html&#34; target=&#34;_blank&#34;&gt;https://a-blog-from-sydney.blogspot.com/2020/01/complex-coloring-and-contour-levels.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>원에 대하여</title>
+      <link>/post/2016-01/2016-01-02-circle/</link>
+      <pubDate>Sat, 02 Jan 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2016-01/2016-01-02-circle/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;이론적-배경&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;이론적 배경&lt;/h2&gt;
+&lt;p&gt;가상의 한 점에서 같은 거리 만큼 떨어진 점들의 집합을 원이라 할수 있다. 한 점(원점)에서 1의 거리 만큼 떨어진 점들의 모임인 단위원을 생각해 보자. \( x^2 + y^2 = 1^2 \)인 원의 공식을 기억할지 모르겠다. 중학교 수학 시간에 배운 기억이 어렴풋이 나지 않는가?&lt;/p&gt;
+&lt;p&gt;그러면 한 점에서 1만큼 떨어진 위치에 꼭지점을 갖는 정n각형을 생각하자. 정삼각형, 정사각형, 정오각형 무수히 많다. 그러면 n의 수가 커질수록 이 정다각형의 모양은 원에 가깝게 된다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;이러한 사실을 다음 과정을 수행하는 R 시각화를 이용해서 증명해 보자.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;\( x^2 + y^2 = 1^2 \)인 단위원을 그린다. 이 원은 n각형의 외접원이 될 것이다.&lt;/li&gt;
+&lt;li&gt;\( x^2 + y^2 = cos( {n })^2 \)인 단위원을 그린다. 이 원은 n각형의 내접원이 될 것이다.&lt;/li&gt;
+&lt;li&gt;원점에서 1만큼 떨어진 곳에 n개의 점을 찍고 이 점을 연결한 n각형을 그린다.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;내접원의 반지름이 \( cos( {n}) \)인 이유는 다음과 같다.&lt;/p&gt;
+&lt;p&gt;n각형의 중심에서 각각의 꼭지점을 잇는 선을 그리면 n개의 동일한 면적의 이등변 삼각형이 만들어 진다. 그리고 이 이등변삼각형을 반으로 나누면 두개의 직각 삼각형이 되는데 이 직각삼각형의 원점에서의 각이 \(  \)인 직각삼각형이고, 내접원의 반지름은 \( r cos() \)이므로 \( cos() \)이 된다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;r-시각화&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;R 시각화&lt;/h2&gt;
+&lt;p&gt;내접원과 외접원을 그리는 R 코드와 결과는 다음과 같다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; par(family=&amp;#39;NanumGothic&amp;#39;)
+&amp;gt; 
+&amp;gt; radius &amp;lt;- function () {
++   par(mfrow = c(1, 1), mar=c(1, 1, 1, 1), pty = &amp;#39;s&amp;#39;)
++   
++   plot(c(-1, 1), c(-1, 1), type = &amp;#39;n&amp;#39;, 
++        axes = FALSE, xlab = &amp;#39;&amp;#39;, ylab = &amp;#39;&amp;#39;)
++  
++   angle &amp;lt;- (0:(10 * 6)) / (10 * 6) * 2 * pi
++   x1 &amp;lt;- cos(angle) / 2
++   y1 &amp;lt;- sin(angle) / 2
++   
++   lines(x1, y1, col = &amp;quot;blue&amp;quot;)
++   x &amp;lt;- rep(0, 3)
++   y &amp;lt;- rep(0, 3)
++   
++   for (i in 0:3) {
++    x[i+1] &amp;lt;- cos(angle[i * 20 + 1])
++    y[i+1] &amp;lt;- sin(angle[i * 20 + 1])
++    }
++   
++   lines(x, y)
++   points(0,0, pch = 19)
++   lines(c(0, x[2]), c(0, y[2]))
++   lines(c(0, cos(pi) / 2), c(0, 0), col = &amp;quot;red&amp;quot;, lwd = 2)
++   
++   text(cos(pi) / 4, -0.05, &amp;quot;반지름&amp;quot;, cex = 0.7)
++   text(-0.15, 0.1, labels = expression(frac(pi, 2 * n)), 
++        cex = 0.8)
++ }
+&amp;gt; 
+&amp;gt; radius()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2016-01/2016-01-02-circle_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;1400&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;원으로의-수렴&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;원으로의 수렴&lt;/h2&gt;
+&lt;p&gt;그러면 앞의 방법으로 &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt;각형과 내접원, 외접원을 그려보자. &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt;이 클수록 다각형은 원에 가까워지고, 내접원과 외접원의 크기도 점점 같아지게 된다. 즉, 원에 가까워진다는 반증이다.&lt;/p&gt;
+&lt;p&gt;정 3, 6, 9, 12각형을 그려보자.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; circle &amp;lt;- function (points) {
++   par(pty = &amp;#39;s&amp;#39;)
++   
++   plot(c(-1, 1), c(-1, 1), type = &amp;#39;n&amp;#39;, 
++        axes = FALSE, xlab = &amp;#39;&amp;#39;, ylab = &amp;#39;&amp;#39;)
++   
++   angle &amp;lt;- (0:(10 * points)) / (10 * points) * 2 * pi
++   x1 &amp;lt;- cos(2 * pi / (points * 2)) * cos(angle)
++   y1 &amp;lt;- cos(2 * pi / (points * 2)) * sin(angle)
++   x2 &amp;lt;- cos(angle)
++   y2 &amp;lt;- sin(angle)
++   
++   lines(x1, y1, col = &amp;quot;blue&amp;quot;)
++   lines(x2, y2)
++   
++   x &amp;lt;- rep(0, points)
++   y &amp;lt;- rep(0, points)
++   
++   for (i in 0:points) {
++     x[i+1] &amp;lt;- cos(angle[i * 10 + 1])
++     y[i+1] &amp;lt;- sin(angle[i * 10 + 1])
++   }
++  
++   lines(x, y, col = &amp;quot;red&amp;quot;, lwd = 1.7)
++ }
+&amp;gt; 
+&amp;gt; par(mfrow = c(2, 2), mar = c(1, 1, 1, 1))
+&amp;gt; circle(3)
+&amp;gt; circle(6)
+&amp;gt; circle(12)
+&amp;gt; circle(30)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2016-01/2016-01-02-circle_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;1400&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;circle() 함수로 정30각형만 그려도 거의 원과 구분되지 않는다. 물론 반지름이 1인 경우이다. 여기서 1이라 함은 &lt;code&gt;graphics device&lt;/code&gt;에서의 절대좌표 크기다. 실생활에서 그림을 그릴 때, 반지름이 1미터라고 한다면 30각형은 원으로 보기 어려울 것이다. 단지 R의 &lt;code&gt;graphics device&lt;/code&gt; 세계에서 원의 성질을 보여주는 예로 이해하기 바란다.&lt;/p&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>집합연산</title>
+      <link>/post/2005-06/2005-06-22-operation-sets/</link>
+      <pubDate>Wed, 22 Jun 2005 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2005-06/2005-06-22-operation-sets/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;일러두기&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;일러두기&lt;/h3&gt;
+&lt;p&gt;2005-06-22 네이버 블로그에 게시된 내용을 옮겨 온 글입니다. 지금의 R 환경과 다소 내용이 다를 수 있음을 밝여둡니다.
+R에서의 집합연산에 대해서 알아보자.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;데이터-만들기&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;데이터 만들기&lt;/h3&gt;
+&lt;p&gt;먼저 집합 x와 y를 만들어 보자. 두 개의 벡터는 이후에 집한 연산에서 계속 사용될 데이터다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; set.seed(3) 
+&amp;gt; x &amp;lt;- sort(sample(1:10, 5))
+&amp;gt; x
+[1] 2 3 4 5 7
+&amp;gt; set.seed(5)
+&amp;gt; y &amp;lt;- sort(sample(1:10, 5))
+&amp;gt; y
+[1] 1 2 3 7 9&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;합집합-x-y&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;합집합 (x ∪ y)&lt;/h3&gt;
+&lt;p&gt;합집합은 &lt;code&gt;union()&lt;/code&gt; 함수를 사용한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; union(x, y)
+[1] 2 3 4 5 7 1 9&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;그리고 &lt;code&gt;unique()&lt;/code&gt; 함수를 응용해서 구할 수도 있다. &lt;code&gt;unique()&lt;/code&gt; 함수는 벡터에 대해서 유일(unique)한 값을 구한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; unique(c(x, y))
+[1] 2 3 4 5 7 1 9&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;교집합-x-y&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;교집합 (x ∩ y)&lt;/h3&gt;
+&lt;p&gt;교집합은 &lt;code&gt;intersect()&lt;/code&gt; 함수를 사용한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; intersect(x, y)
+[1] 2 3 7&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;그리고 &lt;code&gt;unique()&lt;/code&gt; 함수와 &lt;code&gt;sort()&lt;/code&gt; 함수를 응용해서 구할 수도 있다. &lt;code&gt;sort()&lt;/code&gt; 함수는 정렬함수다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; sort(unique(c(x, y)))[table(c(x, y)) == 2]
+[1] 2 3 7&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;또한 다음과 같이 구할 수도 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; unique(y[match(x, y, 0)])
+[1] 2 3 7&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;사실 R에서 &lt;code&gt;intersect()&lt;/code&gt; 함수가 이와 같이 정의되어 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; intersect
+function (x, y) 
+{
+    y &amp;lt;- as.vector(y)
+    unique(y[match(as.vector(x), y, 0L)])
+}
+&amp;lt;bytecode: 0x7fb07b967bc8&amp;gt;
+&amp;lt;environment: namespace:base&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;차집합-x---y&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;차집합 (x - y)&lt;/h3&gt;
+&lt;p&gt;차집합은 &lt;code&gt;setdiff()&lt;/code&gt; 함수를 사용한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; setdiff(x, y)  # x-y
+[1] 4 5
+&amp;gt; setdiff(y, x)  # y-x
+[1] 1 9&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;그리고 intersect() 함수를 응용해서 구할 수도 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; intersect(sort(unique(c(x, y)))[table(c(x, y)) == 1], x)  # x-y
+[1] 4 5
+&amp;gt; intersect(sort(unique(c(x, y)))[table(c(x, y)) == 1], y)  # y-x
+[1] 1 9&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;R의 &lt;code&gt;setdiff()&lt;/code&gt; 함수는 다음과 같이 정의되어 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; setdiff
+function (x, y) 
+{
+    x &amp;lt;- as.vector(x)
+    y &amp;lt;- as.vector(y)
+    unique(if (length(x) || length(y)) 
+        x[match(x, y, 0L) == 0L]
+    else x)
+}
+&amp;lt;bytecode: 0x7fb0bc595558&amp;gt;
+&amp;lt;environment: namespace:base&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;원소의-집합-포함관계-a-x-a-y&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;원소의 집합 포함관계 (a ∈ x, a ∈ y)&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;is.element()&lt;/code&gt; 함수를 이용해서 특정 원소가 집합에 포함되는지를 검증할 수 있다.
+단, 이 함수의 반환값은 논리 벡터인데 그 원소의 개수가 함수의 첫번째 인수의 개수와 동일하다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; a &amp;lt;- 9
+&amp;gt; is.element(a,x)  # a ∈ x
+[1] FALSE
+&amp;gt; is.element(a,y)  # x ∈ y
+[1] TRUE&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;그리고 &lt;code&gt;as.logical()&lt;/code&gt; 함수와 &lt;code&gt;sum()&lt;/code&gt; 함수를 응용해서 구할 수도 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; as.logical(sum(x == a))  # a ∈ x
+[1] FALSE
+&amp;gt; as.logical(sum(y == a))  # a ∈ y
+[1] TRUE&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;다음과 같은 방법을 사용할 수도 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; all(!is.na(match(a, x)))  # a ∈ x
+[1] FALSE
+&amp;gt; all(!is.na(match(a, y)))  # a ∈ y
+[1] TRUE
+&amp;gt; all(match(a, x, 0) &amp;gt; 0)   # a ∈ x
+[1] FALSE
+&amp;gt; all(match(a, y, 0) &amp;gt; 0)   # a ∈ y
+[1] TRUE&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;또한 다음처럼 구할 수도 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; match(a, x, 0) &amp;gt; 0
+[1] FALSE
+&amp;gt; match(a, y, 0) &amp;gt; 0
+[1] TRUE&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;R에서 &lt;code&gt;is.element()&lt;/code&gt; 함수가 이와 같이 정의되어 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; is.element
+function (el, set) 
+match(el, set, 0L) &amp;gt; 0L
+&amp;lt;bytecode: 0x7fb0bc34d620&amp;gt;
+&amp;lt;environment: namespace:base&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;집합의-포함관계-z-x-z-y&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;집합의 포함관계 (z ⊂ x, z ⊂ y)&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;is.element()&lt;/code&gt; 함수를 이용해서 특정 집합이 집합에 포함되는지를 검증할 수 있다. 단, &lt;code&gt;is.element()&lt;/code&gt; 함수의 반환값은 논리 벡터인데 그 원소의 개수가 함수의 첫번째 인수의 개수와 동일하기 때문에 &lt;code&gt;prod()&lt;/code&gt; 함수를 이용하였다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; z &amp;lt;- c(2, 8)
+&amp;gt; as.logical(prod(is.element(z, x)))  # z ⊂ x
+[1] FALSE
+&amp;gt; as.logical(prod(is.element(z, y)))  # z ⊂ y
+[1] FALSE
+&amp;gt; as.logical(prod(is.element(x, z)))  # x ⊂ z
+[1] FALSE&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;그리고 &lt;code&gt;as.logical()&lt;/code&gt; 함수와 &lt;code&gt;prod()&lt;/code&gt; 함수, &lt;code&gt;intersect()&lt;/code&gt; 함수를 응용해서 구할 수도 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; as.logical(prod(intersect(x, z)==z))  # z⊂x
+[1] FALSE
+&amp;gt; as.logical(prod(intersect(y, z)==z))  # z⊂y
+[1] FALSE
+&amp;gt; # 원소의 개수가 배수가 아니면 경고가 발생한다.
+&amp;gt; as.logical(prod(intersect(x, z)==x)) 
+[1] FALSE&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;다음을 응용할 수도 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; match(z, x, 0) &amp;gt; 0
+[1]  TRUE FALSE
+&amp;gt; match(z, y, 0) &amp;gt; 0
+[1]  TRUE FALSE
+&amp;gt; match(x, z, 0) &amp;gt; 0
+[1]  TRUE FALSE FALSE FALSE FALSE
+&amp;gt; all(match(z, x, 0) &amp;gt; 0)  # z ⊂ x
+[1] FALSE
+&amp;gt; all(match(z, y, 0) &amp;gt; 0)  # z ⊂ y
+[1] FALSE
+&amp;gt; all(match(x, z, 0) &amp;gt; 0)  # x ⊂ z
+[1] FALSE
+&amp;gt; all(is.element(z, x))    # z ⊂ x
+[1] FALSE
+&amp;gt; all(is.element(z, y))    # z ⊂ y
+[1] FALSE
+&amp;gt; all(is.element(x, z))    # x ⊂ z
+[1] FALSE&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;all()&lt;/code&gt; 함수는 인수의 값이 모두 TRUE일 경우에만 TRUE를 반환하고 아니면 FALSE를 반환한다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;is.element-함수를-응용한-교집합&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;is.element() 함수를 응용한 교집합&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;is.element()&lt;/code&gt; 함수를 응용하면 sort(unique(c(x, y)))[table(c(x, y)) == 2]을 다음과 같이 간략화 시킬 수 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; x[is.element(x, y)]  # x ∩ y
+[1] 2 3 7
+&amp;gt; y[is.element(y, x)]  # y ∩ x
+[1] 2 3 7&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;is.element-함수를-응용한-차집합&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;is.element() 함수를 응용한 차집합&lt;/h3&gt;
+&lt;p&gt;is.element() 함수를 응용하면 intersect(sort(unique(c(x, y)))[table(c(x, y)) == 1], x)을 다음과 같이 간략화 시킬 수 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; x[!is.element(x, y)]  # x - y
+[1] 4 5
+&amp;gt; y[!is.element(y, x)]  # y - x
+[1] 1 9&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;집합의-상등x-y&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;집합의 상등(x = y)&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;setequal()&lt;/code&gt; 함수를 이용하여 집합의 상등을 알아볼 수 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; setequal(x, y)
+[1] FALSE
+&amp;gt; setequal(x, x)
+[1] TRUE&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;setequal()&lt;/code&gt; 함수는 다음과 같이 정의되어 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; setequal
+function (x, y) 
+{
+    x &amp;lt;- as.vector(x)
+    y &amp;lt;- as.vector(y)
+    !(anyNA(match(x, y)) || anyNA(match(y, x)))
+}
+&amp;lt;bytecode: 0x7fb07d5befe8&amp;gt;
+&amp;lt;environment: namespace:base&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;이 함수를 수식으로 표현하자면 다음과 같다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;if x ⊂ y and y ⊂ x then x = y othwise x ≠ y&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;다음처럼 구할 수도 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; all(sort(x) == sort(y))
+[1] FALSE
+&amp;gt; all(sort(x) == sort(x))
+[1] TRUE
+&amp;gt; # 원소의 개수가 배가 아니면 경고가 발생한다.
+&amp;gt; all(sort(x) == sort(z))  
+Warning in sort(x) == sort(z): longer object length is not a multiple of shorter
+object length
+[1] FALSE&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;warning message가 번거롭다면 &lt;code&gt;options()&lt;/code&gt; 함수의 warn 인수값을 음수로 바꾸면 출력되지 않는다. 그러나 이 방법은 권장하지 않는다. 차라리 다음과 같이 &lt;code&gt;ifelse()&lt;/code&gt; 함수를 이용해서 예외처리를 해주면 된다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; ifelse(length(x) != length(z), FALSE, all(sort(x) == sort(z)))
+[1] FALSE&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;앞서 집합 포함관계에서도 warning message가 출력되었는데 이와 같이 처리하면 된다.&lt;/p&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

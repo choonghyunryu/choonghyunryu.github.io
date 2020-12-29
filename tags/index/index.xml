@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>index on Dataholic</title>
+    <link>/tags/index/</link>
+    <description>Recent content in index on Dataholic</description>
+    <generator>Hugo -- gohugo.io</generator><atom:link href="/tags/index/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Posts</title>
+      <link>/post/</link>
+      <pubDate>Sun, 12 Jul 2020 18:18:12 +0800</pubDate>
+      
+      <guid>/post/</guid>
+      <description>
+        
+          
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

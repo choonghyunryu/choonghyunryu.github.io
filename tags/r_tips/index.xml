@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>R_Tips on Dataholic</title>
+    <link>/tags/r_tips/</link>
+    <description>Recent content in R_Tips on Dataholic</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 13 Dec 2006 00:00:00 +0000</lastBuildDate><atom:link href="/tags/r_tips/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>행렬의 원소중에 최대값의 위치 알아내기</title>
+      <link>/post/2006-12/2006-12-13-matrix-tip/</link>
+      <pubDate>Wed, 13 Dec 2006 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2006-12/2006-12-13-matrix-tip/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;일러두기&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;일러두기&lt;/h2&gt;
+&lt;p&gt;2006-12-13 네이버 블로그에 게시된 내용을 옮겨 온 글입니다. 지금의 R 환경과 다소 내용이 다를 수 있음을 밝여둡니다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;행렬의-원소중에-최대값의-위치-알아내기&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;행렬의 원소중에 최대값의 위치 알아내기&lt;/h1&gt;
+&lt;p&gt;행렬에서 최대 값의 위치를 알아내는 방법입니다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; x &amp;lt;- matrix(c(1, 2, 3, 9, 4, 5, 6, 7), nrow = 2, byrow = TRUE)
+&amp;gt; x
+     [,1] [,2] [,3] [,4]
+[1,]    1    2    3    9
+[2,]    4    5    6    7
+&amp;gt; which(x == max(x), arr.ind = TRUE)
+     row col
+[1,]   1   4&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;이 예제는 1행 4열에 최대값이 있습니다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;행렬의-원소중에-최소값의-위치-알아내기&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;행렬의 원소중에 최소값의 위치 알아내기&lt;/h1&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; which(x == min(x), arr.ind = TRUE)
+     row col
+[1,]   1   1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;이 예제는 1행 1열에 최소값이 있습니다.&lt;/p&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

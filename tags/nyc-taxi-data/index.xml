@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>nyc-taxi-data on Dataholic</title>
+    <link>/tags/nyc-taxi-data/</link>
+    <description>Recent content in nyc-taxi-data on Dataholic</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 28 Jan 2020 17:05:12 +0800</lastBuildDate><atom:link href="/tags/nyc-taxi-data/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Introduce dbplyr package</title>
+      <link>/post/2020-01/introduce_dbplyr/</link>
+      <pubDate>Tue, 28 Jan 2020 17:05:12 +0800</pubDate>
+      
+      <guid>/post/2020-01/introduce_dbplyr/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;dbplyr&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;dbplyr&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;dbplyr&lt;/code&gt; 패키지는 &lt;code&gt;DBMS&lt;/code&gt;를 위한 &lt;code&gt;dplyr&lt;/code&gt; 패키지의 &lt;code&gt;Backend&lt;/code&gt;다. &lt;code&gt;dplyr&lt;/code&gt; 패키지의 R 환경에서 data.frame 객체에서 상속된 데이터 객체를 조작해서 데이터 분석을 수행하는 패키지라면, &lt;code&gt;dbplyr&lt;/code&gt; 패키지는 &lt;code&gt;dplyr&lt;/code&gt; 패키지의 문법으로 DBMS 환경의 &lt;code&gt;Tables&lt;/code&gt; 자원을 액세스하여 데이터 분석을 수행하게 도와 준다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;테스트-dbms의-환경&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;테스트 DBMS의 환경&lt;/h2&gt;
+&lt;p&gt;Mac OS X 노트북 환경에 PostgrSQL DBMS 12 버전을= 설치한 환경에 &lt;a href=&#34;https://github.com/lcheng6/nyc-taxi-data-code-annotated의&#34; class=&#34;uri&#34;&gt;https://github.com/lcheng6/nyc-taxi-data-code-annotated의&lt;/a&gt; 정보를 이용해서&lt;code&gt;New York&lt;/code&gt; 지역의 &lt;code&gt;Taxi 운행 공공 데이터&lt;/code&gt;를 분석한 사례의 일부 데이터를 migration하였다.&lt;/p&gt;
+&lt;div id=&#34;dbms-접속-및-dbms-정보&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;DBMS 접속 및 DBMS 정보&lt;/h3&gt;
+&lt;p&gt;PostgreSQL DBMS의 정보는 다음과 같다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(RPostgreSQL)
+
+con &amp;lt;- dbConnect(dbDriver(&amp;quot;PostgreSQL&amp;quot;), dbname = &amp;quot;nyc-taxi-data&amp;quot;, host = &amp;quot;localhost&amp;quot;)
+
+# DBMS 정보 
+dbGetInfo(con)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## $host
+## [1] &amp;quot;localhost&amp;quot;
+## 
+## $port
+## [1] &amp;quot;5432&amp;quot;
+## 
+## $user
+## [1] &amp;quot;choonghyunryu&amp;quot;
+## 
+## $dbname
+## [1] &amp;quot;nyc-taxi-data&amp;quot;
+## 
+## $serverVersion
+## [1] &amp;quot;12.0.5&amp;quot;
+## 
+## $protocolVersion
+## [1] 3
+## 
+## $backendPId
+## [1] 36041
+## 
+## $rsId
+## list()&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;테스트-데이터-확인&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;테스트 데이터 확인&lt;/h3&gt;
+&lt;p&gt;예제로 사용할 &lt;code&gt;trips&lt;/code&gt; 테이블은 New York City에서의 택시 운행 정보를 담은 테이블이다.&lt;/p&gt;
+&lt;div id=&#34;테이블-컬럼-정보&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;테이블 컬럼 정보&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;trips&lt;/code&gt; 테이블이 폴함하고 있는 컬럼 이름은 다음과 같다. 30개의 데이터 컬럼을 가지고 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# trips 테이블 컬럼 이름
+dbListFields(con, &amp;quot;trips&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  [1] &amp;quot;id&amp;quot;                    &amp;quot;cab_type_id&amp;quot;           &amp;quot;vendor_id&amp;quot;            
+##  [4] &amp;quot;pickup_datetime&amp;quot;       &amp;quot;dropoff_datetime&amp;quot;      &amp;quot;store_and_fwd_flag&amp;quot;   
+##  [7] &amp;quot;rate_code_id&amp;quot;          &amp;quot;pickup_longitude&amp;quot;      &amp;quot;pickup_latitude&amp;quot;      
+## [10] &amp;quot;dropoff_longitude&amp;quot;     &amp;quot;dropoff_latitude&amp;quot;      &amp;quot;passenger_count&amp;quot;      
+## [13] &amp;quot;trip_distance&amp;quot;         &amp;quot;fare_amount&amp;quot;           &amp;quot;extra&amp;quot;                
+## [16] &amp;quot;mta_tax&amp;quot;               &amp;quot;tip_amount&amp;quot;            &amp;quot;tolls_amount&amp;quot;         
+## [19] &amp;quot;ehail_fee&amp;quot;             &amp;quot;improvement_surcharge&amp;quot; &amp;quot;congestion_surcharge&amp;quot; 
+## [22] &amp;quot;total_amount&amp;quot;          &amp;quot;payment_type&amp;quot;          &amp;quot;trip_type&amp;quot;            
+## [25] &amp;quot;pickup_nyct2010_gid&amp;quot;   &amp;quot;dropoff_nyct2010_gid&amp;quot;  &amp;quot;pickup_location_id&amp;quot;   
+## [28] &amp;quot;dropoff_location_id&amp;quot;   &amp;quot;pickup&amp;quot;                &amp;quot;dropoff&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;컬럼 이름으로는 정보가 부족하다. 그래서 PostgreSQL DBMS의 메타 정보를 읽어서 데이터 타입과 컬럼의 description을 조회해 보았다. 간단하게 get_schema라는 이름의 사용자 정의 함수를 만들어서 조회해 본다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Table 정보 가져오는 함수
+get_schema &amp;lt;- function(con, tab) {
+  sql &amp;lt;- sprintf(&amp;quot;select column_name
+                        ,data_type
+                        ,col_description(&amp;#39;public.%s&amp;#39;::regclass, ordinal_position)
+                    from information_schema.columns
+                  where table_schema = &amp;#39;public&amp;#39; 
+                    and table_name = &amp;#39;%s&amp;#39;&amp;quot;, tab, tab)
+  dbGetQuery(con, sql)
+}
+
+# trips 테이블 컬럼 정보
+get_schema(con, &amp;quot;trips&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##              column_name                   data_type col_description
+## 1                     id                     integer            &amp;lt;NA&amp;gt;
+## 2            cab_type_id                     integer            &amp;lt;NA&amp;gt;
+## 3              vendor_id                        text            &amp;lt;NA&amp;gt;
+## 4        pickup_datetime timestamp without time zone            &amp;lt;NA&amp;gt;
+## 5       dropoff_datetime timestamp without time zone            &amp;lt;NA&amp;gt;
+## 6     store_and_fwd_flag                        text            &amp;lt;NA&amp;gt;
+## 7           rate_code_id                     integer            &amp;lt;NA&amp;gt;
+## 8       pickup_longitude                     numeric            &amp;lt;NA&amp;gt;
+## 9        pickup_latitude                     numeric            &amp;lt;NA&amp;gt;
+## 10     dropoff_longitude                     numeric            &amp;lt;NA&amp;gt;
+## 11      dropoff_latitude                     numeric            &amp;lt;NA&amp;gt;
+## 12       passenger_count                     integer            &amp;lt;NA&amp;gt;
+## 13         trip_distance                     numeric            &amp;lt;NA&amp;gt;
+## 14           fare_amount                     numeric            &amp;lt;NA&amp;gt;
+## 15                 extra                     numeric            &amp;lt;NA&amp;gt;
+## 16               mta_tax                     numeric            &amp;lt;NA&amp;gt;
+## 17            tip_amount                     numeric            &amp;lt;NA&amp;gt;
+## 18          tolls_amount                     numeric            &amp;lt;NA&amp;gt;
+## 19             ehail_fee                     numeric            &amp;lt;NA&amp;gt;
+## 20 improvement_surcharge                     numeric            &amp;lt;NA&amp;gt;
+## 21  congestion_surcharge                     numeric            &amp;lt;NA&amp;gt;
+## 22          total_amount                     numeric            &amp;lt;NA&amp;gt;
+## 23          payment_type                        text            &amp;lt;NA&amp;gt;
+## 24             trip_type                     integer            &amp;lt;NA&amp;gt;
+## 25   pickup_nyct2010_gid                     integer            &amp;lt;NA&amp;gt;
+## 26  dropoff_nyct2010_gid                     integer            &amp;lt;NA&amp;gt;
+## 27    pickup_location_id                     integer            &amp;lt;NA&amp;gt;
+## 28   dropoff_location_id                     integer            &amp;lt;NA&amp;gt;
+## 29                pickup                USER-DEFINED            &amp;lt;NA&amp;gt;
+## 30               dropoff                USER-DEFINED            &amp;lt;NA&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;다른 방법으로는 dbColumnInfo() 함수를 이용하는 방법이다. 이 함수는 RPostgreSQL 패키지에서 제공하는 함수다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;rs &amp;lt;- dbSendQuery(con, &amp;quot;SELECT * FROM trips limit 10&amp;quot;)
+dbColumnInfo(rs)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##                     name    Sclass      type len precision scale nullOK
+## 1                     id   integer   INTEGER   4        -1    -1  FALSE
+## 2            cab_type_id   integer   INTEGER   4        -1    -1   TRUE
+## 3              vendor_id character      TEXT  -1        -1    -1   TRUE
+## 4        pickup_datetime   POSIXct TIMESTAMP   8        -1    -1   TRUE
+## 5       dropoff_datetime   POSIXct TIMESTAMP   8        -1    -1   TRUE
+## 6     store_and_fwd_flag character      TEXT  -1        -1    -1   TRUE
+## 7           rate_code_id   integer   INTEGER   4        -1    -1   TRUE
+## 8       pickup_longitude    double   DECIMAL  -1        -1    -1   TRUE
+## 9        pickup_latitude    double   DECIMAL  -1        -1    -1   TRUE
+## 10     dropoff_longitude    double   DECIMAL  -1        -1    -1   TRUE
+## 11      dropoff_latitude    double   DECIMAL  -1        -1    -1   TRUE
+## 12       passenger_count   integer   INTEGER   4        -1    -1   TRUE
+## 13         trip_distance    double   DECIMAL  -1        -1    -1   TRUE
+## 14           fare_amount    double   DECIMAL  -1        -1    -1   TRUE
+## 15                 extra    double   DECIMAL  -1        -1    -1   TRUE
+## 16               mta_tax    double   DECIMAL  -1        -1    -1   TRUE
+## 17            tip_amount    double   DECIMAL  -1        -1    -1   TRUE
+## 18          tolls_amount    double   DECIMAL  -1        -1    -1   TRUE
+## 19             ehail_fee    double   DECIMAL  -1        -1    -1   TRUE
+## 20 improvement_surcharge    double   DECIMAL  -1        -1    -1   TRUE
+## 21  congestion_surcharge    double   DECIMAL  -1        -1    -1   TRUE
+## 22          total_amount    double   DECIMAL  -1        -1    -1   TRUE
+## 23          payment_type character      TEXT  -1        -1    -1   TRUE
+## 24             trip_type   integer   INTEGER   4        -1    -1   TRUE
+## 25   pickup_nyct2010_gid   integer   INTEGER   4        -1    -1   TRUE
+## 26  dropoff_nyct2010_gid   integer   INTEGER   4        -1    -1   TRUE
+## 27    pickup_location_id   integer   INTEGER   4        -1    -1   TRUE
+## 28   dropoff_location_id   integer   INTEGER   4        -1    -1   TRUE
+## 29                pickup character   UNKNOWN  -1   1107460    -1   TRUE
+## 30               dropoff character   UNKNOWN  -1   1107460    -1   TRUE&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;데이터-건수&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;데이터 건수&lt;/h4&gt;
+&lt;p&gt;trips 테이블의 데이터 건수는 84,345,018건이다. 데이터 건수를 화인하기 위해서 &#34;SELECT count(*) FROM trips&#34; 문을 수행하였으며, 집계를 위한 Query 수행 시간이 짧지는 았았다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;dbGetQuery(con, &amp;quot;SELECT count(*) FROM trips&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##      count
+## 1 84345018&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;데이터-집계하기&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;데이터 집계하기&lt;/h2&gt;
+&lt;p&gt;데이터를 집계하는 간단한 예제로 dbplyr의 사용 방법을 살펴보자.&lt;/p&gt;
+&lt;div id=&#34;query를-이용한-데이터-집계&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Query를 이용한 데이터 집계&lt;/h3&gt;
+&lt;p&gt;택시의 주행 거리당 운임의 평균을 계산한다. Query로 간단하게 집계할 수 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sql &amp;lt;- &amp;quot;select avg(fare_amount / trip_distance) as fare_per_distance
+          from trips
+         where trip_distance &amp;gt; 0
+           and fare_amount &amp;gt; 0&amp;quot;
+
+excute_time &amp;lt;- system.time(fare &amp;lt;- dbGetQuery(con, sql))
+excute_time&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    user  system elapsed 
+##   0.002   0.000 120.882&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fare&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##   fare_per_distance
+## 1          5.623411&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;시스템 환경에 따라 차이가 있을 수 있으나, 예제에서는 120.882초 동안 수행되었다. 그리고 킬로미터 당 약 5.6 달러의 평균 요금을 지불하였음을 알 수 있다.&lt;/p&gt;
+&lt;p&gt;요금 결제 방법에 따른 평균 총 지불 운임에 대한 통계는 다음과 같다. 그런데 지불 방법에 대한 코드 값이 대소문자가 섞여 있고, 동일한 내용이 몇 개의 코드로 표현되는 것이 있어 정확한 통계를 산출하지 못했다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sql &amp;lt;- &amp;quot;SELECT payment_type
+              ,AVG(total_amount) mean_fare 
+          FROM trips t 
+      GROUP BY payment_type
+      ORDER BY mean_fare DESC&amp;quot;
+
+dbGetQuery(con, sql)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##   payment_type  mean_fare
+## 1          Cre 14.3489055
+## 2          CRE 14.1596819
+## 3          CRD 13.6265705
+## 4          NA  12.5874196
+## 5          Dis 12.2977820
+## 6          No  10.8333954
+## 7          CAS 10.1805913
+## 8          Cas  9.9806661
+## 9          CSH  0.6285917&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;그래서 지불 방법의 코드를 대문자로 변환하고 동일한 의미로 분류하여 집계하였다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sql &amp;lt;- &amp;quot;SELECT CASE WHEN UPPER(payment_type) IN (&amp;#39;CRE&amp;#39;, &amp;#39;CRD&amp;#39;) THEN &amp;#39;Credit Card&amp;#39;
+               WHEN UPPER(payment_type) IN (&amp;#39;CAS&amp;#39;, &amp;#39;CSH&amp;#39;) THEN &amp;#39;Cash&amp;#39; 
+               WHEN UPPER(payment_type) = &amp;#39;DIS&amp;#39; THEN &amp;#39;Dispute&amp;#39;
+               WHEN UPPER(payment_type) = &amp;#39;NO&amp;#39; THEN &amp;#39;No charge&amp;#39;
+               ELSE &amp;#39;Unknown&amp;#39; END AS payment_type
+              ,COUNT(*) as freq
+              ,AVG(total_amount) mean_fare 
+  FROM trips t 
+ GROUP BY CASE WHEN UPPER(payment_type) IN (&amp;#39;CRE&amp;#39;, &amp;#39;CRD&amp;#39;) THEN &amp;#39;Credit Card&amp;#39;
+               WHEN UPPER(payment_type) IN (&amp;#39;CAS&amp;#39;, &amp;#39;CSH&amp;#39;) THEN &amp;#39;Cash&amp;#39; 
+               WHEN UPPER(payment_type) = &amp;#39;DIS&amp;#39; THEN &amp;#39;Dispute&amp;#39;
+               WHEN UPPER(payment_type) = &amp;#39;NO&amp;#39; THEN &amp;#39;No charge&amp;#39;
+               ELSE &amp;#39;Unknown&amp;#39; END
+ ORDER BY mean_fare DESC&amp;quot;
+
+dbGetQuery(con, sql)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##   payment_type     freq mean_fare
+## 1  Credit Card 29294014 14.232335
+## 2      Dispute    36768 12.297782
+## 3      Unknown   208765 11.169581
+## 4         Cash 54805471  8.851864&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;dbplyr를-이용한-데이터-집계&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;dbplyr를 이용한 데이터 집계&lt;/h3&gt;
+&lt;p&gt;dbplyr를 이용한 데이터 집계의 장점은 R 환경에서 일관된 dplyr 문법으로 데이터를 집계할 수 있다는 점이다. 특히 SQL query에 익숙치 않은 분석가도 익숙한 dplyr 문법으로 데이터 분석을 수행할 수 있다.&lt;/p&gt;
+&lt;p&gt;먼저 tbl() 함수로 해당 테이블에 접근할 수 있는 tbl 컨넥션을 생성한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(dplyr)
+library(dbplyr)
+
+trips_db &amp;lt;- tbl(con, &amp;quot;trips&amp;quot;)
+
+is(trips_db)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;tbl_PostgreSQLConnection&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;trips_db&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # Source:   table&amp;lt;trips&amp;gt; [?? x 30]
+## # Database: postgres 12.0.5 [choonghyunryu@localhost:5432/nyc-taxi-data]
+##       id cab_type_id vendor_id pickup_datetime     dropoff_datetime   
+##    &amp;lt;int&amp;gt;       &amp;lt;int&amp;gt; &amp;lt;chr&amp;gt;     &amp;lt;dttm&amp;gt;              &amp;lt;dttm&amp;gt;             
+##  1     1           1 VTS       2010-01-19 04:22:00 2010-01-19 04:29:00
+##  2     2           1 CMT       2010-01-27 00:42:46 2010-01-27 01:00:20
+##  3     3           1 VTS       2010-01-30 19:00:00 2010-01-30 19:32:00
+##  4     4           1 CMT       2010-01-18 11:16:32 2010-01-18 11:27:57
+##  5     5           1 CMT       2010-01-30 19:18:50 2010-01-30 19:23:31
+##  6     6           1 CMT       2010-01-01 14:37:46 2010-01-01 14:43:19
+##  7     7           1 VTS       2010-01-17 12:13:00 2010-01-17 12:30:00
+##  8     8           1 VTS       2010-01-23 22:20:00 2010-01-23 22:24:00
+##  9     9           1 VTS       2010-01-26 09:14:00 2010-01-26 09:29:00
+## 10    10           1 VTS       2010-01-31 04:12:00 2010-01-31 04:18:00
+## # … with more rows, and 25 more variables: store_and_fwd_flag &amp;lt;chr&amp;gt;,
+## #   rate_code_id &amp;lt;int&amp;gt;, pickup_longitude &amp;lt;dbl&amp;gt;, pickup_latitude &amp;lt;dbl&amp;gt;,
+## #   dropoff_longitude &amp;lt;dbl&amp;gt;, dropoff_latitude &amp;lt;dbl&amp;gt;, passenger_count &amp;lt;int&amp;gt;,
+## #   trip_distance &amp;lt;dbl&amp;gt;, fare_amount &amp;lt;dbl&amp;gt;, extra &amp;lt;dbl&amp;gt;, mta_tax &amp;lt;dbl&amp;gt;,
+## #   tip_amount &amp;lt;dbl&amp;gt;, tolls_amount &amp;lt;dbl&amp;gt;, ehail_fee &amp;lt;dbl&amp;gt;,
+## #   improvement_surcharge &amp;lt;dbl&amp;gt;, congestion_surcharge &amp;lt;dbl&amp;gt;,
+## #   total_amount &amp;lt;dbl&amp;gt;, payment_type &amp;lt;chr&amp;gt;, trip_type &amp;lt;int&amp;gt;,
+## #   pickup_nyct2010_gid &amp;lt;int&amp;gt;, dropoff_nyct2010_gid &amp;lt;int&amp;gt;,
+## #   pickup_location_id &amp;lt;int&amp;gt;, dropoff_location_id &amp;lt;int&amp;gt;, pickup &amp;lt;chr&amp;gt;,
+## #   dropoff &amp;lt;chr&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;trips_db 객체를 콘솔에 출력한 결과의 포맷은 dplyr을 사용한 결과와 유사하다. 그러나 데이터의 건수를 위미하는 영역은 정확한 건수를 표시하지 않고, 물음표로 표현된다.&lt;/p&gt;
+&lt;p&gt;앞서 구한 택시의 주행 거리당 운임의 평균은 dplyr의 방법처럼 쉽게 구할 수 있다. 단지, 차이점은 데이터 객체 대신에 tbl 컨넥션을 데이터 소스로 지정한다는 점이다.&lt;/p&gt;
+&lt;p&gt;그런데 120.882초 동안 수행된 Query와는 달리 바로 수행이 종료된다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;system.time(fare_db &amp;lt;- trips_db %&amp;gt;% 
+              select(fare_amount, trip_distance) %&amp;gt;% 
+              filter(fare_amount &amp;gt; 0) %&amp;gt;% 
+              filter(trip_distance &amp;gt; 0) %&amp;gt;% 
+              summarise(fare_per_distance = mean(fare_amount / trip_distance)))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    user  system elapsed 
+##    0.01    0.00    0.01&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;is(fare_db)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;tbl_PostgreSQLConnection&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fare_db %&amp;gt;% show_query()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## &amp;lt;SQL&amp;gt;
+## SELECT AVG(&amp;quot;fare_amount&amp;quot; / &amp;quot;trip_distance&amp;quot;) AS &amp;quot;fare_per_distance&amp;quot;
+## FROM (SELECT *
+## FROM (SELECT &amp;quot;fare_amount&amp;quot;, &amp;quot;trip_distance&amp;quot;
+## FROM &amp;quot;trips&amp;quot;) &amp;quot;dbplyr_001&amp;quot;
+## WHERE (&amp;quot;fare_amount&amp;quot; &amp;gt; 0.0)) &amp;quot;dbplyr_002&amp;quot;
+## WHERE (&amp;quot;trip_distance&amp;quot; &amp;gt; 0.0)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;그 이유는 생성된 객체가 결과가 아니라 아직도 tbl 컨넥션임을 알 수 있다. 그리고 show_query() 함수로 기술된 dplyr 문법의 표현식이 연결된 DBMS에서 수행될 Query를 조회할 수도 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;is(fare_db)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;tbl_PostgreSQLConnection&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fare_db %&amp;gt;% show_query()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## &amp;lt;SQL&amp;gt;
+## SELECT AVG(&amp;quot;fare_amount&amp;quot; / &amp;quot;trip_distance&amp;quot;) AS &amp;quot;fare_per_distance&amp;quot;
+## FROM (SELECT *
+## FROM (SELECT &amp;quot;fare_amount&amp;quot;, &amp;quot;trip_distance&amp;quot;
+## FROM &amp;quot;trips&amp;quot;) &amp;quot;dbplyr_003&amp;quot;
+## WHERE (&amp;quot;fare_amount&amp;quot; &amp;gt; 0.0)) &amp;quot;dbplyr_004&amp;quot;
+## WHERE (&amp;quot;trip_distance&amp;quot; &amp;gt; 0.0)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;collect() 함수가 실제로 연결된 DBMS에서 Query를 실행한 후 결과를 R 영역으로 가져온다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;system.time(fare2 &amp;lt;- fare_db %&amp;gt;% collect())&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    user  system elapsed 
+##   0.038   0.000 115.429&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fare2&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 1 x 1
+##   fare_per_distance
+##               &amp;lt;dbl&amp;gt;
+## 1              5.62&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;요금 결제 방법에 따른 평균 총 지불 운임에 대한 통계는 다음과 같이 구한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;payment_db &amp;lt;- trips_db %&amp;gt;% 
+  select(payment_type, total_amount) %&amp;gt;% 
+  mutate(payment_type = toupper(payment_type)) %&amp;gt;%
+  mutate(payment_type = ifelse(payment_type %in% c(&amp;#39;CRE&amp;#39;, &amp;#39;CRD&amp;#39;), 
+                               &amp;#39;Credit Card&amp;#39;, payment_type)) %&amp;gt;% 
+  mutate(payment_type = ifelse(payment_type %in% c(&amp;#39;CAS&amp;#39;, &amp;#39;CSH&amp;#39;), 
+                               &amp;#39;Cash&amp;#39;, payment_type)) %&amp;gt;% 
+  mutate(payment_type = ifelse(payment_type %in% c(&amp;#39;DIS&amp;#39;), 
+                               &amp;#39;Dispute&amp;#39;, payment_type)) %&amp;gt;%            
+  mutate(payment_type = ifelse(payment_type %in% c(&amp;#39;NO&amp;#39;), 
+                               &amp;#39;No charge&amp;#39;, &amp;#39;Unknown&amp;#39;)) %&amp;gt;%
+  group_by(payment_type) %&amp;gt;% 
+  summarise(freq = n(),
+            mean_fare = mean(total_amount)) %&amp;gt;% 
+  arrange(desc(mean_fare)) 
+
+payment_db %&amp;gt;% show_query()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## &amp;lt;SQL&amp;gt;
+## SELECT &amp;quot;payment_type&amp;quot;, COUNT(*) AS &amp;quot;freq&amp;quot;, AVG(&amp;quot;total_amount&amp;quot;) AS &amp;quot;mean_fare&amp;quot;
+## FROM (SELECT CASE WHEN (&amp;quot;payment_type&amp;quot; IN (&amp;#39;NO&amp;#39;)) THEN (&amp;#39;No charge&amp;#39;) WHEN NOT(&amp;quot;payment_type&amp;quot; IN (&amp;#39;NO&amp;#39;)) THEN (&amp;#39;Unknown&amp;#39;) END AS &amp;quot;payment_type&amp;quot;, &amp;quot;total_amount&amp;quot;
+## FROM (SELECT CASE WHEN (&amp;quot;payment_type&amp;quot; IN (&amp;#39;DIS&amp;#39;)) THEN (&amp;#39;Dispute&amp;#39;) WHEN NOT(&amp;quot;payment_type&amp;quot; IN (&amp;#39;DIS&amp;#39;)) THEN (&amp;quot;payment_type&amp;quot;) END AS &amp;quot;payment_type&amp;quot;, &amp;quot;total_amount&amp;quot;
+## FROM (SELECT CASE WHEN (&amp;quot;payment_type&amp;quot; IN (&amp;#39;CAS&amp;#39;, &amp;#39;CSH&amp;#39;)) THEN (&amp;#39;Cash&amp;#39;) WHEN NOT(&amp;quot;payment_type&amp;quot; IN (&amp;#39;CAS&amp;#39;, &amp;#39;CSH&amp;#39;)) THEN (&amp;quot;payment_type&amp;quot;) END AS &amp;quot;payment_type&amp;quot;, &amp;quot;total_amount&amp;quot;
+## FROM (SELECT CASE WHEN (&amp;quot;payment_type&amp;quot; IN (&amp;#39;CRE&amp;#39;, &amp;#39;CRD&amp;#39;)) THEN (&amp;#39;Credit Card&amp;#39;) WHEN NOT(&amp;quot;payment_type&amp;quot; IN (&amp;#39;CRE&amp;#39;, &amp;#39;CRD&amp;#39;)) THEN (&amp;quot;payment_type&amp;quot;) END AS &amp;quot;payment_type&amp;quot;, &amp;quot;total_amount&amp;quot;
+## FROM (SELECT UPPER(&amp;quot;payment_type&amp;quot;) AS &amp;quot;payment_type&amp;quot;, &amp;quot;total_amount&amp;quot;
+## FROM &amp;quot;trips&amp;quot;) &amp;quot;dbplyr_007&amp;quot;) &amp;quot;dbplyr_008&amp;quot;) &amp;quot;dbplyr_009&amp;quot;) &amp;quot;dbplyr_010&amp;quot;) &amp;quot;dbplyr_011&amp;quot;
+## GROUP BY &amp;quot;payment_type&amp;quot;
+## ORDER BY &amp;quot;mean_fare&amp;quot; DESC&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;payment_db %&amp;gt;% collect()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 1 x 3
+##   payment_type     freq mean_fare
+##   &amp;lt;chr&amp;gt;           &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;
+## 1 Unknown      84345018      10.7&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;그런데, 결과를 보면 원하는 답이 아니고, 수행 속도도 매우 느리다. 그래서 mutate() 함수를 여러 개 독립, 순차적으로 기술한 것을 하나의 함수로 합쳐서 수행해 보았다.&lt;/p&gt;
+&lt;p&gt;수행속도도 개선되었고 원하는 결과를 얻을 수 있었다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;payment2_db &amp;lt;- trips_db %&amp;gt;% 
+  select(payment_type, total_amount) %&amp;gt;% 
+  mutate(payment_type = toupper(payment_type)) %&amp;gt;%
+  mutate(payment_type = ifelse(payment_type %in% c(&amp;#39;CRE&amp;#39;, &amp;#39;CRD&amp;#39;), 
+                               &amp;#39;Credit Card&amp;#39;, ifelse(payment_type %in% c(&amp;#39;CAS&amp;#39;, &amp;#39;CSH&amp;#39;), 
+                               &amp;#39;Cash&amp;#39;, ifelse(payment_type %in% c(&amp;#39;DIS&amp;#39;), 
+                               &amp;#39;Dispute&amp;#39;, ifelse(payment_type %in% c(&amp;#39;NO&amp;#39;), 
+                               &amp;#39;No charge&amp;#39;, &amp;#39;Unknown&amp;#39;))))) %&amp;gt;% 
+  group_by(payment_type) %&amp;gt;% 
+  summarise(freq = n(),
+            mean_fare = mean(total_amount)) %&amp;gt;% 
+  arrange(desc(mean_fare)) 
+
+payment2_db %&amp;gt;% show_query()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## &amp;lt;SQL&amp;gt;
+## SELECT &amp;quot;payment_type&amp;quot;, COUNT(*) AS &amp;quot;freq&amp;quot;, AVG(&amp;quot;total_amount&amp;quot;) AS &amp;quot;mean_fare&amp;quot;
+## FROM (SELECT CASE WHEN (&amp;quot;payment_type&amp;quot; IN (&amp;#39;CRE&amp;#39;, &amp;#39;CRD&amp;#39;)) THEN (&amp;#39;Credit Card&amp;#39;) WHEN NOT(&amp;quot;payment_type&amp;quot; IN (&amp;#39;CRE&amp;#39;, &amp;#39;CRD&amp;#39;)) THEN (CASE WHEN (&amp;quot;payment_type&amp;quot; IN (&amp;#39;CAS&amp;#39;, &amp;#39;CSH&amp;#39;)) THEN (&amp;#39;Cash&amp;#39;) WHEN NOT(&amp;quot;payment_type&amp;quot; IN (&amp;#39;CAS&amp;#39;, &amp;#39;CSH&amp;#39;)) THEN (CASE WHEN (&amp;quot;payment_type&amp;quot; IN (&amp;#39;DIS&amp;#39;)) THEN (&amp;#39;Dispute&amp;#39;) WHEN NOT(&amp;quot;payment_type&amp;quot; IN (&amp;#39;DIS&amp;#39;)) THEN (CASE WHEN (&amp;quot;payment_type&amp;quot; IN (&amp;#39;NO&amp;#39;)) THEN (&amp;#39;No charge&amp;#39;) WHEN NOT(&amp;quot;payment_type&amp;quot; IN (&amp;#39;NO&amp;#39;)) THEN (&amp;#39;Unknown&amp;#39;) END) END) END) END AS &amp;quot;payment_type&amp;quot;, &amp;quot;total_amount&amp;quot;
+## FROM (SELECT UPPER(&amp;quot;payment_type&amp;quot;) AS &amp;quot;payment_type&amp;quot;, &amp;quot;total_amount&amp;quot;
+## FROM &amp;quot;trips&amp;quot;) &amp;quot;dbplyr_017&amp;quot;) &amp;quot;dbplyr_018&amp;quot;
+## GROUP BY &amp;quot;payment_type&amp;quot;
+## ORDER BY &amp;quot;mean_fare&amp;quot; DESC&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;payment2_db %&amp;gt;% collect()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 4 x 3
+##   payment_type     freq mean_fare
+##   &amp;lt;chr&amp;gt;           &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;
+## 1 Credit Card  29294014     14.2 
+## 2 Dispute         36768     12.3 
+## 3 Unknown        208765     11.2 
+## 4 Cash         54805471      8.85&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;아직 dbplyr가 복잡한 dplyr 구문을 Query로 파싱할 때에 성능의 이슈나, 올바로 파싱하지 못하는 문제점을 안고 있다. 특히, mutate() 함수를 여러 개 독립, 순차적으로 기술하는 것은 피해야 한다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;explain-plan&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Explain Plan&lt;/h2&gt;
+&lt;p&gt;show_query() 함수로 DBMS에서 수행될 Query를 살펴 보는 것이 중요하다. 그런데 dbplyr는 Explain Plan도 지원하므로 수행 속도의 개선을 위한 튜닝에서 적절하게 활용하는 것도 좋다.&lt;/p&gt;
+&lt;p&gt;다음은 택시의 주행 거리당 운임의 평균을 계산한 dbplyr 구문의 Explain Plan이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;cat(remote_query_plan(fare_db))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Finalize Aggregate  (cost=2795452.65..2795452.66 rows=1 width=32)
+##   -&amp;gt;  Gather  (cost=2795452.43..2795452.64 rows=2 width=32)
+##         Workers Planned: 2
+##         -&amp;gt;  Partial Aggregate  (cost=2794452.43..2794452.44 rows=1 width=32)
+##               -&amp;gt;  Parallel Seq Scan on trips  (cost=0.00..2619740.10 rows=34942465 width=21)
+##                     Filter: ((fare_amount &amp;gt; 0.0) AND (trip_distance &amp;gt; 0.0))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;다음은 택시의 주행 거리당 운임의 평균을 계산한 Query의 Explain Plan이다. dbplyr 구문의 것도 거의 유사하다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sql2 &amp;lt;- &amp;quot;EXPLAIN ANALYZE 
+          SELECT payment_type
+                ,AVG(total_amount) mean_fare 
+           FROM trips t 
+       GROUP BY payment_type
+       ORDER BY mean_fare DESC&amp;quot;
+
+plan &amp;lt;- dbGetQuery(con, sql2)
+plan&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##                                                                                                                                                         QUERY PLAN
+## 1                                                            Sort  (cost=2620742.87..2620742.89 rows=9 width=36) (actual time=63970.959..63972.761 rows=9 loops=1)
+## 2                                                                                                                               Sort Key: (avg(total_amount)) DESC
+## 3                                                                                                                             Sort Method: quicksort  Memory: 25kB
+## 4                                     -&amp;gt;  Finalize GroupAggregate  (cost=2620740.38..2620742.73 rows=9 width=36) (actual time=63970.817..63972.742 rows=9 loops=1)
+## 5                                                                                                                                          Group Key: payment_type
+## 6                                              -&amp;gt;  Gather Merge  (cost=2620740.38..2620742.48 rows=18 width=36) (actual time=63970.757..63972.614 rows=27 loops=1)
+## 7                                                                                                                                               Workers Planned: 2
+## 8                                                                                                                                              Workers Launched: 2
+## 9                                                        -&amp;gt;  Sort  (cost=2619740.36..2619740.38 rows=9 width=36) (actual time=63956.974..63956.976 rows=9 loops=3)
+## 10                                                                                                                                          Sort Key: payment_type
+## 11                                                                                                                            Sort Method: quicksort  Memory: 26kB
+## 12                                                                                                                 Worker 0:  Sort Method: quicksort  Memory: 26kB
+## 13                                                                                                                 Worker 1:  Sort Method: quicksort  Memory: 26kB
+## 14                                      -&amp;gt;  Partial HashAggregate  (cost=2619740.10..2619740.21 rows=9 width=36) (actual time=63956.895..63956.905 rows=9 loops=3)
+## 15                                                                                                                                         Group Key: payment_type
+## 16                           -&amp;gt;  Parallel Seq Scan on trips t  (cost=0.00..2443989.07 rows=35150207 width=14) (actual time=0.053..43391.157 rows=28115006 loops=3)
+## 17                                                                                                                                         Planning Time: 0.100 ms
+## 18                                                                                                                                    Execution Time: 63972.818 ms&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;요금 결제 방법에 따른 평균 총 지불 운임에 대한 통계를 계산하기 위한 dbplyr 구문의 Explain Plan이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;cat(remote_query_plan(payment_db))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Sort  (cost=12199179.18..12199179.21 rows=9 width=72)
+##   Sort Key: (avg(trips.total_amount)) DESC
+##   -&amp;gt;  Finalize GroupAggregate  (cost=12199174.22..12199179.04 rows=9 width=72)
+##         Group Key: (CASE WHEN (CASE WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN &amp;#39;Cash&amp;#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &amp;lt;&amp;gt; ALL (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END = &amp;#39;DIS&amp;#39;::text) THEN &amp;#39;Dispute&amp;#39;::text WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN &amp;#39;Cash&amp;#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &amp;lt;&amp;gt; ALL (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END &amp;lt;&amp;gt; &amp;#39;DIS&amp;#39;::text) THEN CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN &amp;#39;Cash&amp;#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &amp;lt;&amp;gt; ALL (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END = &amp;#39;NO&amp;#39;::text) THEN &amp;#39;No charge&amp;#39;::text WHEN (CASE WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN &amp;#39;Cash&amp;#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &amp;lt;&amp;gt; ALL (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END = &amp;#39;DIS&amp;#39;::text) THEN &amp;#39;Dispute&amp;#39;::text WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN &amp;#39;Cash&amp;#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &amp;lt;&amp;gt; ALL (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END &amp;lt;&amp;gt; &amp;#39;DIS&amp;#39;::text) THEN CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN &amp;#39;Cash&amp;#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &amp;lt;&amp;gt; ALL (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END &amp;lt;&amp;gt; &amp;#39;NO&amp;#39;::text) THEN &amp;#39;Unknown&amp;#39;::text ELSE NULL::text END)
+##         -&amp;gt;  Gather Merge  (cost=12199174.22..12199176.32 rows=18 width=72)
+##               Workers Planned: 2
+##               -&amp;gt;  Sort  (cost=12198174.19..12198174.22 rows=9 width=72)
+##                     Sort Key: (CASE WHEN (CASE WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN &amp;#39;Cash&amp;#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &amp;lt;&amp;gt; ALL (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END = &amp;#39;DIS&amp;#39;::text) THEN &amp;#39;Dispute&amp;#39;::text WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN &amp;#39;Cash&amp;#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &amp;lt;&amp;gt; ALL (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END &amp;lt;&amp;gt; &amp;#39;DIS&amp;#39;::text) THEN CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN &amp;#39;Cash&amp;#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &amp;lt;&amp;gt; ALL (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END = &amp;#39;NO&amp;#39;::text) THEN &amp;#39;No charge&amp;#39;::text WHEN (CASE WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN &amp;#39;Cash&amp;#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &amp;lt;&amp;gt; ALL (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END = &amp;#39;DIS&amp;#39;::text) THEN &amp;#39;Dispute&amp;#39;::text WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN &amp;#39;Cash&amp;#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &amp;lt;&amp;gt; ALL (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END &amp;lt;&amp;gt; &amp;#39;DIS&amp;#39;::text) THEN CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN &amp;#39;Cash&amp;#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &amp;lt;&amp;gt; ALL (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END &amp;lt;&amp;gt; &amp;#39;NO&amp;#39;::text) THEN &amp;#39;Unknown&amp;#39;::text ELSE NULL::text END)
+##                     -&amp;gt;  Partial HashAggregate  (cost=12198171.51..12198174.05 rows=9 width=72)
+##                           Group Key: CASE WHEN (CASE WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN &amp;#39;Cash&amp;#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &amp;lt;&amp;gt; ALL (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END = &amp;#39;DIS&amp;#39;::text) THEN &amp;#39;Dispute&amp;#39;::text WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN &amp;#39;Cash&amp;#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &amp;lt;&amp;gt; ALL (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END &amp;lt;&amp;gt; &amp;#39;DIS&amp;#39;::text) THEN CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN &amp;#39;Cash&amp;#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &amp;lt;&amp;gt; ALL (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END = &amp;#39;NO&amp;#39;::text) THEN &amp;#39;No charge&amp;#39;::text WHEN (CASE WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN &amp;#39;Cash&amp;#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &amp;lt;&amp;gt; ALL (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END = &amp;#39;DIS&amp;#39;::text) THEN &amp;#39;Dispute&amp;#39;::text WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN &amp;#39;Cash&amp;#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &amp;lt;&amp;gt; ALL (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END &amp;lt;&amp;gt; &amp;#39;DIS&amp;#39;::text) THEN CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN &amp;#39;Cash&amp;#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &amp;lt;&amp;gt; ALL (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END &amp;lt;&amp;gt; &amp;#39;NO&amp;#39;::text) THEN &amp;#39;Unknown&amp;#39;::text ELSE NULL::text END
+##                           -&amp;gt;  Parallel Seq Scan on trips  (cost=0.00..11934544.96 rows=35150207 width=42)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;cat(remote_query_plan(payment2_db))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Sort  (cost=4114627.43..4114627.46 rows=9 width=72)
+##   Sort Key: (avg(trips.total_amount)) DESC
+##   -&amp;gt;  Finalize GroupAggregate  (cost=4114624.54..4114627.29 rows=9 width=72)
+##         Group Key: (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN &amp;#39;Cash&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = &amp;#39;DIS&amp;#39;::text) THEN &amp;#39;Dispute&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; &amp;#39;DIS&amp;#39;::text) THEN CASE WHEN (upper(trips.payment_type) = &amp;#39;NO&amp;#39;::text) THEN &amp;#39;No charge&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; &amp;#39;NO&amp;#39;::text) THEN &amp;#39;Unknown&amp;#39;::text ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END)
+##         -&amp;gt;  Gather Merge  (cost=4114624.54..4114626.64 rows=18 width=72)
+##               Workers Planned: 2
+##               -&amp;gt;  Sort  (cost=4113624.51..4113624.54 rows=9 width=72)
+##                     Sort Key: (CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN &amp;#39;Cash&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = &amp;#39;DIS&amp;#39;::text) THEN &amp;#39;Dispute&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; &amp;#39;DIS&amp;#39;::text) THEN CASE WHEN (upper(trips.payment_type) = &amp;#39;NO&amp;#39;::text) THEN &amp;#39;No charge&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; &amp;#39;NO&amp;#39;::text) THEN &amp;#39;Unknown&amp;#39;::text ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END)
+##                     -&amp;gt;  Partial HashAggregate  (cost=4113623.90..4113624.37 rows=9 width=72)
+##                           Group Key: CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN &amp;#39;Cash&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; ALL (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = &amp;#39;DIS&amp;#39;::text) THEN &amp;#39;Dispute&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; &amp;#39;DIS&amp;#39;::text) THEN CASE WHEN (upper(trips.payment_type) = &amp;#39;NO&amp;#39;::text) THEN &amp;#39;No charge&amp;#39;::text WHEN (upper(trips.payment_type) &amp;lt;&amp;gt; &amp;#39;NO&amp;#39;::text) THEN &amp;#39;Unknown&amp;#39;::text ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END
+##                           -&amp;gt;  Parallel Seq Scan on trips  (cost=0.00..3849997.35 rows=35150207 width=42)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;요금 결제 방법에 따른 평균 총 지불 운임에 대한 통계를 계산하기 위한 Query의 Explain Plan이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sql3 &amp;lt;- &amp;quot;EXPLAIN ANALYZE 
+          SELECT CASE WHEN UPPER(payment_type) IN (&amp;#39;CRE&amp;#39;, &amp;#39;CRD&amp;#39;) THEN &amp;#39;Credit Card&amp;#39;
+                 WHEN UPPER(payment_type) IN (&amp;#39;CAS&amp;#39;, &amp;#39;CSH&amp;#39;) THEN &amp;#39;Cash&amp;#39; 
+                 WHEN UPPER(payment_type) = &amp;#39;DIS&amp;#39; THEN &amp;#39;Dispute&amp;#39;
+                 WHEN UPPER(payment_type) = &amp;#39;NO&amp;#39; THEN &amp;#39;No charge&amp;#39;
+                 ELSE &amp;#39;Unknown&amp;#39; END AS payment_type
+                ,COUNT(*) as freq
+                ,AVG(total_amount) mean_fare 
+     FROM trips t 
+  GROUP BY CASE WHEN UPPER(payment_type) IN (&amp;#39;CRE&amp;#39;, &amp;#39;CRD&amp;#39;) THEN &amp;#39;Credit Card&amp;#39;
+                WHEN UPPER(payment_type) IN (&amp;#39;CAS&amp;#39;, &amp;#39;CSH&amp;#39;) THEN &amp;#39;Cash&amp;#39; 
+                WHEN UPPER(payment_type) = &amp;#39;DIS&amp;#39; THEN &amp;#39;Dispute&amp;#39;
+                WHEN UPPER(payment_type) = &amp;#39;NO&amp;#39; THEN &amp;#39;No charge&amp;#39;
+                ELSE &amp;#39;Unknown&amp;#39; END
+  ORDER BY mean_fare DESC&amp;quot;
+
+plan &amp;lt;- dbGetQuery(con, sql3)
+plan&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##                                                                                                                                                                                                                                                                                                                                                  QUERY PLAN
+## 1                                                                                                                                                                                                                                                     Sort  (cost=3411622.93..3411622.96 rows=9 width=72) (actual time=88502.886..88504.878 rows=4 loops=1)
+## 2                                                                                                                                                                                                                                                                                                                        Sort Key: (avg(total_amount)) DESC
+## 3                                                                                                                                                                                                                                                                                                                      Sort Method: quicksort  Memory: 25kB
+## 4                                                                                                                                                                                                                              -&amp;gt;  Finalize GroupAggregate  (cost=3411620.22..3411622.79 rows=9 width=72) (actual time=88502.842..88504.865 rows=4 loops=1)
+## 5                          Group Key: (CASE WHEN (upper(payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(payment_type) = ANY (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN &amp;#39;Cash&amp;#39;::text WHEN (upper(payment_type) = &amp;#39;DIS&amp;#39;::text) THEN &amp;#39;Dispute&amp;#39;::text WHEN (upper(payment_type) = &amp;#39;NO&amp;#39;::text) THEN &amp;#39;No charge&amp;#39;::text ELSE &amp;#39;Unknown&amp;#39;::text END)
+## 6                                                                                                                                                                                                                                       -&amp;gt;  Gather Merge  (cost=3411620.22..3411622.32 rows=18 width=72) (actual time=88502.812..88504.815 rows=12 loops=1)
+## 7                                                                                                                                                                                                                                                                                                                                        Workers Planned: 2
+## 8                                                                                                                                                                                                                                                                                                                                       Workers Launched: 2
+## 9                                                                                                                                                                                                                                                 -&amp;gt;  Sort  (cost=3410620.19..3410620.22 rows=9 width=72) (actual time=88488.853..88488.855 rows=4 loops=3)
+## 10                          Sort Key: (CASE WHEN (upper(payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(payment_type) = ANY (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN &amp;#39;Cash&amp;#39;::text WHEN (upper(payment_type) = &amp;#39;DIS&amp;#39;::text) THEN &amp;#39;Dispute&amp;#39;::text WHEN (upper(payment_type) = &amp;#39;NO&amp;#39;::text) THEN &amp;#39;No charge&amp;#39;::text ELSE &amp;#39;Unknown&amp;#39;::text END)
+## 11                                                                                                                                                                                                                                                                                                                     Sort Method: quicksort  Memory: 25kB
+## 12                                                                                                                                                                                                                                                                                                          Worker 0:  Sort Method: quicksort  Memory: 25kB
+## 13                                                                                                                                                                                                                                                                                                          Worker 1:  Sort Method: quicksort  Memory: 25kB
+## 14                                                                                                                                                                                                                               -&amp;gt;  Partial HashAggregate  (cost=3410619.76..3410620.05 rows=9 width=72) (actual time=88488.786..88488.792 rows=4 loops=3)
+## 15                           Group Key: CASE WHEN (upper(payment_type) = ANY (&amp;#39;{CRE,CRD}&amp;#39;::text[])) THEN &amp;#39;Credit Card&amp;#39;::text WHEN (upper(payment_type) = ANY (&amp;#39;{CAS,CSH}&amp;#39;::text[])) THEN &amp;#39;Cash&amp;#39;::text WHEN (upper(payment_type) = &amp;#39;DIS&amp;#39;::text) THEN &amp;#39;Dispute&amp;#39;::text WHEN (upper(payment_type) = &amp;#39;NO&amp;#39;::text) THEN &amp;#39;No charge&amp;#39;::text ELSE &amp;#39;Unknown&amp;#39;::text END
+## 16                                                                                                                                                                                                                    -&amp;gt;  Parallel Seq Scan on trips t  (cost=0.00..3146993.21 rows=35150207 width=42) (actual time=0.089..72788.584 rows=28115006 loops=3)
+## 17                                                                                                                                                                                                                                                                                                                                  Planning Time: 0.165 ms
+## 18                                                                                                                                                                                                                                                                                                                             Execution Time: 88504.948 ms&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Explain Plan의 결과를 보면 SQL Query &amp;gt; payment2_db &amp;gt; payment_db의 순으로 성능이 좋은 것을 알 수 있다. 복잡한 연산에 대해서는 dbplyr보다는 직접 DB에 접속하여 SQL Query를 수행하는 것이 성능상 이롭다.
+그러나 dbplyr는 버전 업을 통해서 성능이 개선될 것이라는 믿음을 가지고 있다.&lt;/p&gt;
+&lt;p&gt;선택은 가용자의 몫이지만 간단한 집계의 경우는 dbplyr를 사용해 보기를 권한다.&lt;/p&gt;
+&lt;div id=&#34;disconnection&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;disconnection&lt;/h3&gt;
+&lt;p&gt;모든 작업이 마무리되면 연결된 DB 컨넥션을 종료한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;dbDisconnect(con)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] TRUE&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;참고-리소스&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;참고 리소스&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;데이터 관련 : &lt;a href=&#34;https://github.com/toddwschneider/nyc-taxi-data&#34; target=&#34;_blank&#34;&gt;https://github.com/toddwschneider/nyc-taxi-data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;dbplyr 관련 : &lt;a href=&#34;https://cran.r-project.org/web/packages/dbplyr/vignettes/dbplyr.html&#34; target=&#34;_blank&#34;&gt;https://cran.r-project.org/web/packages/dbplyr/vignettes/dbplyr.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

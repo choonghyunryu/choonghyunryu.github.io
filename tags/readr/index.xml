@@ -1,0 +1,2386 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>readr on Dataholic</title>
+    <link>/tags/readr/</link>
+    <description>Recent content in readr on Dataholic</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sat, 28 Dec 2019 22:51:12 +0800</lastBuildDate><atom:link href="/tags/readr/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>하나에서 여러 개를 파생하기</title>
+      <link>/post/2019-12/multi_derived/</link>
+      <pubDate>Sat, 28 Dec 2019 22:51:12 +0800</pubDate>
+      
+      <guid>/post/2019-12/multi_derived/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;들어가기&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;들어가기&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;비정형 텍스트 데이터를 조작할 경우에 종종 발생하는 요건으로, &lt;code&gt;character 벡터의 개별 원소&lt;/code&gt;를 특정 구분자로 나누어서 &lt;code&gt;여러 개의 원소로 만들거나&lt;/code&gt;, 데이터 프레임에서 상속된 객체에서 특정 &lt;code&gt;character 변수&lt;/code&gt;를 동일한 방법으로 나누어서 &lt;code&gt;여러 관측치로 만들 필요성&lt;/code&gt; 있다.
+텍스트 조작처럼 성가신 것이 없는데, 이들 두 요건에 대한 솔루션을 제시해 본다. 결국은 &lt;code&gt;dplyr&lt;/code&gt; 패키지와 &lt;code&gt;tidyr&lt;/code&gt; 패키지의 사용법에 대한 소개다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div id=&#34;데이터의-준비&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;데이터의 준비&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.kaggle.com/openfoodfacts/world-food-facts에서&#34; class=&#34;uri&#34;&gt;https://www.kaggle.com/openfoodfacts/world-food-facts에서&lt;/a&gt; &lt;code&gt;world-food-facts.zip&lt;/code&gt;를 다운로드한 후 압축을 풀면 &lt;code&gt;en.openfoodfacts.org.products.tsv&lt;/code&gt;라는 이름의 텍스트 파일을 얻을 수 있다. 이 파일은 컬럼의 구분자를 탭문자로 정의한 데이터 파일이다.&lt;/p&gt;
+&lt;p&gt;예제에서는 &lt;code&gt;en.openfoodfacts.org.products.tsv&lt;/code&gt;를 &lt;code&gt;FoodFacts.tsv&lt;/code&gt;라는 이름으로 변경 후 &lt;code&gt;./data&lt;/code&gt; 경로에 저장한 것을 전제로 수행한다.&lt;/p&gt;
+&lt;p&gt;이 데이터는 전 세계 식품의 영양 정보를 수집한 데이터로 &lt;code&gt;Open Food Facts&lt;/code&gt;라는 단체에서 공개한 public 데이터다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;data_repo &amp;lt;- &amp;quot;./data&amp;quot; 
+fname &amp;lt;- paste(data_repo, &amp;quot;FoodFacts.tsv&amp;quot;, sep =&amp;quot;/&amp;quot;)
+
+# 파일의 용량
+file.size(fname) / 1024^2
+## [1] 963.456
+# 데이터를 R로 가져온다.
+foodfact &amp;lt;- readr::read_tsv(fname, progress = FALSE)
+
+# 메모리에 적재된 R 데이터의 용량
+format(object.size(foodfact), units = &amp;quot;Mb&amp;quot;)
+## [1] &amp;quot;938.7 Mb&amp;quot;
+# 차원
+dim(foodfact)
+## [1] 314496    163
+# 변수의 이름
+names(foodfact)
+##   [1] &amp;quot;code&amp;quot;                                      
+##   [2] &amp;quot;url&amp;quot;                                       
+##   [3] &amp;quot;creator&amp;quot;                                   
+##   [4] &amp;quot;created_t&amp;quot;                                 
+##   [5] &amp;quot;created_datetime&amp;quot;                          
+##   [6] &amp;quot;last_modified_t&amp;quot;                           
+##   [7] &amp;quot;last_modified_datetime&amp;quot;                    
+##   [8] &amp;quot;product_name&amp;quot;                              
+##   [9] &amp;quot;generic_name&amp;quot;                              
+##  [10] &amp;quot;quantity&amp;quot;                                  
+##  [11] &amp;quot;packaging&amp;quot;                                 
+##  [12] &amp;quot;packaging_tags&amp;quot;                            
+##  [13] &amp;quot;brands&amp;quot;                                    
+##  [14] &amp;quot;brands_tags&amp;quot;                               
+##  [15] &amp;quot;categories&amp;quot;                                
+##  [16] &amp;quot;categories_tags&amp;quot;                           
+##  [17] &amp;quot;categories_en&amp;quot;                             
+##  [18] &amp;quot;origins&amp;quot;                                   
+##  [19] &amp;quot;origins_tags&amp;quot;                              
+##  [20] &amp;quot;manufacturing_places&amp;quot;                      
+##  [21] &amp;quot;manufacturing_places_tags&amp;quot;                 
+##  [22] &amp;quot;labels&amp;quot;                                    
+##  [23] &amp;quot;labels_tags&amp;quot;                               
+##  [24] &amp;quot;labels_en&amp;quot;                                 
+##  [25] &amp;quot;emb_codes&amp;quot;                                 
+##  [26] &amp;quot;emb_codes_tags&amp;quot;                            
+##  [27] &amp;quot;first_packaging_code_geo&amp;quot;                  
+##  [28] &amp;quot;cities&amp;quot;                                    
+##  [29] &amp;quot;cities_tags&amp;quot;                               
+##  [30] &amp;quot;purchase_places&amp;quot;                           
+##  [31] &amp;quot;stores&amp;quot;                                    
+##  [32] &amp;quot;countries&amp;quot;                                 
+##  [33] &amp;quot;countries_tags&amp;quot;                            
+##  [34] &amp;quot;countries_en&amp;quot;                              
+##  [35] &amp;quot;ingredients_text&amp;quot;                          
+##  [36] &amp;quot;allergens&amp;quot;                                 
+##  [37] &amp;quot;allergens_en&amp;quot;                              
+##  [38] &amp;quot;traces&amp;quot;                                    
+##  [39] &amp;quot;traces_tags&amp;quot;                               
+##  [40] &amp;quot;traces_en&amp;quot;                                 
+##  [41] &amp;quot;serving_size&amp;quot;                              
+##  [42] &amp;quot;no_nutriments&amp;quot;                             
+##  [43] &amp;quot;additives_n&amp;quot;                               
+##  [44] &amp;quot;additives&amp;quot;                                 
+##  [45] &amp;quot;additives_tags&amp;quot;                            
+##  [46] &amp;quot;additives_en&amp;quot;                              
+##  [47] &amp;quot;ingredients_from_palm_oil_n&amp;quot;               
+##  [48] &amp;quot;ingredients_from_palm_oil&amp;quot;                 
+##  [49] &amp;quot;ingredients_from_palm_oil_tags&amp;quot;            
+##  [50] &amp;quot;ingredients_that_may_be_from_palm_oil_n&amp;quot;   
+##  [51] &amp;quot;ingredients_that_may_be_from_palm_oil&amp;quot;     
+##  [52] &amp;quot;ingredients_that_may_be_from_palm_oil_tags&amp;quot;
+##  [53] &amp;quot;nutrition_grade_uk&amp;quot;                        
+##  [54] &amp;quot;nutrition_grade_fr&amp;quot;                        
+##  [55] &amp;quot;pnns_groups_1&amp;quot;                             
+##  [56] &amp;quot;pnns_groups_2&amp;quot;                             
+##  [57] &amp;quot;states&amp;quot;                                    
+##  [58] &amp;quot;states_tags&amp;quot;                               
+##  [59] &amp;quot;states_en&amp;quot;                                 
+##  [60] &amp;quot;main_category&amp;quot;                             
+##  [61] &amp;quot;main_category_en&amp;quot;                          
+##  [62] &amp;quot;image_url&amp;quot;                                 
+##  [63] &amp;quot;image_small_url&amp;quot;                           
+##  [64] &amp;quot;energy_100g&amp;quot;                               
+##  [65] &amp;quot;energy-from-fat_100g&amp;quot;                      
+##  [66] &amp;quot;fat_100g&amp;quot;                                  
+##  [67] &amp;quot;saturated-fat_100g&amp;quot;                        
+##  [68] &amp;quot;-butyric-acid_100g&amp;quot;                        
+##  [69] &amp;quot;-caproic-acid_100g&amp;quot;                        
+##  [70] &amp;quot;-caprylic-acid_100g&amp;quot;                       
+##  [71] &amp;quot;-capric-acid_100g&amp;quot;                         
+##  [72] &amp;quot;-lauric-acid_100g&amp;quot;                         
+##  [73] &amp;quot;-myristic-acid_100g&amp;quot;                       
+##  [74] &amp;quot;-palmitic-acid_100g&amp;quot;                       
+##  [75] &amp;quot;-stearic-acid_100g&amp;quot;                        
+##  [76] &amp;quot;-arachidic-acid_100g&amp;quot;                      
+##  [77] &amp;quot;-behenic-acid_100g&amp;quot;                        
+##  [78] &amp;quot;-lignoceric-acid_100g&amp;quot;                     
+##  [79] &amp;quot;-cerotic-acid_100g&amp;quot;                        
+##  [80] &amp;quot;-montanic-acid_100g&amp;quot;                       
+##  [81] &amp;quot;-melissic-acid_100g&amp;quot;                       
+##  [82] &amp;quot;monounsaturated-fat_100g&amp;quot;                  
+##  [83] &amp;quot;polyunsaturated-fat_100g&amp;quot;                  
+##  [84] &amp;quot;omega-3-fat_100g&amp;quot;                          
+##  [85] &amp;quot;-alpha-linolenic-acid_100g&amp;quot;                
+##  [86] &amp;quot;-eicosapentaenoic-acid_100g&amp;quot;               
+##  [87] &amp;quot;-docosahexaenoic-acid_100g&amp;quot;                
+##  [88] &amp;quot;omega-6-fat_100g&amp;quot;                          
+##  [89] &amp;quot;-linoleic-acid_100g&amp;quot;                       
+##  [90] &amp;quot;-arachidonic-acid_100g&amp;quot;                    
+##  [91] &amp;quot;-gamma-linolenic-acid_100g&amp;quot;                
+##  [92] &amp;quot;-dihomo-gamma-linolenic-acid_100g&amp;quot;         
+##  [93] &amp;quot;omega-9-fat_100g&amp;quot;                          
+##  [94] &amp;quot;-oleic-acid_100g&amp;quot;                          
+##  [95] &amp;quot;-elaidic-acid_100g&amp;quot;                        
+##  [96] &amp;quot;-gondoic-acid_100g&amp;quot;                        
+##  [97] &amp;quot;-mead-acid_100g&amp;quot;                           
+##  [98] &amp;quot;-erucic-acid_100g&amp;quot;                         
+##  [99] &amp;quot;-nervonic-acid_100g&amp;quot;                       
+## [100] &amp;quot;trans-fat_100g&amp;quot;                            
+## [101] &amp;quot;cholesterol_100g&amp;quot;                          
+## [102] &amp;quot;carbohydrates_100g&amp;quot;                        
+## [103] &amp;quot;sugars_100g&amp;quot;                               
+## [104] &amp;quot;-sucrose_100g&amp;quot;                             
+## [105] &amp;quot;-glucose_100g&amp;quot;                             
+## [106] &amp;quot;-fructose_100g&amp;quot;                            
+## [107] &amp;quot;-lactose_100g&amp;quot;                             
+## [108] &amp;quot;-maltose_100g&amp;quot;                             
+## [109] &amp;quot;-maltodextrins_100g&amp;quot;                       
+## [110] &amp;quot;starch_100g&amp;quot;                               
+## [111] &amp;quot;polyols_100g&amp;quot;                              
+## [112] &amp;quot;fiber_100g&amp;quot;                                
+## [113] &amp;quot;proteins_100g&amp;quot;                             
+## [114] &amp;quot;casein_100g&amp;quot;                               
+## [115] &amp;quot;serum-proteins_100g&amp;quot;                       
+## [116] &amp;quot;nucleotides_100g&amp;quot;                          
+## [117] &amp;quot;salt_100g&amp;quot;                                 
+## [118] &amp;quot;sodium_100g&amp;quot;                               
+## [119] &amp;quot;alcohol_100g&amp;quot;                              
+## [120] &amp;quot;vitamin-a_100g&amp;quot;                            
+## [121] &amp;quot;beta-carotene_100g&amp;quot;                        
+## [122] &amp;quot;vitamin-d_100g&amp;quot;                            
+## [123] &amp;quot;vitamin-e_100g&amp;quot;                            
+## [124] &amp;quot;vitamin-k_100g&amp;quot;                            
+## [125] &amp;quot;vitamin-c_100g&amp;quot;                            
+## [126] &amp;quot;vitamin-b1_100g&amp;quot;                           
+## [127] &amp;quot;vitamin-b2_100g&amp;quot;                           
+## [128] &amp;quot;vitamin-pp_100g&amp;quot;                           
+## [129] &amp;quot;vitamin-b6_100g&amp;quot;                           
+## [130] &amp;quot;vitamin-b9_100g&amp;quot;                           
+## [131] &amp;quot;folates_100g&amp;quot;                              
+## [132] &amp;quot;vitamin-b12_100g&amp;quot;                          
+## [133] &amp;quot;biotin_100g&amp;quot;                               
+## [134] &amp;quot;pantothenic-acid_100g&amp;quot;                     
+## [135] &amp;quot;silica_100g&amp;quot;                               
+## [136] &amp;quot;bicarbonate_100g&amp;quot;                          
+## [137] &amp;quot;potassium_100g&amp;quot;                            
+## [138] &amp;quot;chloride_100g&amp;quot;                             
+## [139] &amp;quot;calcium_100g&amp;quot;                              
+## [140] &amp;quot;phosphorus_100g&amp;quot;                           
+## [141] &amp;quot;iron_100g&amp;quot;                                 
+## [142] &amp;quot;magnesium_100g&amp;quot;                            
+## [143] &amp;quot;zinc_100g&amp;quot;                                 
+## [144] &amp;quot;copper_100g&amp;quot;                               
+## [145] &amp;quot;manganese_100g&amp;quot;                            
+## [146] &amp;quot;fluoride_100g&amp;quot;                             
+## [147] &amp;quot;selenium_100g&amp;quot;                             
+## [148] &amp;quot;chromium_100g&amp;quot;                             
+## [149] &amp;quot;molybdenum_100g&amp;quot;                           
+## [150] &amp;quot;iodine_100g&amp;quot;                               
+## [151] &amp;quot;caffeine_100g&amp;quot;                             
+## [152] &amp;quot;taurine_100g&amp;quot;                              
+## [153] &amp;quot;ph_100g&amp;quot;                                   
+## [154] &amp;quot;fruits-vegetables-nuts_100g&amp;quot;               
+## [155] &amp;quot;fruits-vegetables-nuts-estimate_100g&amp;quot;      
+## [156] &amp;quot;collagen-meat-protein-ratio_100g&amp;quot;          
+## [157] &amp;quot;cocoa_100g&amp;quot;                                
+## [158] &amp;quot;chlorophyl_100g&amp;quot;                           
+## [159] &amp;quot;carbon-footprint_100g&amp;quot;                     
+## [160] &amp;quot;nutrition-score-fr_100g&amp;quot;                   
+## [161] &amp;quot;nutrition-score-uk_100g&amp;quot;                   
+## [162] &amp;quot;glycemic-index_100g&amp;quot;                       
+## [163] &amp;quot;water-hardness_100g&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;벡터의-한-개-원소에서-여러-개-원소-추출하기&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;벡터의 한 개 원소에서 여러 개 원소 추출하기&lt;/h1&gt;
+&lt;div id=&#34;식품의-식자재-추출&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;식품의 식자재 추출&lt;/h2&gt;
+&lt;p&gt;식품의 식자재 종류는 ingredients_text 변수에 텍스트로 들어 있다. 그래서 텍스트의 조작을 통해서 식자재를 분리해야 한다. 그러나 다음 예시처럼 일부 몇 건을 살펴보자. 하나의 ingredients_text에는 여러 개의 식자재들이 기술되어 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;exam &amp;lt;- foodfact$ingredients_text[c(2:3, 13)]
+exam
+## [1] &amp;quot;Bananas, vegetable oil (coconut oil, corn oil and/or palm oil) sugar, natural banana flavor.&amp;quot;                                                                                                                                                                                                                                                                                     
+## [2] &amp;quot;Peanuts, wheat flour, sugar, rice flour, tapioca starch, salt, leavening (ammonium bicarbonate, baking soda), soy sauce (water, soybeans, wheat, salt), potato starch.&amp;quot;                                                                                                                                                                                                           
+## [3] &amp;quot;Roasted peanuts (peanuts, peanut or canola oil, salt), sesame sticks (unbleached wheat flour, sesame seeds, sunflower oil, sa;t, beet powder, turmeric), chili crackers (rice, corn starch, soy sauce[water, soybeans, wheat, salt], brown rice syrup, paprika, onion powder, garlic powder), tamari roasted almonds (almonds, tamari shoyu [water, wheat, soybeans, salt]), salt&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;벡터를-리스트로-그리고-다시-벡터로-변경하기&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;벡터를 리스트로, 그리고 다시 벡터로 변경하기&lt;/h2&gt;
+&lt;p&gt;하나의 벡터에는 임의의 갯수의 식자재가 포함되어 있다. 그런데 자세히 보면 다음과 같은 몇 가지의 대표적인 구분자 패턴이 존재한다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;콤마(,)로 분리&lt;/li&gt;
+&lt;li&gt;괄호로 분리&lt;/li&gt;
+&lt;li&gt;중괄호로 분리&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;먼저 앞에서 찾은 식자재들의 분리 패턴을 이용해서, 여러 개의 식자재를 추출해 보자. 구분자로 분리된 수 많큼 원소의 개수가 늘어난다. 벡터의 길이가 3개에서 60으로 늘어났다.
+중요한 것은 &lt;code&gt;str_split() 함수&lt;/code&gt;는 분리된 개별 문자열의 결과를 &lt;code&gt;리스트&lt;/code&gt;로 반환하기 때문에 &lt;code&gt;unlist() 함수&lt;/code&gt;로 리스트를 벡터로 변경해 주어야 한는 것이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(dplyr)
+library(stringr)
+
+foodfact %&amp;gt;%
+  .[c(2:3, 13), ] %&amp;gt;% 
+  transmute(ingredients = str_split(ingredients_text, pattern = &amp;quot;,|\\(|\\)|\\[|\\]&amp;quot;)) %&amp;gt;%
+  unlist()
+##                ingredients1                ingredients2 
+##                   &amp;quot;Bananas&amp;quot;           &amp;quot; vegetable oil &amp;quot; 
+##                ingredients3                ingredients4 
+##               &amp;quot;coconut oil&amp;quot; &amp;quot; corn oil and/or palm oil&amp;quot; 
+##                ingredients5                ingredients6 
+##                    &amp;quot; sugar&amp;quot;   &amp;quot; natural banana flavor.&amp;quot; 
+##                ingredients7                ingredients8 
+##                   &amp;quot;Peanuts&amp;quot;              &amp;quot; wheat flour&amp;quot; 
+##                ingredients9               ingredients10 
+##                    &amp;quot; sugar&amp;quot;               &amp;quot; rice flour&amp;quot; 
+##               ingredients11               ingredients12 
+##           &amp;quot; tapioca starch&amp;quot;                     &amp;quot; salt&amp;quot; 
+##               ingredients13               ingredients14 
+##               &amp;quot; leavening &amp;quot;      &amp;quot;ammonium bicarbonate&amp;quot; 
+##               ingredients15               ingredients16 
+##              &amp;quot; baking soda&amp;quot;                          &amp;quot;&amp;quot; 
+##               ingredients17               ingredients18 
+##               &amp;quot; soy sauce &amp;quot;                     &amp;quot;water&amp;quot; 
+##               ingredients19               ingredients20 
+##                 &amp;quot; soybeans&amp;quot;                    &amp;quot; wheat&amp;quot; 
+##               ingredients21               ingredients22 
+##                     &amp;quot; salt&amp;quot;                          &amp;quot;&amp;quot; 
+##               ingredients23               ingredients24 
+##           &amp;quot; potato starch.&amp;quot;          &amp;quot;Roasted peanuts &amp;quot; 
+##               ingredients25               ingredients26 
+##                   &amp;quot;peanuts&amp;quot;     &amp;quot; peanut or canola oil&amp;quot; 
+##               ingredients27               ingredients28 
+##                     &amp;quot; salt&amp;quot;                          &amp;quot;&amp;quot; 
+##               ingredients29               ingredients30 
+##           &amp;quot; sesame sticks &amp;quot;    &amp;quot;unbleached wheat flour&amp;quot; 
+##               ingredients31               ingredients32 
+##             &amp;quot; sesame seeds&amp;quot;            &amp;quot; sunflower oil&amp;quot; 
+##               ingredients33               ingredients34 
+##                     &amp;quot; sa;t&amp;quot;              &amp;quot; beet powder&amp;quot; 
+##               ingredients35               ingredients36 
+##                 &amp;quot; turmeric&amp;quot;                          &amp;quot;&amp;quot; 
+##               ingredients37               ingredients38 
+##          &amp;quot; chili crackers &amp;quot;                      &amp;quot;rice&amp;quot; 
+##               ingredients39               ingredients40 
+##              &amp;quot; corn starch&amp;quot;                &amp;quot; soy sauce&amp;quot; 
+##               ingredients41               ingredients42 
+##                     &amp;quot;water&amp;quot;                 &amp;quot; soybeans&amp;quot; 
+##               ingredients43               ingredients44 
+##                    &amp;quot; wheat&amp;quot;                     &amp;quot; salt&amp;quot; 
+##               ingredients45               ingredients46 
+##                          &amp;quot;&amp;quot;         &amp;quot; brown rice syrup&amp;quot; 
+##               ingredients47               ingredients48 
+##                  &amp;quot; paprika&amp;quot;             &amp;quot; onion powder&amp;quot; 
+##               ingredients49               ingredients50 
+##            &amp;quot; garlic powder&amp;quot;                          &amp;quot;&amp;quot; 
+##               ingredients51               ingredients52 
+##  &amp;quot; tamari roasted almonds &amp;quot;                   &amp;quot;almonds&amp;quot; 
+##               ingredients53               ingredients54 
+##            &amp;quot; tamari shoyu &amp;quot;                     &amp;quot;water&amp;quot; 
+##               ingredients55               ingredients56 
+##                    &amp;quot; wheat&amp;quot;                 &amp;quot; soybeans&amp;quot; 
+##               ingredients57               ingredients58 
+##                     &amp;quot; salt&amp;quot;                          &amp;quot;&amp;quot; 
+##               ingredients59               ingredients60 
+##                          &amp;quot;&amp;quot;                     &amp;quot; salt&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;벡터를-tbl_df로-변경하기&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;벡터를 tbl_df로 변경하기&lt;/h2&gt;
+&lt;p&gt;앞의 결과는 길이가 60인 벡터를 반환한다. 그러나, 우리는 &lt;code&gt;dplyr 패키지&lt;/code&gt;를 사용하기 위해서 &lt;code&gt;tibble 패키지&lt;/code&gt;의 &lt;code&gt;enframe() 함수&lt;/code&gt;를 사용해서 벡터를 &lt;code&gt;tbl_df 객체&lt;/code&gt;로 변경할 수 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;foodfact %&amp;gt;%
+  .[c(2:3, 13), ] %&amp;gt;% 
+  transmute(ingredients = str_split(ingredients_text, pattern = &amp;quot;,|\\(|\\)|\\[|\\]&amp;quot;)) %&amp;gt;%
+  unlist() %&amp;gt;% 
+  tibble::enframe() %&amp;gt;% 
+  knitr::kable()&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;left&#34;&gt;name&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients1&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Bananas&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients2&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;vegetable oil&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients3&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;coconut oil&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients4&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;corn oil and/or palm oil&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients5&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;sugar&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients6&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;natural banana flavor.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients7&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Peanuts&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients8&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;wheat flour&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients9&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;sugar&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients10&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;rice flour&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients11&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;tapioca starch&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients12&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;salt&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients13&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;leavening&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients14&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ammonium bicarbonate&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients15&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;baking soda&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients16&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients17&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;soy sauce&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients18&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;water&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients19&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;soybeans&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients20&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;wheat&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients21&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;salt&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients22&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients23&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;potato starch.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients24&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Roasted peanuts&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients25&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;peanuts&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients26&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;peanut or canola oil&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients27&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;salt&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients28&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients29&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;sesame sticks&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients30&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;unbleached wheat flour&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients31&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;sesame seeds&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients32&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;sunflower oil&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients33&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;sa;t&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients34&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;beet powder&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients35&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;turmeric&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients36&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients37&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;chili crackers&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients38&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;rice&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients39&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;corn starch&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients40&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;soy sauce&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients41&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;water&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients42&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;soybeans&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients43&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;wheat&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients44&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;salt&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients45&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients46&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;brown rice syrup&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients47&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;paprika&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients48&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;onion powder&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients49&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;garlic powder&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients50&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients51&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;tamari roasted almonds&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients52&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;almonds&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients53&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;tamari shoyu&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients54&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;water&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients55&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;wheat&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients56&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;soybeans&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients57&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;salt&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients58&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients59&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ingredients60&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;salt&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div id=&#34;부수적인-텍스트-전처리&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;부수적인 텍스트 전처리&lt;/h2&gt;
+&lt;p&gt;전체 데이터로 부수적인 텍스트 전처리를 수행한다. 식자재를 의미하지 않는 몇몇 텍스트의 패턴을 정규표현식을 이용해서 제거한다. 모든 의미 없는 텍스트를 제거하거나 보정하기에는 많은 시간과 노력이 필요하므로, 적당한 선에서 타협을 하였다.&lt;/p&gt;
+&lt;p&gt;다음 코드는 간단한 전처리 후 도출된 식자재의 &lt;code&gt;돗수(frequency)&lt;/code&gt;를 구한다. 그리고 마지막으로 돗수가 큰 상위 100개의 식자재를 추출하였다. 상위에 랭크된 것들은 제대로 추출된 식자재의 이름이다. 아마도 상위 100개의 식자재 이름은 무리없이 사용할 수 있을 것이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# dplyr, tibble을 이용한 식자재의 추출
+ingredients &amp;lt;- foodfact %&amp;gt;%
+  transmute(ingredients = str_split(ingredients_text, pattern = &amp;quot;,|\\(|\\)|\\[|\\]&amp;quot;)) %&amp;gt;%
+  unlist() %&amp;gt;%
+  tibble::enframe() %&amp;gt;%
+  mutate(value = str_replace(value, &amp;quot;org|organic&amp;quot;, &amp;quot;&amp;quot;),
+         value = str_replace(value, &amp;quot;and/or&amp;quot;, &amp;quot;&amp;quot;),
+         value = str_replace(value, &amp;quot;-&amp;gt; en:\\w+&amp;quot;, &amp;quot;&amp;quot;),
+         value = str_replace(value, &amp;quot;-&amp;gt; exists  -- ok&amp;quot;, &amp;quot;&amp;quot;),
+         value = str_replace(value, &amp;quot;-&amp;quot;, &amp;quot; &amp;quot;),
+         value = str_replace_all(value, &amp;quot;[[:punct:]]&amp;quot;, &amp;quot; &amp;quot;),
+         value = str_replace_all(value, &amp;quot;  &amp;quot;, &amp;quot; &amp;quot;),
+         value = str_trim(value)) %&amp;gt;%
+  filter(value != &amp;quot;&amp;quot;, !str_detect(value, &amp;quot;completed|\\d&amp;quot;)) %&amp;gt;%
+  count(value) %&amp;gt;%
+  transmute(ingredient = value, freq = n) %&amp;gt;% 
+  arrange(desc(freq))
+
+# 도수가 큰 상위 100건 추출
+top100 &amp;lt;- head(ingredients, 100)
+top100 %&amp;gt;% 
+  knitr::kable(format.args = list(big.mark = &amp;#39;,&amp;#39;))&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;left&#34;&gt;ingredient&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;freq&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;salt&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;126,773&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;sugar&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;89,559&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;water&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;80,908&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;sel&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;48,846&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;citric acid&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;39,481&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;sucre&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;35,886&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;eau&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;33,956&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;riboflavin&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;26,053&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;niacin&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;25,903&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;dextrose&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;22,365&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;milk&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;21,562&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;folic acid&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;20,871&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;oil&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;20,347&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;flour&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;20,082&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;spices&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;19,379&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;corn syrup&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;17,366&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;wheat flour&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;17,137&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;enzymes&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;16,898&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;natural flavor&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;16,876&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;soy lecithin&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;15,825&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;garlic&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;14,646&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;vinegar&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;14,557&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;sea salt&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;13,809&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;maltodextrin&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;13,524&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;reduced iron&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;13,255&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;xanthan gum&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;12,650&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;cream&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;12,524&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;thiamine mononitrate&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;12,482&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;soybean oil&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;11,849&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;flavor&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;11,738&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;iron&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;11,643&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;whey&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;11,531&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;natural flavors&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;11,441&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;color&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;11,004&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;syrup&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10,724&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;high fructose corn syrup&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10,716&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;preservative&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10,566&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ascorbic acid&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10,472&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;butter&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9,714&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Sugar&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9,661&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;powder&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9,404&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;caramel color&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9,375&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;yeast&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9,348&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;guar gum&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8,817&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;cocoa butter&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8,812&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;thiamin mononitrate&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8,760&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;onion&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8,707&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;farine de blé&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8,701&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;huile de tournesol&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8,560&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;arômes&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8,468&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Water&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8,348&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;arôme&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8,074&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;starch&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7,896&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;palm oil&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7,850&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;corn syrup syrup&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7,776&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;wheat flour flour&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7,746&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;vegetable oil&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7,655&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;paprika&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7,406&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;carrageenan&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7,277&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;huile de colza&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7,249&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;corn starch&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7,082&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;sirop de glucose&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7,039&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;lait&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6,981&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;honey&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6,942&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;beurre de cacao&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6,883&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;sodium citrate&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6,683&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;garlic powder&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6,640&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;mono and diglycerides&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6,567&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;lactic acid&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6,520&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;potassium sorbate&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6,403&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;onion powder&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6,284&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;modified corn starch&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6,186&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;canola oil&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6,122&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;épices&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6,065&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;flavors&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6,037&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;concentrate&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6,013&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;modified food starch&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,984&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;lactose&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,931&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ail&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,923&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;malted barley flour&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,859&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;pâte de cacao&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,740&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;cheese culture&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,640&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;spice&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,609&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;sodium bicarbonate&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,587&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;onions&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,492&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;wheat&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,413&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;natural flavor flavor&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,400&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;sodium phosphate&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,386&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;molasses&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,365&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;cocoa&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,339&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;pectin&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,328&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;acid&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,312&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;corn&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,308&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;almonds&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,283&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;vitamin c&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,281&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;emulsifier&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,280&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;calcium chloride&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,265&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;natural and artificial flavors&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,264&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;eggs&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,168&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;mononitrate&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,163&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;하위 10건을 살펴보니, 한자와 일본어가 포함되어 있다. 달걀과 식용색소인 황색5호도 눈에 띈다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 하위 10건 추출
+tail(ingredients, 10) %&amp;gt;% 
+  knitr::kable()&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;left&#34;&gt;ingredient&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;freq&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;食用黃梔子色素&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;香料 カラメル色素&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;高分岐環狀糊精&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;高果糖糖漿&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;高梁&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;鶏卵&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;鹿角菜膠&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;麦芽エキス&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;黃色五號&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;黑醋粉&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div id=&#34;대표적인-식재료의-wordcloud&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;대표적인 식재료의 &lt;code&gt;wordcloud&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;앞서 구한 상위 100개의 식재료로 wordcloud 플롯을 그려본다. 식품에 소금, 설탕, 물이 가장 많이 사용되는 식재료임을 쉽게 알 수 있는 플롯이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;par(mar = c(0, 0, 0, 0))
+
+# 팔레트 정의
+pal &amp;lt;- RColorBrewer::brewer.pal(6, &amp;quot;Dark2&amp;quot;)
+
+# 워드클라우드 생성
+wordcloud::wordcloud(top100$ingredient, top100$freq, colors = pal)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-12/multi_derived_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;480&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;하나의-레코드에서-여러-레코드-파생하기&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;하나의 레코드에서 여러 레코드 파생하기&lt;/h1&gt;
+&lt;p&gt;앞서 다룬 식자재 데이터는 일차원 데이터다. 그런데 이차원 이상의 데이터는 결국 하나의 레코드(관측치, Observations)를 여러 레코드로 분리하는 방법으로 데이터를 조작해야 한다.&lt;/p&gt;
+&lt;p&gt;다음의 시나리오를 적용해 본다.&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;국가의 영문명인 &lt;code&gt;countries_en&lt;/code&gt; 변수는 식품의 국가명을 영문으로 표현한 변수다.
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;복수의 나라 명을 포함하며 컴마(,)로 분리하고 있다.&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;개별 국가로 분리해야 하며, 관심있는 나머지 변수로 추출한다.&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;관심있는 나머지 변수는 개별 국가의 관측치에 복제된다.&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;영문 외의 여러 나라 문자를 포함한다.
+&lt;ul&gt;
+&lt;li&gt;영문으로 변경해야 한다.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;식품에 포함된 여러 영양소의 규모를 제공한다.
+&lt;ul&gt;
+&lt;li&gt;접미어 &lt;code&gt;_100g&lt;/code&gt;로 끝나는 변수들은 100g 당 해당 영양소의 포함 중량이다.&lt;/li&gt;
+&lt;li&gt;관심있는 몇 개의 영양소를 국가별로 살펴보자.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;식품의 카테고리와 라벨에도 몇몇 정보를 얻을 수 있다.
+&lt;ul&gt;
+&lt;li&gt;카테고리 변수인 &lt;code&gt;categories_en&lt;/code&gt;에서 고기가 포함된 식품을 추출해 본다.&lt;/li&gt;
+&lt;li&gt;라벨 변수인 &lt;code&gt;labels&lt;/code&gt;에서 &lt;code&gt;채식&lt;/code&gt; 식품을 추출해 본다.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div id=&#34;국가명-보정-함수-정의&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;국가명 보정 함수 정의&lt;/h2&gt;
+&lt;p&gt;국가명은 여러 국가의 언어로 표현되어 있다. 그래서 이들을 영문으로 변경하는 &lt;code&gt;clean_country&lt;/code&gt;라는 이름의 함수를 정의하였다. 이 함수는 국가의 이름을 영문 대문자로 변경해 준다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 국가명 보정 사용자 정의 함수
+clean_country &amp;lt;- function(x) {
+  library(magrittr)
+  
+  x %&amp;gt;% 
+    stringr::str_to_upper() %&amp;gt;% 
+    stringr::str_replace(&amp;quot;UNITED STATES|EN:US&amp;quot;, &amp;quot;US&amp;quot;) %&amp;gt;%
+    stringr::str_replace(&amp;quot;UNITED KINGDOM|EN:GB|FR:GRANDE-BRETAGNE&amp;quot;, &amp;quot;UK&amp;quot;) %&amp;gt;% 
+    stringr::str_replace(&amp;quot;FR:REINO-UNIDO|FR:ANGLETERRE|المملكة-المتحدة&amp;quot;, &amp;quot;UK&amp;quot;) %&amp;gt;% 
+    stringr::str_replace(&amp;quot;FR:SCOTLAND&amp;quot;, &amp;quot;SCOTLAND&amp;quot;) %&amp;gt;%
+    stringr::str_replace(&amp;quot;FR:DEUTSCHLAND|FR:ALEMANIA|NL:DEUTSCHLAND&amp;quot;, &amp;quot;GERMANY&amp;quot;) %&amp;gt;%
+    stringr::str_replace(&amp;quot;EN:FR|FR:ФРАНЦИЯ|FR:FRANKRIJK|FR:FRANKREICH&amp;quot;, &amp;quot;FRANCE&amp;quot;) %&amp;gt;% 
+    stringr::str_replace(&amp;quot;FR:MARSEILLE-5|FR:PUYRICARD|NL:FRANKREICH&amp;quot;, &amp;quot;FRANCE&amp;quot;) %&amp;gt;% 
+    stringr::str_replace(&amp;quot;FR:BOURGOGNE-AUBE-NOGENT-SUR-SEINE|RÉUNION&amp;quot;, &amp;quot;FRANCE&amp;quot;) %&amp;gt;% 
+    stringr::str_replace(&amp;quot;HOLLAND|FR:NEDERLAND&amp;quot;, &amp;quot;NETHERLANDS&amp;quot;) %&amp;gt;% 
+    stringr::str_replace(&amp;quot;FR:GRIEKENLAND&amp;quot;, &amp;quot;GREECE&amp;quot;) %&amp;gt;% 
+    stringr::str_replace(&amp;quot;FR:IRLAND&amp;quot;, &amp;quot;IRELAND&amp;quot;) %&amp;gt;% 
+    stringr::str_replace(&amp;quot;EN:CN|FR:QUEBEC&amp;quot;, &amp;quot;CANADA&amp;quot;) %&amp;gt;% 
+    stringr::str_replace(&amp;quot;EN:AU&amp;quot;, &amp;quot;AUSTRALIA&amp;quot;) %&amp;gt;% 
+    stringr::str_replace(&amp;quot;EN:ES|ESPAÑA|FR:SPANJE|FR:SPANIEN&amp;quot;, &amp;quot;SPAIN&amp;quot;) %&amp;gt;% 
+    stringr::str_replace(&amp;quot;CÔTE D&amp;#39;IVOIRE&amp;quot;, &amp;quot;IVORY COAST&amp;quot;) %&amp;gt;% 
+    stringr::str_replace(&amp;quot;FR:MAURICIO&amp;quot;, &amp;quot;MAURITIUS&amp;quot;) %&amp;gt;% 
+    stringr::str_replace(&amp;quot;FR:SCHWEIZ|NL:SCHWEIZ&amp;quot;, &amp;quot;SWITZERLAND&amp;quot;) %&amp;gt;% 
+    stringr::str_replace(&amp;quot;FR:BELGIQU|NL:BELGIEN&amp;quot;, &amp;quot;BELGIUM&amp;quot;) %&amp;gt;% 
+    stringr::str_replace(&amp;quot;XX:DANEMARK&amp;quot;, &amp;quot;DENMARK&amp;quot;) %&amp;gt;%
+    stringr::str_replace(&amp;quot;OTHER-TURQUIE&amp;quot;, &amp;quot;TURKEY&amp;quot;) %&amp;gt;%
+    stringr::str_replace(&amp;quot;OTHER-JAPON|OTHER-日本&amp;quot;, &amp;quot;JAPAN&amp;quot;) %&amp;gt;% 
+    stringr::str_replace(&amp;quot;日本&amp;quot;, &amp;quot;JAPAN&amp;quot;) %&amp;gt;% 
+    stringr::str_replace(&amp;quot;السعودية&amp;quot;, &amp;quot;SAUDI ARABIA&amp;quot;) %&amp;gt;% 
+    stringr::str_replace(&amp;quot;سلطنة-عمان&amp;quot;, &amp;quot;OMAN&amp;quot;) %&amp;gt;%
+    stringr::str_replace(&amp;quot;العراق&amp;quot;, &amp;quot;IRAQ&amp;quot;) %&amp;gt;%
+    stringr::str_replace(&amp;quot;العراق&amp;quot;, &amp;quot;IRAQ&amp;quot;) %&amp;gt;%
+    stringr::str_replace(&amp;quot;中华人民共和国|香港&amp;quot;, &amp;quot;CHINA&amp;quot;) %&amp;gt;%
+    stringr::str_replace(&amp;quot;ព្រះរាជាណាចក្រកម្ពុជា&amp;quot;, &amp;quot;CAMBODIA&amp;quot;)
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;국가명-보정하고-추출하기&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;국가명 보정하고 추출하기&lt;/h2&gt;
+&lt;p&gt;벡터를 컴마 구분자로 분리하여 리스트로 만든 후 벡터로 변경한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 원래의 데이터 건수
+nrow(foodfact)
+## [1] 314496
+# 국가명 추출
+countries &amp;lt;- foodfact %&amp;gt;% 
+  mutate(countries_clean = clean_country(countries_en)) %&amp;gt;% 
+  select(countries_clean) %&amp;gt;% 
+  pull() %&amp;gt;% 
+  stringr::str_split(&amp;quot;,&amp;quot;) %&amp;gt;% 
+  unlist
+
+# 추출된 국가의 건수
+length(countries)
+## [1] 322226
+# 상위 10개의 국가
+countries %&amp;gt;% 
+  table() %&amp;gt;% 
+  sort(decreasing = TRUE) %&amp;gt;% 
+  head(n = 10) %&amp;gt;% 
+  knitr::kable(format.args = list(big.mark = &amp;#39;,&amp;#39;))&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;left&#34;&gt;.&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;Freq&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;US&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;132,765&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;FRANCE&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;129,221&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;SWITZERLAND&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;17,191&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;GERMANY&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9,439&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;SPAIN&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6,043&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;UK&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,863&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;BELGIUM&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4,082&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;AUSTRALIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2,309&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;RUSSIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1,637&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ITALY&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1,630&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div id=&#34;하나에서-여러-레코드-파생하기&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;하나에서 여러 레코드 파생하기&lt;/h2&gt;
+&lt;p&gt;예시로 데이터 프레임을 생성한다. 컴마로 여러 단어를 묶은 city 변수를 주목하자.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 예제 데이터프레임
+exam &amp;lt;- data.frame(city = c(&amp;quot;서울&amp;quot;, &amp;quot;부산,인천,광주&amp;quot;, &amp;quot;강원,경기&amp;quot;), 
+                   falg = c(&amp;quot;특별시&amp;quot;, &amp;quot;광역시&amp;quot;, &amp;quot;시도&amp;quot;),
+                   num = c(234, 123, 53)) 
+exam %&amp;gt;% 
+  knitr::kable()&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;left&#34;&gt;city&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;falg&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;num&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;서울&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;특별시&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;234&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;부산,인천,광주&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;광역시&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;123&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;강원,경기&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;시도&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;53&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;city 변수를 컴마를 기준으로 분리해서 new_city 변수를 생성한다. 이 변수는 &lt;code&gt;stringr::str_split&lt;/code&gt;의 결과인 리스트 객체를 포함하는 변수다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 컴마로 분리 후 new_city 변수 생성
+exam %&amp;gt;% 
+  mutate(new_city = stringr::str_split(city, &amp;quot;,&amp;quot;)) %&amp;gt;% 
+  select(-city) %&amp;gt;% 
+  knitr::kable()&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;left&#34;&gt;falg&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;num&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;new_city&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;특별시&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;234&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;서울&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;광역시&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;123&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;부산, 인천, 광주&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;시도&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;53&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;강원, 경기&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;new_city 변수의 개별 리스트의 성분별로 레코드를 만들어 주기 위해서 &lt;code&gt;tidyr&lt;/code&gt; 패키지의 &lt;code&gt;unnest()&lt;/code&gt; 함수를 사용한다. 이제 비로소 도시별로 관측치가 만들어졌다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 최종 결과
+exam %&amp;gt;% 
+  mutate(new_city = stringr::str_split(city, &amp;quot;,&amp;quot;)) %&amp;gt;% 
+  select(-city) %&amp;gt;% 
+  tidyr::unnest(new_city) %&amp;gt;% 
+  knitr::kable()&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;left&#34;&gt;falg&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;num&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;new_city&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;특별시&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;234&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;서울&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;광역시&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;123&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;부산&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;광역시&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;123&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;인천&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;광역시&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;123&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;광주&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;시도&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;53&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;강원&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;시도&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;53&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;경기&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;foodfact를 개별 국가별로 레코드를 분리하면서 몇 개의 관심있는 변수를 추출하고, 파생한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 국가별 관심 지표의 추출
+countries_additives &amp;lt;- foodfact %&amp;gt;% 
+  mutate(meat_flag = stringr::str_detect(categories_en, &amp;quot;meat|Meat&amp;quot;),
+         vegan_flag = stringr::str_detect(labels, &amp;quot;vegan|Vegan&amp;quot;)) %&amp;gt;% 
+  mutate(countries_clean = clean_country(countries_en)) %&amp;gt;% 
+  select(countries_clean, energy_100g, sugars_100g, salt_100g,
+         alcohol_100g, sodium_100g, cholesterol_100g,
+         meat_flag, vegan_flag) %&amp;gt;% 
+  mutate(countries = stringr::str_split(countries_clean, &amp;quot;,&amp;quot;)) %&amp;gt;% 
+  select(-countries_clean) %&amp;gt;% 
+  tidyr::unnest(countries)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;head(countries_additives) %&amp;gt;% 
+  as.data.frame() %&amp;gt;% 
+  knitr::kable(format.args = list(big.mark = &amp;#39;,&amp;#39;))&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;colgroup&gt;
+&lt;col width=&#34;11%&#34; /&gt;
+&lt;col width=&#34;11%&#34; /&gt;
+&lt;col width=&#34;9%&#34; /&gt;
+&lt;col width=&#34;12%&#34; /&gt;
+&lt;col width=&#34;11%&#34; /&gt;
+&lt;col width=&#34;15%&#34; /&gt;
+&lt;col width=&#34;9%&#34; /&gt;
+&lt;col width=&#34;10%&#34; /&gt;
+&lt;col width=&#34;9%&#34; /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;right&#34;&gt;energy_100g&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;sugars_100g&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;salt_100g&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;alcohol_100g&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;sodium_100g&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;cholesterol_100g&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;meat_flag&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;vegan_flag&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;countries&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;FRANCE&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;2,243&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;14.29&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.00000&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.000&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.018&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;US&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;1,941&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;17.86&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.63500&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.250&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.000&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;US&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;2,540&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3.57&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.22428&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.482&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;US&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;1,552&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;US&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;1,933&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;11.54&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;US&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;국가별-식품-정보-분석하기&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;국가별 식품 정보 분석하기&lt;/h1&gt;
+&lt;p&gt;우여곡절로 만든 데이터 셋을 이용해서 몇 가지 분석을 수행해 보자.&lt;/p&gt;
+&lt;div id=&#34;국가별-설탕에-대한-기호&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;국가별 설탕에 대한 기호&lt;/h2&gt;
+&lt;p&gt;국가별 식품에 설탕 함량이 높은 국가는 다음과 같다. 건수가 적은 국가의 경우에는 Outlier에 영향을 받는 등 대표성을 띠지 못하기 때문에 5개 이상 설탕이 함유된 식품이 있는 국가만 대상으로 삼았다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 국가별 설탕 관련 지표의 생성
+sugar &amp;lt;- countries_additives %&amp;gt;% 
+  group_by(countries) %&amp;gt;% 
+  summarise(sugar_mean = mean(sugars_100g, na.rm = TRUE),
+            freq_food = n(),
+            freq_sugar = sum(!is.na(sugars_100g)),
+            sugar_percn = round(freq_sugar / freq_food * 100, 2)) %&amp;gt;% 
+  filter(freq_sugar &amp;gt; 5) %&amp;gt;% 
+  arrange(desc(sugar_mean))
+## `summarise()` ungrouping output (override with `.groups` argument)
+sugar %&amp;gt;% 
+  knitr::kable(format.args = list(big.mark = &amp;#39;,&amp;#39;))&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;left&#34;&gt;countries&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;sugar_mean&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;freq_food&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;freq_sugar&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;sugar_percn&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;MADAGASCAR&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;40.916667&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;114&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.26&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;UNITED ARAB EMIRATES&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;31.077778&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;84&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.71&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ARGENTINA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;29.938333&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;66&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9.09&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;JAPAN&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;27.373846&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;365&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;13&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3.56&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;TUNISIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;27.092414&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;159&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;29&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;18.24&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;MOROCCO&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;26.799167&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;208&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;36&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;17.31&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;SAUDI ARABIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;26.486957&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;117&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;23&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;19.66&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;MONACO&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;25.933333&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;14&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;64.29&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ALGERIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;25.338889&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;188&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;18&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9.57&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;LITHUANIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;25.100000&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;20&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;40.00&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;BULGARIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;25.005714&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;66&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;14&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;21.21&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;MONTENEGRO&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;24.622353&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;19&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;17&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;89.47&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;COLOMBIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;24.451875&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;44&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;16&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;36.36&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;FINLAND&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;23.461111&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;49&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;18&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;36.73&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;CHINA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;23.037235&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;199&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;17&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8.54&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;CZECH REPUBLIC&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;22.945652&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;441&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;46&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.43&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;BRAZIL&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;22.404615&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;363&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;26&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7.16&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;TURKEY&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;19.653158&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;49&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;19&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;38.78&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;RUSSIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;19.523095&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1,637&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;90&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.50&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;NEW ZEALAND&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;19.241333&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;116&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;75&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;64.66&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;FRENCH POLYNESIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;19.018077&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;86&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;26&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;30.23&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;NEDERLAND&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;18.807143&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;100.00&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;NETHERLANDS&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;18.796199&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;804&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;392&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;48.76&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;DENMARK&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;18.124776&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;435&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;201&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;46.21&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;CANADA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;17.701837&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1,029&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;280&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;27.21&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;BOSNIA AND HERZEGOVINA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;17.335714&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;17&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;14&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;82.35&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;NEW CALEDONIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;17.329167&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;108&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;24&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;22.22&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;MARTINIQUE&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;17.258139&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;120&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;43&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;35.83&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;SLOVENIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;17.209091&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;46&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;22&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;47.83&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;POLAND&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;17.199130&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;227&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;69&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;30.40&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;US&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;17.109738&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;132,765&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;122,367&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;92.17&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;NA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;16.765593&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;267&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;59&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;22.10&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;MALI&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;16.533333&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;85.71&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;SINGAPORE&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;16.430000&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;57&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;17.54&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;SENEGAL&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;16.363000&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;52&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;19.23&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;BELGIUM&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;15.734168&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4,082&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1,633&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;40.00&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;SLOVAKIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;15.720000&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;34&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;29.41&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;SWITZERLAND&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;15.718281&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;17,191&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;11,896&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;69.20&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;AUSTRALIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;15.301966&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2,309&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;610&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;26.42&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;UK&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;15.102567&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,863&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2,192&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;37.39&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;IRELAND&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;15.102544&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;221&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;68&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;30.77&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ROMANIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;15.093158&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;266&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;95&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;35.71&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;GERMANY&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;14.885447&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9,439&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,777&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;61.20&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;SERBIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;14.664797&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;350&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;296&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;84.57&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;LUXEMBOURG&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;14.616463&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;232&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;82&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;35.34&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;PORTUGAL&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;14.407170&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;919&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;516&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;56.15&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;NORWAY&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;14.382727&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;133&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;55&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;41.35&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;REPUBLIC OF MACEDONIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;14.062500&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;88.89&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;GUADELOUPE&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;13.917464&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;240&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;138&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;57.50&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ITALY&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;13.883119&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1,630&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;545&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;33.44&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ANDORRA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;13.817500&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;17&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;47.06&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;FRANCE&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;13.418091&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;129,221&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;94,819&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;73.38&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;SAINT PIERRE AND MIQUELON&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;13.390000&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;40&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;22&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;55.00&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;SWEDEN&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;13.303786&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;414&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;317&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;76.57&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;HUNGARY&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;13.023129&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;327&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;179&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;54.74&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;SOUTH AFRICA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;12.914667&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;42&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;15&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;35.71&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;TAIWAN&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;12.705714&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;170&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;28&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;16.47&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;SPAIN&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;12.680907&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6,043&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3,128&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;51.76&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;GREECE&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;12.430750&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;106&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;40&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;37.74&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;EUROPEAN UNION&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;12.356111&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;48&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;18&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;37.50&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;AUSTRIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;12.314074&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;471&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;135&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;28.66&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;MEXICO&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;12.012467&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;172&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;92&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;53.49&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;HONG KONG&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;11.557895&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;157&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;38&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;24.20&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;SCOTLAND&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;11.190909&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;20&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;11&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;55.00&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;CROATIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;11.058889&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;29&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;18&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;62.07&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;THAILAND&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.873667&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;254&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;30&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;11.81&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;INDIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.483333&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;92&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;12&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;13.04&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ALBANIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.392857&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;13&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;53.85&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;FRENCH GUIANA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.106609&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;104&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;64&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;61.54&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;CHILE&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9.997826&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;119&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;23&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;19.33&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;SOUTH KOREA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8.995000&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;41&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;14.63&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;BELGIE&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8.525000&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;27&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;26&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;96.30&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;CUBA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7.546667&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;11&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;54.55&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;CAMBODIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.751111&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;44&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;20.45&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;LEBANON&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.537500&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;42&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;19.05&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;MALTA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3.781818&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;21&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;11&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;52.38&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;AZERBAIJAN&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.000000&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;19&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;12&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;63.16&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;시각화를 통해서 국가별 식품에 설탕 함량이 높은 국가에 대한 이해를 더 쉽게 할 수 있다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;마다가스카르&lt;/code&gt;, &lt;code&gt;아랍 에미레이트&lt;/code&gt;, &lt;code&gt;아르헨티나&lt;/code&gt;의 식품에는 평균적으로 많은 설탕이 함유됨을 알 수 있다. &lt;code&gt;마다가스카르&lt;/code&gt;는 독보적이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(ggplot2)
+
+# 테마와 한글 폰트 설정
+theme_set(theme_classic(base_family=&amp;#39;NanumSquare&amp;#39;))
+
+sugar %&amp;gt;% 
+  arrange(desc(sugar_mean)) %&amp;gt;% 
+  head(10) %&amp;gt;% 
+  mutate(order_seq = 10:1) %&amp;gt;% 
+  ggplot(aes(x = reorder(countries, order_seq), y = sugar_mean ))  +
+  geom_bar(fill = &amp;quot;orange&amp;quot;, colour = &amp;quot;orange&amp;quot;, alpha = .5, stat = &amp;#39;identity&amp;#39;) + 
+  scale_y_continuous(name = &amp;quot;100g 중 식품의 평균 설탕 함유량&amp;quot;) +
+  xlab(&amp;quot;국가&amp;quot;) + 
+  ggtitle(&amp;quot;식품의 평균 설탕 함유량이 높은 상위 10개 국가&amp;quot;) +
+  coord_flip()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-12/multi_derived_files/figure-html/unnamed-chunk-18-1.png&#34; width=&#34;864&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;식품 중에 설탕 함량이 낮은 국가는 &lt;code&gt;아제르바이잔&lt;/code&gt;, &lt;code&gt;몰타&lt;/code&gt;, &lt;code&gt;레바논&lt;/code&gt;, &lt;code&gt;캄보디아&lt;/code&gt; 등이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sugar %&amp;gt;% 
+  arrange(sugar_mean) %&amp;gt;% 
+  head(10) %&amp;gt;% 
+  knitr::kable(format.args = list(big.mark = &amp;#39;,&amp;#39;))&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;left&#34;&gt;countries&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;sugar_mean&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;freq_food&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;freq_sugar&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;sugar_percn&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;AZERBAIJAN&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.000000&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;19&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;12&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;63.16&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;MALTA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3.781818&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;21&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;11&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;52.38&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;LEBANON&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.537500&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;42&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;19.05&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;CAMBODIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.751111&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;44&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;20.45&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;CUBA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7.546667&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;11&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;54.55&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;BELGIE&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8.525000&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;27&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;26&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;96.30&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;SOUTH KOREA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8.995000&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;41&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;14.63&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;CHILE&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9.997826&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;119&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;23&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;19.33&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;FRENCH GUIANA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.106609&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;104&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;64&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;61.54&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ALBANIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.392857&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;13&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;53.85&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sugar %&amp;gt;% 
+  arrange(sugar_mean) %&amp;gt;% 
+  head(10) %&amp;gt;% 
+  mutate(order_seq = 10:1) %&amp;gt;% 
+  ggplot(aes(x = reorder(countries, order_seq), y = sugar_mean ))  +
+  geom_bar(fill = &amp;quot;blue&amp;quot;, colour = &amp;quot;blue&amp;quot;, alpha = .5, stat = &amp;#39;identity&amp;#39;) + 
+  scale_y_continuous(name = &amp;quot;100g 중 식품의 평균 설탕 함유량&amp;quot;) +
+  xlab(&amp;quot;국가&amp;quot;) +
+  ggtitle(&amp;quot;식품의 평균 설탕 함유량이 낮은 상위 10개 국가&amp;quot;) +  
+  coord_flip()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-12/multi_derived_files/figure-html/unnamed-chunk-20-1.png&#34; width=&#34;864&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;식품 중에 설탕이 포함된 비율이 높은 국가는 &lt;code&gt;네덜란드&lt;/code&gt;, &lt;code&gt;벨기에&lt;/code&gt;, &lt;code&gt;미국&lt;/code&gt; 등이다. &lt;code&gt;네덜란드&lt;/code&gt;는 모든 식품에 설탕이 함유되어 있음을 알 수 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sugar %&amp;gt;% 
+  arrange(desc(sugar_percn)) %&amp;gt;% 
+  head(10) %&amp;gt;% 
+  knitr::kable(format.args = list(big.mark = &amp;#39;,&amp;#39;))&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;left&#34;&gt;countries&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;sugar_mean&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;freq_food&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;freq_sugar&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;sugar_percn&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;NEDERLAND&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;18.80714&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;100.00&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;BELGIE&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8.52500&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;27&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;26&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;96.30&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;US&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;17.10974&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;132,765&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;122,367&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;92.17&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;MONTENEGRO&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;24.62235&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;19&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;17&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;89.47&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;REPUBLIC OF MACEDONIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;14.06250&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;88.89&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;MALI&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;16.53333&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;85.71&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;SERBIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;14.66480&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;350&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;296&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;84.57&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;BOSNIA AND HERZEGOVINA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;17.33571&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;17&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;14&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;82.35&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;SWEDEN&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;13.30379&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;414&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;317&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;76.57&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;FRANCE&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;13.41809&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;129,221&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;94,819&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;73.38&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sugar %&amp;gt;% 
+  arrange(desc(sugar_percn)) %&amp;gt;% 
+  head(10) %&amp;gt;% 
+  mutate(order_seq = 10:1) %&amp;gt;% 
+  ggplot(aes(x = reorder(countries, order_seq), y = sugar_percn ))  +
+  geom_bar(fill = &amp;quot;orange&amp;quot;, colour = &amp;quot;orange&amp;quot;, alpha = .5, stat = &amp;#39;identity&amp;#39;) + 
+  scale_y_continuous(name = &amp;quot;식품 중 설탕 포함 비율&amp;quot;) +
+  xlab(&amp;quot;국가&amp;quot;) +
+  ggtitle(&amp;quot;식품 중에 설탕의 포함 비율이 높은 상위 10개 국가&amp;quot;)  +
+  coord_flip()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-12/multi_derived_files/figure-html/unnamed-chunk-22-1.png&#34; width=&#34;864&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;식품 중에 설탕이 포함된 비율이 낮은 국가는 &lt;code&gt;일본&lt;/code&gt;, &lt;code&gt;마다가스카르&lt;/code&gt;, &lt;code&gt;러시아&lt;/code&gt; 등이다. 특히 &lt;code&gt;마다가스카르&lt;/code&gt;는 앞에서 식품 중에 설탕의 함량이 높은 국가였다. &lt;strong&gt;식품에 설탕이 들어가는 음식은 적지만, 설탕이 들어가는 식품의 설탕 함유량은 높은 국가&lt;/strong&gt;다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sugar %&amp;gt;% 
+  arrange(sugar_percn) %&amp;gt;% 
+  head(10) %&amp;gt;% 
+  knitr::kable(format.args = list(big.mark = &amp;#39;,&amp;#39;))&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;left&#34;&gt;countries&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;sugar_mean&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;freq_food&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;freq_sugar&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;sugar_percn&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;JAPAN&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;27.37385&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;365&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;13&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3.56&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;MADAGASCAR&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;40.91667&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;114&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.26&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;RUSSIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;19.52310&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1,637&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;90&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.50&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;BRAZIL&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;22.40462&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;363&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;26&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7.16&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;CHINA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;23.03724&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;199&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;17&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8.54&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ARGENTINA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;29.93833&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;66&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9.09&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ALGERIA&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;25.33889&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;188&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;18&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9.57&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;CZECH REPUBLIC&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;22.94565&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;441&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;46&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.43&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;UNITED ARAB EMIRATES&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;31.07778&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;84&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.71&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;THAILAND&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.87367&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;254&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;30&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;11.81&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sugar %&amp;gt;% 
+  arrange(desc(sugar_percn)) %&amp;gt;% 
+  tail(10) %&amp;gt;% 
+  mutate(order_seq = 1:10) %&amp;gt;% 
+  ggplot(aes(x = reorder(countries, order_seq), y = sugar_percn ))  +
+  geom_bar(fill = &amp;quot;blue&amp;quot;, colour = &amp;quot;blue&amp;quot;, alpha = .5, stat = &amp;#39;identity&amp;#39;) + 
+  scale_y_continuous(name = &amp;quot;식품 중 설탕 포함 비율&amp;quot;) +
+  xlab(&amp;quot;국가&amp;quot;) + 
+  ggtitle(&amp;quot;식품 중에 설탕의 포함 비율이 낮은 상위 10개 국가&amp;quot;) +
+  coord_flip()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-12/multi_derived_files/figure-html/unnamed-chunk-24-1.png&#34; width=&#34;864&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;나머지-관심-지표의-확인&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;나머지 관심 지표의 확인&lt;/h2&gt;
+&lt;p&gt;설탕의 함량에 대한 변수로 국가별 몇 가지 분석을 수행하였다. 집계한 데이터에는 설탕의 함량 이외에도 소금, 알콜, 나트륨, 콜레스테롤의 함량과 고기의 포함 여부와 채식식품 여부의 변수가 있으니 유사 분석을 수행할 수 있을 것이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;names(countries_additives)
+## [1] &amp;quot;energy_100g&amp;quot;      &amp;quot;sugars_100g&amp;quot;      &amp;quot;salt_100g&amp;quot;        &amp;quot;alcohol_100g&amp;quot;    
+## [5] &amp;quot;sodium_100g&amp;quot;      &amp;quot;cholesterol_100g&amp;quot; &amp;quot;meat_flag&amp;quot;        &amp;quot;vegan_flag&amp;quot;      
+## [9] &amp;quot;countries&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>데이터 조작하기</title>
+      <link>/post/2019-12/manipulation_data/</link>
+      <pubDate>Thu, 26 Dec 2019 22:51:12 +0800</pubDate>
+      
+      <guid>/post/2019-12/manipulation_data/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;들어가기&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;들어가기&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;외부 데이터&lt;/code&gt;를 읽어들여 &lt;code&gt;데이터 프레임&lt;/code&gt;을 만들고, 이를 조작하여 데이터 분석을 위한 데이터 셋을 생성하는 것은 데이터 분석 과정에서 대단히 중요한 과정이다. R에서 데이터를 조작하는 기술은 데이터 조작 함수를 구사하는 능력에 비례한다. &lt;code&gt;base&lt;/code&gt;, &lt;code&gt;stats 패키지&lt;/code&gt;에 포함된 전통적인 R(S-PLUS) 데이터 조작 함수의 대체제는 &lt;code&gt;sqldf 패키지&lt;/code&gt;를 거쳐, &lt;code&gt;dplyr 패키지&lt;/code&gt;로 꽃을 피웠다 할 수 있다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div id=&#34;dplyr&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;dplyr&lt;/h1&gt;
+&lt;p&gt;본 포스트는 데이터 조작의 전반적인 것을 다루는데 특히 Data Wrangling을 위한 dplyr 패키지 소객에 방점을 둔다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;parallel-processing&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;parallel processing&lt;/h1&gt;
+&lt;p&gt;또한 대용량의 데이터를 조작하는 방법으로서 멀티 코어를 사용하는 방법에 대해서도 소개한다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;데이터-조작에-대한-슬라이드의-공유&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;데이터 조작에 대한 슬라이드의 공유&lt;/h1&gt;
+&lt;p&gt;다음에 링크를 걸어 둔 슬라이드 파일은 2017년도에 모 미트업에서 발표한 자료를 현행화 시킨 pdf 파일이다.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/choonghyunryu/R_Materials/blob/master/Data_Maniputation/Manipulation_Data.pdf&#34; target=&#34;_blank&#34;&gt;Manipulation_Data.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;차례&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;차례&lt;/h1&gt;
+&lt;p&gt;이 문서는 다음과 같은 아젠다를 이야기 한다.&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;General Information&lt;/li&gt;
+&lt;li&gt;Read Large Data&lt;/li&gt;
+&lt;li&gt;Data Wrangling&lt;/li&gt;
+&lt;li&gt;SQL Based Data Wrangling 5. dplyr Data Wrangling&lt;/li&gt;
+&lt;li&gt;Parallel Processing&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

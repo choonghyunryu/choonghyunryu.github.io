@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>grid on Dataholic</title>
+    <link>/tags/grid/</link>
+    <description>Recent content in grid on Dataholic</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sat, 02 Jan 2016 00:00:00 +0000</lastBuildDate><atom:link href="/tags/grid/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>grid package로 그림 그리기</title>
+      <link>/post/2016-01/2016-01-02-grid_picture/</link>
+      <pubDate>Sat, 02 Jan 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2016-01/2016-01-02-grid_picture/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;오클랜드 대학교의 Paul Murrell은 &lt;code&gt;grid&lt;/code&gt;라는 이름의 그래픽 라이브러리(package)를 개발했다. 이 라이브러리가 바로 &lt;code&gt;lattice&lt;/code&gt;와 &lt;code&gt;ggplot2&lt;/code&gt; package의 토대가 된다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;grid&lt;/code&gt; package를 이용해여 멋진 풍경을 그려보자. &lt;strong&gt;‘R로도 그림을 그릴 수 있겠구나’&lt;/strong&gt;하는 흥미차원의 시도다.&lt;/p&gt;
+&lt;p&gt;먼저 야경을 그려보고, 한 낮의 풍경을 그려보겠다. 동심으로 돌아가 하얀 스케치북에 그레파스를 이용해서 산도 그리고, 달고 그리고, 별과 해도 그려보자. 밤의 그림은 Paul Murrell가 그렸고, 필자가 Paul Murrell의 스케치북과 그레파스를 빌려서 모사해보겠다. 해가 중천에 걸린 여름 산은 녹음이 우거져 있다.&lt;/p&gt;
+&lt;div id=&#34;r로-그린-밤-하늘의-풍경&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;R로 그린 밤 하늘의 풍경&lt;/h3&gt;
+&lt;p&gt;아마 Paul Murrell는 검은색과 회색 크레파스가 다 떨어졌을 것이고, 필자는 하늘색 크레파스가 다 달아 없어졌다. Paul Murrell이 그린 밤 하늘의 풍경이다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2016-01/2016-01-02-grid_picture_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;75%&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;r로-그린-대낮의-풍경&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;R로 그린 대낮의 풍경&lt;/h3&gt;
+&lt;p&gt;이번에는 낮의 풍경을 그려보자. 파란 하늘에 노란 태양이 떠 있는 그림이다.
+Paul Murrell 그림을 응용해서 그려 보았다. 산을 그리는 로직은 Paul Murrell 그린 밤하늘을 것에 색상만 바꾸었다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2016-01/2016-01-02-grid_picture_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;75%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;구름 한 점 없는 맑은 날이다. 소풍가기 딱 좋은 날인 것 같다.&lt;/p&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>grid package로 그림 그리기</title>
+      <link>/post/2005-05/2005-05-21-grid/</link>
+      <pubDate>Sat, 21 May 2005 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2005-05/2005-05-21-grid/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;일러두기&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;일러두기&lt;/h2&gt;
+&lt;p&gt;2005-05-21 네이버 블로그에 게시된 내용을 옮겨 온 글입니다. 지금의 R 환경과 다소 내용이 다를 수 있음을 밝여둡니다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;graphics---grid-library를-이용한-그림그리기&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Graphics - grid Library를 이용한 그림그리기&lt;/h2&gt;
+&lt;p&gt;오클랜드 대학교의 &lt;code&gt;Paul Murrell&lt;/code&gt;은 &lt;code&gt;grid&lt;/code&gt;라는 그래픽 라이브러리를 개발했다.
+이 라이브러리가 바로 &lt;code&gt;lattice&lt;/code&gt;의 기저 프로그램이다.&lt;/p&gt;
+&lt;p&gt;이 라이브러리를 이용해여 멋진 풍경을 그려보자.
+이번에는 R로도 이런 그림을 그릴 수 있구나하는 흥미차원의 이야기다.&lt;/p&gt;
+&lt;p&gt;먼제 밤의 야경을 그려보고, 한 낮의 풍경도 그려본다.
+동심으로 돌아가 하얀 스케치북에 그래파스를 이용해서 산도 그리고, 달고 그리고, 별과 해도 그려보기로 한다. 밤의 그림은 Paul Murrell가 그렸고, 스케치북과 크레용을 빌려서 해가 뜬 낮의 모습도 그려보았다.&lt;/p&gt;
+&lt;p&gt;Paul Murrell는 검은색과 회색 크레파스가 다 떨어졌고, 나는 하늘색 크레파스가 다 떨어졌다. ^^&lt;/p&gt;
+&lt;div id=&#34;밤의-풍경&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;밤의 풍경&lt;/h3&gt;
+&lt;p&gt;Paul Murrell가 그린 그림과 프로그램이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; library(grid)
+&amp;gt; 
+&amp;gt; # 도화지를 준비했다
+&amp;gt; pushViewport(viewport(xscale = c(0, 1), yscale = c(0.5, 1), clip = TRUE))   
+&amp;gt;              
+&amp;gt; # 검은색과 회색으로 밤하늘을 칠한다
+&amp;gt; res &amp;lt;- 50
+&amp;gt; for (i in 1:res)
++   grid.rect(y=1 - (i - 1) / res, just = &amp;quot;top&amp;quot;,
++             gp = gpar(lwd = 0, col = NULL, fill = grey(0.5 * i / res)))
+&amp;gt; 
+&amp;gt; # 달을 그리는 함수
+&amp;gt; moon &amp;lt;- function(x, y, size) { 
++   t &amp;lt;- seq(-90, 90, length = 50) / 180 * pi
++   x1 &amp;lt;- x + size * cos(t)
++   y1 &amp;lt;- y + size * sin(t)
++   mod &amp;lt;- 0.8
++   x2 &amp;lt;- x + mod * (x1 - x)
++   grid.polygon(c(x1, rev(x2)), c(y1, rev(y1)),
++                default.unit = &amp;quot;native&amp;quot;,
++                gp = gpar(col = NULL, fill = &amp;quot;white&amp;quot;))
++ }
+&amp;gt; 
+&amp;gt; # 달을 그린다.
+&amp;gt; moon(.1, .9, .03) 
+&amp;gt; 
+&amp;gt; # 별을 그리는 함수는 함수
+&amp;gt; star &amp;lt;- function(x, y, size) { 
++   x1 &amp;lt;- c(x, x + size * .1, x + size * .5, x + size * .1,
++           x, x - size * .1, x - size * .5, x - size * .1) + .05
++   y1 &amp;lt;- c(y - size, y - size * .1, y, y + size * .1,
++           y + size * .7, y + size * .1, y, y - size * .1) + .05
++   grid.polygon(x1, y1, 
++                default.unit = &amp;quot;native&amp;quot;,
++                gp = gpar(col = NULL, fill = &amp;quot;white&amp;quot;))
++ }
+&amp;gt; 
+&amp;gt; # 별을 네개 그린다.
+&amp;gt; star(.5, .7, .02)
+&amp;gt; star(.8, .9, .02)
+&amp;gt; star(.72, .74, .02)
+&amp;gt; star(.62, .88, .02)
+&amp;gt; 
+&amp;gt; # 작은별을 스무 개 그린다.
+&amp;gt; grid.circle(runif(20, .2, 1), runif(20, .6, 1), r = .002,
++             default.unit = &amp;quot;native&amp;quot;,
++             gp = gpar(col = NULL, fill = &amp;quot;white&amp;quot;))
+&amp;gt; 
+&amp;gt; # 산을 그리는 함수
+&amp;gt; hill &amp;lt;- function(height = 0.1, col = &amp;quot;black&amp;quot;) {
++   n &amp;lt;- 100
++   x &amp;lt;- seq(0, 1, length = n)
++   y1 &amp;lt;- sin(runif(1) + x * 2 * pi)
++   y2 &amp;lt;- sin(runif(1) + x * 4 * pi)
++   y3 &amp;lt;- sin(runif(1) + x * 8 * pi)
++   y &amp;lt;- 0.6 + height*((y1 + y2 + y3) / 3)
++   grid.polygon(c(x, rev(x)), c(y, rep(0, n)),
++                default.unit = &amp;quot;native&amp;quot;,
++                gp=gpar(col = NULL, fill = col))
++ }
+&amp;gt; 
+&amp;gt; # 산을 그린다
+&amp;gt; hill()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2005-05/2005-05-21-grid_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;1400&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;낮의-풍경&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;낮의 풍경&lt;/h3&gt;
+&lt;p&gt;이번에는 낮의 풍경을 그려보자.
+파란 하늘에 노란 태양이 떠 있는 그림이다.
+산을 그리는 함수는 Paul Murrell것에 크레파스만 바꾸었다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; library(grid)
+&amp;gt; 
+&amp;gt; # 도화지를 준비했다
+&amp;gt; pushViewport(viewport(xscale = c(0, 1), yscale = c(0.5, 1), clip = TRUE))   
+&amp;gt; 
+&amp;gt; # 하늘색 크레파스
+&amp;gt; sky &amp;lt;- cm.colors(100)
+&amp;gt; sky &amp;lt;- sky[-(51:100)] 
+&amp;gt; 
+&amp;gt; # 하늘색 크레파스로 하늘을 그린다
+&amp;gt; for (i in 1:res) 
++   grid.rect(y = 1 - (i - 1) / res, just = &amp;quot;top&amp;quot;,
++             gp = gpar(lwd = 0, col = NULL, fill = sky[i]))
+&amp;gt; 
+&amp;gt; # 낮에 보니 푸른 산이다
+&amp;gt; hill(col = &amp;quot;green4&amp;quot;) 
+&amp;gt; 
+&amp;gt; # 해를 그리는 함수
+&amp;gt; sun &amp;lt;- function(x, y, r) grid.circle(x, y, r = r,
++             default.unit = &amp;quot;native&amp;quot;,
++             gp = gpar(col = NULL, fill = &amp;quot;yellow&amp;quot;))
+&amp;gt; 
+&amp;gt; # 해를 그린다
+&amp;gt; sun(0.5, 0.9, 0.04)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2005-05/2005-05-21-grid_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;1400&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;구름 한 점 없는 맑은 날이다.
+소풍가기 딱 좋은 날인 것 같다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

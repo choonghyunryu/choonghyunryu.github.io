@@ -1,0 +1,1635 @@
+
+<!DOCTYPE html>
+<html lang="en" data-figures="" class="page">
+  <head>
+<title>dlookr: 데이터 변환 | Dataholic</title>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.79.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-118779401-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-118779401-1');
+</script>
+  
+<meta property="og:locale" content="en" />
+
+<meta property="og:type" content="article">
+<meta name="description" content="일러두기 분석을 위한 데이터를 획득한 후에는 다음을 수행해야 한다.:
+ 데이터의 품질을 진단한다.  만약 데이터 품질의 문제를 발견한다면, 문제의 데이터를 보완하거나 경우에 따라서는 재획득을 수행햐야 한다.  데이터를 이해하기 위한 탐색을 수행하여, 분석의 전개 방향에 대한 시나리오를  …">
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:creator" content="">
+<meta name="twitter:title" content="dlookr: 데이터 변환" />
+<meta property="og:url" content="/post/2018-05/2018-05-07-r-vignette03.ko/" />
+<meta property="og:title" content="dlookr: 데이터 변환" />
+<meta property="og:description" content="일러두기 분석을 위한 데이터를 획득한 후에는 다음을 수행해야 한다.:
+ 데이터의 품질을 진단한다.  만약 데이터 품질의 문제를 발견한다면, 문제의 데이터를 보완하거나 경우에 따라서는 재획득을 수행햐야 한다.  데이터를 이해하기 위한 탐색을 수행하여, 분석의 전개 방향에 대한 시나리오를  …" />
+<meta property="og:image" content="/" />
+<link rel="apple-touch-icon" sizes="180x180" href='/icons/apple-touch-icon.png'>
+<link rel="icon" type="image/png" sizes="32x32" href='/icons/favicon-32x32.png'>
+<link rel="manifest" href='/icons/site.webmanifest'>
+<link rel="mask-icon" href='/safari-pinned-tab.svg' color="#002538">
+<meta name="msapplication-TileColor" content="#002538">
+<meta name="theme-color" content="#002538">
+
+<link rel="canonical" href="/post/2018-05/2018-05-07-r-vignette03.ko/">
+
+    
+
+    
+    
+    <link rel="preload" href="/css/styles.2b3290fc6e94839826981c23ed76e1831472bd3f8af68332da00b97d9430b56bfb7e9394d5c09aca633c093c621709cdd745eec940be733933ac5d876223de52.css" integrity = "sha512-KzKQ/G6Ug5gmmBwj7XbhgxRyvT&#43;K9oMy2gC5fZQwtWv7fpOU1cCaymM8CTxiFwnN10XuyUC&#43;czkzrF2HYiPeUg==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="/js/bundle.min.03f1cc201c9efa18e14550bff374f58e89f1e6b2a30a0e22f84c87f6eb766e419bd6569c3a60846ea3e65816112dfa454f4785d306d024b6ef2616d067862a7a.js" as="script" integrity=
+    "sha512-A/HMIBye&#43;hjhRVC/83T1jonx5rKjCg4i&#43;EyH9ut2bkGb1lacOmCEbqPmWBYRLfpFT0eF0wbQJLbvJhbQZ4Yqeg==" crossorigin="anonymous">
+
+    
+    <link rel="stylesheet" type="text/css" href="/css/styles.2b3290fc6e94839826981c23ed76e1831472bd3f8af68332da00b97d9430b56bfb7e9394d5c09aca633c093c621709cdd745eec940be733933ac5d876223de52.css" integrity="sha512-KzKQ/G6Ug5gmmBwj7XbhgxRyvT&#43;K9oMy2gC5fZQwtWv7fpOU1cCaymM8CTxiFwnN10XuyUC&#43;czkzrF2HYiPeUg==" crossorigin="anonymous">
+    
+  </head>
+  
+  
+    
+  
+  <body data-code="7" data-lines="false" id="documentTop">
+
+<header class="nav_header" >
+  <nav class="nav">
+    <a href='/' class="nav_brand nav_item">
+      <img src="/logos/logo.png" class="logo">
+      <div class="nav_close">
+        <div>
+          <svg class="icon">
+  <use xlink:href="#open-menu"></use>
+</svg>
+          <svg class="icon">
+  <use xlink:href="#closeme"></use>
+</svg>
+        </div>
+      </div>
+    </a>
+    <div class='nav_body nav_body_left'>
+      
+      
+      
+        
+
+  <div class="nav_parent">
+    <a href="/" class="nav_item">Home </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/post/" class="nav_item">R </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/gallery/" class="nav_item">Gellary </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/moment/" class="nav_item">Moment </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/about/" class="nav_item">About </a>
+  </div>
+      
+      <div class="nav_parent">
+        <a href="#" class="nav_item"></a>
+        <div class="nav_sub">
+          <span class="nav_child"></span>
+          
+          <a href="/" class="nav_child nav_item">English</a>
+          
+          <a href="/kr/" class="nav_child nav_item">Korean</a>
+          
+        </div>
+      </div>
+      
+<div class='follow'>
+  <a href="https://github.com/choonghyunryu">
+    <svg class="icon">
+  <use xlink:href="#github"></use>
+</svg>
+  </a>
+  <a href="https://www.facebook.com/choonghyun.ryu">
+    <svg class="icon">
+  <use xlink:href="#facebook"></use>
+</svg>
+  </a>
+  <a href="https://www.linkedin.com/in/choonghyun-ryu-10a95726/">
+    <svg class="icon">
+  <use xlink:href="#linkedin"></use>
+</svg>
+  </a>
+    
+  <a href="/index.xml">
+    <svg class="icon">
+  <use xlink:href="#rss"></use>
+</svg>
+  </a>
+<div class="color_mode">
+  <input type="checkbox" class="color_choice" id="mode">
+</div>
+
+</div>
+
+    </div>
+  </nav>
+</header>
+
+    <main>
+  
+<div class="grid-inverse wrap content">
+  <article class="post_content">
+    <h1 class="post_title">dlookr: 데이터 변환</h1><div class="post_meta">
+  
+    <svg class="icon">
+  <use xlink:href="#calendar"></use>
+</svg>
+    <span class="post_date">
+      2018-05-07</span>
+      <a href='/tags/dlookr' class="post_tag button button_translucent">dlookr
+      </a>
+      <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B3%80%ED%99%98' class="post_tag button button_translucent">데이터 변환
+      </a>
+</div>
+
+    
+  <div class="post_share">
+    Share on:
+    <a href="https://twitter.com/intent/tweet?text=dlookr%3a%20%eb%8d%b0%ec%9d%b4%ed%84%b0%20%eb%b3%80%ed%99%98&url=%2fpost%2f2018-05%2f2018-05-07-r-vignette03.ko%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#twitter"></use>
+</svg>
+    </a>
+    <a href="https://www.facebook.com/sharer.php?u=%2fpost%2f2018-05%2f2018-05-07-r-vignette03.ko%2f&t=dlookr%3a%20%eb%8d%b0%ec%9d%b4%ed%84%b0%20%eb%b3%80%ed%99%98" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#facebook"></use>
+</svg>
+    </a>
+    <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#linkedin"></use>
+</svg>
+    </a>
+    <a href="/post/2018-05/2018-05-07-r-vignette03.ko/" title="Copy Link" class="link link_yank">
+      <svg class="icon">
+  <use xlink:href="#copy"></use>
+</svg>
+    </a>
+  </div>
+
+    
+    
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+
+<div id="일러두기" class="section level2">
+<h2>일러두기</h2>
+<p>분석을 위한 데이터를 획득한 후에는 다음을 수행해야 한다.:</p>
+<ul>
+<li>데이터의 품질을 진단한다.
+<ul>
+<li>만약 데이터 품질의 문제를 발견한다면,</li>
+<li>문제의 데이터를 보완하거나 경우에 따라서는 재획득을 수행햐야 한다.</li>
+</ul></li>
+<li><strong>데이터를 이해하기 위한 탐색을 수행하여, 분석의 전개 방향에 대한 시나리오를 수립한다.</strong></li>
+<li>분석에 효과적인 변수를 파생하거나 변수의 변환을 수행한다.</li>
+</ul>
+<p>dlookr 패키지는 다음의 과정을 빠르고 쉽게 수행하도록 도움을 준다.</p>
+<ul>
+<li>데이터의 진단을 수행하거나 데이터 품질 진단 리포트를 자동으로 생성한다.</li>
+<li>다양한 방법으로 데이터를 탐색하고 EDA(탐색적 데이터 분석) 보고서를 생성한다.</li>
+<li><strong>결측치와 이상치를 대체하고, 치우친 데이터를 보정하며, 연속형 변수를 비닝(binning)하여 범주형 변수로 만든다. 그리고 이를 지원하는 자동화된 리포트를 생성한다.</strong></li>
+</ul>
+<p>이 문서는 dlookr 기능 중에서 <strong>데이터 변환</strong> 기능을 소개한다. 여러분은 dlookr에서 제공하는 함수로 데이터 프레임과 데이터 프레임을 상속한 tbl_df 데이터의 데이터 변환을 수행하는 방법을 일힐 수 있을 것이다.</p>
+<p>dlookr 패키지는 <code>dplyr</code> 패키지와 함께 사용하면 시너지가 증가된다. 특히 데이터 변환에서 <code>tidyverse</code> 패키지 그룹의 효율성을 높여준다.</p>
+</div>
+<div id="데이터" class="section level2">
+<h2>데이터</h2>
+<p>dlookr 패키지로 EDA를 수행하는 기초적인 사용 방법을 설명하기 위해서 <code>Carseats</code>를 사용한다.
+<code>ISLR</code> 패키지의 <code>Carseats</code>는 400개의 매장에서 아동용 카시트를 판매하는 시뮬레이션 데이터다. 이 데이터는 판매량을 예측하는 목적으로 생성한 데이터 프레임이다.</p>
+<pre class="r"><code>library(ISLR)
+str(Carseats)
+#&gt; &#39;data.frame&#39;:    400 obs. of  11 variables:
+#&gt;  $ Sales      : num  9.5 11.22 10.06 7.4 4.15 ...
+#&gt;  $ CompPrice  : num  138 111 113 117 141 124 115 136 132 132 ...
+#&gt;  $ Income     : num  73 48 35 100 64 113 105 81 110 113 ...
+#&gt;  $ Advertising: num  11 16 10 4 3 13 0 15 0 0 ...
+#&gt;  $ Population : num  276 260 269 466 340 501 45 425 108 131 ...
+#&gt;  $ Price      : num  120 83 80 97 128 72 108 120 124 124 ...
+#&gt;  $ ShelveLoc  : Factor w/ 3 levels &quot;Bad&quot;,&quot;Good&quot;,&quot;Medium&quot;: 1 2 3 3 1 1 3 2 3 3 ...
+#&gt;  $ Age        : num  42 65 59 55 38 78 71 67 76 76 ...
+#&gt;  $ Education  : num  17 10 12 14 13 16 15 10 10 17 ...
+#&gt;  $ Urban      : Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 2 2 2 2 2 1 2 2 1 1 ...
+#&gt;  $ US         : Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 2 2 2 2 1 2 1 2 1 2 ...</code></pre>
+<p>개별 변수들의 의미는 다음과 같다. (ISLR::Carseats Man page 참고)</p>
+<ul>
+<li>Sales
+<ul>
+<li>지역의 단위 판매량 (단위: 천개)</li>
+</ul></li>
+<li>CompPrice
+<ul>
+<li>지역의 경쟁 업체가 부과하는 가격</li>
+</ul></li>
+<li>Income
+<ul>
+<li>지역 공동체 수입 수준 (단위: 천달러)</li>
+</ul></li>
+<li>Advertising
+<ul>
+<li>회사의 지역에 대한 광고 예산 (단위: 천달러)</li>
+</ul></li>
+<li>Population
+<ul>
+<li>지역의 인구 규모 (단위: 천명)</li>
+</ul></li>
+<li>Price
+<ul>
+<li>지역의 자동차 좌석 요금</li>
+</ul></li>
+<li>ShelveLoc
+<ul>
+<li>각 사이트에서 자동차 좌석의 선반 위치의 품질을 나타내는 수준. “Bad”, “Good”, “Medium”.</li>
+</ul></li>
+<li>Age
+<ul>
+<li>각 지역의 평균 연령</li>
+</ul></li>
+<li>Education
+<ul>
+<li>각 지역의 교육 수준</li>
+</ul></li>
+<li>Urban
+<ul>
+<li>점포의 도시 또는 농촌 소재 여부. Yes는 도시, No는 농촌.</li>
+</ul></li>
+<li>US
+<ul>
+<li>점포의 미국 소재 여부. Yes는 미국 소재, No는 미국 외 소재.</li>
+</ul></li>
+</ul>
+<p>데이터 분석을 수행할 때, 결측치가 포함된 데이터를 자주 접한다. 그러나 Carseats는 결측치가 없은 완전한 데이터다. 그래서 다음과 같이 결측치를 생성하였다. 그리고 carseats라는 이름의 데이터 프레임 객체를 생성한다.</p>
+<pre class="r"><code>carseats &lt;- ISLR::Carseats
+
+set.seed(123)
+carseats[sample(seq(NROW(carseats)), 20), &quot;Income&quot;] &lt;- NA
+
+set.seed(456)
+carseats[sample(seq(NROW(carseats)), 10), &quot;Urban&quot;] &lt;- NA</code></pre>
+</div>
+<div id="데이터-변환" class="section level2">
+<h2>데이터 변환</h2>
+<p>dlookr은 결측치와 이상치의 대체, 치우친 데이터를 보정해준다. 또한 연속형 변수를 범주형 변수로 비닝하는 것을 도와준다.</p>
+<p>다음은 dlookr이 제공하는 데이터 변환 함수와 함수의 기능 목록이다.:</p>
+<ul>
+<li><code>find_na()</code>는 결측치가 포함된 변수를 찾아주고, <code>imputate_na()</code>는 결측치를 대체한다.</li>
+<li><code>find_outliers()</code>는 이상치가 포함된 변수를 찾아주고, <code>imputate_outlier()</code>는 이상치를 대체한다.</li>
+<li><code>summary.imputation()</code>와 <code>plot.imputation()</code>는 대체된 변수의 정보를 보혀주고 시각화를 제공한다.</li>
+<li><code>find_skewness()</code>는 치우친 데이터의 변수를 찾아주고, <code>transform()</code>는 치우친 데이터의 보정을 수행한다.</li>
+<li>또한 <code>transform()</code>는 수치형 변수의 표준화를 수행한다.</li>
+<li><code>summary.transform()</code>와 <code>plot.transform()</code>는 변환된 변수의 정보를 보혀주고 시각화를 제공한다.</li>
+<li><code>binning()</code>와 <code>binning_by()</code>는 수치 데이터를 비닝하여 범주형 데이터로 변환한다.</li>
+<li><code>print.bins()</code>와 <code>summary.bins()</code>는 비닝 결과를 보여주고 요약해 준다.</li>
+<li><code>plot.bins()</code>와 <code>plot.optimal_bins()</code>는 비닝 결과의 시각화를 제공한다.</li>
+<li><code>transformation_report()</code>는 데이터 변환을 수행한 후 그 결과를 보고서로 만들어 준다.</li>
+</ul>
+</div>
+<div id="결측치의-대체" class="section level2">
+<h2>결측치의 대체</h2>
+<div id="imputate_na을-이용한-결측치의-대체" class="section level3">
+<h3><code>imputate_na()</code>을 이용한 결측치의 대체</h3>
+<p><code>imputate_na()</code>는 변수에 포함된 결측치를 대체한다. 결측치가 포함된 예측변수(predictor)는 수치형 변수와 범주형 변수 모두 지원하며, 다음과 같은 method를 지원한다.</p>
+<ul>
+<li>predictor가 수치형 변수일 경우
+<ul>
+<li>“mean” : 산술평균으로 대체</li>
+<li>“median” : 중위수로 대체</li>
+<li>“mode” : 최빈수로 대체</li>
+<li>“knn” : K-nearest neighbors를 이용한 대체
+<ul>
+<li>target 변수를 지정해야 함</li>
+</ul></li>
+<li>“rpart” : Recursive Partitioning and Regression Trees를 이용한 대체
+<ul>
+<li>target 변수를 지정해야 함<br />
+</li>
+</ul></li>
+<li>“mice” : Multivariate Imputation by Chained Equations를 이용한 대체
+<ul>
+<li>target 변수를 지정해야 함</li>
+<li>random seed를 지정해야 함</li>
+</ul></li>
+</ul></li>
+<li>predictor가 범주형 변수일 경우
+<ul>
+<li>“mode” : 최빈수로 대체</li>
+<li>“rpart” : Recursive Partitioning and Regression Trees를 이용한 대체
+<ul>
+<li>target 변수를 지정해야 함<br />
+</li>
+</ul></li>
+<li>“mice” : Multivariate Imputation by Chained Equations를 이용한 대체
+<ul>
+<li>target 변수를 지정해야 함<br />
+</li>
+<li>random seed를 지정해야 함</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>다음처럼 <code>imputate_na()</code>는 <code>carseats</code>의 수치형 변수인 Income를 “rpart” 방법으로 결측치를 대체한다. <code>summary()</code>는 결측치 대체 정보를 요약하고, <code>plot()</code>은 결측정보를 시각화한다.</p>
+<pre class="r"><code>income &lt;- imputate_na(carseats, Income, US, method = &quot;rpart&quot;)
+
+# result of imputate
+income
+#&gt;   [1]  73.00000  48.00000  35.00000 100.00000  64.00000 113.00000 105.00000
+#&gt;   [8]  81.00000 110.00000 113.00000  78.00000  94.00000  35.00000  58.63636
+#&gt;  [15] 117.00000  95.00000  32.00000  74.00000 110.00000  76.00000  90.00000
+#&gt;  [22]  29.00000  46.00000  31.00000 119.00000  32.00000 115.00000 118.00000
+#&gt;  [29]  74.00000  99.00000  94.00000  58.00000  32.00000  38.00000  54.00000
+#&gt;  [36]  84.00000  76.00000  41.00000  73.00000  60.00000  98.00000  53.00000
+#&gt;  [43]  69.00000  42.00000  79.00000  63.00000  90.00000  98.00000  52.00000
+#&gt;  [50]  93.00000  32.00000  90.00000  40.00000  64.00000 103.00000  81.00000
+#&gt;  [57]  82.00000  91.00000  93.00000  71.00000 102.00000  32.00000  45.00000
+#&gt;  [64]  88.00000  67.00000  26.00000  92.00000  61.00000  69.00000  59.00000
+#&gt;  [71]  81.00000  51.00000  45.00000  90.00000  68.00000 111.00000  87.00000
+#&gt;  [78]  71.00000  48.00000  67.00000 100.00000  72.00000  83.00000  36.00000
+#&gt;  [85]  25.00000 103.00000  84.00000  67.00000  42.00000  56.07143  67.14286
+#&gt;  [92]  46.00000 113.00000  30.00000  97.00000  25.00000  42.00000  82.00000
+#&gt;  [99]  77.00000  47.00000  69.00000  93.00000  22.00000  91.00000  96.00000
+#&gt; [106] 100.00000  33.00000 107.00000  79.00000  65.00000  62.00000 118.00000
+#&gt; [113]  99.00000  29.00000  87.00000  35.00000  75.00000  75.34722  88.00000
+#&gt; [120]  94.00000 105.00000  89.00000 100.00000 103.00000 113.00000  78.00000
+#&gt; [127]  68.00000  48.00000 100.00000 120.00000  84.00000  69.00000  87.00000
+#&gt; [134]  98.00000  31.00000  94.00000  68.81481  42.00000 103.00000  62.00000
+#&gt; [141]  60.00000  42.00000  84.00000  88.00000  68.00000  63.00000  83.00000
+#&gt; [148]  54.00000 119.00000 120.00000  84.00000  58.00000  67.77778  36.00000
+#&gt; [155]  69.00000  72.00000  34.00000  58.00000  90.00000  60.00000  28.00000
+#&gt; [162]  21.00000  74.00000  64.00000  64.00000  58.00000  67.00000  73.00000
+#&gt; [169]  89.00000  41.00000  39.00000 106.00000 102.00000  91.00000  24.00000
+#&gt; [176]  89.00000 107.00000  72.00000  89.86364  25.00000 112.00000  83.00000
+#&gt; [183]  60.00000  74.00000  33.00000 100.00000  51.00000  32.00000  37.00000
+#&gt; [190] 117.00000  37.00000  42.00000  26.00000  70.00000  56.07143  93.00000
+#&gt; [197]  65.50000  61.00000  80.00000  88.00000  92.00000  83.00000  78.00000
+#&gt; [204]  82.00000  80.00000  22.00000  67.00000 105.00000  54.00000  21.00000
+#&gt; [211]  41.00000 118.00000  69.00000  84.00000 115.00000  83.00000  33.00000
+#&gt; [218]  44.00000  61.00000  79.00000 120.00000  44.00000 119.00000  45.00000
+#&gt; [225]  82.00000  25.00000  33.00000  64.00000  67.50000 104.00000  60.00000
+#&gt; [232]  69.00000  80.00000  76.00000  62.00000  32.00000  34.00000  28.00000
+#&gt; [239]  24.00000 105.00000  80.00000  63.00000  46.00000  68.81481  30.00000
+#&gt; [246]  43.00000  56.00000 114.00000  52.00000  67.00000 105.00000 111.00000
+#&gt; [253]  97.00000  24.00000 104.00000  55.55556  40.00000  62.00000  38.00000
+#&gt; [260]  36.00000 117.00000  42.00000  77.00000  26.00000  29.00000  35.00000
+#&gt; [267]  93.00000  82.00000  57.00000  69.00000  26.00000  56.00000  33.00000
+#&gt; [274] 106.00000  93.00000 119.00000  69.00000  48.00000 113.00000  57.00000
+#&gt; [281]  86.00000  69.00000  96.00000 110.00000  46.00000  26.00000 118.00000
+#&gt; [288]  44.00000  40.00000  77.00000 111.00000  70.00000  66.00000  84.00000
+#&gt; [295]  76.00000  35.00000  44.00000  83.00000  75.34722  40.00000  78.00000
+#&gt; [302]  93.00000  77.00000  52.00000  98.00000  67.77778  32.00000  92.00000
+#&gt; [309]  80.00000 111.00000  65.00000  68.00000 117.00000  81.00000  33.00000
+#&gt; [316]  21.00000  36.00000  30.00000  72.00000  45.00000  70.00000  39.00000
+#&gt; [323]  50.00000 105.00000  65.00000  69.00000  30.00000  41.72727  66.00000
+#&gt; [330]  54.00000  59.00000  63.00000  33.00000  60.00000 117.00000  70.00000
+#&gt; [337]  35.00000  38.00000  24.00000  44.00000  29.00000 120.00000 102.00000
+#&gt; [344]  42.00000  80.00000  68.00000 107.00000  31.85714 102.00000  27.00000
+#&gt; [351] 101.00000 115.00000 103.00000  67.00000  68.81481 100.00000 109.00000
+#&gt; [358]  73.00000  96.00000  62.00000  86.00000  25.00000  55.00000  75.00000
+#&gt; [365]  21.00000  30.00000  56.00000 106.00000  22.00000 100.00000  41.00000
+#&gt; [372]  81.00000  50.00000  83.77778  47.00000  46.00000  60.00000  61.00000
+#&gt; [379]  88.00000 111.00000  64.00000  65.00000  28.00000 117.00000  37.00000
+#&gt; [386]  73.00000 116.00000  75.34722  89.00000  42.00000  75.00000  63.00000
+#&gt; [393]  42.00000  51.00000  58.00000 108.00000  23.00000  26.00000  47.50000
+#&gt; [400]  37.00000
+#&gt; attr(,&quot;var_type&quot;)
+#&gt; [1] &quot;numerical&quot;
+#&gt; attr(,&quot;method&quot;)
+#&gt; [1] &quot;rpart&quot;
+#&gt; attr(,&quot;na_pos&quot;)
+#&gt;  [1]  14  90  91 118 137 153 179 195 197 229 244 256 299 306 328 348 355 374 388
+#&gt; [20] 399
+#&gt; attr(,&quot;type&quot;)
+#&gt; [1] &quot;missing values&quot;
+#&gt; attr(,&quot;message&quot;)
+#&gt; [1] &quot;complete imputation&quot;
+#&gt; attr(,&quot;success&quot;)
+#&gt; [1] TRUE
+#&gt; attr(,&quot;class&quot;)
+#&gt; [1] &quot;imputation&quot; &quot;numeric&quot;
+# summary of imputate
+summary(income)
+#&gt; * Impute missing values based on Recursive Partitioning and Regression Trees
+#&gt;  - method : rpart
+#&gt; 
+#&gt; * Information of Imputation (before vs after)
+#&gt;              Original   Imputation
+#&gt; n        380.00000000 400.00000000
+#&gt; na        20.00000000   0.00000000
+#&gt; mean      69.32105263  69.07811282
+#&gt; sd        28.06686473  27.53886441
+#&gt; se_mean    1.43979978   1.37694322
+#&gt; IQR       48.00000000  45.50000000
+#&gt; skewness   0.03601821   0.05313579
+#&gt; kurtosis  -1.10286001  -1.04030028
+#&gt; p00       21.00000000  21.00000000
+#&gt; p01       21.79000000  21.99000000
+#&gt; p05       26.00000000  26.00000000
+#&gt; p10       31.90000000  32.00000000
+#&gt; p20       40.00000000  41.00000000
+#&gt; p25       44.00000000  44.75000000
+#&gt; p30       50.00000000  51.00000000
+#&gt; p40       62.00000000  62.00000000
+#&gt; p50       69.00000000  69.00000000
+#&gt; p60       78.00000000  77.00000000
+#&gt; p70       87.30000000  84.60000000
+#&gt; p75       92.00000000  90.25000000
+#&gt; p80       98.00000000  96.00000000
+#&gt; p90      108.10000000 107.00000000
+#&gt; p95      115.05000000 115.00000000
+#&gt; p99      119.21000000 119.01000000
+#&gt; p100     120.00000000 120.00000000
+# viz of imputate
+plot(income)</code></pre>
+<p><img src="/post/2018-05/2018-05-07-r-vignette03.ko_files/figure-html/imputate_na-1.png" width="672" /></p>
+<p>다음은 범주형 변수인 urban을 “mice” 방법으로 결측치를 대체한다. <code>summary()</code>는 결측치 대체 정보를 요약하고, <code>plot()</code>은 결측정보를 시각화한다.</p>
+<pre class="r"><code>library(mice)
+
+urban &lt;- imputate_na(carseats, Urban, US, method = &quot;mice&quot;)
+#&gt; 
+#&gt;  iter imp variable
+#&gt;   1   1  Income  Urban
+#&gt;   1   2  Income  Urban
+#&gt;   1   3  Income  Urban
+#&gt;   1   4  Income  Urban
+#&gt;   1   5  Income  Urban
+#&gt;   2   1  Income  Urban
+#&gt;   2   2  Income  Urban
+#&gt;   2   3  Income  Urban
+#&gt;   2   4  Income  Urban
+#&gt;   2   5  Income  Urban
+#&gt;   3   1  Income  Urban
+#&gt;   3   2  Income  Urban
+#&gt;   3   3  Income  Urban
+#&gt;   3   4  Income  Urban
+#&gt;   3   5  Income  Urban
+#&gt;   4   1  Income  Urban
+#&gt;   4   2  Income  Urban
+#&gt;   4   3  Income  Urban
+#&gt;   4   4  Income  Urban
+#&gt;   4   5  Income  Urban
+#&gt;   5   1  Income  Urban
+#&gt;   5   2  Income  Urban
+#&gt;   5   3  Income  Urban
+#&gt;   5   4  Income  Urban
+#&gt;   5   5  Income  Urban
+
+# result of imputate
+urban
+#&gt;   [1] Yes Yes Yes Yes Yes No  Yes Yes No  No  No  Yes Yes Yes Yes No  Yes Yes
+#&gt;  [19] No  Yes Yes No  Yes Yes Yes No  No  Yes Yes Yes Yes Yes No  Yes Yes No 
+#&gt;  [37] No  No  Yes No  No  Yes Yes Yes Yes Yes No  Yes Yes Yes Yes Yes Yes Yes
+#&gt;  [55] No  Yes Yes Yes Yes Yes Yes No  Yes Yes No  No  Yes Yes Yes Yes Yes No 
+#&gt;  [73] Yes No  No  No  Yes No  Yes Yes Yes Yes Yes Yes No  No  Yes No  Yes No 
+#&gt;  [91] No  Yes Yes Yes Yes Yes No  Yes No  No  No  Yes No  Yes Yes Yes No  Yes
+#&gt; [109] Yes No  Yes Yes Yes Yes Yes Yes No  Yes Yes Yes Yes Yes Yes No  Yes No 
+#&gt; [127] Yes Yes Yes No  Yes Yes Yes Yes Yes No  No  Yes Yes No  Yes Yes Yes Yes
+#&gt; [145] No  Yes Yes No  No  Yes No  No  No  No  No  Yes Yes No  Yes No  No  No 
+#&gt; [163] Yes No  No  Yes Yes Yes Yes Yes Yes Yes Yes Yes No  Yes No  Yes No  Yes
+#&gt; [181] Yes Yes Yes Yes No  Yes No  Yes Yes No  No  Yes No  Yes Yes Yes Yes Yes
+#&gt; [199] Yes Yes No  Yes No  Yes Yes No  Yes No  Yes No  No  Yes Yes Yes Yes Yes
+#&gt; [217] Yes No  Yes Yes Yes Yes Yes Yes No  Yes Yes Yes No  No  No  No  Yes No 
+#&gt; [235] No  Yes Yes Yes Yes Yes Yes Yes No  Yes Yes No  Yes Yes Yes Yes Yes Yes
+#&gt; [253] Yes No  Yes Yes Yes Yes No  No  Yes Yes Yes Yes Yes Yes No  No  Yes Yes
+#&gt; [271] Yes Yes Yes Yes Yes Yes Yes Yes No  Yes Yes No  No  No  No  Yes No  Yes
+#&gt; [289] No  Yes No  Yes Yes Yes Yes No  Yes Yes Yes No  Yes Yes Yes Yes Yes Yes
+#&gt; [307] Yes Yes Yes Yes Yes Yes Yes Yes Yes Yes Yes No  No  No  Yes Yes Yes Yes
+#&gt; [325] Yes Yes Yes Yes Yes Yes No  Yes Yes Yes No  Yes Yes Yes Yes Yes Yes No 
+#&gt; [343] No  Yes No  Yes No  No  Yes No  No  No  Yes No  Yes Yes Yes Yes Yes Yes
+#&gt; [361] No  No  Yes Yes Yes No  No  Yes No  Yes Yes Yes No  Yes Yes Yes Yes No 
+#&gt; [379] Yes Yes Yes Yes Yes Yes Yes Yes Yes No  Yes Yes Yes Yes Yes No  Yes Yes
+#&gt; [397] No  Yes Yes Yes
+#&gt; attr(,&quot;var_type&quot;)
+#&gt; [1] categorical
+#&gt; attr(,&quot;method&quot;)
+#&gt; [1] mice
+#&gt; attr(,&quot;na_pos&quot;)
+#&gt;  [1]  38  90 159 206 237 252 281 283 335 378
+#&gt; attr(,&quot;type&quot;)
+#&gt; [1] missing values
+#&gt; attr(,&quot;message&quot;)
+#&gt; [1] complete imputation
+#&gt; attr(,&quot;success&quot;)
+#&gt; [1] TRUE
+#&gt; Levels: No Yes
+# summary of imputate
+summary(urban)
+#&gt; * Information of Imputation (before vs after)
+#&gt;      original imputation original_percent imputation_percent
+#&gt; No        115        121            28.75              30.25
+#&gt; Yes       275        279            68.75              69.75
+#&gt; &lt;NA&gt;       10          0             2.50               0.00
+# viz of imputate
+plot(urban)</code></pre>
+<p><img src="/post/2018-05/2018-05-07-r-vignette03.ko_files/figure-html/imputate_na2-1.png" width="672" /></p>
+</div>
+<div id="dplyr과의-협업" class="section level3">
+<h3>dplyr과의 협업</h3>
+<p>다음은 dplyr를 이용해서 이상치를 대체한 <code>Income</code> 변수를 <code>US</code>의 수준별로 산술평균을 구하는 예제다.</p>
+<pre class="r"><code># The mean before and after the imputation of the Income variable
+carseats %&gt;%
+  mutate(Income_imp = imputate_na(carseats, Income, US, method = &quot;knn&quot;)) %&gt;%
+  group_by(US) %&gt;%
+  summarise(orig = mean(Income, na.rm = TRUE),
+    imputation = mean(Income_imp))
+#&gt; `summarise()` ungrouping output (override with `.groups` argument)
+#&gt; # A tibble: 2 x 3
+#&gt;   US     orig imputation
+#&gt;   &lt;fct&gt; &lt;dbl&gt;      &lt;dbl&gt;
+#&gt; 1 No     65.7       65.5
+#&gt; 2 Yes    71.3       71.5</code></pre>
+</div>
+</div>
+<div id="이상치의-대체" class="section level2">
+<h2>이상치의 대체</h2>
+<div id="imputate_outlier을-이용한-이상치의-대체" class="section level3">
+<h3><code>imputate_outlier()</code>을 이용한 이상치의 대체</h3>
+<p><code>imputate_outlier()</code>는 변수에 포함된 이상치를 대체한다. 이상치가 포함된 예측변수(predictor)는 수치형 변수만 지원하며, 다음과 같은 method를 지원한다.</p>
+<ul>
+<li>predictor가 수치형 변수일 경우
+<ul>
+<li>“mean” : 산술평균으로 대체</li>
+<li>“median” : 중위수로 대체</li>
+<li>“mode” : 최빈수로 대체</li>
+<li>“capping” : 상위 이상치를 95/백분위수로 대체하고 하위 이상치를 5/백분위수로 대체</li>
+</ul></li>
+</ul>
+<p>다음처럼 <code>imputate_outlier()</code>는 <code>carseats</code>의 수치형 변수인 <code>Price</code>를 “capping” 방법으로 이상치를 대체한다. <code>summary()</code>는 이상치 대체 정보를 요약하고, <code>plot()</code>은 결측정보를 시각화한다.</p>
+<pre class="r"><code>price &lt;- imputate_outlier(carseats, Price, method = &quot;capping&quot;)
+
+# result of imputate
+price
+#&gt;   [1] 120.00  83.00  80.00  97.00 128.00  72.00 108.00 120.00 124.00 124.00
+#&gt;  [11] 100.00  94.00 136.00  86.00 118.00 144.00 110.00 131.00  68.00 121.00
+#&gt;  [21] 131.00 109.00 138.00 109.00 113.00  82.00 131.00 107.00  97.00 102.00
+#&gt;  [31]  89.00 131.00 137.00 128.00 128.00  96.00 100.00 110.00 102.00 138.00
+#&gt;  [41] 126.00 124.00  77.00 134.00  95.00 135.00  70.00 108.00  98.00 149.00
+#&gt;  [51] 108.00 108.00 129.00 119.00 144.00 154.00  84.00 117.00 103.00 114.00
+#&gt;  [61] 123.00 107.00 133.00 101.00 104.00 128.00  91.00 115.00 134.00  99.00
+#&gt;  [71]  99.00 150.00 116.00 104.00 136.00  92.00  70.00  89.00 145.00  90.00
+#&gt;  [81]  79.00 128.00 139.00  94.00 121.00 112.00 134.00 126.00 111.00 119.00
+#&gt;  [91] 103.00 107.00 125.00 104.00  84.00 148.00 132.00 129.00 127.00 107.00
+#&gt; [101] 106.00 118.00  97.00  96.00 138.00  97.00 139.00 108.00 103.00  90.00
+#&gt; [111] 116.00 151.00 125.00 127.00 106.00 129.00 128.00 119.00  99.00 128.00
+#&gt; [121] 131.00  87.00 108.00 155.00 120.00  77.00 133.00 116.00 126.00 147.00
+#&gt; [131]  77.00  94.00 136.00  97.00 131.00 120.00 120.00 118.00 109.00  94.00
+#&gt; [141] 129.00 131.00 104.00 159.00 123.00 117.00 131.00 119.00  97.00  87.00
+#&gt; [151] 114.00 103.00 128.00 150.00 110.00  69.00 157.00  90.00 112.00  70.00
+#&gt; [161] 111.00 160.00 149.00 106.00 141.00 155.05 137.00  93.00 117.00  77.00
+#&gt; [171] 118.00  55.00 110.00 128.00 155.05 122.00 154.00  94.00  81.00 116.00
+#&gt; [181] 149.00  91.00 140.00 102.00  97.00 107.00  86.00  96.00  90.00 104.00
+#&gt; [191] 101.00 173.00  93.00  96.00 128.00 112.00 133.00 138.00 128.00 126.00
+#&gt; [201] 146.00 134.00 130.00 157.00 124.00 132.00 160.00  97.00  64.00  90.00
+#&gt; [211] 123.00 120.00 105.00 139.00 107.00 144.00 144.00 111.00 120.00 116.00
+#&gt; [221] 124.00 107.00 145.00 125.00 141.00  82.00 122.00 101.00 163.00  72.00
+#&gt; [231] 114.00 122.00 105.00 120.00 129.00 132.00 108.00 135.00 133.00 118.00
+#&gt; [241] 121.00  94.00 135.00 110.00 100.00  88.00  90.00 151.00 101.00 117.00
+#&gt; [251] 156.00 132.00 117.00 122.00 129.00  81.00 144.00 112.00  81.00 100.00
+#&gt; [261] 101.00 118.00 132.00 115.00 159.00 129.00 112.00 112.00 105.00 166.00
+#&gt; [271]  89.00 110.00  63.00  86.00 119.00 132.00 130.00 125.00 151.00 158.00
+#&gt; [281] 145.00 105.00 154.00 117.00  96.00 131.00 113.00  72.00  97.00 156.00
+#&gt; [291] 103.00  89.00  74.00  89.00  99.00 137.00 123.00 104.00 130.00  96.00
+#&gt; [301]  99.00  87.00 110.00  99.00 134.00 132.00 133.00 120.00 126.00  80.00
+#&gt; [311] 166.00 132.00 135.00  54.00 129.00 171.00  72.00 136.00 130.00 129.00
+#&gt; [321] 152.00  98.00 139.00 103.00 150.00 104.00 122.00 104.00 111.00  89.00
+#&gt; [331] 112.00 134.00 104.00 147.00  83.00 110.00 143.00 102.00 101.00 126.00
+#&gt; [341]  91.00  93.00 118.00 121.00 126.00 149.00 125.00 112.00 107.00  96.00
+#&gt; [351]  91.00 105.00 122.00  92.00 145.00 146.00 164.00  72.00 118.00 130.00
+#&gt; [361] 114.00 104.00 110.00 108.00 131.00 162.00 134.00  77.00  79.00 122.00
+#&gt; [371] 119.00 126.00  98.00 116.00 118.00 124.00  92.00 125.00 119.00 107.00
+#&gt; [381]  89.00 151.00 121.00  68.00 112.00 132.00 160.00 115.00  78.00 107.00
+#&gt; [391] 111.00 124.00 130.00 120.00 139.00 128.00 120.00 159.00  95.00 120.00
+#&gt; attr(,&quot;method&quot;)
+#&gt; [1] &quot;capping&quot;
+#&gt; attr(,&quot;var_type&quot;)
+#&gt; [1] &quot;numerical&quot;
+#&gt; attr(,&quot;outlier_pos&quot;)
+#&gt; [1]  43 126 166 175 368
+#&gt; attr(,&quot;outliers&quot;)
+#&gt; [1]  24  49 191 185  53
+#&gt; attr(,&quot;type&quot;)
+#&gt; [1] &quot;outliers&quot;
+#&gt; attr(,&quot;message&quot;)
+#&gt; [1] &quot;complete imputation&quot;
+#&gt; attr(,&quot;success&quot;)
+#&gt; [1] TRUE
+#&gt; attr(,&quot;class&quot;)
+#&gt; [1] &quot;imputation&quot; &quot;numeric&quot;
+# summary of imputate
+summary(price)
+#&gt; Impute outliers with capping
+#&gt; 
+#&gt; * Information of Imputation (before vs after)
+#&gt;             Original  Imputation
+#&gt; n        400.0000000 400.0000000
+#&gt; na         0.0000000   0.0000000
+#&gt; mean     115.7950000 115.8927500
+#&gt; sd        23.6766644  22.6109187
+#&gt; se_mean    1.1838332   1.1305459
+#&gt; IQR       31.0000000  31.0000000
+#&gt; skewness  -0.1252862  -0.0461621
+#&gt; kurtosis   0.4518850  -0.3030578
+#&gt; p00       24.0000000  54.0000000
+#&gt; p01       54.9900000  67.9600000
+#&gt; p05       77.0000000  77.0000000
+#&gt; p10       87.0000000  87.0000000
+#&gt; p20       96.8000000  96.8000000
+#&gt; p25      100.0000000 100.0000000
+#&gt; p30      104.0000000 104.0000000
+#&gt; p40      110.0000000 110.0000000
+#&gt; p50      117.0000000 117.0000000
+#&gt; p60      122.0000000 122.0000000
+#&gt; p70      128.3000000 128.3000000
+#&gt; p75      131.0000000 131.0000000
+#&gt; p80      134.0000000 134.0000000
+#&gt; p90      146.0000000 146.0000000
+#&gt; p95      155.0500000 155.0025000
+#&gt; p99      166.0500000 164.0200000
+#&gt; p100     191.0000000 173.0000000
+# viz of imputate
+plot(price)</code></pre>
+<p><img src="/post/2018-05/2018-05-07-r-vignette03.ko_files/figure-html/imputate_outlier-1.png" width="672" /></p>
+</div>
+<div id="dplyr과의-협업-1" class="section level3">
+<h3>dplyr과의 협업</h3>
+<p>다음은 dplyr를 이용해서 이상치를 대체한 <code>Price</code> 변수를 <code>US</code>의 수준별로 산술평균을 구하는 예제다.</p>
+<pre class="r"><code># The mean before and after the imputation of the Price variable
+carseats %&gt;%
+  mutate(Price_imp = imputate_outlier(carseats, Price, method = &quot;capping&quot;)) %&gt;%
+  group_by(US) %&gt;%
+  summarise(orig = mean(Price, na.rm = TRUE),
+    imputation = mean(Price_imp, na.rm = TRUE))
+#&gt; `summarise()` ungrouping output (override with `.groups` argument)
+#&gt; # A tibble: 2 x 3
+#&gt;   US     orig imputation
+#&gt;   &lt;fct&gt; &lt;dbl&gt;      &lt;dbl&gt;
+#&gt; 1 No     114.       114.
+#&gt; 2 Yes    117.       117.</code></pre>
+</div>
+</div>
+<div id="표준화와-치우친-데이터의-보정" class="section level2">
+<h2>표준화와 치우친 데이터의 보정</h2>
+<div id="transform의-기능" class="section level3">
+<h3><code>transform()</code>의 기능</h3>
+<p><code>transform()</code>는 변수를 변환한다. 수치형 변수만 지원하며, 다음과 같은 method를 제공한다.</p>
+<ul>
+<li>표준화
+<ul>
+<li>“zscore” : z-score 변환. (x - mu) / sigma</li>
+<li>“minmax” : minmax 변환. (x - min) / (max - min)</li>
+</ul></li>
+<li>치우침 보정
+<ul>
+<li>“log” : log 변환. log(x)</li>
+<li>“log+1” : log 변환. log(x + 1). 0을 포함한 값들이 많을 때 유용함.</li>
+<li>“sqrt” : 제곱근 변환</li>
+<li>“1/x” : 1 / x 변환</li>
+<li>“x^2” : 제곱 변환</li>
+<li>“x^3” : 세제곱 변환</li>
+</ul></li>
+</ul>
+</div>
+<div id="transform을-이용한-표준화" class="section level3">
+<h3><code>transform()</code>을 이용한 표준화</h3>
+<p>표준화를 수행하는 method “zscore”와 “minmax”를 이용한다.</p>
+<pre class="r"><code>carseats %&gt;% 
+  mutate(Income_minmax = transform(carseats$Income, method = &quot;minmax&quot;),
+    Sales_minmax = transform(carseats$Sales, method = &quot;minmax&quot;)) %&gt;% 
+  select(Income_minmax, Sales_minmax) %&gt;% 
+  boxplot()</code></pre>
+<p><img src="/post/2018-05/2018-05-07-r-vignette03.ko_files/figure-html/standardization-1.png" width="576" /></p>
+</div>
+<div id="transform을-이용한-치우친-데이터의-보정" class="section level3">
+<h3><code>transform()</code>을 이용한 치우친 데이터의 보정</h3>
+<p><code>find_skewness()</code>는 치우친 데이터를 찾기 위해서 왜도를 구한다.</p>
+<pre class="r"><code># find index of skewed variables
+find_skewness(carseats)
+#&gt; [1] 4
+
+# find names of skewed variables
+find_skewness(carseats, index = FALSE)
+#&gt; [1] &quot;Advertising&quot;
+
+# compute the skewness
+find_skewness(carseats, value = TRUE)
+#&gt;       Sales   CompPrice      Income Advertising  Population       Price 
+#&gt;       0.185      -0.043       0.036       0.637      -0.051      -0.125 
+#&gt;         Age   Education 
+#&gt;      -0.077       0.044
+
+# compute the skewness &amp; filtering with threshold
+find_skewness(carseats, value = TRUE, thres = 0.1)
+#&gt;       Sales Advertising       Price 
+#&gt;       0.185       0.637      -0.125</code></pre>
+<p><code>Advertising</code>의 왜도가 0.637로 좌측으로 어느정도 기울어져 있어서 다음처럼 <code>transformation()</code>를 이용해서 “log” 방법으로 변환한다. <code>summary()</code>는 변환정보를 요약하고, <code>plot()</code>은 변환정보를 시각화한다.</p>
+<pre class="r"><code>Advertising_log = transform(carseats$Advertising, method = &quot;log&quot;)
+
+# result of transformation
+head(Advertising_log)
+#&gt; [1] 2.397895 2.772589 2.302585 1.386294 1.098612 2.564949
+# summary of transformation
+summary(Advertising_log)
+#&gt; * Resolving Skewness with log
+#&gt; 
+#&gt; * Information of Transformation (before vs after)
+#&gt;             Original Transformation
+#&gt; n        400.0000000    400.0000000
+#&gt; na         0.0000000      0.0000000
+#&gt; mean       6.6350000           -Inf
+#&gt; sd         6.6503642            NaN
+#&gt; se_mean    0.3325182            NaN
+#&gt; IQR       12.0000000            Inf
+#&gt; skewness   0.6395858            NaN
+#&gt; kurtosis  -0.5451178            NaN
+#&gt; p00        0.0000000           -Inf
+#&gt; p01        0.0000000           -Inf
+#&gt; p05        0.0000000           -Inf
+#&gt; p10        0.0000000           -Inf
+#&gt; p20        0.0000000           -Inf
+#&gt; p25        0.0000000           -Inf
+#&gt; p30        0.0000000           -Inf
+#&gt; p40        2.0000000      0.6931472
+#&gt; p50        5.0000000      1.6094379
+#&gt; p60        8.4000000      2.1265548
+#&gt; p70       11.0000000      2.3978953
+#&gt; p75       12.0000000      2.4849066
+#&gt; p80       13.0000000      2.5649494
+#&gt; p90       16.0000000      2.7725887
+#&gt; p95       19.0000000      2.9444390
+#&gt; p99       23.0100000      3.1359198
+#&gt; p100      29.0000000      3.3672958
+# viz of transformation
+plot(Advertising_log)</code></pre>
+<p><img src="/post/2018-05/2018-05-07-r-vignette03.ko_files/figure-html/resolving2-1.png" width="672" /></p>
+<p>log 변환된 값에 -Inf가 포함되어 있는 것으로 보아 원 데이터에 0이 포함되어 있는 듯하다. 그래서 이번에는 “log+1” 방법으로 변환한다.</p>
+<pre class="r"><code>Advertising_log = transform(carseats$Advertising, method = &quot;log+1&quot;)
+
+# result of transformation
+head(Advertising_log)
+#&gt; [1] 2.484907 2.833213 2.397895 1.609438 1.386294 2.639057
+# summary of transformation
+summary(Advertising_log)
+#&gt; * Resolving Skewness with log+1
+#&gt; 
+#&gt; * Information of Transformation (before vs after)
+#&gt;             Original Transformation
+#&gt; n        400.0000000   400.00000000
+#&gt; na         0.0000000     0.00000000
+#&gt; mean       6.6350000     1.46247709
+#&gt; sd         6.6503642     1.19436323
+#&gt; se_mean    0.3325182     0.05971816
+#&gt; IQR       12.0000000     2.56494936
+#&gt; skewness   0.6395858    -0.19852549
+#&gt; kurtosis  -0.5451178    -1.66342876
+#&gt; p00        0.0000000     0.00000000
+#&gt; p01        0.0000000     0.00000000
+#&gt; p05        0.0000000     0.00000000
+#&gt; p10        0.0000000     0.00000000
+#&gt; p20        0.0000000     0.00000000
+#&gt; p25        0.0000000     0.00000000
+#&gt; p30        0.0000000     0.00000000
+#&gt; p40        2.0000000     1.09861229
+#&gt; p50        5.0000000     1.79175947
+#&gt; p60        8.4000000     2.23936878
+#&gt; p70       11.0000000     2.48490665
+#&gt; p75       12.0000000     2.56494936
+#&gt; p80       13.0000000     2.63905733
+#&gt; p90       16.0000000     2.83321334
+#&gt; p95       19.0000000     2.99573227
+#&gt; p99       23.0100000     3.17846205
+#&gt; p100      29.0000000     3.40119738
+# viz of transformation
+plot(Advertising_log)</code></pre>
+<p><img src="/post/2018-05/2018-05-07-r-vignette03.ko_files/figure-html/resolving3-1.png" width="672" /></p>
+</div>
+</div>
+<div id="binning" class="section level2">
+<h2>Binning</h2>
+<div id="binning을-이용한-개별-변수의-binning" class="section level3">
+<h3><code>binning()</code>을 이용한 개별 변수의 Binning</h3>
+<p><code>binning()</code>는 수치형 변수를 비닝하여 범주형 변수로 변환한다. 다음과 같은 type의 비닝을 지원한다.</p>
+<ul>
+<li>“quantile” : 동일한 돗수가 포함되도록 quantile을 이용하여 범주화</li>
+<li>“equal” : 동일한 길이의 구간을 갖도록 범주화</li>
+<li>“pretty” : 적당히 보기 좋은 구간으로 범주화</li>
+<li>“kmeans” : K-means clustering 기법을 이용한 범주화</li>
+<li>“bclust” : Bagged clustering 기법을 이용한 범주화</li>
+</ul>
+<p><code>binning()</code>을 이용하여 <code>Income</code>을 비닝하는 몇 가지의 방법을 예시한다.</p>
+<pre class="r"><code># Binning the carat variable. default type argument is &quot;quantile&quot;
+bin &lt;- binning(carseats$Income)
+# Print bins class object
+bin
+#&gt; binned type: quantile
+#&gt; number of bins: 10
+#&gt; x
+#&gt; [21,31.4] (31.4,40]   (40,50]   (50,62]   (62,69]   (69,78] (78,87.6] (87.6,98] 
+#&gt;        38        40        37        40        40        34        37        41 
+#&gt;  (98,109] (109,120]      &lt;NA&gt; 
+#&gt;        36        37        20
+# Summarise bins class object
+summary(bin)
+#&gt;       levels freq   rate
+#&gt; 1  [21,31.4]   38 0.0950
+#&gt; 2  (31.4,40]   40 0.1000
+#&gt; 3    (40,50]   37 0.0925
+#&gt; 4    (50,62]   40 0.1000
+#&gt; 5    (62,69]   40 0.1000
+#&gt; 6    (69,78]   34 0.0850
+#&gt; 7  (78,87.6]   37 0.0925
+#&gt; 8  (87.6,98]   41 0.1025
+#&gt; 9   (98,109]   36 0.0900
+#&gt; 10 (109,120]   37 0.0925
+#&gt; 11      &lt;NA&gt;   20 0.0500
+# Plot bins class object
+plot(bin)</code></pre>
+<p><img src="/post/2018-05/2018-05-07-r-vignette03.ko_files/figure-html/binning-1.png" width="576" /></p>
+<pre class="r"><code># Using labels argument
+bin &lt;- binning(carseats$Income, nbins = 4,
+              labels = c(&quot;LQ1&quot;, &quot;UQ1&quot;, &quot;LQ3&quot;, &quot;UQ3&quot;))
+bin
+#&gt; binned type: quantile
+#&gt; number of bins: 4
+#&gt; x
+#&gt;  LQ1  UQ1  LQ3  UQ3 &lt;NA&gt; 
+#&gt;   98   97   91   94   20
+# Using another type argument
+binning(carseats$Income, nbins = 5, type = &quot;equal&quot;)
+#&gt; binned type: equal
+#&gt; number of bins: 5
+#&gt; x
+#&gt;   [21,40.8] (40.8,60.6] (60.6,80.4]  (80.4,100]   (100,120]        &lt;NA&gt; 
+#&gt;          78          68          92          79          63          20
+binning(carseats$Income, nbins = 5, type = &quot;pretty&quot;)
+#&gt; binned type: pretty
+#&gt; number of bins: 5
+#&gt; x
+#&gt;   [20,40]   (40,60]   (60,80]  (80,100] (100,120]      &lt;NA&gt; 
+#&gt;        78        68        92        79        63        20
+binning(carseats$Income, nbins = 5, type = &quot;kmeans&quot;)
+#&gt; binned type: kmeans
+#&gt; number of bins: 5
+#&gt; x
+#&gt;     [21,49]   (49,71.5] (71.5,89.5]  (89.5,106]   (106,120]        &lt;NA&gt; 
+#&gt;         113          88          74          63          42          20
+binning(carseats$Income, nbins = 5, type = &quot;bclust&quot;)
+#&gt; binned type: bclust
+#&gt; number of bins: 5
+#&gt; x
+#&gt;   [21,38.5] (38.5,65.5]   (65.5,85]    (85,108]   (108,120]        &lt;NA&gt; 
+#&gt;          72          98          91          81          38          20
+
+# -------------------------
+# Using pipes &amp; dplyr
+# -------------------------
+library(dplyr)
+
+carseats %&gt;%
+ mutate(Income_bin = binning(carseats$Income)) %&gt;%
+ group_by(ShelveLoc, Income_bin) %&gt;%
+ summarise(freq = n()) %&gt;%
+ arrange(desc(freq)) %&gt;%
+ head(10)
+#&gt; `summarise()` regrouping output by &#39;ShelveLoc&#39; (override with `.groups` argument)
+#&gt; # A tibble: 10 x 3
+#&gt; # Groups:   ShelveLoc [1]
+#&gt;   ShelveLoc Income_bin  freq
+#&gt;   &lt;fct&gt;     &lt;ord&gt;      &lt;int&gt;
+#&gt; 1 Medium    [21,31.4]     25
+#&gt; 2 Medium    (62,69]       23
+#&gt; 3 Medium    (50,62]       22
+#&gt; 4 Medium    (31.4,40]     21
+#&gt; # … with 6 more rows</code></pre>
+</div>
+<div id="binning_by을-이용한-optimal-binning" class="section level3">
+<h3><code>binning_by()</code>을 이용한 Optimal Binning</h3>
+<p><code>binning_by()</code>는 수치형 변수를 Optimal Binning하여 범주형 변수로 변환한다. 이 방법은 <code>스코어카드 모형</code>을 개발할때 자주 사용하는 방법이다.</p>
+<p>다음의 <code>binning_by()</code> 예제는 <code>US</code>가 binary class를 갖는 target 변수일 경우에 <code>Advertising</code>를 Optimal Binning하는 방법의 예시다.</p>
+<pre class="r"><code># optimal binning
+bin &lt;- binning_by(carseats, &quot;US&quot;, &quot;Advertising&quot;)
+#&gt; Warning in binning_by(carseats, &quot;US&quot;, &quot;Advertising&quot;): The factor y has been
+#&gt; changed to a numeric vector consisting of 0 and 1.
+bin
+#&gt; binned type: optimal
+#&gt; number of bins: 3
+#&gt; x
+#&gt; [-1,0]  (0,6] (6,29] 
+#&gt;    144     69    187
+
+# summary optimal_bins class
+summary(bin)
+#&gt;   levels freq   rate
+#&gt; 1 [-1,0]  144 0.3600
+#&gt; 2  (0,6]   69 0.1725
+#&gt; 3 (6,29]  187 0.4675
+
+# information value 
+attr(bin, &quot;iv&quot;)
+#&gt; [1] 4.8349
+
+# information value table
+attr(bin, &quot;ivtable&quot;)
+#&gt;   Cutpoint CntRec CntGood CntBad CntCumRec CntCumGood CntCumBad PctRec GoodRate
+#&gt; 1     &lt;= 0    144      19    125       144         19       125 0.3600   0.1319
+#&gt; 2     &lt;= 6     69      54     15       213         73       140 0.1725   0.7826
+#&gt; 3      &gt; 6    187     185      2       400        258       142 0.4675   0.9893
+#&gt; 4  Missing      0       0      0       400        258       142 0.0000      NaN
+#&gt; 5    Total    400     258    142        NA         NA        NA 1.0000   0.6450
+#&gt;   BadRate    Odds  LnOdds     WoE     IV
+#&gt; 1  0.8681  0.1520 -1.8839 -2.4810 2.0013
+#&gt; 2  0.2174  3.6000  1.2809  0.6838 0.0709
+#&gt; 3  0.0107 92.5000  4.5272  3.9301 2.7627
+#&gt; 4     NaN     NaN     NaN     NaN    NaN
+#&gt; 5  0.3550  1.8169  0.5971  0.0000 4.8349
+
+# visualize optimal_bins class
+plot(bin, sub = &quot;bins of Advertising variable&quot;)</code></pre>
+<p><img src="/post/2018-05/2018-05-07-r-vignette03.ko_files/figure-html/binning_by-1.png" width="576" /></p>
+</div>
+</div>
+<div id="transformation_report를-이용한-데이터변환-보고서-작성" class="section level2">
+<h2><code>transformation_report()</code>를 이용한 데이터변환 보고서 작성</h2>
+<p><code>transformation_report()</code>는 데이터 프레임이나 데이터 프레임을 상속받은 객체(<code>tbl_df</code>, <code>tbl</code> 등)의 모든 변수들에 대해서 데이터변환 보고서를 작성한다.</p>
+<p><code>transformation_report()</code>는 데이터변환 보고서를 다음과 같은 두 개의 형태로 작성한다.</p>
+<ul>
+<li>Latex에 기반한 pdf 파일</li>
+<li>html 파일</li>
+</ul>
+<p>보고서의 목차는 다음과 같다.</p>
+<ul>
+<li>값의 대체
+<ul>
+<li>결측치
+<ul>
+<li>결측치의 대체 정보</li>
+<li>(해당 변수들)</li>
+</ul></li>
+<li>이상치
+<ul>
+<li>이상치의 대체 정보</li>
+<li>(해당 변수들)</li>
+</ul></li>
+</ul></li>
+<li>치우침의 해결
+<ul>
+<li>치우친 변수들의 정보
+<ul>
+<li>(해당 변수들)</li>
+</ul></li>
+</ul></li>
+<li>비닝
+<ul>
+<li>비닝을 위한 수치형 변수들</li>
+<li>비닝
+<ul>
+<li>(해당 변수들)</li>
+</ul></li>
+<li>Optimal 비닝
+<ul>
+<li>(해당 변수들)</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>다음은 <code>carseats</code>의 데이터변환 보고서를 작성한다. 파일 형식은 pdf이며, 파일이름은 <code>Transformation_Report.pdf</code>다.</p>
+<pre class="r"><code>carseats %&gt;%
+  transformation_report(target = US)</code></pre>
+<p>다음은 <code>transformation.html</code>라는 이름의 html 형식의 보고서를 생성한다.</p>
+<pre class="r"><code>carseats %&gt;%
+  transformation_report(target = US, output_format = &quot;html&quot;, 
+    output_file = &quot;transformation.html&quot;)</code></pre>
+<p>데이터변환 보고서는 데이터 변환 과정에 도움을 주기 위한 자동화 보고서다. 보고서 결과를 참고하여 데이터 변환 시나리오를 설계한다.</p>
+<div id="데이터변환-리포트-내용" class="section level3">
+<h3>데이터변환 리포트 내용</h3>
+<div id="pdf-파일의-내용" class="section level4">
+<h4>pdf 파일의 내용</h4>
+<ul>
+<li>보고서의 표지는 다음 그림과 같다.</li>
+</ul>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-2"></span>
+<img src="../img/trans_title_pdf.png" alt="데이터변환 보고서 표지" width="70%" />
+<p class="caption">
+Figure 1: 데이터변환 보고서 표지
+</p>
+</div>
+<ul>
+<li>보고서의 차례는 다음 그림과 같다.</li>
+</ul>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-3"></span>
+<img src="../img/trans_agenda_pdf.png" alt="데이터변환 보고서 차례" width="70%" />
+<p class="caption">
+Figure 2: 데이터변환 보고서 차례
+</p>
+</div>
+<ul>
+<li>많은 정보는 보고서에서 표와 시각화 결과로 표현된다. 예시는 다음 그림과 같다.</li>
+</ul>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-4"></span>
+<img src="../img/trans_content_pdf.png" alt="데이터변환 보고서 도표 및 시각화 예시" width="70%" />
+<p class="caption">
+Figure 3: 데이터변환 보고서 도표 및 시각화 예시
+</p>
+</div>
+</div>
+<div id="html-파일의-내용" class="section level4">
+<h4>html 파일의 내용</h4>
+<ul>
+<li>보고서의 타이틀과 목차는 다음 그림과 같다.</li>
+</ul>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-5"></span>
+<img src="../img/trans_agenda_html.png" alt="데이터변환 보고서 타이틀과 목차" width="80%" />
+<p class="caption">
+Figure 4: 데이터변환 보고서 타이틀과 목차
+</p>
+</div>
+<ul>
+<li>많은 정보는 보고서에서 표로 표현된다. html 파일에서 표의 예시는 다음 그림과 같다.</li>
+</ul>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-6"></span>
+<img src="../img/trans_table_html.png" alt="데이터변환 보고서 도표 예시 (웹)" width="50%" />
+<p class="caption">
+Figure 5: 데이터변환 보고서 도표 예시 (웹)
+</p>
+</div>
+<ul>
+<li>데이터변환 보고서에서 Binning 정보는 시각화 결과를 포함한다. html 파일의 결과는 다음 그림과 같다.</li>
+</ul>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-7"></span>
+<img src="../img/trans_viz_html.png" alt="데이터변환 보고서 Binning 정보 (웹)" width="75%" />
+<p class="caption">
+Figure 6: 데이터변환 보고서 Binning 정보 (웹)
+</p>
+</div>
+</div>
+</div>
+</div>
+
+    
+      
+    
+  </article>
+<aside class="sidebar">
+  <section class="sidebar_inner">
+    
+      <h2>Choonghyun Ryu</h2>
+      <div>
+        Scientist with data, take one more step today.
+      </div>
+      <a href='/about/' class="button mt-1" role="button">Read More</a>
+    <h2 class="mt-4">Recent Posts</h2>
+    <ul class="flex-column">
+      <li>
+        <a href="/post/2020-07/ggplot2_exam/" class="nav-link">몇 개의 ggplot tips</a>
+      </li>
+      <li>
+        <a href="/post/2020-03/2020-03-27-r-alookr.ko/" class="nav-link">alookr: Binary classification modeling</a>
+      </li>
+      <li>
+        <a href="/post/2020-03/window_function/" class="nav-link">Introduce window function</a>
+      </li>
+      <li>
+        <a href="/post/2020-02/r_web_application/" class="nav-link">R 웹 어플리케이션 개발에 대한 연구</a>
+      </li>
+      <li>
+        <a href="/post/2020-01/introduce_dbplyr/" class="nav-link">Introduce dbplyr package</a>
+      </li>
+    </ul>
+    <div>
+      <h2 class="mt-4 taxonomy" id="categories-section">Categories</h2>
+      <nav class="tags_nav">
+        <a href='/categories/%EC%98%9B-%EC%9D%B4%EC%95%BC%EA%B8%B0-%ED%95%98%EB%82%98/' class="post_tag button button_translucent">
+          옛-이야기-하나
+          <span class="button_tally">120</span>
+        </a>
+        
+        <a href='/categories/r-analytics/' class="post_tag button button_translucent">
+          R-ANALYTICS
+          <span class="button_tally">19</span>
+        </a>
+        
+        <a href='/categories/gallery/' class="post_tag button button_translucent">
+          GALLERY
+          <span class="button_tally">8</span>
+        </a>
+        
+        <a href='/categories/visualization/' class="post_tag button button_translucent">
+          VISUALIZATION
+          <span class="button_tally">7</span>
+        </a>
+        
+        <a href='/categories/tidyverse/' class="post_tag button button_translucent">
+          TIDYVERSE
+          <span class="button_tally">6</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+    <div>
+      <h2 class="mt-4 taxonomy" id="series-section">Series</h2>
+      <nav class="tags_nav">
+        <a href='/series/drawing/' class="post_tag button button_translucent">
+          DRAWING
+          <span class="button_tally">6</span>
+        </a>
+        
+        <a href='/series/photo/' class="post_tag button button_translucent">
+          PHOTO
+          <span class="button_tally">2</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+    <div>
+      <h2 class="mt-4 taxonomy" id="tags-section">Tags</h2>
+      <nav class="tags_nav">
+        <a href='/tags/plot/' class="post_tag button button_translucent">
+          PLOT
+          <span class="button_tally">6</span>
+        </a>
+        
+        <a href='/tags/dlookr/' class="post_tag button button_translucent">
+          DLOOKR
+          <span class="button_tally">5</span>
+        </a>
+        
+        <a href='/tags/graphics/' class="post_tag button button_translucent">
+          GRAPHICS
+          <span class="button_tally">4</span>
+        </a>
+        
+        <a href='/tags/mathematics/' class="post_tag button button_translucent">
+          MATHEMATICS
+          <span class="button_tally">4</span>
+        </a>
+        
+        <a href='/tags/distribution/' class="post_tag button button_translucent">
+          DISTRIBUTION
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/dplyr/' class="post_tag button button_translucent">
+          DPLYR
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/eda/' class="post_tag button button_translucent">
+          EDA
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/grid/' class="post_tag button button_translucent">
+          GRID
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/text-analytics/' class="post_tag button button_translucent">
+          TEXT-ANALYTICS
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B3%80%ED%99%98/' class="post_tag button button_translucent">
+          데이터-변환
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A7%84%EB%8B%A8/' class="post_tag button button_translucent">
+          데이터-진단
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/development/' class="post_tag button button_translucent">
+          DEVELOPMENT
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='/tags/finance/' class="post_tag button button_translucent">
+          FINANCE
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='/tags/ggplot2/' class="post_tag button button_translucent">
+          GGPLOT2
+          <span class="button_tally">2</span>
+        </a>
+        
+        
+        <br>
+        <div class="post_tags_toggle button">All Tags</div>
+        <div class="post_tags">
+          <div class="tags_list">
+            
+            <a href='/tags/alookr/' class=" post_tag button button_translucent" data-position=1>ALOOKR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/association-ruls/' class=" post_tag button button_translucent" data-position=1>ASSOCIATION-RULS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/asynchronous/' class=" post_tag button button_translucent" data-position=1>ASYNCHRONOUS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/binary-classification/' class=" post_tag button button_translucent" data-position=1>BINARY-CLASSIFICATION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/circle/' class=" post_tag button button_translucent" data-position=1>CIRCLE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/clustering/' class=" post_tag button button_translucent" data-position=1>CLUSTERING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/complex/' class=" post_tag button button_translucent" data-position=1>COMPLEX<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/crawling/' class=" post_tag button button_translucent" data-position=1>CRAWLING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/data-acqusition/' class=" post_tag button button_translucent" data-position=1>DATA-ACQUSITION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/dbplyr/' class=" post_tag button button_translucent" data-position=1>DBPLYR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/deep-learning/' class=" post_tag button button_translucent" data-position=1>DEEP-LEARNING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/development/' class=" post_tag button button_translucent" data-position=2>DEVELOPMENT<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/distribution/' class=" post_tag button button_translucent" data-position=3>DISTRIBUTION<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/dlookr/' class=" post_tag button button_translucent" data-position=5>DLOOKR<span class="button_tally">5</span>
+            </a>
+            
+            
+            <a href='/tags/documents-taxonomy/' class=" post_tag button button_translucent" data-position=1>DOCUMENTS-TAXONOMY<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/dplyr/' class=" post_tag button button_translucent" data-position=3>DPLYR<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/eda/' class=" post_tag button button_translucent" data-position=3>EDA<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/extract/' class=" post_tag button button_translucent" data-position=1>EXTRACT<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/factor/' class=" post_tag button button_translucent" data-position=1>FACTOR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/finance/' class=" post_tag button button_translucent" data-position=2>FINANCE<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/foodfact/' class=" post_tag button button_translucent" data-position=1>FOODFACT<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/forcats/' class=" post_tag button button_translucent" data-position=1>FORCATS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/fractal/' class=" post_tag button button_translucent" data-position=1>FRACTAL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/fuction/' class=" post_tag button button_translucent" data-position=1>FUCTION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/future/' class=" post_tag button button_translucent" data-position=1>FUTURE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/ggplot2/' class=" post_tag button button_translucent" data-position=2>GGPLOT2<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/google-trends/' class=" post_tag button button_translucent" data-position=1>GOOGLE-TRENDS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/graphics/' class=" post_tag button button_translucent" data-position=4>GRAPHICS<span class="button_tally">4</span>
+            </a>
+            
+            
+            <a href='/tags/grid/' class=" post_tag button button_translucent" data-position=3>GRID<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/gtrendsr/' class=" post_tag button button_translucent" data-position=1>GTRENDSR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/lasso/' class=" post_tag button button_translucent" data-position=2>LASSO<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/legend/' class=" post_tag button button_translucent" data-position=1>LEGEND<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/magrittr/' class=" post_tag button button_translucent" data-position=2>MAGRITTR<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/mathematics/' class=" post_tag button button_translucent" data-position=4>MATHEMATICS<span class="button_tally">4</span>
+            </a>
+            
+            
+            <a href='/tags/matrix/' class=" post_tag button button_translucent" data-position=2>MATRIX<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/network-analysis/' class=" post_tag button button_translucent" data-position=1>NETWORK-ANALYSIS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/neural-network/' class=" post_tag button button_translucent" data-position=1>NEURAL-NETWORK<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/nlp/' class=" post_tag button button_translucent" data-position=2>NLP<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/nyc-taxi-data/' class=" post_tag button button_translucent" data-position=1>NYC-TAXI-DATA<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/operator/' class=" post_tag button button_translucent" data-position=1>OPERATOR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/packages/' class=" post_tag button button_translucent" data-position=1>PACKAGES<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/par/' class=" post_tag button button_translucent" data-position=1>PAR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/parallel/' class=" post_tag button button_translucent" data-position=1>PARALLEL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/pictures/' class=" post_tag button button_translucent" data-position=2>PICTURES<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/pipe/' class=" post_tag button button_translucent" data-position=1>PIPE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/plot/' class=" post_tag button button_translucent" data-position=6>PLOT<span class="button_tally">6</span>
+            </a>
+            
+            
+            <a href='/tags/plot-region/' class=" post_tag button button_translucent" data-position=1>PLOT-REGION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/postgresql/' class=" post_tag button button_translucent" data-position=1>POSTGRESQL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/probability/' class=" post_tag button button_translucent" data-position=1>PROBABILITY<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/promises/' class=" post_tag button button_translucent" data-position=1>PROMISES<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/quandl/' class=" post_tag button button_translucent" data-position=1>QUANDL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/r_tips/' class=" post_tag button button_translucent" data-position=1>R_TIPS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/readr/' class=" post_tag button button_translucent" data-position=2>READR<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/regression/' class=" post_tag button button_translucent" data-position=1>REGRESSION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/replace/' class=" post_tag button button_translucent" data-position=1>REPLACE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/rserve/' class=" post_tag button button_translucent" data-position=1>RSERVE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/scraping/' class=" post_tag button button_translucent" data-position=1>SCRAPING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/set/' class=" post_tag button button_translucent" data-position=1>SET<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/sqldf/' class=" post_tag button button_translucent" data-position=1>SQLDF<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/statistics/' class=" post_tag button button_translucent" data-position=2>STATISTICS<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/stock/' class=" post_tag button button_translucent" data-position=1>STOCK<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/stock-data/' class=" post_tag button button_translucent" data-position=1>STOCK-DATA<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/synchronous/' class=" post_tag button button_translucent" data-position=1>SYNCHRONOUS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/taxonomy/' class=" post_tag button button_translucent" data-position=1>TAXONOMY<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/text-analytics/' class=" post_tag button button_translucent" data-position=3>TEXT-ANALYTICS<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/text2vec/' class=" post_tag button button_translucent" data-position=1>TEXT2VEC<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/tidyr/' class=" post_tag button button_translucent" data-position=1>TIDYR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/tidyverse/' class=" post_tag button button_translucent" data-position=1>TIDYVERSE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/topic-analysis/' class=" post_tag button button_translucent" data-position=1>TOPIC-ANALYSIS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/traffic/' class=" post_tag button button_translucent" data-position=1>TRAFFIC<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/vector/' class=" post_tag button button_translucent" data-position=1>VECTOR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/web-application/' class=" post_tag button button_translucent" data-position=1>WEB-APPLICATION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/window-function/' class=" post_tag button button_translucent" data-position=1>WINDOW-FUNCTION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/zoo/' class=" post_tag button button_translucent" data-position=1>ZOO<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B3%80%ED%99%98/' class=" post_tag button button_translucent" data-position=3>데이터-변환<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%95%EC%A0%9C/' class=" post_tag button button_translucent" data-position=1>데이터-정제<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A7%84%EB%8B%A8/' class=" post_tag button button_translucent" data-position=3>데이터-진단<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%AA%A8%EB%8D%B8-%EC%A0%81%ED%95%A9/' class=" post_tag button button_translucent" data-position=1>모델-적합<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%AA%A8%EB%8D%B8-%EC%A7%84%EB%8B%A8/' class=" post_tag button button_translucent" data-position=1>모델-진단<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EC%97%AC%ED%96%89/' class=" post_tag button button_translucent" data-position=2>여행<span class="button_tally">2</span>
+            </a>
+            
+            <div class="tags_sort"><span title="sort alphabetically">[A~Z]</span><span title="sort by count">[0~9]</span>
+            </div>
+            <span class="tags_hide"><svg class="icon">
+            <use xlink:href="#closeme"></use>
+          </svg></span>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </section>
+</aside>
+
+</div>
+    </main><svg width="0" height="0" class="hidden">
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18.001 18.001" id="twitter">
+    <path d="M15.891 4.013c.808-.496 1.343-1.173 1.605-2.034a8.68 8.68 0 0 1-2.351.861c-.703-.756-1.593-1.14-2.66-1.14-1.043 0-1.924.366-2.643 1.078a3.56 3.56 0 0 0-1.076 2.605c0 .309.039.585.117.819-3.076-.105-5.622-1.381-7.628-3.837-.34.601-.51 1.213-.51 1.846 0 1.301.549 2.332 1.645 3.089-.625-.053-1.176-.211-1.645-.47 0 .929.273 1.705.82 2.388a3.623 3.623 0 0 0 2.115 1.291c-.312.08-.641.118-.979.118-.312 0-.533-.026-.664-.083.23.757.664 1.371 1.291 1.841a3.652 3.652 0 0 0 2.152.743C4.148 14.173 2.625 14.69.902 14.69c-.422 0-.721-.006-.902-.038 1.697 1.102 3.586 1.649 5.676 1.649 2.139 0 4.029-.542 5.674-1.626 1.645-1.078 2.859-2.408 3.639-3.974a10.77 10.77 0 0 0 1.172-4.892v-.468a7.788 7.788 0 0 0 1.84-1.921 8.142 8.142 0 0 1-2.11.593z"
+      ></path>
+  </symbol>
+  <symbol aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="mail">
+    <path  d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="calendar">
+    <path d="M452 40h-24V0h-40v40H124V0H84v40H60C26.916 40 0 66.916 0 100v352c0 33.084 26.916 60 60 60h392c33.084 0 60-26.916 60-60V100c0-33.084-26.916-60-60-60zm20 412c0 11.028-8.972 20-20 20H60c-11.028 0-20-8.972-20-20V188h432v264zm0-304H40v-48c0-11.028 8.972-20 20-20h24v40h40V80h264v40h40V80h24c11.028 0 20 8.972 20 20v48z"></path>
+    <path d="M76 230h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 310h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 390h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80-80h40v40h-40z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="github">
+    <path d="M255.968 5.329C114.624 5.329 0 120.401 0 262.353c0 113.536 73.344 209.856 175.104 243.872 12.8 2.368 17.472-5.568 17.472-12.384 0-6.112-.224-22.272-.352-43.712-71.2 15.52-86.24-34.464-86.24-34.464-11.616-29.696-28.416-37.6-28.416-37.6-23.264-15.936 1.728-15.616 1.728-15.616 25.696 1.824 39.2 26.496 39.2 26.496 22.848 39.264 59.936 27.936 74.528 21.344 2.304-16.608 8.928-27.936 16.256-34.368-56.832-6.496-116.608-28.544-116.608-127.008 0-28.064 9.984-51.008 26.368-68.992-2.656-6.496-11.424-32.64 2.496-68 0 0 21.504-6.912 70.4 26.336 20.416-5.696 42.304-8.544 64.096-8.64 21.728.128 43.648 2.944 64.096 8.672 48.864-33.248 70.336-26.336 70.336-26.336 13.952 35.392 5.184 61.504 2.56 68 16.416 17.984 26.304 40.928 26.304 68.992 0 98.72-59.84 120.448-116.864 126.816 9.184 7.936 17.376 23.616 17.376 47.584 0 34.368-.32 62.08-.32 70.496 0 6.88 4.608 14.88 17.6 12.352C438.72 472.145 512 375.857 512 262.353 512 120.401 397.376 5.329 255.968 5.329z"></path>
+  </symbol>
+  <symbol viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="rss">
+    <circle cx="3.429" cy="20.571" r="3.429"></circle>
+    <path d="M11.429 24h4.57C15.999 15.179 8.821 8.001 0 8v4.572c6.302.001 11.429 5.126 11.429 11.428z"></path>
+    <path d="M24 24C24 10.766 13.234 0 0 0v4.571c10.714 0 19.43 8.714 19.43 19.429z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="linkedin">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h362c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zM181 406h-60V196h60zm0-240h-60v-60h60zm210 240h-60V286c0-16.54-13.46-30-30-30s-30 13.46-30 30v120h-60V196h60v11.309C286.719 202.422 296.93 196 316 196c40.691.043 75 36.547 75 79.688zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="arrow">
+    <path d="M604.501 440.509L325.398 134.956c-5.331-5.357-12.423-7.627-19.386-7.27-6.989-.357-14.056 1.913-19.387 7.27L7.499 440.509c-9.999 10.024-9.999 26.298 0 36.323s26.223 10.024 36.222 0l262.293-287.164L568.28 476.832c9.999 10.024 26.222 10.024 36.221 0 9.999-10.023 9.999-26.298 0-36.323z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="carly">
+    <path d="M504.971 239.029L448 182.059V84c0-46.317-37.682-84-84-84h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c19.851 0 36 16.149 36 36v108c0 6.365 2.529 12.47 7.029 16.971L454.059 256l-47.029 47.029A24.002 24.002 0 0 0 400 320v108c0 19.851-16.149 36-36 36h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c46.318 0 84-37.683 84-84v-98.059l56.971-56.971c9.372-9.372 9.372-24.568 0-33.941zM112 192V84c0-19.851 16.149-36 36-36h44c13.255 0 24-10.745 24-24S205.255 0 192 0h-44c-46.318 0-84 37.683-84 84v98.059l-56.971 56.97c-9.373 9.373-9.373 24.568 0 33.941L64 329.941V428c0 46.317 37.682 84 84 84h44c13.255 0 24-10.745 24-24s-10.745-24-24-24h-44c-19.851 0-36-16.149-36-36V320c0-6.365-2.529-12.47-7.029-16.971L57.941 256l47.029-47.029A24.002 24.002 0 0 0 112 192z"></path>
+  </symbol>
+  <symbol viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="copy">
+    <path d="M23 2.75A2.75 2.75 0 0 0 20.25 0H8.75A2.75 2.75 0 0 0 6 2.75v13.5A2.75 2.75 0 0 0 8.75 19h11.5A2.75 2.75 0 0 0 23 16.25zM18.25 14.5h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5zm0-3h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5zm0-3h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5z"></path>
+    <path d="M8.75 20.5a4.255 4.255 0 0 1-4.25-4.25V2.75c0-.086.02-.166.025-.25H3.75A2.752 2.752 0 0 0 1 5.25v16A2.752 2.752 0 0 0 3.75 24h12a2.752 2.752 0 0 0 2.75-2.75v-.75z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001" id="closeme">
+    <path d="M284.286 256.002L506.143 34.144c7.811-7.811 7.811-20.475 0-28.285-7.811-7.81-20.475-7.811-28.285 0L256 227.717 34.143 5.859c-7.811-7.811-20.475-7.811-28.285 0-7.81 7.811-7.811 20.475 0 28.285l221.857 221.857L5.858 477.859c-7.811 7.811-7.811 20.475 0 28.285a19.938 19.938 0 0 0 14.143 5.857 19.94 19.94 0 0 0 14.143-5.857L256 284.287l221.857 221.857c3.905 3.905 9.024 5.857 14.143 5.857s10.237-1.952 14.143-5.857c7.811-7.811 7.811-20.475 0-28.285L284.286 256.002z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="open-menu">
+    <path d="M492 236H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0-160H20C8.954 76 0 84.954 0 96s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0 320H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="instagram">
+    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id=youtube>
+    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="stackoverflow">
+    <path d="M21 27v-8h3v11H0V19h3v8h18z"></path><path d="M17.1.2L15 1.8l7.9 10.6 2.1-1.6L17.1.2zm3.7 14.7L10.6 6.4l1.7-2 10.2 8.5-1.7 2zM7.2 12.3l12 5.6 1.1-2.4-12-5.6-1.1 2.4zm-1.8 6.8l13.56 1.96.17-2.38-13.26-2.55-.47 2.97zM19 25H5v-3h14v3z"></path>
+  </symbol>
+</svg>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+<footer class="footer">
+  <div class="footer_inner wrap pale">
+    <img src='/logos/logo.png' class="icon icon_2 transparent">
+    <p>Copyright<span class="year"></span> DATAHOLIC. All Rights Reserved</p><a class="to_top" href="#documentTop">
+  <svg class="icon">
+  <use xlink:href="#arrow"></use>
+</svg>
+</a>
+
+  </div>
+</footer>
+    <script type="text/javascript" src="/js/bundle.min.03f1cc201c9efa18e14550bff374f58e89f1e6b2a30a0e22f84c87f6eb766e419bd6569c3a60846ea3e65816112dfa454f4785d306d024b6ef2616d067862a7a.js" integrity="sha512-A/HMIBye&#43;hjhRVC/83T1jonx5rKjCg4i&#43;EyH9ut2bkGb1lacOmCEbqPmWBYRLfpFT0eF0wbQJLbvJhbQZ4Yqeg==" crossorigin="anonymous"></script>
+    
+  </body>
+</html>

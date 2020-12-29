@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Secret_Garden on Clarity</title>
+    <link>/series/secret_garden/</link>
+    <description>Recent content in Secret_Garden on Clarity</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 24 Oct 2014 21:58:12 +0800</lastBuildDate><atom:link href="/series/secret_garden/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>메이다이닝, 시크릿 가든</title>
+      <link>/post/2014-10/secret/</link>
+      <pubDate>Fri, 24 Oct 2014 21:58:12 +0800</pubDate>
+      
+      <guid>/post/2014-10/secret/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;메이-다이닝&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;메이 다이닝&lt;/h2&gt;
+&lt;p&gt;도봉구에 있는 메이다이닝이라는 레스토랑에 두어 번 다녀왔다.
+음식보다는 &lt;code&gt;시크릿가든&lt;/code&gt;이라는 야외 정원이 아름다운 곳이다.
+반송과 바오밥 나무, 그리고 가을에 방문하면 잘 익은 몇 개의 모과도 얻어올 수 있는 곳이다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;시크릿-가든&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;시크릿 가든&lt;/h2&gt;
+&lt;p&gt;몇 개의 사진을 공유해 본다.&lt;/p&gt;
+&lt;div id=&#34;반송&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;반송&lt;/h3&gt;
+&lt;p&gt;멀리서 바라본 시크릿 가든. 멀리 도봉산도 보인다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-1&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;img/IMG_1159.jpeg&#34; alt=&#34;멀리서 바라본 전경&#34; width=&#34;100%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 1: 멀리서 바라본 전경
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;반송-1&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;반송&lt;/h3&gt;
+&lt;p&gt;시크릿 가든에는 반송이 유명하다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-2&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;img/IMG_1180.jpeg&#34; alt=&#34;반송, 마치 반원 모양이다&#34; width=&#34;100%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 2: 반송, 마치 반원 모양이다
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;소나무-군락&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;소나무 군락&lt;/h3&gt;
+&lt;p&gt;소나무가 제법 아름답다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-3&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;img/IMG_1191.jpeg&#34; alt=&#34;소나무들의 조화&#34; width=&#34;100%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 3: 소나무들의 조화
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-4&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;img/IMG_1181.jpeg&#34; alt=&#34;소나무 세 그루&#34; width=&#34;100%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 4: 소나무 세 그루
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;바오밥나무&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;바오밥나무&lt;/h3&gt;
+&lt;p&gt;바오밥나무도 볼 수 있다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-5&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;img/IMG_1173.jpeg&#34; alt=&#34;정리된 바오밥나무&#34; width=&#34;100%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 5: 정리된 바오밥나무
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;모과나무&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;모과나무&lt;/h3&gt;
+&lt;p&gt;모과나무도 볼 수 있다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-6&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;img/IMG_1176.jpeg&#34; alt=&#34;모과나무와 열매&#34; width=&#34;100%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 6: 모과나무와 열매
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;근처의-산등성&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;근처의 산등성&lt;/h3&gt;
+&lt;p&gt;근처의 산등성으로 산책을 하다가, 이름 모들 나무의 군락을 보다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-7&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;img/IMG_1190.jpeg&#34; alt=&#34;잡목들 사이로&#34; width=&#34;100%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 7: 잡목들 사이로
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

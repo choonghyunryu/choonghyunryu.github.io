@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>packages on Dataholic</title>
+    <link>/tags/packages/</link>
+    <description>Recent content in packages on Dataholic</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 26 Feb 2020 00:15:12 +0800</lastBuildDate><atom:link href="/tags/packages/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>R 웹 어플리케이션 개발에 대한 연구</title>
+      <link>/post/2020-02/r_web_application/</link>
+      <pubDate>Wed, 26 Feb 2020 00:15:12 +0800</pubDate>
+      
+      <guid>/post/2020-02/r_web_application/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;들어가기&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;들어가기&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;그 시절은 국내에서 R을 사용하는 &lt;code&gt;R 유저&lt;/code&gt;가 많지 않을 때 였다. S-PLUS로 데이터분석 프로젝트를 수행하던 시절, &lt;code&gt;MathSoft&lt;/code&gt;라는 회사에서 Linux/UNIX에서는 &lt;code&gt;S-PLUS Analytic Server&lt;/code&gt;, MS-Windows에서는 &lt;code&gt;StatServer&lt;/code&gt;라는 이름의 상용 웹 어플리케이션을 판매하던 시절이었다. S-PLUS라는 통계 소프트웨어(R의 Commercial Version)를 연동하여 웹 어플리케이션을 개발하는 기능을 구현한 제품이었다. 지금의 R Shiny Server 정도로 이해하면 된다. 2006년이던가? 야심차게 R과 연동하는 웹 어플리케이션 서버를 개발했었다. 그리고 최근에 네이버 블로그와 몇 개의 백업 디렉토리에서 그 흔적을 발견하였고, 아련한 추억을 되새기는 차원에서 정리해 보았다. 그 당시에 썼던 글을 있는 그대로 인용해 본다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div id=&#34;section&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;2007-6-20&lt;/h1&gt;
+&lt;div id=&#34;r-web의-현재-모습&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;R Web의 현재 모습&lt;/h2&gt;
+&lt;p&gt;작년말부터 R과 Rserve, Mysql(DBMS), Tomcat(웹서버)를 이용해서 Web에서 R을 이용한 어플리케이션을 개발하기 위한 프로그램을 만드는 작업을 시작했었다.&lt;/p&gt;
+&lt;p&gt;그러나 국내의 IT(엄밀히 말하면 프로그램 개발)업에 종사하면서 업무 외 시간을 이용해서 개인적으로 어떤 일을 하는 것은 정말로 힘들다. 모 회사의 프로젝트를 몇개월 진행하면서 휴일및 공휴일 밤시간대를 포기해야했다. 그러니 처음 기획했던 계획은 답보에 그쳤다. 이제 다시 꺼내서 다듬으려 하니 몇 달의 공백이 크게 느껴진다.&lt;/p&gt;
+&lt;p&gt;현재까지 만들어진 통계모델 (통계량, 그래프, 집계테이블을 조합한 분석 모델)을 설계하는 관리자 화면이다.&lt;/p&gt;
+&lt;p&gt;완성도가 높은 프로그램이 완성되면, 상업적인 목적을 배제한 학교등에는 공개할 생각에 있다.
+아님 R을 이용한 사업을 구상해 볼 수도 있겠다.&lt;/p&gt;
+&lt;p&gt;오랜만에 실행시켜 보니 몇개의 버그가 눈에 띈다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-2&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/rweb.gif&#34; alt=&#34;R Web의 스크린샷&#34; width=&#34;85%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 1: R Web의 스크린샷
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;section-1&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;2007-08-31&lt;/h1&gt;
+&lt;div id=&#34;rss-프로젝트&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;RSS 프로젝트&lt;/h2&gt;
+&lt;p&gt;RSS라고 명명했다.
+&lt;strong&gt;R&lt;/strong&gt; &lt;strong&gt;S&lt;/strong&gt;tat&lt;strong&gt;S&lt;/strong&gt;erver의 약자이다.&lt;/p&gt;
+&lt;p&gt;사실 처음 시도한 지는 2년도 더 된다.
+지금은 기능을 보강하고, 좀더 완성된 모습의 도구를 만들고 있는 중이다.&lt;/p&gt;
+&lt;p&gt;R을 이용하여서 웹어플리케이션을 만드는 시도는 이전부터 많은 시도가 있었다.
+그러고 이 RSS도 그 중에 하나이다.&lt;/p&gt;
+&lt;p&gt;언젠가는 멋진 놈이 탄생하리라 생각한다. ^^&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;rss-소개&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;RSS 소개&lt;/h2&gt;
+&lt;p&gt;RSS(R StatServer)란 R의 RServe 라이브러리를 이용해서 Java/JSP 기반의 웹 어플리케이션 구축을 위해서 개발한 서버 환경이다.&lt;/p&gt;
+&lt;p&gt;통계학이 실사구시(實事求是)의 학문이고 궁극적인 목표가 이용후생(利用厚生)이라 생각한다. 이미 교육 현장에서는 R이 통계 이론의 탐구를 위한 훌륭한 교육 도구로 자리를 잡았다고 생각한다. 하지만 산업 전반에서의 통계적 방법론을 구현할 수 있는 도구로서의 R의 모습은 아직 성숙되지 못한 감이 없지 않다.&lt;/p&gt;
+&lt;p&gt;그것은 기업에서 원하는 Desktop 분석 도구로서의 R이 아니라 응용 프로그램을 구축(System Integration)할 수 있는 수단의 부재도 한 몫 한다고 생각한다. 이런 고민에서 출발해서 RSS(R StatServer)를 개발하게 되었다.&lt;/p&gt;
+&lt;p&gt;웹 어플리케이션을 기반으로 한 이유는 기업의 응용 프로그램이 웹 기반에서 동작하는 것이 표준이 될 정도로 대중화되었기 때문이다. 그리고 핵심 기술은 JSP에서 동작하는 R custom tag library이다.&lt;/p&gt;
+&lt;p&gt;RSS(R StatServer)는 플랫폼 독립적으로 설계되기었기 때문에 MS Windows와 UNIX, LINUX에서도 동작이 된다. 본 시스템은 Windows XP에서 R 2.4.X, R 2.5.X, Tomcat 5.5, Tomcat 6.0, Oracle 9i(MySQL 5.X, MySQL 6.X)에서 개발하고 테스트 되었다. 개발 도구는 JDK(Java Development Kit) 1.4.X, 1.5.X를 이용하였다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;rss-구조&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;RSS 구조&lt;/h2&gt;
+&lt;p&gt;RSS은 기업에서의 어플리케이션을 개발하기 위한 라이센스를 획득하기 위해서 GPL(General Public License)을 따르는 라이브러를 수정없이 사용하였다.&lt;/p&gt;
+&lt;p&gt;핵심 엔진은 R System이며, R과 인터페이스하기 위한 RServe와 DBMS와 인터페이스하기 위한 RODBC, 그리고 결과를 HTML의 Table tag로 만들기 위한 XML Packages, Tree 객체를 그리기 위한 tree Packages가 사용되었다.
+Tree를 적용하기 위한 그래픽 포맷은 SVG (Scalable Vector Graphics )를 사용하였다.&lt;/p&gt;
+&lt;p&gt;RSS의 개념적인 구조는 다음의 그림과 같다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-3&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/RSS.png&#34; alt=&#34;RSS 구조도&#34; width=&#34;70%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 2: RSS 구조도
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;r-tag-library-소개&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;R Tag Library 소개&lt;/h2&gt;
+&lt;p&gt;R Tag Library란 R에서 R의 RServe 라이브러리를 이용해서 Java/JSP 기반의 웹 어플리케이션 구축을 위해서 개발한 라이브러리이다.&lt;/p&gt;
+&lt;p&gt;이 라이브러리는 플랫폼 독립적으로 운영되기 때문에 MS Windows와 UNIX, LINUX에서도 동작이 된다.&lt;/p&gt;
+&lt;p&gt;현재 개발한 Tag는 다음과 같은 6개의 Tag이다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-4&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tags.png&#34; alt=&#34;Tag 종류&#34; width=&#34;70%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 3: Tag 종류
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;몇-가지-예제-화면&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;몇 가지 예제 화면&lt;/h2&gt;
+&lt;p&gt;몇 가지 예제 화면을 예시한다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-5&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/rss2.png&#34; alt=&#34;R:script Tag 예제&#34; width=&#34;75%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 4: R:script Tag 예제
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-6&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/rss3.png&#34; alt=&#34;R:graph Tag 예제&#34; width=&#34;75%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 5: R:graph Tag 예제
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-7&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/rss1.png&#34; alt=&#34;R:tree Tag 예제&#34; width=&#34;75%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 6: R:tree Tag 예제
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;추계학술논문-발표회&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;2007-11-10 추계학술논문 발표회&lt;/h1&gt;
+&lt;p&gt;2007년 한국통계학회에서 진행한 추계학술논문 발표회에서 발표하였다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-8&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/session.png&#34; alt=&#34;발표 세션 정보&#34; width=&#34;75%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 7: 발표 세션 정보
+&lt;/p&gt;
+&lt;/div&gt;
+논문의 초록이다.
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-9&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/abstract.png&#34; alt=&#34;발표 논문 초록&#34; width=&#34;75%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 8: 발표 논문 초록
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;다음은 발표 슬라이드에서의 개요 부분이다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;R 웹 어플리케이션 서버(R StatServer: RSS)란?
+&lt;ul&gt;
+&lt;li&gt;R 수행 결과를 웹 화면에 출력하여 어플리케이션을 개발하는 서버 환경&lt;/li&gt;
+&lt;li&gt;JSP Custom tag를 구현한 Java기반의 웹 어플리케이션 서버&lt;/li&gt;
+&lt;li&gt;Rserve Packages를 이용하여 R과의 TCP/IP 통신&lt;/li&gt;
+&lt;li&gt;MS-Windows, UNIX, LINUX등의 운영체제 지원&lt;/li&gt;
+&lt;li&gt;“R을 이용한 통계모델 및 그래프의 손쉬운 웹 퍼블리싱”&lt;/li&gt;
+&lt;li&gt;“JSP의 기초만 알면 쉽게 R 웹 어플리케이션 개발 가능”&lt;/li&gt;
+&lt;li&gt;“GPL 라이센스를 따르는 소프트웨어를 수정 없이 사용하였기에 관공서,기업 등에서 사용하는데 법적인 문제가 없음”&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;발표 슬라이드는 &lt;a href=&#34;https://github.com/choonghyunryu/R_Materials/blob/master/Conference/2007/R%20%EC%9B%B9%20%EC%96%B4%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98%20%EC%84%9C%EB%B2%84%EC%9D%98%20%EA%B0%9C%EB%B0%9C%20%EB%B0%8F%20%EC%9D%91%EC%9A%A9%EC%97%90%20%EB%8C%80%ED%95%9C%20%EC%97%B0%EA%B5%AC_%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C_%EC%9C%A0%EC%B6%A9%ED%98%84.pdf&#34; target=&#34;_blank&#34;&gt;여기&lt;/a&gt;에 링크되어 있다.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;아쉽게도 논문의 본문을 찾을 수 없었다.&lt;/strong&gt; 인쇄된 논문집이 있었는데, 몇번 이사를 하면서 분실한 것 같다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;년-어느-시점의-ais&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;2009년 어느 시점의 AIS&lt;/h1&gt;
+&lt;p&gt;어느 순간 이름이 RSS에서 AIS로 바뀌어 있었다.&lt;/p&gt;
+&lt;div id=&#34;ais의-개념&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;AIS의 개념&lt;/h2&gt;
+&lt;p&gt;Analytic Intelligence Server(AIS)는 통계 프로그램 언어인 R 기반의 솔루션으로 Predictive Model, Multi-Dimension Analysis, Visualization 등의 통계적 자료분석의 방법론을 웹 어플리케이션에 구현할 수 있는 통계분석 서버입니다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-10&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/AIS1.png&#34; alt=&#34;AIS의 개념&#34; width=&#34;75%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 9: AIS의 개념
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ais-시스템-구성도&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;AIS 시스템 구성도&lt;/h2&gt;
+&lt;p&gt;RSS에 R:Lattice 태그가 추가되어서 8개의 Tag를 지원하고 있다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-11&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/AIS2.png&#34; alt=&#34;AIS의 시스템 구성도&#34; width=&#34;75%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 10: AIS의 시스템 구성도
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ais-주요-내용&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;AIS 주요 내용&lt;/h2&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-12&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/AIS3.png&#34; alt=&#34;AIS의 주요 내용&#34; width=&#34;75%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 11: AIS의 주요 내용
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ais-구현-방법&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;AIS 구현 방법&lt;/h2&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-13&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/AIS4.png&#34; alt=&#34;AIS의 구현 방법&#34; width=&#34;75%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 12: AIS의 구현 방법
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;에필로그&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;에필로그&lt;/h1&gt;
+&lt;p&gt;그 당시에는 나름 global Product에서 AIS를 따라올 제품이 없었다. 아쉬운 점은 R 패키지로 구성되는 서버임에도 CRAN에 올려 오픈소스화 하지 못한 점과, 지속적으로 업그레이드하지 않고 사장시켰다는 점이다.&lt;/p&gt;
+&lt;p&gt;주인을 잘못 만나 빛을 제대로 보지 못한 AIS에게 미안함이 드는 밤이다. 나름 Linux/UNIX에서는 &lt;code&gt;S-PLUS Analytic Server&lt;/code&gt;에 견줄만 했는데…&lt;/p&gt;
+&lt;p&gt;“아 그렇게 열성적인 적도 있었구나!” 다시한번 발자취를 뒤돌아보는 기회였다.&lt;/p&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

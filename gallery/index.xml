@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Galleries on Dataholic</title>
+    <link>/gallery/</link>
+    <description>Recent content in Galleries on Dataholic</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sat, 13 Apr 2019 09:59:12 +0800</lastBuildDate><atom:link href="/gallery/index.xml" rel="self" type="application/rss+xml" />
+  </channel>
+</rss>

@@ -1,0 +1,2246 @@
+
+<!DOCTYPE html>
+<html lang="en" data-figures="" class="page">
+  <head>
+<title>alookr: Binary classification modeling | Dataholic</title>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.79.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-118779401-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-118779401-1');
+</script>
+  
+<meta property="og:locale" content="en" />
+
+<meta property="og:type" content="article">
+<meta name="description" content="개요 alookr은 이진분류 모델의 개발 과정에서 데이터 정제, 데이터의 traning set과 test set으로의 분리, 모델 적합, 적합된 모델의 평가 및 최적의 모델을 선정한다. 이 패키지는 dplyr 패키지와 협업하여 이진분류 데이터 분석 프로세스를 유연하게 처리해 준다. …">
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:creator" content="">
+<meta name="twitter:title" content="alookr: Binary classification modeling" />
+<meta property="og:url" content="/post/2020-03/2020-03-27-r-alookr.ko/" />
+<meta property="og:title" content="alookr: Binary classification modeling" />
+<meta property="og:description" content="개요 alookr은 이진분류 모델의 개발 과정에서 데이터 정제, 데이터의 traning set과 test set으로의 분리, 모델 적합, 적합된 모델의 평가 및 최적의 모델을 선정한다. 이 패키지는 dplyr 패키지와 협업하여 이진분류 데이터 분석 프로세스를 유연하게 처리해 준다. …" />
+<meta property="og:image" content="/" />
+<link rel="apple-touch-icon" sizes="180x180" href='/icons/apple-touch-icon.png'>
+<link rel="icon" type="image/png" sizes="32x32" href='/icons/favicon-32x32.png'>
+<link rel="manifest" href='/icons/site.webmanifest'>
+<link rel="mask-icon" href='/safari-pinned-tab.svg' color="#002538">
+<meta name="msapplication-TileColor" content="#002538">
+<meta name="theme-color" content="#002538">
+
+<link rel="canonical" href="/post/2020-03/2020-03-27-r-alookr.ko/">
+
+    
+
+    
+    
+    <link rel="preload" href="/css/styles.2b3290fc6e94839826981c23ed76e1831472bd3f8af68332da00b97d9430b56bfb7e9394d5c09aca633c093c621709cdd745eec940be733933ac5d876223de52.css" integrity = "sha512-KzKQ/G6Ug5gmmBwj7XbhgxRyvT&#43;K9oMy2gC5fZQwtWv7fpOU1cCaymM8CTxiFwnN10XuyUC&#43;czkzrF2HYiPeUg==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="/js/bundle.min.03f1cc201c9efa18e14550bff374f58e89f1e6b2a30a0e22f84c87f6eb766e419bd6569c3a60846ea3e65816112dfa454f4785d306d024b6ef2616d067862a7a.js" as="script" integrity=
+    "sha512-A/HMIBye&#43;hjhRVC/83T1jonx5rKjCg4i&#43;EyH9ut2bkGb1lacOmCEbqPmWBYRLfpFT0eF0wbQJLbvJhbQZ4Yqeg==" crossorigin="anonymous">
+
+    
+    <link rel="stylesheet" type="text/css" href="/css/styles.2b3290fc6e94839826981c23ed76e1831472bd3f8af68332da00b97d9430b56bfb7e9394d5c09aca633c093c621709cdd745eec940be733933ac5d876223de52.css" integrity="sha512-KzKQ/G6Ug5gmmBwj7XbhgxRyvT&#43;K9oMy2gC5fZQwtWv7fpOU1cCaymM8CTxiFwnN10XuyUC&#43;czkzrF2HYiPeUg==" crossorigin="anonymous">
+    
+  </head>
+  
+  
+    
+  
+  <body data-code="7" data-lines="false" id="documentTop">
+
+<header class="nav_header" >
+  <nav class="nav">
+    <a href='/' class="nav_brand nav_item">
+      <img src="/logos/logo.png" class="logo">
+      <div class="nav_close">
+        <div>
+          <svg class="icon">
+  <use xlink:href="#open-menu"></use>
+</svg>
+          <svg class="icon">
+  <use xlink:href="#closeme"></use>
+</svg>
+        </div>
+      </div>
+    </a>
+    <div class='nav_body nav_body_left'>
+      
+      
+      
+        
+
+  <div class="nav_parent">
+    <a href="/" class="nav_item">Home </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/post/" class="nav_item">R </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/gallery/" class="nav_item">Gellary </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/moment/" class="nav_item">Moment </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/about/" class="nav_item">About </a>
+  </div>
+      
+      <div class="nav_parent">
+        <a href="#" class="nav_item"></a>
+        <div class="nav_sub">
+          <span class="nav_child"></span>
+          
+          <a href="/" class="nav_child nav_item">English</a>
+          
+          <a href="/kr/" class="nav_child nav_item">Korean</a>
+          
+        </div>
+      </div>
+      
+<div class='follow'>
+  <a href="https://github.com/choonghyunryu">
+    <svg class="icon">
+  <use xlink:href="#github"></use>
+</svg>
+  </a>
+  <a href="https://www.facebook.com/choonghyun.ryu">
+    <svg class="icon">
+  <use xlink:href="#facebook"></use>
+</svg>
+  </a>
+  <a href="https://www.linkedin.com/in/choonghyun-ryu-10a95726/">
+    <svg class="icon">
+  <use xlink:href="#linkedin"></use>
+</svg>
+  </a>
+    
+  <a href="/index.xml">
+    <svg class="icon">
+  <use xlink:href="#rss"></use>
+</svg>
+  </a>
+<div class="color_mode">
+  <input type="checkbox" class="color_choice" id="mode">
+</div>
+
+</div>
+
+    </div>
+  </nav>
+</header>
+
+    <main>
+  
+<div class="grid-inverse wrap content">
+  <article class="post_content">
+    <h1 class="post_title">alookr: Binary classification modeling</h1><div class="post_meta">
+  
+    <svg class="icon">
+  <use xlink:href="#calendar"></use>
+</svg>
+    <span class="post_date">
+      2020-03-27</span>
+      <a href='/tags/alookr' class="post_tag button button_translucent">alookr
+      </a>
+      <a href='/tags/binary-classification' class="post_tag button button_translucent">Binary Classification
+      </a>
+      <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%95%EC%A0%9C' class="post_tag button button_translucent">데이터 정제
+      </a>
+      <a href='/tags/%EB%AA%A8%EB%8D%B8-%EC%A0%81%ED%95%A9' class="post_tag button button_translucent">모델 적합
+      </a>
+      <a href='/tags/%EB%AA%A8%EB%8D%B8-%EC%A7%84%EB%8B%A8' class="post_tag button button_translucent">모델 진단
+      </a>
+</div>
+
+    
+  <div class="post_share">
+    Share on:
+    <a href="https://twitter.com/intent/tweet?text=alookr%3a%20Binary%20classification%20modeling&url=%2fpost%2f2020-03%2f2020-03-27-r-alookr.ko%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#twitter"></use>
+</svg>
+    </a>
+    <a href="https://www.facebook.com/sharer.php?u=%2fpost%2f2020-03%2f2020-03-27-r-alookr.ko%2f&t=alookr%3a%20Binary%20classification%20modeling" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#facebook"></use>
+</svg>
+    </a>
+    <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#linkedin"></use>
+</svg>
+    </a>
+    <a href="/post/2020-03/2020-03-27-r-alookr.ko/" title="Copy Link" class="link link_yank">
+      <svg class="icon">
+  <use xlink:href="#copy"></use>
+</svg>
+    </a>
+  </div>
+
+    
+    
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+
+<div id="개요" class="section level2">
+<h2>개요</h2>
+<p><code>alookr</code>은 이진분류 모델의 개발 과정에서 데이터 정제, 데이터의 traning set과 test set으로의 분리, 모델 적합, 적합된 모델의 평가 및 최적의 모델을 선정한다. 이 패키지는 <code>dplyr</code> 패키지와 협업하여 이진분류 데이터 분석 프로세스를 유연하게 처리해 준다.</p>
+<p>주요 기능:</p>
+<ul>
+<li>데이터를 <em>traning set과 test set</em>으로 나눈다.</li>
+<li>여러 대표적인 <em>이진분류 모델</em>을 적합한다.</li>
+<li>적합한 이진분류 <em>모델을 평가</em>하고 <em>최적의 모델을 선정</em>한다.</li>
+<li>이진분류 모델의 <em>전 프로세스를 지원</em>한다.</li>
+</ul>
+<p><code>alookr</code>이라는 이름은 데이터 분석 과정에서 <code>looking at the analytics process</code>에서 유래하여 작명하였다.</p>
+</div>
+<div id="alookr-설치" class="section level2">
+<h2>alookr 설치</h2>
+<p>CRAN에 등록된, 릴리즈된 패키지는 다음과 같이 설치한다.:</p>
+<pre class="r"><code>install.packages(&quot;alookr&quot;)</code></pre>
+<p>혹은 GitHub에 등록된 vignettes이 없는 개발버전은 다음처럼 설치한다.:</p>
+<pre class="r"><code>devtools::install_github(&quot;choonghyunryu/alookr&quot;)</code></pre>
+<p>혹은 GitHub에 등록된 vignettes을 포함한 개발버전은 다음처럼 설치한다.:</p>
+<pre class="r"><code>install.packages(c(&quot;ISLR&quot;))
+devtools::install_github(&quot;choonghyunryu/alookr&quot;, build_vignettes = TRUE)</code></pre>
+</div>
+<div id="사용-방법" class="section level2">
+<h2>사용 방법</h2>
+<p>alookr에는 몇 가지 vignette 파일을 포함하고 있는데, 이 포스트는 이를 기초로 작성하였다.</p>
+<p>제공되는 vignette는 다음과 같다.</p>
+<ul>
+<li>Cleansing the dataset</li>
+<li>Splitting the dataset
+<ul>
+<li>Split the data into a training set and a test set</li>
+</ul></li>
+<li>Classification Modeling
+<ul>
+<li>Modeling and Evaluate, Predict</li>
+</ul></li>
+</ul>
+<pre class="r"><code>browseVignettes(package = &quot;alookr&quot;)</code></pre>
+</div>
+<div id="데이터-정제" class="section level2">
+<h2>데이터 정제</h2>
+<div id="예제-데이터-생성하기" class="section level3">
+<h3>예제 데이터 생성하기</h3>
+<p>alookr 패키지의 기초적인 사용 방법을 설명하기 위해서 <code>data_exam</code>라는 가상의 데이터를 생성한다. 이 데이터는 5개의 변수를 포함한다.</p>
+<p>예제를 위한 데이터는 다음과 같은 변수를 포함한다.:</p>
+<ul>
+<li>id : character</li>
+<li>year: character</li>
+<li>count: numeric</li>
+<li>alpha : character</li>
+<li>flag : character</li>
+</ul>
+<pre class="r"><code># 샘플 데이터 생성
+set.seed(123L)
+id &lt;- sapply(1:1000, function(x)
+  paste(c(sample(letters, 5), x), collapse = &quot;&quot;))
+
+year &lt;- &quot;2018&quot;
+
+set.seed(123L)
+count &lt;- sample(1:10, size = 1000, replace = TRUE)
+
+set.seed(123L)
+alpha &lt;- sample(letters, size = 1000, replace = TRUE)
+
+set.seed(123L)
+flag &lt;- sample(c(&quot;Y&quot;, &quot;N&quot;), size = 1000, prob = c(0.1, 0.9), replace = TRUE)
+
+data_exam &lt;- data.frame(id, year, count, alpha, flag, stringsAsFactors = FALSE)
+
+# 데이터의 구조
+str(data_exam)
+#&gt; &#39;data.frame&#39;:    1000 obs. of  5 variables:
+#&gt;  $ id   : chr  &quot;osncj1&quot; &quot;rvket2&quot; &quot;nvesi3&quot; &quot;chgji4&quot; ...
+#&gt;  $ year : chr  &quot;2018&quot; &quot;2018&quot; &quot;2018&quot; &quot;2018&quot; ...
+#&gt;  $ count: int  3 3 10 2 6 5 4 6 9 10 ...
+#&gt;  $ alpha: chr  &quot;o&quot; &quot;s&quot; &quot;n&quot; &quot;c&quot; ...
+#&gt;  $ flag : chr  &quot;N&quot; &quot;N&quot; &quot;N&quot; &quot;N&quot; ...
+
+# 데이터의 집계
+summary(data_exam)
+#&gt;       id                year               count           alpha          
+#&gt;  Length:1000        Length:1000        Min.   : 1.000   Length:1000       
+#&gt;  Class :character   Class :character   1st Qu.: 3.000   Class :character  
+#&gt;  Mode  :character   Mode  :character   Median : 6.000   Mode  :character  
+#&gt;                                        Mean   : 5.698                     
+#&gt;                                        3rd Qu.: 8.000                     
+#&gt;                                        Max.   :10.000                     
+#&gt;      flag          
+#&gt;  Length:1000       
+#&gt;  Class :character  
+#&gt;  Mode  :character  
+#&gt;                    
+#&gt;                    
+#&gt; </code></pre>
+</div>
+<div id="데이터-정제-1" class="section level3">
+<h3>데이터 정제</h3>
+<p><code>cleanse()</code>는 이진분류 모델 적합을 수행하기 전에 데이터 정제를 수행한다.</p>
+<p><code>cleanse()</code>의 기능은 다음과 같다.:</p>
+<ul>
+<li>모든 관측치가 동일한 값을 갖는 변수의 제거</li>
+<li>유일한 값의 비중이 높은 변수의 제거</li>
+<li>character 변수를 factor로 변경</li>
+<li>결측치의 비중이 높은 변수의 제거</li>
+</ul>
+<div id="cleanse을-이용한-데이터의-정제" class="section level4">
+<h4>cleanse()을 이용한 데이터의 정제</h4>
+<p>다음 예제는 data_exam 데이터 프레임을 정제한다.:</p>
+<pre class="r"><code>library(alookr)
+#&gt; Loading required package: ggplot2
+#&gt; Loading required package: randomForest
+#&gt; randomForest 4.6-14
+#&gt; Type rfNews() to see new features/changes/bug fixes.
+#&gt; 
+#&gt; Attaching package: &#39;randomForest&#39;
+#&gt; The following object is masked from &#39;package:ggplot2&#39;:
+#&gt; 
+#&gt;     margin
+#&gt; Registered S3 method overwritten by &#39;quantmod&#39;:
+#&gt;   method            from
+#&gt;   as.zoo.data.frame zoo
+
+# 데이터 정제
+newDat &lt;- cleanse(data_exam)
+#&gt; ── Checking unique value ─────────────────────────── unique value is one ──
+#&gt; remove variables that unique value is one
+#&gt; ● year
+#&gt; 
+#&gt; ── Checking unique rate ─────────────────────────────── high unique rate ──
+#&gt; remove variables with high unique rate
+#&gt; ● id = 1000(1)
+#&gt; 
+#&gt; ── Checking character variables ─────────────────────── categorical data ──
+#&gt; converts character variables to factor
+#&gt; ● alpha
+#&gt; ● flag
+
+# 정제된 데이터의 구조
+str(newDat)
+#&gt; &#39;data.frame&#39;:    1000 obs. of  3 variables:
+#&gt;  $ count: int  3 3 10 2 6 5 4 6 9 10 ...
+#&gt;  $ alpha: Factor w/ 26 levels &quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;,..: 15 19 14 3 10 18 22 11 5 20 ...
+#&gt;  $ flag : Factor w/ 2 levels &quot;N&quot;,&quot;Y&quot;: 1 1 1 1 2 1 1 1 1 1 ...</code></pre>
+<ul>
+<li><code>remove variables whose unique value is one</code> : year 변수는 오직 “2018”라는 하나의 값만 가지고 있다.. 이런 변수는 모형적합에 필요치 않다. 그래서 제거된다.</li>
+<li><code>remove variables with high unique rate</code> :
+범주형 변수에서 수준(levle)의 개수가 너무 많으면, 분류모델의 변수로 적당하지 않다. 이 경우에는 식별자(identifier)일 가능성이 높다. 그래서 범주형이나 문자열 변수에서 <strong>유일값의 비율</strong>로 정의된, <strong>수준의 개수/관측치의 개수</strong>가 큰 변수를 제거한다.
+<ul>
+<li>레벨의 개수가 1000인 변수 id의 유일값의 비율은 1이다. 그래서 이 변수는 제거 대상이다.</li>
+<li>변수 alpha의 유일값의 비율은 0.026이며, 이 변수로 제거된다.</li>
+</ul></li>
+<li><code>converts character variables to factor</code> : character 변수인 변수 flag는 factor로 변경된다.</li>
+</ul>
+<p>다음 예제처럼 <code>유일값의 비율</code>의 임계치를 변경하여, 범주형 변수의 제거를 조정할 수 있다.:</p>
+<pre class="r"><code># 데이터 정제
+newDat &lt;- cleanse(data_exam, uniq_thres = 0.03)
+#&gt; ── Checking unique value ─────────────────────────── unique value is one ──
+#&gt; remove variables that unique value is one
+#&gt; ● year
+#&gt; 
+#&gt; ── Checking unique rate ─────────────────────────────── high unique rate ──
+#&gt; remove variables with high unique rate
+#&gt; ● id = 1000(1)
+#&gt; 
+#&gt; ── Checking character variables ─────────────────────── categorical data ──
+#&gt; converts character variables to factor
+#&gt; ● alpha
+#&gt; ● flag
+
+# 정제된 데이터의 구조
+str(newDat)
+#&gt; &#39;data.frame&#39;:    1000 obs. of  3 variables:
+#&gt;  $ count: int  3 3 10 2 6 5 4 6 9 10 ...
+#&gt;  $ alpha: Factor w/ 26 levels &quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;,..: 15 19 14 3 10 18 22 11 5 20 ...
+#&gt;  $ flag : Factor w/ 2 levels &quot;N&quot;,&quot;Y&quot;: 1 1 1 1 2 1 1 1 1 1 ...</code></pre>
+<p>변수 alpha가 제거되지 않았다.</p>
+<p>데이터 정제에 유일값의 비율을 적용하지 않으려면, 다음처럼 uniq 인수값을 FALSE로 지정하면 된다.:</p>
+<pre class="r"><code># 데이터 정제
+newDat &lt;- cleanse(data_exam, uniq = FALSE)
+#&gt; ── Checking character variables ─────────────────────── categorical data ──
+#&gt; converts character variables to factor
+#&gt; ● id
+#&gt; ● year
+#&gt; ● alpha
+#&gt; ● flag
+
+# 정제된 데이터의 구조
+str(newDat)
+#&gt; &#39;data.frame&#39;:    1000 obs. of  5 variables:
+#&gt;  $ id   : Factor w/ 1000 levels &quot;ablnc282&quot;,&quot;abqym54&quot;,..: 594 715 558 94 727 270 499 882 930 515 ...
+#&gt;  $ year : Factor w/ 1 level &quot;2018&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+#&gt;  $ count: int  3 3 10 2 6 5 4 6 9 10 ...
+#&gt;  $ alpha: Factor w/ 26 levels &quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;,..: 15 19 14 3 10 18 22 11 5 20 ...
+#&gt;  $ flag : Factor w/ 2 levels &quot;N&quot;,&quot;Y&quot;: 1 1 1 1 2 1 1 1 1 1 ...</code></pre>
+<p>character 변수를 factor로 변경하지 않으려면, 다음처럼 char 인수값을 FALSE로 지정한다.:</p>
+<pre class="r"><code># 데이터 정제
+newDat &lt;- cleanse(data_exam, char = FALSE)
+#&gt; ── Checking unique value ─────────────────────────── unique value is one ──
+#&gt; remove variables that unique value is one
+#&gt; ● year
+#&gt; 
+#&gt; ── Checking unique rate ─────────────────────────────── high unique rate ──
+#&gt; remove variables with high unique rate
+#&gt; ● id = 1000(1)
+
+# 정제된 데이터의 구조
+str(newDat)
+#&gt; &#39;data.frame&#39;:    1000 obs. of  3 variables:
+#&gt;  $ count: int  3 3 10 2 6 5 4 6 9 10 ...
+#&gt;  $ alpha: chr  &quot;o&quot; &quot;s&quot; &quot;n&quot; &quot;c&quot; ...
+#&gt;  $ flag : chr  &quot;N&quot; &quot;N&quot; &quot;N&quot; &quot;N&quot; ...</code></pre>
+<p>결측치가 포함된 변수를 제거하려면, missing 인수값을 FALSE로 지정한다. 다음 예제는 결측치가 포함된 flag 변수를 제거한다.</p>
+<pre class="r"><code>data_exam$flag[1] &lt;- NA 
+
+# 데이터 정제
+newDat &lt;- cleanse(data_exam, missing = TRUE)
+#&gt; ── Checking missing value ────────────────────────────────── included NA ──
+#&gt; remove variables whose included NA
+#&gt; ● flag
+#&gt; 
+#&gt; ── Checking unique value ─────────────────────────── unique value is one ──
+#&gt; remove variables that unique value is one
+#&gt; ● year
+#&gt; 
+#&gt; ── Checking unique rate ─────────────────────────────── high unique rate ──
+#&gt; remove variables with high unique rate
+#&gt; ● id = 1000(1)
+#&gt; 
+#&gt; ── Checking character variables ─────────────────────── categorical data ──
+#&gt; converts character variables to factor
+#&gt; ● alpha
+
+# 정제된 데이터의 구조
+str(newDat)
+#&gt; &#39;data.frame&#39;:    1000 obs. of  2 variables:
+#&gt;  $ count: int  3 3 10 2 6 5 4 6 9 10 ...
+#&gt;  $ alpha: Factor w/ 26 levels &quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;,..: 15 19 14 3 10 18 22 11 5 20 ...</code></pre>
+</div>
+</div>
+<div id="상관관계가-높은-변수의-진단-및-제거" class="section level3">
+<h3>상관관계가 높은 변수의 진단 및 제거</h3>
+<p><code>선형모형(linear model)</code>에서 독립변수간에 강한 상관관계(correlation)가 있으면, <code>다중공선성(multicollinearity)</code>이 발생한다. 따라서 상관관계가 존재하는 변수쌍에서 하나의 변수를 제거하는 것이 좋다.</p>
+<p>선형모형이 아니더라도 상관관계가 큰 변수쌍에서 하나의 변수를 제거하면, 모델 적합과정에서 연산 오버헤드를 줄일 수도 있다. 그리고 모델을 해석하는 것도 쉬워진다.</p>
+<div id="treatment_corr을-이용한-데이터-정제" class="section level4">
+<h4>treatment_corr()을 이용한 데이터 정제</h4>
+<p><code>treatment_corr()</code> 은 상관관계가 높은 변수의 쌍을 진단하거나 제거한다.
+<code>treatment_corr()</code> 은 수치형 변수에 대해서는 <code>피어슨(pearson)의 상관계수</code>를 범주형 변수에 대해서는 <code>스피어만(spearman)의 상관계수</code>를 계산한다.</p>
+<p>다음 예제는 상관관계가 높은 변수를 진단하고, 제거한다.:</p>
+<pre class="r"><code># 수치형 변수
+x1 &lt;- 1:100
+set.seed(12L)
+x2 &lt;- sample(1:3, size = 100, replace = TRUE) * x1 + rnorm(1)
+set.seed(1234L)
+x3 &lt;- sample(1:2, size = 100, replace = TRUE) * x1 + rnorm(1)
+
+# 범주형 변수
+x4 &lt;- factor(rep(letters[1:20], time = 5))
+set.seed(100L)
+x5 &lt;- factor(rep(letters[1:20 + sample(1:6, size = 20, replace = TRUE)], time = 5))
+set.seed(200L)
+x6 &lt;- factor(rep(letters[1:20 + sample(1:3, size = 20, replace = TRUE)], time = 5))
+set.seed(300L)
+x7 &lt;- factor(sample(letters[1:5], size = 100, replace = TRUE))
+
+exam &lt;- data.frame(x1, x2, x3, x4, x5, x6, x7)
+str(exam)
+#&gt; &#39;data.frame&#39;:    100 obs. of  7 variables:
+#&gt;  $ x1: int  1 2 3 4 5 6 7 8 9 10 ...
+#&gt;  $ x2: num  2.55 4.55 9.55 12.55 10.55 ...
+#&gt;  $ x3: num  0.194 2.194 4.194 6.194 3.194 ...
+#&gt;  $ x4: Factor w/ 20 levels &quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;,..: 1 2 3 4 5 6 7 8 9 10 ...
+#&gt;  $ x5: Factor w/ 13 levels &quot;c&quot;,&quot;e&quot;,&quot;f&quot;,&quot;g&quot;,..: 1 5 3 2 4 7 6 8 9 8 ...
+#&gt;  $ x6: Factor w/ 15 levels &quot;c&quot;,&quot;d&quot;,&quot;f&quot;,&quot;g&quot;,..: 1 2 3 4 3 5 6 7 8 9 ...
+#&gt;  $ x7: Factor w/ 5 levels &quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;,..: 2 2 1 4 5 1 4 3 1 5 ...
+
+head(exam)
+#&gt;   x1        x2         x3 x4 x5 x6 x7
+#&gt; 1  1  2.554297  0.1939687  a  c  c  b
+#&gt; 2  2  4.554297  2.1939687  b  h  d  b
+#&gt; 3  3  9.554297  4.1939687  c  f  f  a
+#&gt; 4  4 12.554297  6.1939687  d  e  g  d
+#&gt; 5  5 10.554297  3.1939687  e  g  f  e
+#&gt; 6  6  6.554297 10.1939687  f  l  h  a
+
+# default case
+exam_01 &lt;- treatment_corr(exam)
+#&gt; * remove variables whose strong correlation (pearson &gt;= 0.8)
+#&gt;  - remove x1 : with x3 (0.825)
+#&gt; * remove variables whose strong correlation (spearman &gt;= 0.8)
+#&gt;  - remove x4 : with x5 (0.9649)
+#&gt;  - remove x4 : with x6 (0.9928)
+#&gt;  - remove x5 : with x6 (0.9485)
+head(exam_01)
+#&gt;          x2         x3 x6 x7
+#&gt; 1  2.554297  0.1939687  c  b
+#&gt; 2  4.554297  2.1939687  d  b
+#&gt; 3  9.554297  4.1939687  f  a
+#&gt; 4 12.554297  6.1939687  g  d
+#&gt; 5 10.554297  3.1939687  f  e
+#&gt; 6  6.554297 10.1939687  h  a
+
+# not removing variables
+treatment_corr(exam, treat = FALSE)
+#&gt; * remove variables whose strong correlation (pearson &gt;= 0.8)
+#&gt;  - remove x1 : with x3 (0.825)
+#&gt; * remove variables whose strong correlation (spearman &gt;= 0.8)
+#&gt;  - remove x4 : with x5 (0.9649)
+#&gt;  - remove x4 : with x6 (0.9928)
+#&gt;  - remove x5 : with x6 (0.9485)
+
+# Set a threshold to detecting variables when correlation greater then 0.9
+treatment_corr(exam, corr_thres = 0.9, treat = FALSE)
+#&gt; * remove variables whose strong correlation (spearman &gt;= 0.9)
+#&gt;  - remove x4 : with x5 (0.9649)
+#&gt;  - remove x4 : with x6 (0.9928)
+#&gt;  - remove x5 : with x6 (0.9485)
+
+# verbose FALSE 모드
+exam_02 &lt;- treatment_corr(exam, verbose = FALSE)
+head(exam_02)
+#&gt;          x2         x3 x6 x7
+#&gt; 1  2.554297  0.1939687  c  b
+#&gt; 2  4.554297  2.1939687  d  b
+#&gt; 3  9.554297  4.1939687  f  a
+#&gt; 4 12.554297  6.1939687  g  d
+#&gt; 5 10.554297  3.1939687  f  e
+#&gt; 6  6.554297 10.1939687  h  a</code></pre>
+<ul>
+<li><code>remove variables whose strong correlation</code> : 상관관계가 높은 변수 x1, x4, x5가 제거된다.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="training-set과-test-set-데이터-분할" class="section level2">
+<h2>training set과 test set 데이터 분할</h2>
+<div id="data-신용카드-연체-데이터" class="section level3">
+<h3>Data: 신용카드 연체 데이터</h3>
+<p><code>ISLR</code> 패키지의 <code>Default</code> 1천명의 고객에 대한 정보를 포함하고 있는 시뮬레이션된 데이터다. 이 데이터는 어떤 고객이 신용카드의 부채를 상환하지 못하는지를 예측하는 목적의 데이터다.</p>
+<p>이 데이터 프레임은 1천개의 관측치와 다음의 4개 변수를 포함한다.:</p>
+<ul>
+<li>default : factor. 채무불이행 여부를 나낸다. “Y”는 불이행(연체), “N”은 이행을 의미한다.</li>
+<li>student: factor. 고객이 학생인지의 여부다. Y“는 학생,”N"은 학생이 아니다.</li>
+<li>balance: numeric. 고객의 월별 결제 후 신용카드 계자에 남아 있는 평균 잔액</li>
+<li>income : numeric. 고객의 소득</li>
+</ul>
+<pre class="r"><code># 신용카드 연체 데이터
+head(ISLR::Default)
+#&gt;   default student   balance    income
+#&gt; 1      No      No  729.5265 44361.625
+#&gt; 2      No     Yes  817.1804 12106.135
+#&gt; 3      No      No 1073.5492 31767.139
+#&gt; 4      No      No  529.2506 35704.494
+#&gt; 5      No      No  785.6559 38463.496
+#&gt; 6      No     Yes  919.5885  7491.559
+
+# 데이터 구조
+str(ISLR::Default)
+#&gt; &#39;data.frame&#39;:    10000 obs. of  4 variables:
+#&gt;  $ default: Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+#&gt;  $ student: Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 1 2 1 1 1 2 1 2 1 1 ...
+#&gt;  $ balance: num  730 817 1074 529 786 ...
+#&gt;  $ income : num  44362 12106 31767 35704 38463 ...
+
+# 데이터 집계
+summary(ISLR::Default)
+#&gt;  default    student       balance           income     
+#&gt;  No :9667   No :7056   Min.   :   0.0   Min.   :  772  
+#&gt;  Yes: 333   Yes:2944   1st Qu.: 481.7   1st Qu.:21340  
+#&gt;                        Median : 823.6   Median :34553  
+#&gt;                        Mean   : 835.4   Mean   :33517  
+#&gt;                        3rd Qu.:1166.3   3rd Qu.:43808  
+#&gt;                        Max.   :2654.3   Max.   :73554</code></pre>
+</div>
+<div id="데이터-분할" class="section level3">
+<h3>데이터 분할</h3>
+<p><code>split_by()</code>는 <code>data.frame</code>이나 <code>tbl_df</code> 객체를 분할하여 <code>training set</code>과 <code>test set</code>로 나눈다.</p>
+<div id="split_by을-이용한-데이터-분할" class="section level4">
+<h4>split_by()을 이용한 데이터 분할</h4>
+<p><code>split_by()</code>는 <code>split_df</code> 클래스 객체를 반환하는데, 여기에는 <code>training set</code>과 <code>test set</code>를 분리하기 위한 분할 정보 및 기준이 포함된다.</p>
+<pre class="r"><code>library(alookr)
+library(dplyr)
+#&gt; 
+#&gt; Attaching package: &#39;dplyr&#39;
+#&gt; The following object is masked from &#39;package:randomForest&#39;:
+#&gt; 
+#&gt;     combine
+#&gt; The following objects are masked from &#39;package:stats&#39;:
+#&gt; 
+#&gt;     filter, lag
+#&gt; The following objects are masked from &#39;package:base&#39;:
+#&gt; 
+#&gt;     intersect, setdiff, setequal, union
+
+# 데이터의 분할
+sb &lt;- ISLR::Default %&gt;%
+  split_by(default, seed = 6534)
+
+sb
+#&gt; # A tibble: 10,000 x 5
+#&gt; # Groups:   split_flag [2]
+#&gt;    default student balance income split_flag
+#&gt;    &lt;fct&gt;   &lt;fct&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;     
+#&gt;  1 No      No         730. 44362. train     
+#&gt;  2 No      Yes        817. 12106. train     
+#&gt;  3 No      No        1074. 31767. train     
+#&gt;  4 No      No         529. 35704. train     
+#&gt;  5 No      No         786. 38463. test      
+#&gt;  6 No      Yes        920.  7492. train     
+#&gt;  7 No      No         826. 24905. test      
+#&gt;  8 No      Yes        809. 17600. train     
+#&gt;  9 No      No        1161. 37469. train     
+#&gt; 10 No      No           0  29275. train     
+#&gt; # … with 9,990 more rows</code></pre>
+<p><code>split_df</code> 클래스의 주요한 <code>속성(attributes)</code>은 다음과 같다.:</p>
+<ul>
+<li><code>split_seed</code> : integer. 데이터 분할에 사용된 random seed</li>
+<li><code>target</code> : character. target 변수의 이름</li>
+<li><code>binary</code> : logical. target 변수의 binary class 여부</li>
+<li><code>minority</code> : character. <code>minority class</code> 이름(수준, level)</li>
+<li><code>majority</code> : character. <code>majority class</code> 이름(수준, level)</li>
+<li><code>minority_rate</code> : numeric. <code>minority class</code> 비율</li>
+<li><code>majority_rate</code> : numeric. <code>majority class</code> 비율</li>
+</ul>
+<pre class="r"><code># 모든 속성의 이름
+attr_names &lt;- names(attributes(sb))
+attr_names
+#&gt;  [1] &quot;names&quot;         &quot;row.names&quot;     &quot;groups&quot;        &quot;class&quot;        
+#&gt;  [5] &quot;split_seed&quot;    &quot;target&quot;        &quot;binary&quot;        &quot;minority&quot;     
+#&gt;  [9] &quot;majority&quot;      &quot;minority_rate&quot; &quot;majority_rate&quot;
+
+sb_attr &lt;- attributes(sb)
+
+# 세 번째 속성인 row.names는 그 길이가 매우 길기 때문에 출력에서 제외한다.
+sb_attr[!attr_names %in% &quot;row.names&quot;]
+#&gt; $names
+#&gt; [1] &quot;default&quot;    &quot;student&quot;    &quot;balance&quot;    &quot;income&quot;     &quot;split_flag&quot;
+#&gt; 
+#&gt; $groups
+#&gt; # A tibble: 2 x 2
+#&gt;   split_flag       .rows
+#&gt; * &lt;chr&gt;      &lt;list&lt;int&gt;&gt;
+#&gt; 1 test           [3,000]
+#&gt; 2 train          [7,000]
+#&gt; 
+#&gt; $class
+#&gt; [1] &quot;split_df&quot;   &quot;grouped_df&quot; &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;
+#&gt; 
+#&gt; $split_seed
+#&gt; [1] 6534
+#&gt; 
+#&gt; $target
+#&gt;   default 
+#&gt; &quot;default&quot; 
+#&gt; 
+#&gt; $binary
+#&gt; [1] TRUE
+#&gt; 
+#&gt; $minority
+#&gt; [1] &quot;Yes&quot;
+#&gt; 
+#&gt; $majority
+#&gt; [1] &quot;No&quot;
+#&gt; 
+#&gt; $minority_rate
+#&gt;    Yes 
+#&gt; 0.0333 
+#&gt; 
+#&gt; $majority_rate
+#&gt;     No 
+#&gt; 0.9667</code></pre>
+<p><code>summary()</code>는 <code>split_by()</code>에 의해서 분할된 두 데이터를 개괄적으로 집계한다.</p>
+<pre class="r"><code>summary(sb)
+#&gt; ** Split train/test set information **
+#&gt;  + random seed        :  6534 
+#&gt;  + split data            
+#&gt;     - train set count :  7000 
+#&gt;     - test set count  :  3000 
+#&gt;  + target variable    :  default 
+#&gt;     - minority class  :  Yes (0.033300)
+#&gt;     - majority class  :  No (0.966700)</code></pre>
+</div>
+</div>
+<div id="데이터셋의-비교" class="section level3">
+<h3>데이터셋의 비교</h3>
+<p><code>training set</code>과 <code>test set</code>은 비슷해야 한다. 두 데이터가 유사하지 않으면, 예측모델의 성능이 저하될 수 있다.</p>
+<p><code>alookr</code>은 <code>training set</code>과 <code>test set</code>의 유사성을 비교하는 기능을 제공한다.</p>
+<p>만약 두 데이터 세트가 유사하지 않으면, 원 데이터에서 <code>training set</code>과 <code>test set</code>을 다시 분할해야 한다.</p>
+<div id="compare_target_category를-이용한-범주형-변수의-비교" class="section level4">
+<h4>compare_target_category()를 이용한 범주형 변수의 비교</h4>
+<p><code>split_df</code> 클래스에 포함된<code>training set</code>과 <code>test set</code> 정보에 근거해서 두 데이터 셋에서의 범주형 변수를 비교한다.</p>
+<pre class="r"><code>sb %&gt;%
+  compare_target_category()
+#&gt; # A tibble: 4 x 5
+#&gt;   variable level train  test abs_diff
+#&gt;   &lt;chr&gt;    &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;
+#&gt; 1 default  No    96.7  96.7   0.00476
+#&gt; 2 default  Yes    3.33  3.33  0.00476
+#&gt; 3 student  No    70.0  71.8   1.77   
+#&gt; 4 student  Yes   30.0  28.2   1.77
+
+# character형 변수도 포함한다. 그러나, 예제에서는 character형 변수가 없기 때문에 결과는 동일하다.
+sb %&gt;%
+  compare_target_category(add_character = TRUE)
+#&gt; # A tibble: 4 x 5
+#&gt;   variable level train  test abs_diff
+#&gt;   &lt;chr&gt;    &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;
+#&gt; 1 default  No    96.7  96.7   0.00476
+#&gt; 2 default  Yes    3.33  3.33  0.00476
+#&gt; 3 student  No    70.0  71.8   1.77   
+#&gt; 4 student  Yes   30.0  28.2   1.77
+
+# 주변합(marginal)을 출력한다.
+sb %&gt;%
+  compare_target_category(margin = TRUE)
+#&gt; # A tibble: 6 x 5
+#&gt;   variable level    train   test abs_diff
+#&gt;   &lt;chr&gt;    &lt;fct&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;
+#&gt; 1 default  No       96.7   96.7   0.00476
+#&gt; 2 default  Yes       3.33   3.33  0.00476
+#&gt; 3 default  &lt;Total&gt; 100    100     0.00952
+#&gt; 4 student  No       70.0   71.8   1.77   
+#&gt; 5 student  Yes      30.0   28.2   1.77   
+#&gt; 6 student  &lt;Total&gt; 100    100     3.54
+
+# student 변수만 비교한다.
+sb %&gt;%
+  compare_target_category(student)
+#&gt; # A tibble: 2 x 5
+#&gt;   variable level train  test abs_diff
+#&gt;   &lt;chr&gt;    &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;
+#&gt; 1 student  No     70.0  71.8     1.77
+#&gt; 2 student  Yes    30.0  28.2     1.77
+
+sb %&gt;%
+  compare_target_category(student, margin = TRUE)
+#&gt; # A tibble: 3 x 5
+#&gt;   variable level   train  test abs_diff
+#&gt;   &lt;chr&gt;    &lt;fct&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;
+#&gt; 1 student  No       70.0  71.8     1.77
+#&gt; 2 student  Yes      30.0  28.2     1.77
+#&gt; 3 student  &lt;Total&gt; 100   100       3.54</code></pre>
+<p><code>compare_target_category()</code>는 <code>tbl_df</code> 객체를 반환하는데 다음과 같은 변수를 포함한다.:</p>
+<ul>
+<li><code>variable</code> : character. 범주형 변수의 이름</li>
+<li><code>level</code> : factor. 범주형 변수의 수준</li>
+<li><code>train</code> : numeric. training set에서의 해당 수준의 상대 돗수</li>
+<li><code>test</code> : numeric. test set에서의 해당 수준의 상대 돗수</li>
+<li><code>abs_diff</code> : numeric. 두 상대 돗수 차의 절대치</li>
+</ul>
+</div>
+<div id="compare_target_numeric를-이용한-수치형-변수의-비교" class="section level4">
+<h4>compare_target_numeric()를 이용한 수치형 변수의 비교</h4>
+<p><code>split_df</code> 클래스에 포함된<code>training set</code>과 <code>test set</code> 정보에 근거해서 두 데이터 셋에서의 수치형 변수를 비교한다.</p>
+<pre class="r"><code>sb %&gt;%
+  compare_target_numeric()
+#&gt; # A tibble: 2 x 7
+#&gt;   variable train_mean test_mean train_sd test_sd train_z test_z
+#&gt;   &lt;chr&gt;         &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+#&gt; 1 balance        836.      834.     487.    477.    1.72   1.75
+#&gt; 2 income       33446.    33684.   13437.  13101.    2.49   2.57
+
+# balance 변수만 비교한다.
+sb %&gt;%
+  compare_target_numeric(balance)
+#&gt; # A tibble: 1 x 7
+#&gt;   variable train_mean test_mean train_sd test_sd train_z test_z
+#&gt;   &lt;chr&gt;         &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+#&gt; 1 balance        836.      834.     487.    477.    1.72   1.75</code></pre>
+<p><code>compare_target_numeric()</code>는 tbl_df 객체를 반환하는데 다음과 같은 변수를 포함한다.:</p>
+<ul>
+<li><code>variable</code> : character. 수치형 변수의 이름</li>
+<li><code>train_mean</code> : numeric. training set에서의 산술평균</li>
+<li><code>test_mean</code> : numeric. test set에서의 산술평균</li>
+<li><code>train_sd</code> : numeric. training set에서의 표준편차</li>
+<li><code>test_sd</code> : numeric. test set에서의 표준편차</li>
+<li><code>train_z</code> : numeric. training set에서의 산술평균/표준편차</li>
+<li><code>test_z</code> : numeric. test set에서의 산술평균/표준편차n</li>
+</ul>
+</div>
+<div id="compare_plot를-이용한-시각화-비교" class="section level4">
+<h4>compare_plot()를 이용한 시각화 비교</h4>
+<p><code>split_df</code> 클래스에 포함된 training set과 test set을 비교할 수 있는 플롯을 시각화한다.</p>
+<pre class="r"><code># income 변수만 비교 시각화 출력
+sb %&gt;%
+  compare_plot(&quot;income&quot;)</code></pre>
+<p><img src="/post/2020-03/2020-03-27-r-alookr.ko_files/figure-html/split_data7-1.png" width="672" /></p>
+<pre class="r"><code># 모든 변수의 비교 플롯 출력
+sb %&gt;%
+  compare_plot()</code></pre>
+<p><img src="/post/2020-03/2020-03-27-r-alookr.ko_files/figure-html/split_data7_2-1.png" width="672" /><img src="/post/2020-03/2020-03-27-r-alookr.ko_files/figure-html/split_data7_2-2.png" width="672" /><img src="/post/2020-03/2020-03-27-r-alookr.ko_files/figure-html/split_data7_2-3.png" width="672" /><img src="/post/2020-03/2020-03-27-r-alookr.ko_files/figure-html/split_data7_2-4.png" width="672" /></p>
+</div>
+<div id="compare_diag를-이용한-training-set과-test-set의-진단" class="section level4">
+<h4>compare_diag()를 이용한 training set과 test set의 진단</h4>
+<p><code>split_df</code> 클래스에 포함된 training set과 test set 간의 유사성을 진단한다.</p>
+<pre class="r"><code>defaults &lt;- ISLR::Default
+defaults$id &lt;- seq(NROW(defaults))
+
+set.seed(1)
+defaults[sample(seq(NROW(defaults)), 3), &quot;student&quot;] &lt;- NA
+set.seed(2)
+defaults[sample(seq(NROW(defaults)), 10), &quot;balance&quot;] &lt;- NA
+
+sb_2 &lt;- defaults %&gt;%
+  split_by(default)
+
+sb_2 %&gt;%
+  compare_diag()
+#&gt; * Detected diagnose missing value
+#&gt;  - student
+#&gt;  - balance
+#&gt;  - balance
+#&gt; 
+#&gt; * Detected diagnose missing levels
+#&gt;  - student
+#&gt; $missing_value
+#&gt; # A tibble: 3 x 4
+#&gt;   variables train_misscount train_missrate test_missrate
+#&gt;   &lt;chr&gt;               &lt;int&gt;          &lt;dbl&gt;         &lt;dbl&gt;
+#&gt; 1 student                 3         0.0429       NA     
+#&gt; 2 balance                 8         0.114        NA     
+#&gt; 3 balance                 2        NA             0.0667
+#&gt; 
+#&gt; $single_value
+#&gt; # A tibble: 0 x 3
+#&gt; # … with 3 variables: variables &lt;chr&gt;, train_uniq &lt;lgl&gt;, test_uniq &lt;lgl&gt;
+#&gt; 
+#&gt; $uniq_rate
+#&gt; # A tibble: 0 x 5
+#&gt; # … with 5 variables: variables &lt;chr&gt;, train_uniqcount &lt;int&gt;,
+#&gt; #   train_uniqrate &lt;dbl&gt;, test_uniqcount &lt;int&gt;, test_uniqrate &lt;dbl&gt;
+#&gt; 
+#&gt; $missing_level
+#&gt; # A tibble: 1 x 4
+#&gt;   variables n_levels train_missing_nlevel test_missing_nlevel
+#&gt;   &lt;chr&gt;        &lt;int&gt;                &lt;int&gt;               &lt;int&gt;
+#&gt; 1 student          3                    0                   1
+
+sb_2 %&gt;%
+  compare_diag(add_character = TRUE)
+#&gt; * Detected diagnose missing value
+#&gt;  - student
+#&gt;  - balance
+#&gt;  - balance
+#&gt; 
+#&gt; * Detected diagnose missing levels
+#&gt;  - student
+#&gt; $missing_value
+#&gt; # A tibble: 3 x 4
+#&gt;   variables train_misscount train_missrate test_missrate
+#&gt;   &lt;chr&gt;               &lt;int&gt;          &lt;dbl&gt;         &lt;dbl&gt;
+#&gt; 1 student                 3         0.0429       NA     
+#&gt; 2 balance                 8         0.114        NA     
+#&gt; 3 balance                 2        NA             0.0667
+#&gt; 
+#&gt; $single_value
+#&gt; # A tibble: 0 x 3
+#&gt; # … with 3 variables: variables &lt;chr&gt;, train_uniq &lt;lgl&gt;, test_uniq &lt;lgl&gt;
+#&gt; 
+#&gt; $uniq_rate
+#&gt; # A tibble: 0 x 5
+#&gt; # … with 5 variables: variables &lt;chr&gt;, train_uniqcount &lt;int&gt;,
+#&gt; #   train_uniqrate &lt;dbl&gt;, test_uniqcount &lt;int&gt;, test_uniqrate &lt;dbl&gt;
+#&gt; 
+#&gt; $missing_level
+#&gt; # A tibble: 1 x 4
+#&gt;   variables n_levels train_missing_nlevel test_missing_nlevel
+#&gt;   &lt;chr&gt;        &lt;int&gt;                &lt;int&gt;               &lt;int&gt;
+#&gt; 1 student          3                    0                   1
+
+sb_2 %&gt;%
+  compare_diag(uniq_thres = 0.0005)
+#&gt; * Detected diagnose missing value
+#&gt;  - student
+#&gt;  - balance
+#&gt;  - balance
+#&gt; 
+#&gt; * Detected diagnose many unique value
+#&gt;  - default
+#&gt;  - student
+#&gt; 
+#&gt; * Detected diagnose missing levels
+#&gt;  - student
+#&gt; $missing_value
+#&gt; # A tibble: 3 x 4
+#&gt;   variables train_misscount train_missrate test_missrate
+#&gt;   &lt;chr&gt;               &lt;int&gt;          &lt;dbl&gt;         &lt;dbl&gt;
+#&gt; 1 student                 3         0.0429       NA     
+#&gt; 2 balance                 8         0.114        NA     
+#&gt; 3 balance                 2        NA             0.0667
+#&gt; 
+#&gt; $single_value
+#&gt; # A tibble: 0 x 3
+#&gt; # … with 3 variables: variables &lt;chr&gt;, train_uniq &lt;lgl&gt;, test_uniq &lt;lgl&gt;
+#&gt; 
+#&gt; $uniq_rate
+#&gt; # A tibble: 2 x 5
+#&gt;   variables train_uniqcount train_uniqrate test_uniqcount test_uniqrate
+#&gt;   &lt;chr&gt;               &lt;int&gt;          &lt;dbl&gt;          &lt;int&gt;         &lt;dbl&gt;
+#&gt; 1 default                NA             NA              2      0.000667
+#&gt; 2 student                NA             NA              2      0.000667
+#&gt; 
+#&gt; $missing_level
+#&gt; # A tibble: 1 x 4
+#&gt;   variables n_levels train_missing_nlevel test_missing_nlevel
+#&gt;   &lt;chr&gt;        &lt;int&gt;                &lt;int&gt;               &lt;int&gt;
+#&gt; 1 student          3                    0                   1</code></pre>
+</div>
+</div>
+<div id="training-set과-test-set의-추출" class="section level3">
+<h3>training set과 test set의 추출</h3>
+<p>training set과 test set를 비교하여 두 데이터 세트가 유사하다고 판단되면 <code>split_df</code> 객체에서 데이터를 추출한다.</p>
+<div id="extract_set을-이용한-training-set과-test-set-데이터-추출" class="section level4">
+<h4>extract_set()을 이용한 training set과 test set 데이터 추출</h4>
+<p>다음은 <code>extract_set()</code> 함수로 <code>split_df</code> 객체에서 <code>training set</code>과 <code>test set</code>을 추출한다.</p>
+<pre class="r"><code>train &lt;- sb %&gt;%
+  extract_set(set = &quot;train&quot;)
+
+test &lt;- sb %&gt;%
+  extract_set(set = &quot;test&quot;)
+
+dim(train)
+#&gt; [1] 7000    4
+
+dim(test)
+#&gt; [1] 3000    4</code></pre>
+</div>
+<div id="sampling_target을-이용한-모델-적합용-데이터-추출" class="section level4">
+<h4>sampling_target()을 이용한 모델 적합용 데이터 추출</h4>
+<p>이진분류 모형의 <code>target 변수(variable, class)</code>에서 <code>majority class</code>와 <code>minority class</code>의 비율이 비슷하지 않은, 특히 <code>minority class</code>의 비율이 매우 작은 <code>target class</code>를 <code>불균형 class(imbalanced class)</code>라고 한다.</p>
+<p><code>target 변수</code>가 <code>불균형 class</code>인 경우 대다수 클래스인 <code>majority class</code>의 특성이 모델에 적극적으로 반영된다. 이 경우에는 적합된 모델이 <code>minority class</code>를 대부분을 <code>majority class</code>로 예측하는 오류가 발생함을 의미한다. 따라서 <code>training set</code>을 균형잡힌 클래스로 만들어야합니다.</p>
+<p><code>sampling_target()</code>은 <code>split_df</code>의 <code>training set</code>에서 샘플링을 수행하여 <code>불균형 class</code> 문제를 해결한다.</p>
+<pre class="r"><code># under-sampling with random seed
+under &lt;- sb %&gt;%
+  sampling_target(seed = 1234L)
+
+under %&gt;%
+  count(default)
+#&gt; # A tibble: 2 x 2
+#&gt;   default     n
+#&gt;   &lt;fct&gt;   &lt;int&gt;
+#&gt; 1 No        233
+#&gt; 2 Yes       233
+
+# under-sampling with random seed, and minority class frequency is 40%
+under40 &lt;- sb %&gt;%
+  sampling_target(seed = 1234L, perc = 40)
+
+under40 %&gt;%
+  count(default)
+#&gt; # A tibble: 2 x 2
+#&gt;   default     n
+#&gt;   &lt;fct&gt;   &lt;int&gt;
+#&gt; 1 No        349
+#&gt; 2 Yes       233
+
+# over-sampling with random seed
+over &lt;- sb %&gt;%
+  sampling_target(method = &quot;ubOver&quot;, seed = 1234L)
+
+over %&gt;%
+  count(default)
+#&gt; # A tibble: 2 x 2
+#&gt;   default     n
+#&gt;   &lt;fct&gt;   &lt;int&gt;
+#&gt; 1 No       6767
+#&gt; 2 Yes      6767
+
+# over-sampling with random seed, and k = 10
+over10 &lt;- sb %&gt;%
+  sampling_target(method = &quot;ubOver&quot;, seed = 1234L, k = 10)
+
+over10 %&gt;%
+  count(default)
+#&gt; # A tibble: 2 x 2
+#&gt;   default     n
+#&gt;   &lt;fct&gt;   &lt;int&gt;
+#&gt; 1 No       6767
+#&gt; 2 Yes      2330
+
+# SMOTE with random seed
+smote &lt;- sb %&gt;%
+  sampling_target(method = &quot;ubSMOTE&quot;, seed = 1234L)
+
+smote %&gt;%
+  count(default)
+#&gt; # A tibble: 2 x 2
+#&gt;   default     n
+#&gt;   &lt;fct&gt;   &lt;int&gt;
+#&gt; 1 No        932
+#&gt; 2 Yes       699
+
+# SMOTE with random seed, and perc.under = 250
+smote250 &lt;- sb %&gt;%
+  sampling_target(method = &quot;ubSMOTE&quot;, seed = 1234L, perc.under = 250)
+
+smote250 %&gt;%
+  count(default)
+#&gt; # A tibble: 2 x 2
+#&gt;   default     n
+#&gt;   &lt;fct&gt;   &lt;int&gt;
+#&gt; 1 No       1165
+#&gt; 2 Yes       699</code></pre>
+<p><code>sampling_target()</code>에서 <code>method</code> 인수는 샘플링 방법을 지정한다. “ubUnder”는 <code>under sampling</code>을, “ubOver”는 <code>over sampling</code>, “ubSMOTE”는 <code>SMOTE(Synthetic Minority Over-sampling TEchnique)</code>을 수행한다.</p>
+</div>
+</div>
+</div>
+<div id="모델-적합-평가-및-예측modeling-and-evaluate-predict" class="section level2">
+<h2>모델 적합, 평가 및 예측(Modeling and Evaluate, Predict)</h2>
+<div id="data-wisconsin-breast-cancer-데이터" class="section level3">
+<h3>Data: Wisconsin Breast Cancer 데이터</h3>
+<p><code>mlbench</code> 패키지의 <code>BreastCancer</code>는 유방암 데이터다. 이 데이터는 여러 종류의 양성 또는 악성 종양을 식별하는 목적으로 만들어졌다.</p>
+<p>이 데이터 프레임은 699개 관측치에, 다음과 같은 11개의 변수(하나는 문자형 변수, 9개는 순서형 또는 범주형, 1 개의 <code>target 변수</code>)로 구성되었다.:</p>
+<ul>
+<li><code>Id</code> : character. Sample code 번호</li>
+<li><code>Cl.thickness</code> : ordered factor. 종양 덩어리의 두께</li>
+<li><code>Cell.size</code> : ordered factor. 세포 크기의 균일성</li>
+<li><code>Cell.shape</code> : ordered factor. 세포 모양의 균일성</li>
+<li><code>Marg.adhesion</code> : ordered factor. 부분적 유착정도</li>
+<li><code>Epith.c.size</code> : ordered factor. 단일 상피세포의 크기</li>
+<li><code>Bare.nuclei</code> : factor. 노출된 핵들</li>
+<li><code>Bl.cromatin</code> : factor. 자극성이 적은 염색질(크로마틴)</li>
+<li><code>Normal.nucleoli</code> : factor. 일반적인 소핵들</li>
+<li><code>Mitoses</code> : factor. Mitoses (유사분열)</li>
+<li><code>Class</code> : factor. target 변수. benign(양성) malignant(악성)</li>
+</ul>
+<pre class="r"><code>library(mlbench)
+data(BreastCancer)
+
+# class of each variables
+sapply(BreastCancer, function(x) class(x)[1])
+#&gt;              Id    Cl.thickness       Cell.size      Cell.shape   Marg.adhesion 
+#&gt;     &quot;character&quot;       &quot;ordered&quot;       &quot;ordered&quot;       &quot;ordered&quot;       &quot;ordered&quot; 
+#&gt;    Epith.c.size     Bare.nuclei     Bl.cromatin Normal.nucleoli         Mitoses 
+#&gt;       &quot;ordered&quot;        &quot;factor&quot;        &quot;factor&quot;        &quot;factor&quot;        &quot;factor&quot; 
+#&gt;           Class 
+#&gt;        &quot;factor&quot;</code></pre>
+</div>
+<div id="데이터-전처리" class="section level3">
+<h3>데이터 전처리</h3>
+<p>다음과 같은 전처리를 수행한다.:</p>
+<ul>
+<li>결측치가 포함된 변수를 찾아내고, 대체(imputate)한다.</li>
+<li>데이터를 training set과 test set으로 나눈다.</li>
+<li>불균형 클래스 문제를 해결하기 위해서, training set에서 샘플링을 수행한다.</li>
+<li>분류 모델을 수행하기 위해서 데이터를 정제한다.</li>
+</ul>
+<div id="dlookrimputate_na를-이용한-결측치-처리" class="section level4">
+<h4>dlookr::imputate_na()를 이용한 결측치 처리</h4>
+<p>결측치가 포함된 변수를 찾아서, <code>dlookr 패키지</code>의 <code>imputate_na()</code>를 사용하여 누락된 값을 대체한다.</p>
+<pre class="r"><code>library(dlookr)
+library(dplyr)
+
+# 결측치를 포함한 변수
+diagnose(BreastCancer) %&gt;%
+  filter(missing_count &gt; 0)
+#&gt; # A tibble: 1 x 6
+#&gt;   variables   types  missing_count missing_percent unique_count unique_rate
+#&gt;   &lt;chr&gt;       &lt;chr&gt;          &lt;int&gt;           &lt;dbl&gt;        &lt;int&gt;       &lt;dbl&gt;
+#&gt; 1 Bare.nuclei factor            16            2.29           11      0.0157
+
+# 결측치의 대체 수행
+breastCancer &lt;- BreastCancer %&gt;%
+  mutate(Bare.nuclei = imputate_na(BreastCancer, Bare.nuclei, Class,
+                         method = &quot;mice&quot;, no_attrs = TRUE, print_flag = FALSE))</code></pre>
+</div>
+</div>
+<div id="데이터-분할-1" class="section level3">
+<h3>데이터 분할</h3>
+<div id="split_by을-이용한-training-set과-test-set의-분할" class="section level4">
+<h4>split_by()을 이용한 training set과 test set의 분할</h4>
+<p><code>alookr 패키지</code>의 <code>split_by()</code>는 원시 데이터에서 training set과 test set을 분할한다.</p>
+<p><code>split_by()</code>의 <code>ratio</code> 인수는 training set의 비율을 지정하며, <code>split_df</code> 클래스 객체를 생성한다.</p>
+<pre class="r"><code>library(alookr)
+
+# 기본 인수로 training set과 test set로 분할
+sb &lt;- breastCancer %&gt;%
+  split_by(target = Class)
+
+# 클래스 이름을 조회
+class(sb)
+#&gt; [1] &quot;split_df&quot;   &quot;grouped_df&quot; &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;
+
+# ratio = 0.6로 training set과 test set을 분할
+tmp &lt;- breastCancer %&gt;%
+  split_by(Class, ratio = 0.6)</code></pre>
+<p><code>summary()</code>는 <code>split_df 객체</code>에 대한 다음과 같은 유용한 정보를 표시한다.:</p>
+<ul>
+<li><code>random seed</code> : random seed는 내부적으로 데이터를 분리하는 데 사용되는 random seed다.</li>
+<li><code>split data</code> : 분할 데이터의 정보
+<ul>
+<li><code>training set count</code> : training set 수</li>
+<li><code>test set count</code> : test set 수</li>
+</ul></li>
+<li><code>target variable</code> : target 변수 이름
+<ul>
+<li><code>minority class</code> : minority class의 이름과 비율</li>
+<li><code>majority class</code> : majority class의 이름과 비율</li>
+</ul></li>
+</ul>
+<pre class="r"><code># 집계 정보
+summary(sb)
+#&gt; ** Split train/test set information **
+#&gt;  + random seed        :  20036 
+#&gt;  + split data            
+#&gt;     - train set count :  489 
+#&gt;     - test set count  :  210 
+#&gt;  + target variable    :  Class 
+#&gt;     - minority class  :  malignant (0.344778)
+#&gt;     - majority class  :  benign (0.655222)
+
+# 집계 정
+summary(tmp)
+#&gt; ** Split train/test set information **
+#&gt;  + random seed        :  35656 
+#&gt;  + split data            
+#&gt;     - train set count :  419 
+#&gt;     - test set count  :  280 
+#&gt;  + target variable    :  Class 
+#&gt;     - minority class  :  malignant (0.344778)
+#&gt;     - majority class  :  benign (0.655222)</code></pre>
+<div id="training-set에서-누락된-수준level-확인" class="section level5">
+<h5>training set에서 누락된 수준(level) 확인</h5>
+<p>범주형 변수의 경우 training set와 test set가 분리되면서, 특정 수준이 training set에서 누락될 수 있다.</p>
+<p>이 경우 모형을 적합할(fitting) 때는 문제가 없지만, 작성한 모형으로 예측할 때 오류가 발생한다. 따라서 누락된 수준을 방지하기 위해 전처리가 수행된다.</p>
+<p>다음 예제에서는 다행히도 training set에서 누락된 수준을 포함하는 범주형 변수가 없다.</p>
+<pre class="r"><code># 결측 레벨이 포함된 training set의 범주형 변수 목록
+nolevel_in_train &lt;- sb %&gt;%
+  compare_target_category() %&gt;% 
+  filter(train == 0) %&gt;% 
+  select(variable) %&gt;% 
+  unique() %&gt;% 
+  pull
+
+nolevel_in_train
+#&gt; character(0)
+
+# training set의 범주형 변수 중 결측 수준이 포함된 경우, 재 분할
+while (length(nolevel_in_train) &gt; 0) {
+  sb &lt;- breastCancer %&gt;%
+    split_by(Class)
+
+  nolevel_in_train &lt;- sb %&gt;%
+    compare_category() %&gt;% 
+    filter(train == 0) %&gt;% 
+    select(variable) %&gt;% 
+    unique() %&gt;% 
+    pull
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="sampling_target를-이용한-불균형-클래스-핸들링" class="section level3">
+<h3>sampling_target()를 이용한 불균형 클래스 핸들링</h3>
+<div id="불균형-클래스-데이터의-문제" class="section level4">
+<h4>불균형 클래스 데이터의 문제</h4>
+<p><code>불균형 클래스</code>(수준) 데이터는 target 변수의 도수(frequency)에서 한 수준의 도수가 상대적으로 매우 작다는 것을 의미한다. 그러나 대다수의 분류 모델의 <code>positive class</code> 비율은 상대적으로 작습니다. 예를 들어 스팸 예측 모델에서 관심있는 스팸 메일(positive class)의 비율은 스팸이 아닌 메일에 비해 매우 작다.</p>
+<p>불균형 클래스 데이터는 기계 학습 분류에서 일반적으로 발생하는 문제다.</p>
+<p><code>table()</code> 및 <code>prop.table()</code>은 불균형 클래스 데이터를 진단하는 데 유용한 함수다. 그러나 <code>alookr 패키지</code>의 <code>summary()</code>는 더 간단하며, 좀 더 자세한 정보를 제공한다.</p>
+<pre class="r"><code># training set 돗수분포표 - 불균형 클래스 데이터
+table(sb$Class)
+#&gt; 
+#&gt;    benign malignant 
+#&gt;       458       241
+
+# training set 상대돗수분포표 - 불균형 클래스 데이터
+prop.table(table(sb$Class))
+#&gt; 
+#&gt;    benign malignant 
+#&gt; 0.6552217 0.3447783
+
+# 집계 - 불균형 클래스 데이터
+summary(sb)
+#&gt; ** Split train/test set information **
+#&gt;  + random seed        :  20036 
+#&gt;  + split data            
+#&gt;     - train set count :  489 
+#&gt;     - test set count  :  210 
+#&gt;  + target variable    :  Class 
+#&gt;     - minority class  :  malignant (0.344778)
+#&gt;     - majority class  :  benign (0.655222)</code></pre>
+</div>
+<div id="불균형-클래스-데이터-핸들링" class="section level4">
+<h4>불균형 클래스 데이터 핸들링</h4>
+<p>대부분의 기계 학습 알고리즘은 각 클래스의 샘플 수가 거의 같을 때 가장 잘 작동된다. 또한 대부분의 알고리즘은 정확도를 최대화( maximize accuracy)하고 오류를 줄이도록 설계되었다. 따라서 우리는 반드시 불균형 클래스 문제를 처리해한다.</p>
+<p><code>sampling_target()</code>는 샘플링을 수행하여 불균형 클래스 데이터 문제를 해결한다.</p>
+<div id="resampling---minority-class의-오버-샘플링" class="section level5">
+<h5>Resampling - minority class의 오버 샘플링</h5>
+<p><code>오버 샘플링(over sampling)</code>은 <code>minority class</code>의 사본을 더 추가하는 방법으로 수행한다.</p>
+<p>오버 샘플링은 <code>sampling_target()</code> 함수의 <code>method</code> 인수값을 “ubOver”로 지정하여 수행한다.</p>
+<pre class="r"><code># 오버 샘플링
+train_over &lt;- sb %&gt;%
+  sampling_target(method = &quot;ubOver&quot;)
+
+# 돗수분포표
+table(train_over$Class)
+#&gt; 
+#&gt;    benign malignant 
+#&gt;       325       325</code></pre>
+</div>
+<div id="resampling---majority-class의-언더-샘플링" class="section level5">
+<h5>Resampling - majority class의 언더 샘플링</h5>
+<p><code>언더 샘플링(under sampling)</code>은 <code>majority class</code>의 관측치의 일부를 제거하는 방법으로 수행한다.</p>
+<p>언더 샘플링은 <code>sampling_target()</code> 함수의 <code>method</code> 인수값을 “ubUnder”로 지정하여 수행한다.</p>
+<pre class="r"><code># 언더 샘플링
+train_under &lt;- sb %&gt;%
+  sampling_target(method = &quot;ubUnder&quot;)
+
+# 돗수분포표
+table(train_under$Class)
+#&gt; 
+#&gt;    benign malignant 
+#&gt;       164       164</code></pre>
+</div>
+<div id="generate-synthetic-samples---smote" class="section level5">
+<h5>Generate synthetic samples - SMOTE</h5>
+<p><code>SMOTE(Synthetic Minority Oversampling Technique)</code>는 <code>최근접 이웃 알고리즘(nearest neighbors algorithm)</code>을 사용하여 새로운 데이터를 합성하여 생생한다.</p>
+<p>SMOTE 샘플링은 <code>sampling_target()</code> 함수의 <code>method</code> 인수값을 “ubSMOTE”로 지정하여 수행한다.</p>
+<pre class="r"><code># SMOTE 샘플링
+train_smote &lt;- sb %&gt;%
+  sampling_target(seed = 1234L, method = &quot;ubSMOTE&quot;)
+
+# 돗수분포표
+table(train_smote$Class)
+#&gt; 
+#&gt;    benign malignant 
+#&gt;       656       492</code></pre>
+</div>
+</div>
+</div>
+<div id="cleanse를-이용하여-분류-모델을-위한-데이터-정제" class="section level3">
+<h3>cleanse()를 이용하여 분류 모델을 위한 데이터 정제</h3>
+<p>cleanse()는 분류 모델링을 위한 데이터를 정제한다.</p>
+<p>이 함수는 분류 모델을 적합할 때 유용하며, 다음의 기능을 수행한다.:</p>
+<ul>
+<li>오직 유일한 하나의 값을 갖는 변수를 제거한다.</li>
+<li>문자형 또는 범주형 변수에 대해서, 관측치 수와 비교하여 고유값의 수가 많은 변수를 제거한다.
+<ul>
+<li>이 경우는 대개 식별자 또는 식별자와 유사한 변수들이다.</li>
+</ul></li>
+<li>그리고 character 변수를 factor 변수로 변환한다.</li>
+</ul>
+<p>이 예제에서 <code>cleanse()</code>는 고유값 비율이 높은 변수 ID를 제거했다.</p>
+<pre class="r"><code># training set의 정제
+train &lt;- train_smote %&gt;%
+  cleanse
+#&gt; ── Checking unique value ─────────────────────────── unique value is one ──
+#&gt; No variables that unique value is one.
+#&gt; 
+#&gt; ── Checking unique rate ─────────────────────────────── high unique rate ──
+#&gt; remove variables with high unique rate
+#&gt; ● Id = 421(0.366724738675958)
+#&gt; 
+#&gt; ── Checking character variables ─────────────────────── categorical data ──
+#&gt; No character variables.</code></pre>
+</div>
+<div id="extract_set을-이용하여-모델-평가를-위한-test-set-추출" class="section level3">
+<h3>extract_set()을 이용하여 모델 평가를 위한 test set 추출</h3>
+<pre class="r"><code># test set 추출
+test &lt;- sb %&gt;%
+  extract_set(set = &quot;test&quot;)</code></pre>
+</div>
+<div id="run_models을-이용한-이진분류-모델-수행" class="section level3">
+<h3>run_models()을 이용한 이진분류 모델 수행</h3>
+<p><code>run_models()</code>는 <code>split_by()</code>로 작성된 <code>split_df</code> 객체를 사용하여 잘 알려진, 대표적인 <code>이진분류(binary classification)</code> 모델링을 수행한다.</p>
+<p><code>run_models()</code>는 모델을 적합할 때, 병렬처리로 수행된다. 다만, MS-Windows 운영체제와 RStudio 환경에서는 지원하지 않는다.</p>
+<p>현재 지원하는 알고리즘은 다음과 같다.:</p>
+<ul>
+<li><code>logistic</code> : 로지스틱 회귀(logistic regression), <code>stats</code> 패키지의 <code>glm()</code></li>
+<li><code>rpart</code> : Recursive Partitioning Trees, <code>rpart</code> 패키지의 <code>rpart()</code></li>
+<li><code>ctree</code> : Conditional Inference Trees, <code>party</code> 패키지의 <code>ctree()</code></li>
+<li><code>randomForest</code> :Classification with Random Forest, <code>randomForest</code> 패키지의 <code>randomForest()</code></li>
+<li><code>ranger</code> : A Fast Implementation of Random Forests, <code>ranger</code> 패키지의 <code>ranger()</code></li>
+</ul>
+<p><code>run_models()</code>은 <code>model_df</code> 클래스를 반환하며, <code>model_df</code> 클래스 다음의 변수를 포함한다.:</p>
+<ul>
+<li><code>step</code> : character. 이진분류 모델의 프로세스에서 진행한 해당 단계
+<ul>
+<li><code>run_models()</code>로 생성 된 객체의 경우 변수는 “1.Fitted”라는 값을 갖는다.</li>
+</ul></li>
+<li><code>model_id</code> : model 식별자</li>
+<li><code>target</code> : target 변수의 이름</li>
+<li><code>positive</code> : target variable의 positive class</li>
+<li><code>fitted_model</code> : list. model_id 알고리즘으로 적합된 모델 객체</li>
+</ul>
+<pre class="r"><code>result &lt;- train %&gt;% 
+  run_models(target = &quot;Class&quot;, positive = &quot;malignant&quot;)
+
+result
+#&gt; # A tibble: 5 x 7
+#&gt;   step     model_id     target is_factor positive  negative fitted_model
+#&gt;   &lt;chr&gt;    &lt;chr&gt;        &lt;chr&gt;  &lt;lgl&gt;     &lt;chr&gt;     &lt;chr&gt;    &lt;list&gt;      
+#&gt; 1 1.Fitted logistic     Class  TRUE      malignant benign   &lt;glm&gt;       
+#&gt; 2 1.Fitted rpart        Class  TRUE      malignant benign   &lt;rpart&gt;     
+#&gt; 3 1.Fitted ctree        Class  TRUE      malignant benign   &lt;BinaryTr&gt;  
+#&gt; 4 1.Fitted randomForest Class  TRUE      malignant benign   &lt;rndmFrs.&gt;  
+#&gt; 5 1.Fitted ranger       Class  TRUE      malignant benign   &lt;ranger&gt;</code></pre>
+</div>
+<div id="모델의-평가" class="section level3">
+<h3>모델의 평가</h3>
+<p>적합된 모델의 예측 성능을 평가한다.</p>
+<div id="run_predict을-이용하여-적합한-모델로-test-set-target-변수-예측" class="section level4">
+<h4>run_predict()을 이용하여 적합한 모델로 test set target 변수 예측</h4>
+<p><code>run_predict()</code>는 run_models()에 의해서 적합된 모델로 <code>model_df</code> 클래스 개체에 포함된 test set의 target 변수를 예측한다.</p>
+<p><code>run_predict()</code>는 모델로 예측할 때, 병렬처리로 수행된다. 다만, MS-Windows 운영체제와 RStudio 환경에서는 지원하지 않는다.</p>
+<p><code>model_df</code> 클래스 객체에는 다음 변수가 포함된다.:</p>
+<ul>
+<li><code>step</code> : character. 이진분류 모델의 프로세스에서 진행한 해당 단계
+<ul>
+<li><code>run_predict()</code>로 생성 된 객체의 경우 변수는 “2.Predicted”라는 값을 갖는다.</li>
+</ul></li>
+<li><code>model_id</code> : model 식별자</li>
+<li><code>target</code> : target 변수의 이름</li>
+<li><code>positive</code> : target variable의 positive class</li>
+<li><code>fitted_model</code> : list. model_id 알고리즘으로 적합된 모델 객체</li>
+<li><code>predicted</code> : 각 모델별 예측 결과</li>
+</ul>
+<pre class="r"><code>pred &lt;- result %&gt;%
+  run_predict(test)
+
+pred
+#&gt; # A tibble: 5 x 8
+#&gt;   step     model_id   target is_factor positive  negative fitted_model predicted
+#&gt;   &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;  &lt;lgl&gt;     &lt;chr&gt;     &lt;chr&gt;    &lt;list&gt;       &lt;list&gt;   
+#&gt; 1 2.Predi… logistic   Class  TRUE      malignant benign   &lt;glm&gt;        &lt;fct [21…
+#&gt; 2 2.Predi… rpart      Class  TRUE      malignant benign   &lt;rpart&gt;      &lt;fct [21…
+#&gt; 3 2.Predi… ctree      Class  TRUE      malignant benign   &lt;BinaryTr&gt;   &lt;fct [21…
+#&gt; 4 2.Predi… randomFor… Class  TRUE      malignant benign   &lt;rndmFrs.&gt;   &lt;fct [21…
+#&gt; 5 2.Predi… ranger     Class  TRUE      malignant benign   &lt;ranger&gt;     &lt;fct [21…</code></pre>
+</div>
+<div id="run_performance을-이용한-성능평가-지표의-계산" class="section level4">
+<h4>run_performance()을 이용한 성능평가 지표의 계산</h4>
+<p><code>run_performance()</code>는 run_predict()에 의해 예측된 model_df 클래스 결과로 상능평가 지표를 계산한다.</p>
+<p><code>run_performance()</code>는 성능평가 지표를 계산할 때, 병렬처리로 수행된다. 다만, MS-Windows 운영체제와 RStudio 환경에서는 지원하지 않는다.</p>
+<p><code>model_df</code> 클래스 객체에는 다음 변수가 포함된다.:</p>
+<ul>
+<li><code>step</code> : character. 이진분류 모델의 프로세스에서 진행한 해당 단계
+<ul>
+<li><code>run_performance()</code>로 생성 된 객체의 경우 변수는 “3.Performanced”라는 값을 갖는다.</li>
+</ul></li>
+<li><code>model_id</code> : model 식별자</li>
+<li><code>target</code> : target 변수의 이름</li>
+<li><code>positive</code> : target variable의 positive class</li>
+<li><code>fitted_model</code> : list. model_id 알고리즘으로 적합된 모델 객체</li>
+<li><code>predicted</code> : 각 모델별 예측 결과. Each value has a predict_class class object.</li>
+<li><code>performance</code> : list. 개별 모델별로 평가 지표(mertic)을 계산한다. 모델별로 성능 지표의 수치벡터를 갖는다.</li>
+</ul>
+<pre class="r"><code># Calculate performace metrics.
+perf &lt;- run_performance(pred)
+
+perf
+#&gt; # A tibble: 5 x 7
+#&gt;   step          model_id     target positive fitted_model predicted  performance
+#&gt;   &lt;chr&gt;         &lt;chr&gt;        &lt;chr&gt;  &lt;chr&gt;    &lt;list&gt;       &lt;list&gt;     &lt;list&gt;     
+#&gt; 1 3.Performanc… logistic     Class  maligna… &lt;glm&gt;        &lt;fct [210… &lt;dbl [15]&gt; 
+#&gt; 2 3.Performanc… rpart        Class  maligna… &lt;rpart&gt;      &lt;fct [210… &lt;dbl [15]&gt; 
+#&gt; 3 3.Performanc… ctree        Class  maligna… &lt;BinaryTr&gt;   &lt;fct [210… &lt;dbl [15]&gt; 
+#&gt; 4 3.Performanc… randomForest Class  maligna… &lt;rndmFrs.&gt;   &lt;fct [210… &lt;dbl [15]&gt; 
+#&gt; 5 3.Performanc… ranger       Class  maligna… &lt;ranger&gt;     &lt;fct [210… &lt;dbl [15]&gt;</code></pre>
+<p><code>performance</code> 변수는 다음과 같은 15개의 성능 지표를 표함한 <code>list</code> 개체다.:</p>
+<ul>
+<li><code>ZeroOneLoss</code> : Normalized Zero-One Loss(Classification Error Loss).</li>
+<li><code>Accuracy</code> : Accuracy.</li>
+<li><code>Precision</code> : Precision.</li>
+<li><code>Recall</code> : Recall.</li>
+<li><code>Sensitivity</code> : Sensitivity.</li>
+<li><code>Specificity</code> : Specificity.</li>
+<li><code>F1_Score</code> : F1 Score.</li>
+<li><code>Fbeta_Score</code> : F-Beta Score.</li>
+<li><code>LogLoss</code> : Log loss / Cross-Entropy Loss.</li>
+<li><code>AUC</code> : Area Under the Receiver Operating Characteristic Curve (ROC AUC).</li>
+<li><code>Gini</code> : Gini Coefficient.</li>
+<li><code>PRAUC</code> : Area Under the Precision-Recall Curve (PR AUC).</li>
+<li><code>LiftAUC</code> : Area Under the Lift Chart.</li>
+<li><code>GainAUC</code> : Area Under the Gain Chart.</li>
+<li><code>KS_Stat</code> : Kolmogorov-Smirnov Statistic.</li>
+</ul>
+<pre class="r"><code># Performance by analytics models
+performance &lt;- perf$performance
+names(performance) &lt;- perf$model_id
+performance
+#&gt; $logistic
+#&gt; ZeroOneLoss    Accuracy   Precision      Recall Sensitivity Specificity 
+#&gt;  0.06190476  0.93809524  0.93243243  0.89610390  0.89610390  0.96240602 
+#&gt;    F1_Score Fbeta_Score     LogLoss         AUC        Gini       PRAUC 
+#&gt;  0.91390728  0.91390728  2.07488551  0.93403964  0.91778147  0.08136132 
+#&gt;     LiftAUC     GainAUC     KS_Stat 
+#&gt;  1.14304752  0.77489177 85.85099111 
+#&gt; 
+#&gt; $rpart
+#&gt; ZeroOneLoss    Accuracy   Precision      Recall Sensitivity Specificity 
+#&gt;  0.05238095  0.94761905  0.90243902  0.96103896  0.96103896  0.93984962 
+#&gt;    F1_Score Fbeta_Score     LogLoss         AUC        Gini       PRAUC 
+#&gt;  0.93081761  0.93081761  0.19404963  0.96504248  0.94961430  0.32770025 
+#&gt;     LiftAUC     GainAUC     KS_Stat 
+#&gt;  1.39884675  0.79452690 90.08885851 
+#&gt; 
+#&gt; $ctree
+#&gt; ZeroOneLoss    Accuracy   Precision      Recall Sensitivity Specificity 
+#&gt;  0.05238095  0.94761905  0.93421053  0.92207792  0.92207792  0.96240602 
+#&gt;    F1_Score Fbeta_Score     LogLoss         AUC        Gini       PRAUC 
+#&gt;  0.92810458  0.92810458  0.47693536  0.96875305  0.93555317  0.82253158 
+#&gt;     LiftAUC     GainAUC     KS_Stat 
+#&gt;  1.90158453  0.79687693 88.44839371 
+#&gt; 
+#&gt; $randomForest
+#&gt; ZeroOneLoss    Accuracy   Precision      Recall Sensitivity Specificity 
+#&gt;  0.03333333  0.96666667  0.93750000  0.97402597  0.97402597  0.96240602 
+#&gt;    F1_Score Fbeta_Score     LogLoss         AUC        Gini       PRAUC 
+#&gt;  0.95541401  0.95541401  0.11831543  0.98823357  0.97676008  0.80602556 
+#&gt;     LiftAUC     GainAUC     KS_Stat 
+#&gt;  1.85671196  0.80921459 96.24060150 
+#&gt; 
+#&gt; $ranger
+#&gt; ZeroOneLoss    Accuracy   Precision      Recall Sensitivity Specificity 
+#&gt;  0.02857143  0.97142857  0.94936709  0.97402597  0.97402597  0.96992481 
+#&gt;    F1_Score Fbeta_Score     LogLoss         AUC        Gini       PRAUC 
+#&gt;  0.96153846  0.96153846  0.09857156  0.99238356  0.98476711  0.90689548 
+#&gt;     LiftAUC     GainAUC     KS_Stat 
+#&gt;  1.93956818  0.81184292 96.24060150</code></pre>
+<p>list 객체를 다음처럼 깔끔한 형식으로 변경하면 결과를 한눈에 쉽게 볼 수 있다.:</p>
+<pre class="r"><code># 성능 평가지표 정보를 행렬로 변경하여 출력
+sapply(performance, &quot;c&quot;)
+#&gt;                logistic       rpart       ctree randomForest      ranger
+#&gt; ZeroOneLoss  0.06190476  0.05238095  0.05238095   0.03333333  0.02857143
+#&gt; Accuracy     0.93809524  0.94761905  0.94761905   0.96666667  0.97142857
+#&gt; Precision    0.93243243  0.90243902  0.93421053   0.93750000  0.94936709
+#&gt; Recall       0.89610390  0.96103896  0.92207792   0.97402597  0.97402597
+#&gt; Sensitivity  0.89610390  0.96103896  0.92207792   0.97402597  0.97402597
+#&gt; Specificity  0.96240602  0.93984962  0.96240602   0.96240602  0.96992481
+#&gt; F1_Score     0.91390728  0.93081761  0.92810458   0.95541401  0.96153846
+#&gt; Fbeta_Score  0.91390728  0.93081761  0.92810458   0.95541401  0.96153846
+#&gt; LogLoss      2.07488551  0.19404963  0.47693536   0.11831543  0.09857156
+#&gt; AUC          0.93403964  0.96504248  0.96875305   0.98823357  0.99238356
+#&gt; Gini         0.91778147  0.94961430  0.93555317   0.97676008  0.98476711
+#&gt; PRAUC        0.08136132  0.32770025  0.82253158   0.80602556  0.90689548
+#&gt; LiftAUC      1.14304752  1.39884675  1.90158453   1.85671196  1.93956818
+#&gt; GainAUC      0.77489177  0.79452690  0.79687693   0.80921459  0.81184292
+#&gt; KS_Stat     85.85099111 90.08885851 88.44839371  96.24060150 96.24060150</code></pre>
+<p><code>compare_performance()</code>는 list 객체(모델 성능 비교 결과)를 반환하며, list 객체는 다음과 같은 성분(component)가 포함되어 있다.</p>
+<ul>
+<li><code>recommend_model</code> : character. 적합된 다양한 모델 중에서 가장 권장되는 모델의 이름</li>
+<li><code>top_count</code> : numeric. 모델별 최고 성능 지표의 수</li>
+<li><code>mean_rank</code> : numeric. 모델별 개별 성능 지표 순위의 평균</li>
+<li><code>top_metric</code> : list. 모델별 개별 성능 메트릭에서 최상의 성능을 제공하는 성능 메트릭의 이름</li>
+</ul>
+<p>이 예제에서 <code>compare_performance()</code>는 “ranger”모델을 권장한다.</p>
+<pre class="r"><code># 개별 모델별 성능 평가지표의 비교
+comp_perf &lt;- compare_performance(pred)
+
+comp_perf
+#&gt; $recommend_model
+#&gt; [1] &quot;ranger&quot;
+#&gt; 
+#&gt; $top_metric_count
+#&gt;     logistic        rpart        ctree randomForest       ranger 
+#&gt;            0            0            0            2           13 
+#&gt; 
+#&gt; $mean_rank
+#&gt;     logistic        rpart        ctree randomForest       ranger 
+#&gt;     4.769231     3.692308     3.307692     2.153846     1.076923 
+#&gt; 
+#&gt; $top_metric
+#&gt; $top_metric$logistic
+#&gt; NULL
+#&gt; 
+#&gt; $top_metric$rpart
+#&gt; NULL
+#&gt; 
+#&gt; $top_metric$ctree
+#&gt; NULL
+#&gt; 
+#&gt; $top_metric$randomForest
+#&gt; [1] &quot;Recall&quot;  &quot;KS_Stat&quot;
+#&gt; 
+#&gt; $top_metric$ranger
+#&gt;  [1] &quot;ZeroOneLoss&quot; &quot;Accuracy&quot;    &quot;Precision&quot;   &quot;Recall&quot;      &quot;Specificity&quot;
+#&gt;  [6] &quot;F1_Score&quot;    &quot;LogLoss&quot;     &quot;AUC&quot;         &quot;Gini&quot;        &quot;PRAUC&quot;      
+#&gt; [11] &quot;LiftAUC&quot;     &quot;GainAUC&quot;     &quot;KS_Stat&quot;</code></pre>
+</div>
+</div>
+<div id="plot_performance이용한-roc-곡선의-시각화" class="section level3">
+<h3>plot_performance()이용한 ROC 곡선의 시각화</h3>
+<p><code>compare_performance()</code>은 <code>ROC 곡선</code>을 그린다.</p>
+<pre class="r"><code># ROC 곡선의 시각화
+plot_performance(pred)</code></pre>
+<p><img src="/post/2020-03/2020-03-27-r-alookr.ko_files/figure-html/model18-1.png" width="672" /></p>
+<div id="cut-off-튜닝" class="section level4">
+<h4>cut-off 튜닝</h4>
+<p>일반적으로 예측 확률이 0.5보다 클 경우에는 <code>positive class</code>로 예측한다. 즉, cut-off로 0.5를 사용하는 것이다. 이것은 대부분의 모델 알고리즘에서 적용된다. 그러나 경우에 따라서 cut-off의 값을 변경하여, 성능을 튜닝할 수도 있다.</p>
+<p><code>plot_cutoff()</code>는 cut-off의 값을 선정할 수 있는 플롯을 시각화하며, cut-off 값도 반환한다.</p>
+<pre class="r"><code>pred_best &lt;- pred %&gt;% 
+  filter(model_id == comp_perf$recommend_model) %&gt;% 
+  select(predicted) %&gt;% 
+  pull %&gt;% 
+  .[[1]] %&gt;% 
+  attr(&quot;pred_prob&quot;)
+
+cutoff &lt;- plot_cutoff(pred_best, test$Class, &quot;malignant&quot;, type = &quot;mcc&quot;)</code></pre>
+<p><img src="/post/2020-03/2020-03-27-r-alookr.ko_files/figure-html/model19-1.png" width="672" /></p>
+<pre class="r"><code>
+cutoff
+#&gt; [1] 0.45
+
+cutoff2 &lt;- plot_cutoff(pred_best, test$Class, &quot;malignant&quot;, type = &quot;density&quot;)</code></pre>
+<p><img src="/post/2020-03/2020-03-27-r-alookr.ko_files/figure-html/model19-2.png" width="672" /></p>
+<pre class="r"><code>
+cutoff2
+#&gt; [1] 0.8904
+
+cutoff3 &lt;- plot_cutoff(pred_best, test$Class, &quot;malignant&quot;, type = &quot;prob&quot;)</code></pre>
+<p><img src="/post/2020-03/2020-03-27-r-alookr.ko_files/figure-html/model19-3.png" width="672" /></p>
+<pre class="r"><code>
+cutoff3
+#&gt; [1] 0.45</code></pre>
+</div>
+<div id="performance_metric을-이용한-예측과-조정된-컷오프-예측의-성능-비교" class="section level4">
+<h4>performance_metric()을 이용한 예측과 조정된 컷오프 예측의 성능 비교</h4>
+<p>원래 예측 성능과 조정된 컷오프 예측의 성능을 비교한다. 최상의 성능을 나타낸 모델 comp_perf$recommend_model과 컷오프를 변경한 모델을 비교해 보자.</p>
+<pre class="r"><code>comp_perf$recommend_model
+#&gt; [1] &quot;ranger&quot;
+
+# 예측 확률의 추출
+idx &lt;- which(pred$model_id == comp_perf$recommend_model)
+pred_prob &lt;- attr(pred$predicted[[idx]], &quot;pred_prob&quot;)
+
+# 혹은, dplyr을 이용한 예측 확률의 추출
+pred_prob &lt;- pred %&gt;% 
+  filter(model_id == comp_perf$recommend_model) %&gt;% 
+  select(predicted) %&gt;% 
+  pull %&gt;% 
+  &quot;[[&quot;(1) %&gt;% 
+  attr(&quot;pred_prob&quot;)
+
+# 예측된 확률값
+pred_prob  
+#&gt;   [1] 8.884447e-01 1.933405e-01 8.739496e-05 0.000000e+00 9.987778e-01
+#&gt;   [6] 0.000000e+00 9.771659e-01 0.000000e+00 6.094206e-01 0.000000e+00
+#&gt;  [11] 8.994016e-01 9.975587e-01 0.000000e+00 9.880000e-01 9.842579e-01
+#&gt;  [16] 7.018579e-01 6.651095e-01 9.981000e-01 5.733770e-01 6.812992e-01
+#&gt;  [21] 9.590754e-01 0.000000e+00 9.560524e-01 9.487484e-01 9.609056e-01
+#&gt;  [26] 0.000000e+00 0.000000e+00 0.000000e+00 9.876278e-01 9.791254e-01
+#&gt;  [31] 5.714286e-04 9.569357e-01 1.682802e-01 2.524603e-02 1.000000e+00
+#&gt;  [36] 9.143706e-01 9.269627e-01 0.000000e+00 0.000000e+00 0.000000e+00
+#&gt;  [41] 0.000000e+00 0.000000e+00 9.912611e-01 2.161387e-02 0.000000e+00
+#&gt;  [46] 0.000000e+00 5.847656e-02 0.000000e+00 2.347739e-01 0.000000e+00
+#&gt;  [51] 9.960643e-01 9.936627e-01 9.825214e-01 9.988056e-01 9.977778e-01
+#&gt;  [56] 0.000000e+00 0.000000e+00 0.000000e+00 9.678722e-01 0.000000e+00
+#&gt;  [61] 0.000000e+00 9.729802e-01 9.924563e-01 9.958556e-01 8.739496e-05
+#&gt;  [66] 9.463008e-01 9.596698e-01 9.463063e-01 2.315159e-02 9.989500e-01
+#&gt;  [71] 0.000000e+00 0.000000e+00 1.000000e+00 0.000000e+00 9.775302e-01
+#&gt;  [76] 0.000000e+00 0.000000e+00 9.602087e-01 1.000000e+00 1.000000e+00
+#&gt;  [81] 8.882944e-01 9.718349e-01 0.000000e+00 8.882944e-01 0.000000e+00
+#&gt;  [86] 0.000000e+00 0.000000e+00 9.910556e-01 9.539151e-01 0.000000e+00
+#&gt;  [91] 9.106548e-01 2.357051e-02 9.948484e-01 9.217754e-01 0.000000e+00
+#&gt;  [96] 8.739496e-05 9.494595e-01 8.759524e-01 8.796310e-01 0.000000e+00
+#&gt; [101] 0.000000e+00 9.730762e-01 3.513810e-02 9.367278e-01 0.000000e+00
+#&gt; [106] 0.000000e+00 0.000000e+00 0.000000e+00 3.000000e-03 9.332000e-01
+#&gt; [111] 9.946222e-01 0.000000e+00 9.995556e-01 1.166667e-02 2.497389e-01
+#&gt; [116] 0.000000e+00 9.606857e-01 1.828452e-01 0.000000e+00 3.000000e-03
+#&gt; [121] 0.000000e+00 0.000000e+00 7.380952e-03 0.000000e+00 9.810921e-01
+#&gt; [126] 9.974500e-01 4.480476e-02 1.419619e-01 9.995000e-01 0.000000e+00
+#&gt; [131] 0.000000e+00 0.000000e+00 9.215056e-01 2.224960e-01 0.000000e+00
+#&gt; [136] 2.368746e-01 1.071429e-03 4.992571e-01 9.947444e-01 2.389958e-02
+#&gt; [141] 0.000000e+00 9.454698e-01 7.528665e-03 0.000000e+00 9.970333e-01
+#&gt; [146] 7.154613e-02 8.288190e-01 4.512230e-01 1.000000e+00 4.846643e-01
+#&gt; [151] 0.000000e+00 0.000000e+00 0.000000e+00 3.622222e-03 0.000000e+00
+#&gt; [156] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00
+#&gt; [161] 8.739496e-05 9.918738e-01 8.838683e-01 0.000000e+00 8.739496e-05
+#&gt; [166] 0.000000e+00 9.471770e-01 0.000000e+00 4.256424e-01 2.690651e-01
+#&gt; [171] 0.000000e+00 5.396337e-02 9.159651e-01 9.902500e-01 9.943429e-01
+#&gt; [176] 0.000000e+00 9.833143e-01 0.000000e+00 0.000000e+00 0.000000e+00
+#&gt; [181] 1.000000e+00 9.856516e-01 0.000000e+00 2.222222e-04 0.000000e+00
+#&gt; [186] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00
+#&gt; [191] 0.000000e+00 1.549603e-02 0.000000e+00 0.000000e+00 0.000000e+00
+#&gt; [196] 9.921802e-01 0.000000e+00 1.116667e-03 0.000000e+00 0.000000e+00
+#&gt; [201] 0.000000e+00 0.000000e+00 0.000000e+00 3.863810e-02 0.000000e+00
+#&gt; [206] 0.000000e+00 0.000000e+00 0.000000e+00 2.410071e-01 9.938667e-01
+
+# Accuracy 비교
+performance_metric(pred_prob, test$Class, &quot;malignant&quot;, &quot;Accuracy&quot;)
+#&gt; [1] 0.9714286
+
+performance_metric(pred_prob, test$Class, &quot;malignant&quot;, &quot;Accuracy&quot;,
+                   cutoff = cutoff)
+#&gt; [1] 0.9761905
+
+# Confusion Matrix 비교
+performance_metric(pred_prob, test$Class, &quot;malignant&quot;, &quot;ConfusionMatrix&quot;)
+#&gt;            actual
+#&gt; predict     benign malignant
+#&gt;   benign       129         2
+#&gt;   malignant      4        75
+
+performance_metric(pred_prob, test$Class, &quot;malignant&quot;, &quot;ConfusionMatrix&quot;, 
+                   cutoff = cutoff)
+#&gt;            actual
+#&gt; predict     benign malignant
+#&gt;   benign       128         0
+#&gt;   malignant      5        77
+
+# F1 Score 비교
+performance_metric(pred_prob, test$Class, &quot;malignant&quot;, &quot;F1_Score&quot;)
+#&gt; [1] 0.9615385
+
+performance_metric(pred_prob, test$Class,  &quot;malignant&quot;, &quot;F1_Score&quot;, 
+                   cutoff = cutoff)
+#&gt; [1] 0.9685535
+
+performance_metric(pred_prob, test$Class,  &quot;malignant&quot;, &quot;F1_Score&quot;, 
+                   cutoff = cutoff2)
+#&gt; [1] 0.9027778</code></pre>
+<p>조정된 컷오프(cut-off)의 성능이 양호하면, 컷오프를 적용하여 <code>positives class</code>를 예측한다.</p>
+</div>
+</div>
+<div id="예측" class="section level3">
+<h3>예측</h3>
+<p>여러 모델에서 최상의 모델을 선택한 경우, 해당 모델로 예측을 수행한다.</p>
+<div id="예측을-위한-데이터-생성" class="section level4">
+<h4>예측을 위한 데이터 생성</h4>
+<p>이전 샘플링 예제에서 사용된 데이터 세트에서 100개의 샘플을 추출하여 예측할 데이터를 생성한다.</p>
+<pre class="r"><code>data_pred &lt;- train_under %&gt;% 
+  cleanse 
+#&gt; ── Checking unique value ─────────────────────────── unique value is one ──
+#&gt; No variables that unique value is one.
+#&gt; 
+#&gt; ── Checking unique rate ─────────────────────────────── high unique rate ──
+#&gt; remove variables with high unique rate
+#&gt; ● Id = 315(0.960365853658537)
+#&gt; 
+#&gt; ── Checking character variables ─────────────────────── categorical data ──
+#&gt; No character variables.
+
+set.seed(1234L)
+data_pred &lt;- data_pred %&gt;% 
+  nrow %&gt;% 
+  seq %&gt;% 
+  sample(size = 50) %&gt;% 
+  data_pred[., ]</code></pre>
+</div>
+<div id="alookr과-dplyr를-이용한-예측" class="section level4">
+<h4>alookr과 dplyr를 이용한 예측</h4>
+<p>다음과 같이 <code>alookr</code>과 <code>dplyr</code> 패키지를 사용하여 예측한다. 마지막 <code>factor()</code> 함수는 불필요한 정보를 제거한다.</p>
+<pre class="r"><code>pred_actual &lt;- pred %&gt;%
+  filter(model_id == comp_perf$recommend_model) %&gt;% 
+  run_predict(data_pred) %&gt;% 
+  select(predicted) %&gt;% 
+  pull %&gt;% 
+  &quot;[[&quot;(1) %&gt;% 
+  factor()
+#&gt; Warning: [ONE-TIME WARNING] Forked processing (&#39;multicore&#39;) is disabled
+#&gt; in future (&gt;= 1.13.0) when running R from RStudio, because it is
+#&gt; considered unstable. Because of this, plan(&quot;multicore&quot;) will fall
+#&gt; back to plan(&quot;sequential&quot;), and plan(&quot;multiprocess&quot;) will fall back to
+#&gt; plan(&quot;multisession&quot;) - not plan(&quot;multicore&quot;) as in the past. For more details,
+#&gt; how to control forked processing or not, and how to silence this warning in
+#&gt; future R sessions, see ?future::supportsMulticore
+
+pred_actual
+#&gt;  [1] malignant malignant malignant benign    malignant benign    malignant
+#&gt;  [8] malignant malignant malignant malignant benign    benign    malignant
+#&gt; [15] malignant benign    malignant malignant benign    malignant benign   
+#&gt; [22] malignant malignant malignant benign    malignant malignant benign   
+#&gt; [29] malignant benign    benign    benign    malignant malignant malignant
+#&gt; [36] benign    benign    malignant malignant benign    malignant benign   
+#&gt; [43] benign    malignant benign    malignant benign    malignant malignant
+#&gt; [50] malignant
+#&gt; Levels: benign malignant</code></pre>
+<p>컷오프로 예측하려면 다음과 같이 <code>run_predict()</code> 함수에 컷오프 <code>cutoff</code> 인수를 지정한다.:</p>
+<p>이 예제에서는 컷오프(cut-off) 사용 결과와 사용하지 않는 결과 간에 차이가 없다.</p>
+<pre class="r"><code>pred_actual2 &lt;- pred %&gt;%
+  filter(model_id == comp_perf$recommend_model) %&gt;% 
+  run_predict(data_pred, cutoff) %&gt;% 
+  select(predicted) %&gt;% 
+  pull %&gt;% 
+  &quot;[[&quot;(1) %&gt;% 
+  factor()
+
+pred_actual2
+#&gt;  [1] malignant malignant malignant benign    malignant benign    malignant
+#&gt;  [8] malignant malignant malignant malignant benign    benign    malignant
+#&gt; [15] malignant benign    malignant malignant benign    malignant benign   
+#&gt; [22] malignant malignant malignant benign    malignant malignant benign   
+#&gt; [29] malignant benign    benign    benign    malignant malignant malignant
+#&gt; [36] benign    benign    malignant malignant benign    malignant benign   
+#&gt; [43] benign    malignant benign    malignant benign    malignant malignant
+#&gt; [50] malignant
+#&gt; Levels: benign malignant
+
+sum(pred_actual != pred_actual2)
+#&gt; [1] 0</code></pre>
+</div>
+</div>
+</div>
+
+    
+      
+    
+  </article>
+<aside class="sidebar">
+  <section class="sidebar_inner">
+    
+      <h2>Choonghyun Ryu</h2>
+      <div>
+        Scientist with data, take one more step today.
+      </div>
+      <a href='/about/' class="button mt-1" role="button">Read More</a>
+    <h2 class="mt-4">Recent Posts</h2>
+    <ul class="flex-column">
+      <li>
+        <a href="/post/2020-07/ggplot2_exam/" class="nav-link">몇 개의 ggplot tips</a>
+      </li>
+      <li>
+        <a href="/post/2020-03/window_function/" class="nav-link">Introduce window function</a>
+      </li>
+      <li>
+        <a href="/post/2020-02/r_web_application/" class="nav-link">R 웹 어플리케이션 개발에 대한 연구</a>
+      </li>
+      <li>
+        <a href="/post/2020-01/introduce_dbplyr/" class="nav-link">Introduce dbplyr package</a>
+      </li>
+      <li>
+        <a href="/post/2020-01/complex_function/" class="nav-link">draw the complex function</a>
+      </li>
+    </ul>
+    <div>
+      <h2 class="mt-4 taxonomy" id="categories-section">Categories</h2>
+      <nav class="tags_nav">
+        <a href='/categories/%EC%98%9B-%EC%9D%B4%EC%95%BC%EA%B8%B0-%ED%95%98%EB%82%98/' class="post_tag button button_translucent">
+          옛-이야기-하나
+          <span class="button_tally">120</span>
+        </a>
+        
+        <a href='/categories/r-analytics/' class="post_tag button button_translucent">
+          R-ANALYTICS
+          <span class="button_tally">19</span>
+        </a>
+        
+        <a href='/categories/gallery/' class="post_tag button button_translucent">
+          GALLERY
+          <span class="button_tally">8</span>
+        </a>
+        
+        <a href='/categories/visualization/' class="post_tag button button_translucent">
+          VISUALIZATION
+          <span class="button_tally">7</span>
+        </a>
+        
+        <a href='/categories/tidyverse/' class="post_tag button button_translucent">
+          TIDYVERSE
+          <span class="button_tally">6</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+    <div>
+      <h2 class="mt-4 taxonomy" id="series-section">Series</h2>
+      <nav class="tags_nav">
+        <a href='/series/drawing/' class="post_tag button button_translucent">
+          DRAWING
+          <span class="button_tally">6</span>
+        </a>
+        
+        <a href='/series/photo/' class="post_tag button button_translucent">
+          PHOTO
+          <span class="button_tally">2</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+    <div>
+      <h2 class="mt-4 taxonomy" id="tags-section">Tags</h2>
+      <nav class="tags_nav">
+        <a href='/tags/plot/' class="post_tag button button_translucent">
+          PLOT
+          <span class="button_tally">6</span>
+        </a>
+        
+        <a href='/tags/dlookr/' class="post_tag button button_translucent">
+          DLOOKR
+          <span class="button_tally">5</span>
+        </a>
+        
+        <a href='/tags/graphics/' class="post_tag button button_translucent">
+          GRAPHICS
+          <span class="button_tally">4</span>
+        </a>
+        
+        <a href='/tags/mathematics/' class="post_tag button button_translucent">
+          MATHEMATICS
+          <span class="button_tally">4</span>
+        </a>
+        
+        <a href='/tags/distribution/' class="post_tag button button_translucent">
+          DISTRIBUTION
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/dplyr/' class="post_tag button button_translucent">
+          DPLYR
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/eda/' class="post_tag button button_translucent">
+          EDA
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/grid/' class="post_tag button button_translucent">
+          GRID
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/text-analytics/' class="post_tag button button_translucent">
+          TEXT-ANALYTICS
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B3%80%ED%99%98/' class="post_tag button button_translucent">
+          데이터-변환
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A7%84%EB%8B%A8/' class="post_tag button button_translucent">
+          데이터-진단
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/development/' class="post_tag button button_translucent">
+          DEVELOPMENT
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='/tags/finance/' class="post_tag button button_translucent">
+          FINANCE
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='/tags/ggplot2/' class="post_tag button button_translucent">
+          GGPLOT2
+          <span class="button_tally">2</span>
+        </a>
+        
+        
+        <br>
+        <div class="post_tags_toggle button">All Tags</div>
+        <div class="post_tags">
+          <div class="tags_list">
+            
+            <a href='/tags/alookr/' class=" post_tag button button_translucent" data-position=1>ALOOKR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/association-ruls/' class=" post_tag button button_translucent" data-position=1>ASSOCIATION-RULS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/asynchronous/' class=" post_tag button button_translucent" data-position=1>ASYNCHRONOUS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/binary-classification/' class=" post_tag button button_translucent" data-position=1>BINARY-CLASSIFICATION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/circle/' class=" post_tag button button_translucent" data-position=1>CIRCLE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/clustering/' class=" post_tag button button_translucent" data-position=1>CLUSTERING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/complex/' class=" post_tag button button_translucent" data-position=1>COMPLEX<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/crawling/' class=" post_tag button button_translucent" data-position=1>CRAWLING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/data-acqusition/' class=" post_tag button button_translucent" data-position=1>DATA-ACQUSITION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/dbplyr/' class=" post_tag button button_translucent" data-position=1>DBPLYR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/deep-learning/' class=" post_tag button button_translucent" data-position=1>DEEP-LEARNING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/development/' class=" post_tag button button_translucent" data-position=2>DEVELOPMENT<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/distribution/' class=" post_tag button button_translucent" data-position=3>DISTRIBUTION<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/dlookr/' class=" post_tag button button_translucent" data-position=5>DLOOKR<span class="button_tally">5</span>
+            </a>
+            
+            
+            <a href='/tags/documents-taxonomy/' class=" post_tag button button_translucent" data-position=1>DOCUMENTS-TAXONOMY<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/dplyr/' class=" post_tag button button_translucent" data-position=3>DPLYR<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/eda/' class=" post_tag button button_translucent" data-position=3>EDA<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/extract/' class=" post_tag button button_translucent" data-position=1>EXTRACT<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/factor/' class=" post_tag button button_translucent" data-position=1>FACTOR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/finance/' class=" post_tag button button_translucent" data-position=2>FINANCE<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/foodfact/' class=" post_tag button button_translucent" data-position=1>FOODFACT<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/forcats/' class=" post_tag button button_translucent" data-position=1>FORCATS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/fractal/' class=" post_tag button button_translucent" data-position=1>FRACTAL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/fuction/' class=" post_tag button button_translucent" data-position=1>FUCTION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/future/' class=" post_tag button button_translucent" data-position=1>FUTURE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/ggplot2/' class=" post_tag button button_translucent" data-position=2>GGPLOT2<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/google-trends/' class=" post_tag button button_translucent" data-position=1>GOOGLE-TRENDS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/graphics/' class=" post_tag button button_translucent" data-position=4>GRAPHICS<span class="button_tally">4</span>
+            </a>
+            
+            
+            <a href='/tags/grid/' class=" post_tag button button_translucent" data-position=3>GRID<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/gtrendsr/' class=" post_tag button button_translucent" data-position=1>GTRENDSR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/lasso/' class=" post_tag button button_translucent" data-position=2>LASSO<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/legend/' class=" post_tag button button_translucent" data-position=1>LEGEND<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/magrittr/' class=" post_tag button button_translucent" data-position=2>MAGRITTR<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/mathematics/' class=" post_tag button button_translucent" data-position=4>MATHEMATICS<span class="button_tally">4</span>
+            </a>
+            
+            
+            <a href='/tags/matrix/' class=" post_tag button button_translucent" data-position=2>MATRIX<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/network-analysis/' class=" post_tag button button_translucent" data-position=1>NETWORK-ANALYSIS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/neural-network/' class=" post_tag button button_translucent" data-position=1>NEURAL-NETWORK<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/nlp/' class=" post_tag button button_translucent" data-position=2>NLP<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/nyc-taxi-data/' class=" post_tag button button_translucent" data-position=1>NYC-TAXI-DATA<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/operator/' class=" post_tag button button_translucent" data-position=1>OPERATOR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/packages/' class=" post_tag button button_translucent" data-position=1>PACKAGES<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/par/' class=" post_tag button button_translucent" data-position=1>PAR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/parallel/' class=" post_tag button button_translucent" data-position=1>PARALLEL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/pictures/' class=" post_tag button button_translucent" data-position=2>PICTURES<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/pipe/' class=" post_tag button button_translucent" data-position=1>PIPE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/plot/' class=" post_tag button button_translucent" data-position=6>PLOT<span class="button_tally">6</span>
+            </a>
+            
+            
+            <a href='/tags/plot-region/' class=" post_tag button button_translucent" data-position=1>PLOT-REGION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/postgresql/' class=" post_tag button button_translucent" data-position=1>POSTGRESQL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/probability/' class=" post_tag button button_translucent" data-position=1>PROBABILITY<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/promises/' class=" post_tag button button_translucent" data-position=1>PROMISES<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/quandl/' class=" post_tag button button_translucent" data-position=1>QUANDL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/r_tips/' class=" post_tag button button_translucent" data-position=1>R_TIPS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/readr/' class=" post_tag button button_translucent" data-position=2>READR<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/regression/' class=" post_tag button button_translucent" data-position=1>REGRESSION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/replace/' class=" post_tag button button_translucent" data-position=1>REPLACE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/rserve/' class=" post_tag button button_translucent" data-position=1>RSERVE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/scraping/' class=" post_tag button button_translucent" data-position=1>SCRAPING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/set/' class=" post_tag button button_translucent" data-position=1>SET<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/sqldf/' class=" post_tag button button_translucent" data-position=1>SQLDF<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/statistics/' class=" post_tag button button_translucent" data-position=2>STATISTICS<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/stock/' class=" post_tag button button_translucent" data-position=1>STOCK<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/stock-data/' class=" post_tag button button_translucent" data-position=1>STOCK-DATA<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/synchronous/' class=" post_tag button button_translucent" data-position=1>SYNCHRONOUS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/taxonomy/' class=" post_tag button button_translucent" data-position=1>TAXONOMY<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/text-analytics/' class=" post_tag button button_translucent" data-position=3>TEXT-ANALYTICS<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/text2vec/' class=" post_tag button button_translucent" data-position=1>TEXT2VEC<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/tidyr/' class=" post_tag button button_translucent" data-position=1>TIDYR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/tidyverse/' class=" post_tag button button_translucent" data-position=1>TIDYVERSE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/topic-analysis/' class=" post_tag button button_translucent" data-position=1>TOPIC-ANALYSIS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/traffic/' class=" post_tag button button_translucent" data-position=1>TRAFFIC<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/vector/' class=" post_tag button button_translucent" data-position=1>VECTOR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/web-application/' class=" post_tag button button_translucent" data-position=1>WEB-APPLICATION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/window-function/' class=" post_tag button button_translucent" data-position=1>WINDOW-FUNCTION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/zoo/' class=" post_tag button button_translucent" data-position=1>ZOO<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B3%80%ED%99%98/' class=" post_tag button button_translucent" data-position=3>데이터-변환<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%95%EC%A0%9C/' class=" post_tag button button_translucent" data-position=1>데이터-정제<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A7%84%EB%8B%A8/' class=" post_tag button button_translucent" data-position=3>데이터-진단<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%AA%A8%EB%8D%B8-%EC%A0%81%ED%95%A9/' class=" post_tag button button_translucent" data-position=1>모델-적합<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%AA%A8%EB%8D%B8-%EC%A7%84%EB%8B%A8/' class=" post_tag button button_translucent" data-position=1>모델-진단<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EC%97%AC%ED%96%89/' class=" post_tag button button_translucent" data-position=2>여행<span class="button_tally">2</span>
+            </a>
+            
+            <div class="tags_sort"><span title="sort alphabetically">[A~Z]</span><span title="sort by count">[0~9]</span>
+            </div>
+            <span class="tags_hide"><svg class="icon">
+            <use xlink:href="#closeme"></use>
+          </svg></span>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </section>
+</aside>
+
+</div>
+    </main><svg width="0" height="0" class="hidden">
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18.001 18.001" id="twitter">
+    <path d="M15.891 4.013c.808-.496 1.343-1.173 1.605-2.034a8.68 8.68 0 0 1-2.351.861c-.703-.756-1.593-1.14-2.66-1.14-1.043 0-1.924.366-2.643 1.078a3.56 3.56 0 0 0-1.076 2.605c0 .309.039.585.117.819-3.076-.105-5.622-1.381-7.628-3.837-.34.601-.51 1.213-.51 1.846 0 1.301.549 2.332 1.645 3.089-.625-.053-1.176-.211-1.645-.47 0 .929.273 1.705.82 2.388a3.623 3.623 0 0 0 2.115 1.291c-.312.08-.641.118-.979.118-.312 0-.533-.026-.664-.083.23.757.664 1.371 1.291 1.841a3.652 3.652 0 0 0 2.152.743C4.148 14.173 2.625 14.69.902 14.69c-.422 0-.721-.006-.902-.038 1.697 1.102 3.586 1.649 5.676 1.649 2.139 0 4.029-.542 5.674-1.626 1.645-1.078 2.859-2.408 3.639-3.974a10.77 10.77 0 0 0 1.172-4.892v-.468a7.788 7.788 0 0 0 1.84-1.921 8.142 8.142 0 0 1-2.11.593z"
+      ></path>
+  </symbol>
+  <symbol aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="mail">
+    <path  d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="calendar">
+    <path d="M452 40h-24V0h-40v40H124V0H84v40H60C26.916 40 0 66.916 0 100v352c0 33.084 26.916 60 60 60h392c33.084 0 60-26.916 60-60V100c0-33.084-26.916-60-60-60zm20 412c0 11.028-8.972 20-20 20H60c-11.028 0-20-8.972-20-20V188h432v264zm0-304H40v-48c0-11.028 8.972-20 20-20h24v40h40V80h264v40h40V80h24c11.028 0 20 8.972 20 20v48z"></path>
+    <path d="M76 230h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 310h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 390h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80-80h40v40h-40z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="github">
+    <path d="M255.968 5.329C114.624 5.329 0 120.401 0 262.353c0 113.536 73.344 209.856 175.104 243.872 12.8 2.368 17.472-5.568 17.472-12.384 0-6.112-.224-22.272-.352-43.712-71.2 15.52-86.24-34.464-86.24-34.464-11.616-29.696-28.416-37.6-28.416-37.6-23.264-15.936 1.728-15.616 1.728-15.616 25.696 1.824 39.2 26.496 39.2 26.496 22.848 39.264 59.936 27.936 74.528 21.344 2.304-16.608 8.928-27.936 16.256-34.368-56.832-6.496-116.608-28.544-116.608-127.008 0-28.064 9.984-51.008 26.368-68.992-2.656-6.496-11.424-32.64 2.496-68 0 0 21.504-6.912 70.4 26.336 20.416-5.696 42.304-8.544 64.096-8.64 21.728.128 43.648 2.944 64.096 8.672 48.864-33.248 70.336-26.336 70.336-26.336 13.952 35.392 5.184 61.504 2.56 68 16.416 17.984 26.304 40.928 26.304 68.992 0 98.72-59.84 120.448-116.864 126.816 9.184 7.936 17.376 23.616 17.376 47.584 0 34.368-.32 62.08-.32 70.496 0 6.88 4.608 14.88 17.6 12.352C438.72 472.145 512 375.857 512 262.353 512 120.401 397.376 5.329 255.968 5.329z"></path>
+  </symbol>
+  <symbol viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="rss">
+    <circle cx="3.429" cy="20.571" r="3.429"></circle>
+    <path d="M11.429 24h4.57C15.999 15.179 8.821 8.001 0 8v4.572c6.302.001 11.429 5.126 11.429 11.428z"></path>
+    <path d="M24 24C24 10.766 13.234 0 0 0v4.571c10.714 0 19.43 8.714 19.43 19.429z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="linkedin">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h362c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zM181 406h-60V196h60zm0-240h-60v-60h60zm210 240h-60V286c0-16.54-13.46-30-30-30s-30 13.46-30 30v120h-60V196h60v11.309C286.719 202.422 296.93 196 316 196c40.691.043 75 36.547 75 79.688zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="arrow">
+    <path d="M604.501 440.509L325.398 134.956c-5.331-5.357-12.423-7.627-19.386-7.27-6.989-.357-14.056 1.913-19.387 7.27L7.499 440.509c-9.999 10.024-9.999 26.298 0 36.323s26.223 10.024 36.222 0l262.293-287.164L568.28 476.832c9.999 10.024 26.222 10.024 36.221 0 9.999-10.023 9.999-26.298 0-36.323z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="carly">
+    <path d="M504.971 239.029L448 182.059V84c0-46.317-37.682-84-84-84h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c19.851 0 36 16.149 36 36v108c0 6.365 2.529 12.47 7.029 16.971L454.059 256l-47.029 47.029A24.002 24.002 0 0 0 400 320v108c0 19.851-16.149 36-36 36h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c46.318 0 84-37.683 84-84v-98.059l56.971-56.971c9.372-9.372 9.372-24.568 0-33.941zM112 192V84c0-19.851 16.149-36 36-36h44c13.255 0 24-10.745 24-24S205.255 0 192 0h-44c-46.318 0-84 37.683-84 84v98.059l-56.971 56.97c-9.373 9.373-9.373 24.568 0 33.941L64 329.941V428c0 46.317 37.682 84 84 84h44c13.255 0 24-10.745 24-24s-10.745-24-24-24h-44c-19.851 0-36-16.149-36-36V320c0-6.365-2.529-12.47-7.029-16.971L57.941 256l47.029-47.029A24.002 24.002 0 0 0 112 192z"></path>
+  </symbol>
+  <symbol viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="copy">
+    <path d="M23 2.75A2.75 2.75 0 0 0 20.25 0H8.75A2.75 2.75 0 0 0 6 2.75v13.5A2.75 2.75 0 0 0 8.75 19h11.5A2.75 2.75 0 0 0 23 16.25zM18.25 14.5h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5zm0-3h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5zm0-3h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5z"></path>
+    <path d="M8.75 20.5a4.255 4.255 0 0 1-4.25-4.25V2.75c0-.086.02-.166.025-.25H3.75A2.752 2.752 0 0 0 1 5.25v16A2.752 2.752 0 0 0 3.75 24h12a2.752 2.752 0 0 0 2.75-2.75v-.75z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001" id="closeme">
+    <path d="M284.286 256.002L506.143 34.144c7.811-7.811 7.811-20.475 0-28.285-7.811-7.81-20.475-7.811-28.285 0L256 227.717 34.143 5.859c-7.811-7.811-20.475-7.811-28.285 0-7.81 7.811-7.811 20.475 0 28.285l221.857 221.857L5.858 477.859c-7.811 7.811-7.811 20.475 0 28.285a19.938 19.938 0 0 0 14.143 5.857 19.94 19.94 0 0 0 14.143-5.857L256 284.287l221.857 221.857c3.905 3.905 9.024 5.857 14.143 5.857s10.237-1.952 14.143-5.857c7.811-7.811 7.811-20.475 0-28.285L284.286 256.002z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="open-menu">
+    <path d="M492 236H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0-160H20C8.954 76 0 84.954 0 96s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0 320H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="instagram">
+    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id=youtube>
+    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="stackoverflow">
+    <path d="M21 27v-8h3v11H0V19h3v8h18z"></path><path d="M17.1.2L15 1.8l7.9 10.6 2.1-1.6L17.1.2zm3.7 14.7L10.6 6.4l1.7-2 10.2 8.5-1.7 2zM7.2 12.3l12 5.6 1.1-2.4-12-5.6-1.1 2.4zm-1.8 6.8l13.56 1.96.17-2.38-13.26-2.55-.47 2.97zM19 25H5v-3h14v3z"></path>
+  </symbol>
+</svg>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+<footer class="footer">
+  <div class="footer_inner wrap pale">
+    <img src='/logos/logo.png' class="icon icon_2 transparent">
+    <p>Copyright<span class="year"></span> DATAHOLIC. All Rights Reserved</p><a class="to_top" href="#documentTop">
+  <svg class="icon">
+  <use xlink:href="#arrow"></use>
+</svg>
+</a>
+
+  </div>
+</footer>
+    <script type="text/javascript" src="/js/bundle.min.03f1cc201c9efa18e14550bff374f58e89f1e6b2a30a0e22f84c87f6eb766e419bd6569c3a60846ea3e65816112dfa454f4785d306d024b6ef2616d067862a7a.js" integrity="sha512-A/HMIBye&#43;hjhRVC/83T1jonx5rKjCg4i&#43;EyH9ut2bkGb1lacOmCEbqPmWBYRLfpFT0eF0wbQJLbvJhbQZ4Yqeg==" crossorigin="anonymous"></script>
+    
+  </body>
+</html>

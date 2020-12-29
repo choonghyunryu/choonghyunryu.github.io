@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>NLP on Dataholic</title>
+    <link>/tags/nlp/</link>
+    <description>Recent content in NLP on Dataholic</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 31 Dec 2019 08:10:12 +0800</lastBuildDate><atom:link href="/tags/nlp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Documents Taxonomy</title>
+      <link>/post/2019-12/documents_taxonomy/</link>
+      <pubDate>Tue, 31 Dec 2019 08:10:12 +0800</pubDate>
+      
+      <guid>/post/2019-12/documents_taxonomy/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;들어가기&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;들어가기&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;Taxonomy&lt;/code&gt;는 사전적으로 &lt;strong&gt;“사물이나 생명체 등을 분류하기 위해서 사용되는 분류체계”&lt;/strong&gt;로 해석되며, &lt;code&gt;분류체계&lt;/code&gt;는 &lt;code&gt;트리형의 위계적 (Hirerachy) 구조&lt;/code&gt;로 표현한다.
+&lt;code&gt;Documents Taxonomy&lt;/code&gt;는 &lt;code&gt;문서(텍스트)들을 분류체계 기준으로 분류&lt;/code&gt;하는 것으로, 대표적인 것에 콜센터의 상담 내용을 상담 분류 체계로 분류하는 것이 있다.
+엄밀하게 구분하면 Taxonomy와 Classification은 다른 개념이지만, 여기서는 &lt;code&gt;Classification Model로 Documents Taxonomy의 가능성을 진단&lt;/code&gt;해 본다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div id=&#34;학습목표&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;학습목표&lt;/h1&gt;
+&lt;p&gt;다음을 네 가지 섹션의 이해를 목표로 학습을 수행한다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;데이터 구조의 이해:
+&lt;ul&gt;
+&lt;li&gt;Vectorization&lt;/li&gt;
+&lt;li&gt;DTM(Document Term Matrix)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;데이터 처리의 이해:
+&lt;ul&gt;
+&lt;li&gt;TF-IDF&lt;/li&gt;
+&lt;li&gt;n-gram&lt;/li&gt;
+&lt;li&gt;Feature hashing&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;모델의 이해:
+&lt;ul&gt;
+&lt;li&gt;LASSO regression&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;패키지의 이해:
+&lt;ul&gt;
+&lt;li&gt;text2vec&lt;/li&gt;
+&lt;li&gt;glmnet&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;학습방법&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;학습방법&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;“사람들의 대화를 들어보면 개인별로 즐겨 사용하는 언어적 특징이 있는 것처럼, 대통령의 연설문에도 개인적 특징이 담겨있지 않을까?”&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;연설문만으로 어떤 대통령이 연설했는가를 분류&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;데이터:
+&lt;ul&gt;
+&lt;li&gt;대통령 연설문 전문&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;분류 방법:
+&lt;ul&gt;
+&lt;li&gt;연설문 내용으로 어느 대통령이 연설했는지 분류&lt;/li&gt;
+&lt;li&gt;김대중, 노무현, 이명박&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;성능 비교:
+&lt;ul&gt;
+&lt;li&gt;몇 가지 방법에 대해서 분류의 성능 비교&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;documents-taxonomy에-대한-슬라이드의-공유&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Documents Taxonomy에 대한 슬라이드의 공유&lt;/h1&gt;
+&lt;p&gt;다음에 링크를 걸어 둔 슬라이드 파일은 2017년도에 모 미트업에서 발표한 슬라이드 pdf 파일이다. 그 이후에 많은 시간이 흘렀기 때문에 일부 개선된 것들이 있을 수 있다. 감안해서 참고하기 바란다.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/choonghyunryu/R_Materials/blob/master/Text_Analytics/Documents_Texonomy.pdf&#34; target=&#34;_blank&#34;&gt;Documents_Texonomy.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;차례&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;차례&lt;/h1&gt;
+&lt;p&gt;이 문서는 다음과 같은 아젠다를 이야기 한다.&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;들어가기&lt;/li&gt;
+&lt;li&gt;데이터 전처리&lt;/li&gt;
+&lt;li&gt;모델 생성&lt;/li&gt;
+&lt;li&gt;모델 성능 비교&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>대통령 연설문 분석하기</title>
+      <link>/post/2019-12/president_speech/</link>
+      <pubDate>Sun, 29 Dec 2019 18:48:12 +0800</pubDate>
+      
+      <guid>/post/2019-12/president_speech/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;들어가기&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;들어가기&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;R에서 데이터를 &lt;code&gt;scraping&lt;/code&gt;하는 기술은 데이터 조작 함수를 구사하는 능력에 비례한다. 그 이유는 원하는 부분의 데이터만 취하기 위해서는 데이터 조작이 필수적이기 때문이다. 물론 원천 데이터가 웹 채널에 있기 때문에 HTML 문법과 이를 긁어올 수 있는 &lt;code&gt;rvest 패키지&lt;/code&gt; 등의 사용법도 중요하다.
+&lt;code&gt;Text Analytics&lt;/code&gt;는 &lt;code&gt;NLP(Natural language processing)&lt;/code&gt;를 위한 전문적인 도구와 기술이 필요하다. 그러나 다행이도 일반적인 데이터 분석 기법을 적용할 수도 있고, 최근에는 Deep Learning 기법이 응용되는 분야이기도 하다. 일반적인 데이터 분석 기법을 적용하여 Text Analytics을 이해해 보자.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div id=&#34;crawling&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Crawling&lt;/h1&gt;
+&lt;p&gt;대통령기록연구실 홈페이지에서 특정 대통령의 재임 기간의 연설문을 수집한다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;preprocessing&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Preprocessing&lt;/h1&gt;
+&lt;p&gt;텍스트 분석을 위해서 수집한 텍스트 데이터를 전처리한다. 몇 가지의 형태소 분석기를 분석해 본다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;text-analytics&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Text Analytics&lt;/h1&gt;
+&lt;p&gt;Document Term Matrix를 생성한 다음, 여러 기법의 텍스트 데이터 분석을 수행한다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;데이터-조작에-대한-슬라이드의-공유&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;데이터 조작에 대한 슬라이드의 공유&lt;/h1&gt;
+&lt;p&gt;다음에 링크를 걸어 둔 슬라이드 파일은 2017년도에 모 미트업에서 발표한 슬라이드 pdf 파일이다. 그 이후에 많은 시간이 흘렀기 때문에 일부 개선된 것들이 있을 수 있다. 감안해서 참고하기 바란다.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/choonghyunryu/R_Materials/blob/master/Text_Analytics/01_President_Speech_Slide.pdf&#34; target=&#34;_blank&#34;&gt;01_President_Speech_Slide.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;차례&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;차례&lt;/h1&gt;
+&lt;p&gt;이 문서는 다음과 같은 아젠다를 이야기 한다.&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Learning Outline&lt;/li&gt;
+&lt;li&gt;Scraping Data&lt;/li&gt;
+&lt;li&gt;수집 데이터 전처리&lt;/li&gt;
+&lt;li&gt;Text Analytics 개요&lt;/li&gt;
+&lt;li&gt;Frequency Analysis&lt;/li&gt;
+&lt;li&gt;Association Rules&lt;/li&gt;
+&lt;li&gt;Clustering/Topic Analytics&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

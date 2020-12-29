@@ -1,0 +1,1219 @@
+
+<!DOCTYPE html>
+<html lang="en" data-figures="" class="page">
+  <head>
+<title>Introduce dbplyr package | Dataholic</title>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.79.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-118779401-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-118779401-1');
+</script>
+<meta property="og:locale" content="en" />
+
+<meta property="og:type" content="article">
+<meta name="description" content="dbplyr dbplyr 패키지는 DBMS를 위한 dplyr 패키지의 Backend다. dplyr 패키지의 R 환경에서 data.frame 객체에서 상속된 데이터 객체를 조작해서 데이터 분석을 수행하는 패키지라면, dbplyr 패키지는 dplyr 패키지의 문법으로 DBMS …">
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:creator" content="">
+<meta name="twitter:title" content="Introduce dbplyr package" />
+<meta property="og:url" content="/post/2020-01/introduce_dbplyr/" />
+<meta property="og:title" content="Introduce dbplyr package" />
+<meta property="og:description" content="dbplyr dbplyr 패키지는 DBMS를 위한 dplyr 패키지의 Backend다. dplyr 패키지의 R 환경에서 data.frame 객체에서 상속된 데이터 객체를 조작해서 데이터 분석을 수행하는 패키지라면, dbplyr 패키지는 dplyr 패키지의 문법으로 DBMS …" />
+<meta property="og:image" content="/" />
+<link rel="apple-touch-icon" sizes="180x180" href='/icons/apple-touch-icon.png'>
+<link rel="icon" type="image/png" sizes="32x32" href='/icons/favicon-32x32.png'>
+<link rel="manifest" href='/icons/site.webmanifest'>
+<link rel="mask-icon" href='/safari-pinned-tab.svg' color="#002538">
+<meta name="msapplication-TileColor" content="#002538">
+<meta name="theme-color" content="#002538">
+
+<link rel="canonical" href="/post/2020-01/introduce_dbplyr/">
+
+    
+
+    
+    
+    <link rel="preload" href="/css/styles.2b3290fc6e94839826981c23ed76e1831472bd3f8af68332da00b97d9430b56bfb7e9394d5c09aca633c093c621709cdd745eec940be733933ac5d876223de52.css" integrity = "sha512-KzKQ/G6Ug5gmmBwj7XbhgxRyvT&#43;K9oMy2gC5fZQwtWv7fpOU1cCaymM8CTxiFwnN10XuyUC&#43;czkzrF2HYiPeUg==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="/js/bundle.min.03f1cc201c9efa18e14550bff374f58e89f1e6b2a30a0e22f84c87f6eb766e419bd6569c3a60846ea3e65816112dfa454f4785d306d024b6ef2616d067862a7a.js" as="script" integrity=
+    "sha512-A/HMIBye&#43;hjhRVC/83T1jonx5rKjCg4i&#43;EyH9ut2bkGb1lacOmCEbqPmWBYRLfpFT0eF0wbQJLbvJhbQZ4Yqeg==" crossorigin="anonymous">
+
+    
+    <link rel="stylesheet" type="text/css" href="/css/styles.2b3290fc6e94839826981c23ed76e1831472bd3f8af68332da00b97d9430b56bfb7e9394d5c09aca633c093c621709cdd745eec940be733933ac5d876223de52.css" integrity="sha512-KzKQ/G6Ug5gmmBwj7XbhgxRyvT&#43;K9oMy2gC5fZQwtWv7fpOU1cCaymM8CTxiFwnN10XuyUC&#43;czkzrF2HYiPeUg==" crossorigin="anonymous">
+    
+  </head>
+  
+  
+    
+  
+  <body data-code="7" data-lines="false" id="documentTop">
+
+<header class="nav_header" >
+  <nav class="nav">
+    <a href='/' class="nav_brand nav_item">
+      <img src="/logos/logo.png" class="logo">
+      <div class="nav_close">
+        <div>
+          <svg class="icon">
+  <use xlink:href="#open-menu"></use>
+</svg>
+          <svg class="icon">
+  <use xlink:href="#closeme"></use>
+</svg>
+        </div>
+      </div>
+    </a>
+    <div class='nav_body nav_body_left'>
+      
+      
+      
+        
+
+  <div class="nav_parent">
+    <a href="/" class="nav_item">Home </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/post/" class="nav_item">R </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/gallery/" class="nav_item">Gellary </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/moment/" class="nav_item">Moment </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/about/" class="nav_item">About </a>
+  </div>
+      
+      <div class="nav_parent">
+        <a href="#" class="nav_item"></a>
+        <div class="nav_sub">
+          <span class="nav_child"></span>
+          
+          <a href="/" class="nav_child nav_item">English</a>
+          
+          <a href="/kr/" class="nav_child nav_item">Korean</a>
+          
+        </div>
+      </div>
+      
+<div class='follow'>
+  <a href="https://github.com/choonghyunryu">
+    <svg class="icon">
+  <use xlink:href="#github"></use>
+</svg>
+  </a>
+  <a href="https://www.facebook.com/choonghyun.ryu">
+    <svg class="icon">
+  <use xlink:href="#facebook"></use>
+</svg>
+  </a>
+  <a href="https://www.linkedin.com/in/choonghyun-ryu-10a95726/">
+    <svg class="icon">
+  <use xlink:href="#linkedin"></use>
+</svg>
+  </a>
+    
+  <a href="/index.xml">
+    <svg class="icon">
+  <use xlink:href="#rss"></use>
+</svg>
+  </a>
+<div class="color_mode">
+  <input type="checkbox" class="color_choice" id="mode">
+</div>
+
+</div>
+
+    </div>
+  </nav>
+</header>
+
+    <main>
+  
+<div class="grid-inverse wrap content">
+  <article class="post_content">
+    <h1 class="post_title">Introduce dbplyr package</h1><div class="post_meta">
+  
+    <svg class="icon">
+  <use xlink:href="#calendar"></use>
+</svg>
+    <span class="post_date">
+      2020-01-28</span>
+      <a href='/tags/postgresql' class="post_tag button button_translucent">PostgreSQL
+      </a>
+      <a href='/tags/tidyverse' class="post_tag button button_translucent">tidyverse
+      </a>
+      <a href='/tags/dbplyr' class="post_tag button button_translucent">dbplyr
+      </a>
+      <a href='/tags/nyc-taxi-data' class="post_tag button button_translucent">nyc-taxi-data
+      </a>
+</div>
+
+    
+  <div class="post_share">
+    Share on:
+    <a href="https://twitter.com/intent/tweet?text=Introduce%20dbplyr%20package&url=%2fpost%2f2020-01%2fintroduce_dbplyr%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#twitter"></use>
+</svg>
+    </a>
+    <a href="https://www.facebook.com/sharer.php?u=%2fpost%2f2020-01%2fintroduce_dbplyr%2f&t=Introduce%20dbplyr%20package" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#facebook"></use>
+</svg>
+    </a>
+    <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#linkedin"></use>
+</svg>
+    </a>
+    <a href="/post/2020-01/introduce_dbplyr/" title="Copy Link" class="link link_yank">
+      <svg class="icon">
+  <use xlink:href="#copy"></use>
+</svg>
+    </a>
+  </div>
+
+    
+    
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+
+<div id="dbplyr" class="section level2">
+<h2>dbplyr</h2>
+<p><code>dbplyr</code> 패키지는 <code>DBMS</code>를 위한 <code>dplyr</code> 패키지의 <code>Backend</code>다. <code>dplyr</code> 패키지의 R 환경에서 data.frame 객체에서 상속된 데이터 객체를 조작해서 데이터 분석을 수행하는 패키지라면, <code>dbplyr</code> 패키지는 <code>dplyr</code> 패키지의 문법으로 DBMS 환경의 <code>Tables</code> 자원을 액세스하여 데이터 분석을 수행하게 도와 준다.</p>
+</div>
+<div id="테스트-dbms의-환경" class="section level2">
+<h2>테스트 DBMS의 환경</h2>
+<p>Mac OS X 노트북 환경에 PostgrSQL DBMS 12 버전을= 설치한 환경에 <a href="https://github.com/lcheng6/nyc-taxi-data-code-annotated의" class="uri">https://github.com/lcheng6/nyc-taxi-data-code-annotated의</a> 정보를 이용해서<code>New York</code> 지역의 <code>Taxi 운행 공공 데이터</code>를 분석한 사례의 일부 데이터를 migration하였다.</p>
+<div id="dbms-접속-및-dbms-정보" class="section level3">
+<h3>DBMS 접속 및 DBMS 정보</h3>
+<p>PostgreSQL DBMS의 정보는 다음과 같다.</p>
+<pre class="r"><code>library(RPostgreSQL)
+
+con &lt;- dbConnect(dbDriver(&quot;PostgreSQL&quot;), dbname = &quot;nyc-taxi-data&quot;, host = &quot;localhost&quot;)
+
+# DBMS 정보 
+dbGetInfo(con)</code></pre>
+<pre><code>## $host
+## [1] &quot;localhost&quot;
+## 
+## $port
+## [1] &quot;5432&quot;
+## 
+## $user
+## [1] &quot;choonghyunryu&quot;
+## 
+## $dbname
+## [1] &quot;nyc-taxi-data&quot;
+## 
+## $serverVersion
+## [1] &quot;12.0.5&quot;
+## 
+## $protocolVersion
+## [1] 3
+## 
+## $backendPId
+## [1] 36041
+## 
+## $rsId
+## list()</code></pre>
+</div>
+<div id="테스트-데이터-확인" class="section level3">
+<h3>테스트 데이터 확인</h3>
+<p>예제로 사용할 <code>trips</code> 테이블은 New York City에서의 택시 운행 정보를 담은 테이블이다.</p>
+<div id="테이블-컬럼-정보" class="section level4">
+<h4>테이블 컬럼 정보</h4>
+<p><code>trips</code> 테이블이 폴함하고 있는 컬럼 이름은 다음과 같다. 30개의 데이터 컬럼을 가지고 있다.</p>
+<pre class="r"><code># trips 테이블 컬럼 이름
+dbListFields(con, &quot;trips&quot;)</code></pre>
+<pre><code>##  [1] &quot;id&quot;                    &quot;cab_type_id&quot;           &quot;vendor_id&quot;            
+##  [4] &quot;pickup_datetime&quot;       &quot;dropoff_datetime&quot;      &quot;store_and_fwd_flag&quot;   
+##  [7] &quot;rate_code_id&quot;          &quot;pickup_longitude&quot;      &quot;pickup_latitude&quot;      
+## [10] &quot;dropoff_longitude&quot;     &quot;dropoff_latitude&quot;      &quot;passenger_count&quot;      
+## [13] &quot;trip_distance&quot;         &quot;fare_amount&quot;           &quot;extra&quot;                
+## [16] &quot;mta_tax&quot;               &quot;tip_amount&quot;            &quot;tolls_amount&quot;         
+## [19] &quot;ehail_fee&quot;             &quot;improvement_surcharge&quot; &quot;congestion_surcharge&quot; 
+## [22] &quot;total_amount&quot;          &quot;payment_type&quot;          &quot;trip_type&quot;            
+## [25] &quot;pickup_nyct2010_gid&quot;   &quot;dropoff_nyct2010_gid&quot;  &quot;pickup_location_id&quot;   
+## [28] &quot;dropoff_location_id&quot;   &quot;pickup&quot;                &quot;dropoff&quot;</code></pre>
+<p>컬럼 이름으로는 정보가 부족하다. 그래서 PostgreSQL DBMS의 메타 정보를 읽어서 데이터 타입과 컬럼의 description을 조회해 보았다. 간단하게 get_schema라는 이름의 사용자 정의 함수를 만들어서 조회해 본다.</p>
+<pre class="r"><code># Table 정보 가져오는 함수
+get_schema &lt;- function(con, tab) {
+  sql &lt;- sprintf(&quot;select column_name
+                        ,data_type
+                        ,col_description(&#39;public.%s&#39;::regclass, ordinal_position)
+                    from information_schema.columns
+                  where table_schema = &#39;public&#39; 
+                    and table_name = &#39;%s&#39;&quot;, tab, tab)
+  dbGetQuery(con, sql)
+}
+
+# trips 테이블 컬럼 정보
+get_schema(con, &quot;trips&quot;)</code></pre>
+<pre><code>##              column_name                   data_type col_description
+## 1                     id                     integer            &lt;NA&gt;
+## 2            cab_type_id                     integer            &lt;NA&gt;
+## 3              vendor_id                        text            &lt;NA&gt;
+## 4        pickup_datetime timestamp without time zone            &lt;NA&gt;
+## 5       dropoff_datetime timestamp without time zone            &lt;NA&gt;
+## 6     store_and_fwd_flag                        text            &lt;NA&gt;
+## 7           rate_code_id                     integer            &lt;NA&gt;
+## 8       pickup_longitude                     numeric            &lt;NA&gt;
+## 9        pickup_latitude                     numeric            &lt;NA&gt;
+## 10     dropoff_longitude                     numeric            &lt;NA&gt;
+## 11      dropoff_latitude                     numeric            &lt;NA&gt;
+## 12       passenger_count                     integer            &lt;NA&gt;
+## 13         trip_distance                     numeric            &lt;NA&gt;
+## 14           fare_amount                     numeric            &lt;NA&gt;
+## 15                 extra                     numeric            &lt;NA&gt;
+## 16               mta_tax                     numeric            &lt;NA&gt;
+## 17            tip_amount                     numeric            &lt;NA&gt;
+## 18          tolls_amount                     numeric            &lt;NA&gt;
+## 19             ehail_fee                     numeric            &lt;NA&gt;
+## 20 improvement_surcharge                     numeric            &lt;NA&gt;
+## 21  congestion_surcharge                     numeric            &lt;NA&gt;
+## 22          total_amount                     numeric            &lt;NA&gt;
+## 23          payment_type                        text            &lt;NA&gt;
+## 24             trip_type                     integer            &lt;NA&gt;
+## 25   pickup_nyct2010_gid                     integer            &lt;NA&gt;
+## 26  dropoff_nyct2010_gid                     integer            &lt;NA&gt;
+## 27    pickup_location_id                     integer            &lt;NA&gt;
+## 28   dropoff_location_id                     integer            &lt;NA&gt;
+## 29                pickup                USER-DEFINED            &lt;NA&gt;
+## 30               dropoff                USER-DEFINED            &lt;NA&gt;</code></pre>
+<p>다른 방법으로는 dbColumnInfo() 함수를 이용하는 방법이다. 이 함수는 RPostgreSQL 패키지에서 제공하는 함수다.</p>
+<pre class="r"><code>rs &lt;- dbSendQuery(con, &quot;SELECT * FROM trips limit 10&quot;)
+dbColumnInfo(rs)</code></pre>
+<pre><code>##                     name    Sclass      type len precision scale nullOK
+## 1                     id   integer   INTEGER   4        -1    -1  FALSE
+## 2            cab_type_id   integer   INTEGER   4        -1    -1   TRUE
+## 3              vendor_id character      TEXT  -1        -1    -1   TRUE
+## 4        pickup_datetime   POSIXct TIMESTAMP   8        -1    -1   TRUE
+## 5       dropoff_datetime   POSIXct TIMESTAMP   8        -1    -1   TRUE
+## 6     store_and_fwd_flag character      TEXT  -1        -1    -1   TRUE
+## 7           rate_code_id   integer   INTEGER   4        -1    -1   TRUE
+## 8       pickup_longitude    double   DECIMAL  -1        -1    -1   TRUE
+## 9        pickup_latitude    double   DECIMAL  -1        -1    -1   TRUE
+## 10     dropoff_longitude    double   DECIMAL  -1        -1    -1   TRUE
+## 11      dropoff_latitude    double   DECIMAL  -1        -1    -1   TRUE
+## 12       passenger_count   integer   INTEGER   4        -1    -1   TRUE
+## 13         trip_distance    double   DECIMAL  -1        -1    -1   TRUE
+## 14           fare_amount    double   DECIMAL  -1        -1    -1   TRUE
+## 15                 extra    double   DECIMAL  -1        -1    -1   TRUE
+## 16               mta_tax    double   DECIMAL  -1        -1    -1   TRUE
+## 17            tip_amount    double   DECIMAL  -1        -1    -1   TRUE
+## 18          tolls_amount    double   DECIMAL  -1        -1    -1   TRUE
+## 19             ehail_fee    double   DECIMAL  -1        -1    -1   TRUE
+## 20 improvement_surcharge    double   DECIMAL  -1        -1    -1   TRUE
+## 21  congestion_surcharge    double   DECIMAL  -1        -1    -1   TRUE
+## 22          total_amount    double   DECIMAL  -1        -1    -1   TRUE
+## 23          payment_type character      TEXT  -1        -1    -1   TRUE
+## 24             trip_type   integer   INTEGER   4        -1    -1   TRUE
+## 25   pickup_nyct2010_gid   integer   INTEGER   4        -1    -1   TRUE
+## 26  dropoff_nyct2010_gid   integer   INTEGER   4        -1    -1   TRUE
+## 27    pickup_location_id   integer   INTEGER   4        -1    -1   TRUE
+## 28   dropoff_location_id   integer   INTEGER   4        -1    -1   TRUE
+## 29                pickup character   UNKNOWN  -1   1107460    -1   TRUE
+## 30               dropoff character   UNKNOWN  -1   1107460    -1   TRUE</code></pre>
+</div>
+<div id="데이터-건수" class="section level4">
+<h4>데이터 건수</h4>
+<p>trips 테이블의 데이터 건수는 84,345,018건이다. 데이터 건수를 화인하기 위해서 "SELECT count(*) FROM trips" 문을 수행하였으며, 집계를 위한 Query 수행 시간이 짧지는 았았다.</p>
+<pre class="r"><code>dbGetQuery(con, &quot;SELECT count(*) FROM trips&quot;)</code></pre>
+<pre><code>##      count
+## 1 84345018</code></pre>
+</div>
+</div>
+</div>
+<div id="데이터-집계하기" class="section level2">
+<h2>데이터 집계하기</h2>
+<p>데이터를 집계하는 간단한 예제로 dbplyr의 사용 방법을 살펴보자.</p>
+<div id="query를-이용한-데이터-집계" class="section level3">
+<h3>Query를 이용한 데이터 집계</h3>
+<p>택시의 주행 거리당 운임의 평균을 계산한다. Query로 간단하게 집계할 수 있다.</p>
+<pre class="r"><code>sql &lt;- &quot;select avg(fare_amount / trip_distance) as fare_per_distance
+          from trips
+         where trip_distance &gt; 0
+           and fare_amount &gt; 0&quot;
+
+excute_time &lt;- system.time(fare &lt;- dbGetQuery(con, sql))
+excute_time</code></pre>
+<pre><code>##    user  system elapsed 
+##   0.002   0.000 120.882</code></pre>
+<pre class="r"><code>fare</code></pre>
+<pre><code>##   fare_per_distance
+## 1          5.623411</code></pre>
+<p>시스템 환경에 따라 차이가 있을 수 있으나, 예제에서는 120.882초 동안 수행되었다. 그리고 킬로미터 당 약 5.6 달러의 평균 요금을 지불하였음을 알 수 있다.</p>
+<p>요금 결제 방법에 따른 평균 총 지불 운임에 대한 통계는 다음과 같다. 그런데 지불 방법에 대한 코드 값이 대소문자가 섞여 있고, 동일한 내용이 몇 개의 코드로 표현되는 것이 있어 정확한 통계를 산출하지 못했다.</p>
+<pre class="r"><code>sql &lt;- &quot;SELECT payment_type
+              ,AVG(total_amount) mean_fare 
+          FROM trips t 
+      GROUP BY payment_type
+      ORDER BY mean_fare DESC&quot;
+
+dbGetQuery(con, sql)</code></pre>
+<pre><code>##   payment_type  mean_fare
+## 1          Cre 14.3489055
+## 2          CRE 14.1596819
+## 3          CRD 13.6265705
+## 4          NA  12.5874196
+## 5          Dis 12.2977820
+## 6          No  10.8333954
+## 7          CAS 10.1805913
+## 8          Cas  9.9806661
+## 9          CSH  0.6285917</code></pre>
+<p>그래서 지불 방법의 코드를 대문자로 변환하고 동일한 의미로 분류하여 집계하였다.</p>
+<pre class="r"><code>sql &lt;- &quot;SELECT CASE WHEN UPPER(payment_type) IN (&#39;CRE&#39;, &#39;CRD&#39;) THEN &#39;Credit Card&#39;
+               WHEN UPPER(payment_type) IN (&#39;CAS&#39;, &#39;CSH&#39;) THEN &#39;Cash&#39; 
+               WHEN UPPER(payment_type) = &#39;DIS&#39; THEN &#39;Dispute&#39;
+               WHEN UPPER(payment_type) = &#39;NO&#39; THEN &#39;No charge&#39;
+               ELSE &#39;Unknown&#39; END AS payment_type
+              ,COUNT(*) as freq
+              ,AVG(total_amount) mean_fare 
+  FROM trips t 
+ GROUP BY CASE WHEN UPPER(payment_type) IN (&#39;CRE&#39;, &#39;CRD&#39;) THEN &#39;Credit Card&#39;
+               WHEN UPPER(payment_type) IN (&#39;CAS&#39;, &#39;CSH&#39;) THEN &#39;Cash&#39; 
+               WHEN UPPER(payment_type) = &#39;DIS&#39; THEN &#39;Dispute&#39;
+               WHEN UPPER(payment_type) = &#39;NO&#39; THEN &#39;No charge&#39;
+               ELSE &#39;Unknown&#39; END
+ ORDER BY mean_fare DESC&quot;
+
+dbGetQuery(con, sql)</code></pre>
+<pre><code>##   payment_type     freq mean_fare
+## 1  Credit Card 29294014 14.232335
+## 2      Dispute    36768 12.297782
+## 3      Unknown   208765 11.169581
+## 4         Cash 54805471  8.851864</code></pre>
+</div>
+<div id="dbplyr를-이용한-데이터-집계" class="section level3">
+<h3>dbplyr를 이용한 데이터 집계</h3>
+<p>dbplyr를 이용한 데이터 집계의 장점은 R 환경에서 일관된 dplyr 문법으로 데이터를 집계할 수 있다는 점이다. 특히 SQL query에 익숙치 않은 분석가도 익숙한 dplyr 문법으로 데이터 분석을 수행할 수 있다.</p>
+<p>먼저 tbl() 함수로 해당 테이블에 접근할 수 있는 tbl 컨넥션을 생성한다.</p>
+<pre class="r"><code>library(dplyr)
+library(dbplyr)
+
+trips_db &lt;- tbl(con, &quot;trips&quot;)
+
+is(trips_db)</code></pre>
+<pre><code>## [1] &quot;tbl_PostgreSQLConnection&quot;</code></pre>
+<pre class="r"><code>trips_db</code></pre>
+<pre><code>## # Source:   table&lt;trips&gt; [?? x 30]
+## # Database: postgres 12.0.5 [choonghyunryu@localhost:5432/nyc-taxi-data]
+##       id cab_type_id vendor_id pickup_datetime     dropoff_datetime   
+##    &lt;int&gt;       &lt;int&gt; &lt;chr&gt;     &lt;dttm&gt;              &lt;dttm&gt;             
+##  1     1           1 VTS       2010-01-19 04:22:00 2010-01-19 04:29:00
+##  2     2           1 CMT       2010-01-27 00:42:46 2010-01-27 01:00:20
+##  3     3           1 VTS       2010-01-30 19:00:00 2010-01-30 19:32:00
+##  4     4           1 CMT       2010-01-18 11:16:32 2010-01-18 11:27:57
+##  5     5           1 CMT       2010-01-30 19:18:50 2010-01-30 19:23:31
+##  6     6           1 CMT       2010-01-01 14:37:46 2010-01-01 14:43:19
+##  7     7           1 VTS       2010-01-17 12:13:00 2010-01-17 12:30:00
+##  8     8           1 VTS       2010-01-23 22:20:00 2010-01-23 22:24:00
+##  9     9           1 VTS       2010-01-26 09:14:00 2010-01-26 09:29:00
+## 10    10           1 VTS       2010-01-31 04:12:00 2010-01-31 04:18:00
+## # … with more rows, and 25 more variables: store_and_fwd_flag &lt;chr&gt;,
+## #   rate_code_id &lt;int&gt;, pickup_longitude &lt;dbl&gt;, pickup_latitude &lt;dbl&gt;,
+## #   dropoff_longitude &lt;dbl&gt;, dropoff_latitude &lt;dbl&gt;, passenger_count &lt;int&gt;,
+## #   trip_distance &lt;dbl&gt;, fare_amount &lt;dbl&gt;, extra &lt;dbl&gt;, mta_tax &lt;dbl&gt;,
+## #   tip_amount &lt;dbl&gt;, tolls_amount &lt;dbl&gt;, ehail_fee &lt;dbl&gt;,
+## #   improvement_surcharge &lt;dbl&gt;, congestion_surcharge &lt;dbl&gt;,
+## #   total_amount &lt;dbl&gt;, payment_type &lt;chr&gt;, trip_type &lt;int&gt;,
+## #   pickup_nyct2010_gid &lt;int&gt;, dropoff_nyct2010_gid &lt;int&gt;,
+## #   pickup_location_id &lt;int&gt;, dropoff_location_id &lt;int&gt;, pickup &lt;chr&gt;,
+## #   dropoff &lt;chr&gt;</code></pre>
+<p>trips_db 객체를 콘솔에 출력한 결과의 포맷은 dplyr을 사용한 결과와 유사하다. 그러나 데이터의 건수를 위미하는 영역은 정확한 건수를 표시하지 않고, 물음표로 표현된다.</p>
+<p>앞서 구한 택시의 주행 거리당 운임의 평균은 dplyr의 방법처럼 쉽게 구할 수 있다. 단지, 차이점은 데이터 객체 대신에 tbl 컨넥션을 데이터 소스로 지정한다는 점이다.</p>
+<p>그런데 120.882초 동안 수행된 Query와는 달리 바로 수행이 종료된다.</p>
+<pre class="r"><code>system.time(fare_db &lt;- trips_db %&gt;% 
+              select(fare_amount, trip_distance) %&gt;% 
+              filter(fare_amount &gt; 0) %&gt;% 
+              filter(trip_distance &gt; 0) %&gt;% 
+              summarise(fare_per_distance = mean(fare_amount / trip_distance)))</code></pre>
+<pre><code>##    user  system elapsed 
+##    0.01    0.00    0.01</code></pre>
+<pre class="r"><code>is(fare_db)</code></pre>
+<pre><code>## [1] &quot;tbl_PostgreSQLConnection&quot;</code></pre>
+<pre class="r"><code>fare_db %&gt;% show_query()</code></pre>
+<pre><code>## &lt;SQL&gt;
+## SELECT AVG(&quot;fare_amount&quot; / &quot;trip_distance&quot;) AS &quot;fare_per_distance&quot;
+## FROM (SELECT *
+## FROM (SELECT &quot;fare_amount&quot;, &quot;trip_distance&quot;
+## FROM &quot;trips&quot;) &quot;dbplyr_001&quot;
+## WHERE (&quot;fare_amount&quot; &gt; 0.0)) &quot;dbplyr_002&quot;
+## WHERE (&quot;trip_distance&quot; &gt; 0.0)</code></pre>
+<p>그 이유는 생성된 객체가 결과가 아니라 아직도 tbl 컨넥션임을 알 수 있다. 그리고 show_query() 함수로 기술된 dplyr 문법의 표현식이 연결된 DBMS에서 수행될 Query를 조회할 수도 있다.</p>
+<pre class="r"><code>is(fare_db)</code></pre>
+<pre><code>## [1] &quot;tbl_PostgreSQLConnection&quot;</code></pre>
+<pre class="r"><code>fare_db %&gt;% show_query()</code></pre>
+<pre><code>## &lt;SQL&gt;
+## SELECT AVG(&quot;fare_amount&quot; / &quot;trip_distance&quot;) AS &quot;fare_per_distance&quot;
+## FROM (SELECT *
+## FROM (SELECT &quot;fare_amount&quot;, &quot;trip_distance&quot;
+## FROM &quot;trips&quot;) &quot;dbplyr_003&quot;
+## WHERE (&quot;fare_amount&quot; &gt; 0.0)) &quot;dbplyr_004&quot;
+## WHERE (&quot;trip_distance&quot; &gt; 0.0)</code></pre>
+<p>collect() 함수가 실제로 연결된 DBMS에서 Query를 실행한 후 결과를 R 영역으로 가져온다.</p>
+<pre class="r"><code>system.time(fare2 &lt;- fare_db %&gt;% collect())</code></pre>
+<pre><code>##    user  system elapsed 
+##   0.038   0.000 115.429</code></pre>
+<pre class="r"><code>fare2</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   fare_per_distance
+##               &lt;dbl&gt;
+## 1              5.62</code></pre>
+<p>요금 결제 방법에 따른 평균 총 지불 운임에 대한 통계는 다음과 같이 구한다.</p>
+<pre class="r"><code>payment_db &lt;- trips_db %&gt;% 
+  select(payment_type, total_amount) %&gt;% 
+  mutate(payment_type = toupper(payment_type)) %&gt;%
+  mutate(payment_type = ifelse(payment_type %in% c(&#39;CRE&#39;, &#39;CRD&#39;), 
+                               &#39;Credit Card&#39;, payment_type)) %&gt;% 
+  mutate(payment_type = ifelse(payment_type %in% c(&#39;CAS&#39;, &#39;CSH&#39;), 
+                               &#39;Cash&#39;, payment_type)) %&gt;% 
+  mutate(payment_type = ifelse(payment_type %in% c(&#39;DIS&#39;), 
+                               &#39;Dispute&#39;, payment_type)) %&gt;%            
+  mutate(payment_type = ifelse(payment_type %in% c(&#39;NO&#39;), 
+                               &#39;No charge&#39;, &#39;Unknown&#39;)) %&gt;%
+  group_by(payment_type) %&gt;% 
+  summarise(freq = n(),
+            mean_fare = mean(total_amount)) %&gt;% 
+  arrange(desc(mean_fare)) 
+
+payment_db %&gt;% show_query()</code></pre>
+<pre><code>## &lt;SQL&gt;
+## SELECT &quot;payment_type&quot;, COUNT(*) AS &quot;freq&quot;, AVG(&quot;total_amount&quot;) AS &quot;mean_fare&quot;
+## FROM (SELECT CASE WHEN (&quot;payment_type&quot; IN (&#39;NO&#39;)) THEN (&#39;No charge&#39;) WHEN NOT(&quot;payment_type&quot; IN (&#39;NO&#39;)) THEN (&#39;Unknown&#39;) END AS &quot;payment_type&quot;, &quot;total_amount&quot;
+## FROM (SELECT CASE WHEN (&quot;payment_type&quot; IN (&#39;DIS&#39;)) THEN (&#39;Dispute&#39;) WHEN NOT(&quot;payment_type&quot; IN (&#39;DIS&#39;)) THEN (&quot;payment_type&quot;) END AS &quot;payment_type&quot;, &quot;total_amount&quot;
+## FROM (SELECT CASE WHEN (&quot;payment_type&quot; IN (&#39;CAS&#39;, &#39;CSH&#39;)) THEN (&#39;Cash&#39;) WHEN NOT(&quot;payment_type&quot; IN (&#39;CAS&#39;, &#39;CSH&#39;)) THEN (&quot;payment_type&quot;) END AS &quot;payment_type&quot;, &quot;total_amount&quot;
+## FROM (SELECT CASE WHEN (&quot;payment_type&quot; IN (&#39;CRE&#39;, &#39;CRD&#39;)) THEN (&#39;Credit Card&#39;) WHEN NOT(&quot;payment_type&quot; IN (&#39;CRE&#39;, &#39;CRD&#39;)) THEN (&quot;payment_type&quot;) END AS &quot;payment_type&quot;, &quot;total_amount&quot;
+## FROM (SELECT UPPER(&quot;payment_type&quot;) AS &quot;payment_type&quot;, &quot;total_amount&quot;
+## FROM &quot;trips&quot;) &quot;dbplyr_007&quot;) &quot;dbplyr_008&quot;) &quot;dbplyr_009&quot;) &quot;dbplyr_010&quot;) &quot;dbplyr_011&quot;
+## GROUP BY &quot;payment_type&quot;
+## ORDER BY &quot;mean_fare&quot; DESC</code></pre>
+<pre class="r"><code>payment_db %&gt;% collect()</code></pre>
+<pre><code>## # A tibble: 1 x 3
+##   payment_type     freq mean_fare
+##   &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;
+## 1 Unknown      84345018      10.7</code></pre>
+<p>그런데, 결과를 보면 원하는 답이 아니고, 수행 속도도 매우 느리다. 그래서 mutate() 함수를 여러 개 독립, 순차적으로 기술한 것을 하나의 함수로 합쳐서 수행해 보았다.</p>
+<p>수행속도도 개선되었고 원하는 결과를 얻을 수 있었다.</p>
+<pre class="r"><code>payment2_db &lt;- trips_db %&gt;% 
+  select(payment_type, total_amount) %&gt;% 
+  mutate(payment_type = toupper(payment_type)) %&gt;%
+  mutate(payment_type = ifelse(payment_type %in% c(&#39;CRE&#39;, &#39;CRD&#39;), 
+                               &#39;Credit Card&#39;, ifelse(payment_type %in% c(&#39;CAS&#39;, &#39;CSH&#39;), 
+                               &#39;Cash&#39;, ifelse(payment_type %in% c(&#39;DIS&#39;), 
+                               &#39;Dispute&#39;, ifelse(payment_type %in% c(&#39;NO&#39;), 
+                               &#39;No charge&#39;, &#39;Unknown&#39;))))) %&gt;% 
+  group_by(payment_type) %&gt;% 
+  summarise(freq = n(),
+            mean_fare = mean(total_amount)) %&gt;% 
+  arrange(desc(mean_fare)) 
+
+payment2_db %&gt;% show_query()</code></pre>
+<pre><code>## &lt;SQL&gt;
+## SELECT &quot;payment_type&quot;, COUNT(*) AS &quot;freq&quot;, AVG(&quot;total_amount&quot;) AS &quot;mean_fare&quot;
+## FROM (SELECT CASE WHEN (&quot;payment_type&quot; IN (&#39;CRE&#39;, &#39;CRD&#39;)) THEN (&#39;Credit Card&#39;) WHEN NOT(&quot;payment_type&quot; IN (&#39;CRE&#39;, &#39;CRD&#39;)) THEN (CASE WHEN (&quot;payment_type&quot; IN (&#39;CAS&#39;, &#39;CSH&#39;)) THEN (&#39;Cash&#39;) WHEN NOT(&quot;payment_type&quot; IN (&#39;CAS&#39;, &#39;CSH&#39;)) THEN (CASE WHEN (&quot;payment_type&quot; IN (&#39;DIS&#39;)) THEN (&#39;Dispute&#39;) WHEN NOT(&quot;payment_type&quot; IN (&#39;DIS&#39;)) THEN (CASE WHEN (&quot;payment_type&quot; IN (&#39;NO&#39;)) THEN (&#39;No charge&#39;) WHEN NOT(&quot;payment_type&quot; IN (&#39;NO&#39;)) THEN (&#39;Unknown&#39;) END) END) END) END AS &quot;payment_type&quot;, &quot;total_amount&quot;
+## FROM (SELECT UPPER(&quot;payment_type&quot;) AS &quot;payment_type&quot;, &quot;total_amount&quot;
+## FROM &quot;trips&quot;) &quot;dbplyr_017&quot;) &quot;dbplyr_018&quot;
+## GROUP BY &quot;payment_type&quot;
+## ORDER BY &quot;mean_fare&quot; DESC</code></pre>
+<pre class="r"><code>payment2_db %&gt;% collect()</code></pre>
+<pre><code>## # A tibble: 4 x 3
+##   payment_type     freq mean_fare
+##   &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;
+## 1 Credit Card  29294014     14.2 
+## 2 Dispute         36768     12.3 
+## 3 Unknown        208765     11.2 
+## 4 Cash         54805471      8.85</code></pre>
+<p>아직 dbplyr가 복잡한 dplyr 구문을 Query로 파싱할 때에 성능의 이슈나, 올바로 파싱하지 못하는 문제점을 안고 있다. 특히, mutate() 함수를 여러 개 독립, 순차적으로 기술하는 것은 피해야 한다.</p>
+</div>
+</div>
+<div id="explain-plan" class="section level2">
+<h2>Explain Plan</h2>
+<p>show_query() 함수로 DBMS에서 수행될 Query를 살펴 보는 것이 중요하다. 그런데 dbplyr는 Explain Plan도 지원하므로 수행 속도의 개선을 위한 튜닝에서 적절하게 활용하는 것도 좋다.</p>
+<p>다음은 택시의 주행 거리당 운임의 평균을 계산한 dbplyr 구문의 Explain Plan이다.</p>
+<pre class="r"><code>cat(remote_query_plan(fare_db))</code></pre>
+<pre><code>## Finalize Aggregate  (cost=2795452.65..2795452.66 rows=1 width=32)
+##   -&gt;  Gather  (cost=2795452.43..2795452.64 rows=2 width=32)
+##         Workers Planned: 2
+##         -&gt;  Partial Aggregate  (cost=2794452.43..2794452.44 rows=1 width=32)
+##               -&gt;  Parallel Seq Scan on trips  (cost=0.00..2619740.10 rows=34942465 width=21)
+##                     Filter: ((fare_amount &gt; 0.0) AND (trip_distance &gt; 0.0))</code></pre>
+<p>다음은 택시의 주행 거리당 운임의 평균을 계산한 Query의 Explain Plan이다. dbplyr 구문의 것도 거의 유사하다.</p>
+<pre class="r"><code>sql2 &lt;- &quot;EXPLAIN ANALYZE 
+          SELECT payment_type
+                ,AVG(total_amount) mean_fare 
+           FROM trips t 
+       GROUP BY payment_type
+       ORDER BY mean_fare DESC&quot;
+
+plan &lt;- dbGetQuery(con, sql2)
+plan</code></pre>
+<pre><code>##                                                                                                                                                         QUERY PLAN
+## 1                                                            Sort  (cost=2620742.87..2620742.89 rows=9 width=36) (actual time=63970.959..63972.761 rows=9 loops=1)
+## 2                                                                                                                               Sort Key: (avg(total_amount)) DESC
+## 3                                                                                                                             Sort Method: quicksort  Memory: 25kB
+## 4                                     -&gt;  Finalize GroupAggregate  (cost=2620740.38..2620742.73 rows=9 width=36) (actual time=63970.817..63972.742 rows=9 loops=1)
+## 5                                                                                                                                          Group Key: payment_type
+## 6                                              -&gt;  Gather Merge  (cost=2620740.38..2620742.48 rows=18 width=36) (actual time=63970.757..63972.614 rows=27 loops=1)
+## 7                                                                                                                                               Workers Planned: 2
+## 8                                                                                                                                              Workers Launched: 2
+## 9                                                        -&gt;  Sort  (cost=2619740.36..2619740.38 rows=9 width=36) (actual time=63956.974..63956.976 rows=9 loops=3)
+## 10                                                                                                                                          Sort Key: payment_type
+## 11                                                                                                                            Sort Method: quicksort  Memory: 26kB
+## 12                                                                                                                 Worker 0:  Sort Method: quicksort  Memory: 26kB
+## 13                                                                                                                 Worker 1:  Sort Method: quicksort  Memory: 26kB
+## 14                                      -&gt;  Partial HashAggregate  (cost=2619740.10..2619740.21 rows=9 width=36) (actual time=63956.895..63956.905 rows=9 loops=3)
+## 15                                                                                                                                         Group Key: payment_type
+## 16                           -&gt;  Parallel Seq Scan on trips t  (cost=0.00..2443989.07 rows=35150207 width=14) (actual time=0.053..43391.157 rows=28115006 loops=3)
+## 17                                                                                                                                         Planning Time: 0.100 ms
+## 18                                                                                                                                    Execution Time: 63972.818 ms</code></pre>
+<p>요금 결제 방법에 따른 평균 총 지불 운임에 대한 통계를 계산하기 위한 dbplyr 구문의 Explain Plan이다.</p>
+<pre class="r"><code>cat(remote_query_plan(payment_db))</code></pre>
+<pre><code>## Sort  (cost=12199179.18..12199179.21 rows=9 width=72)
+##   Sort Key: (avg(trips.total_amount)) DESC
+##   -&gt;  Finalize GroupAggregate  (cost=12199174.22..12199179.04 rows=9 width=72)
+##         Group Key: (CASE WHEN (CASE WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END &lt;&gt; &#39;DIS&#39;::text) THEN CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END = &#39;NO&#39;::text) THEN &#39;No charge&#39;::text WHEN (CASE WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END &lt;&gt; &#39;DIS&#39;::text) THEN CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END &lt;&gt; &#39;NO&#39;::text) THEN &#39;Unknown&#39;::text ELSE NULL::text END)
+##         -&gt;  Gather Merge  (cost=12199174.22..12199176.32 rows=18 width=72)
+##               Workers Planned: 2
+##               -&gt;  Sort  (cost=12198174.19..12198174.22 rows=9 width=72)
+##                     Sort Key: (CASE WHEN (CASE WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END &lt;&gt; &#39;DIS&#39;::text) THEN CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END = &#39;NO&#39;::text) THEN &#39;No charge&#39;::text WHEN (CASE WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END &lt;&gt; &#39;DIS&#39;::text) THEN CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END &lt;&gt; &#39;NO&#39;::text) THEN &#39;Unknown&#39;::text ELSE NULL::text END)
+##                     -&gt;  Partial HashAggregate  (cost=12198171.51..12198174.05 rows=9 width=72)
+##                           Group Key: CASE WHEN (CASE WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END &lt;&gt; &#39;DIS&#39;::text) THEN CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END = &#39;NO&#39;::text) THEN &#39;No charge&#39;::text WHEN (CASE WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END &lt;&gt; &#39;DIS&#39;::text) THEN CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END &lt;&gt; &#39;NO&#39;::text) THEN &#39;Unknown&#39;::text ELSE NULL::text END
+##                           -&gt;  Parallel Seq Scan on trips  (cost=0.00..11934544.96 rows=35150207 width=42)</code></pre>
+<pre class="r"><code>cat(remote_query_plan(payment2_db))</code></pre>
+<pre><code>## Sort  (cost=4114627.43..4114627.46 rows=9 width=72)
+##   Sort Key: (avg(trips.total_amount)) DESC
+##   -&gt;  Finalize GroupAggregate  (cost=4114624.54..4114627.29 rows=9 width=72)
+##         Group Key: (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; &#39;DIS&#39;::text) THEN CASE WHEN (upper(trips.payment_type) = &#39;NO&#39;::text) THEN &#39;No charge&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; &#39;NO&#39;::text) THEN &#39;Unknown&#39;::text ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END)
+##         -&gt;  Gather Merge  (cost=4114624.54..4114626.64 rows=18 width=72)
+##               Workers Planned: 2
+##               -&gt;  Sort  (cost=4113624.51..4113624.54 rows=9 width=72)
+##                     Sort Key: (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; &#39;DIS&#39;::text) THEN CASE WHEN (upper(trips.payment_type) = &#39;NO&#39;::text) THEN &#39;No charge&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; &#39;NO&#39;::text) THEN &#39;Unknown&#39;::text ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END)
+##                     -&gt;  Partial HashAggregate  (cost=4113623.90..4113624.37 rows=9 width=72)
+##                           Group Key: CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; &#39;DIS&#39;::text) THEN CASE WHEN (upper(trips.payment_type) = &#39;NO&#39;::text) THEN &#39;No charge&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; &#39;NO&#39;::text) THEN &#39;Unknown&#39;::text ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END
+##                           -&gt;  Parallel Seq Scan on trips  (cost=0.00..3849997.35 rows=35150207 width=42)</code></pre>
+<p>요금 결제 방법에 따른 평균 총 지불 운임에 대한 통계를 계산하기 위한 Query의 Explain Plan이다.</p>
+<pre class="r"><code>sql3 &lt;- &quot;EXPLAIN ANALYZE 
+          SELECT CASE WHEN UPPER(payment_type) IN (&#39;CRE&#39;, &#39;CRD&#39;) THEN &#39;Credit Card&#39;
+                 WHEN UPPER(payment_type) IN (&#39;CAS&#39;, &#39;CSH&#39;) THEN &#39;Cash&#39; 
+                 WHEN UPPER(payment_type) = &#39;DIS&#39; THEN &#39;Dispute&#39;
+                 WHEN UPPER(payment_type) = &#39;NO&#39; THEN &#39;No charge&#39;
+                 ELSE &#39;Unknown&#39; END AS payment_type
+                ,COUNT(*) as freq
+                ,AVG(total_amount) mean_fare 
+     FROM trips t 
+  GROUP BY CASE WHEN UPPER(payment_type) IN (&#39;CRE&#39;, &#39;CRD&#39;) THEN &#39;Credit Card&#39;
+                WHEN UPPER(payment_type) IN (&#39;CAS&#39;, &#39;CSH&#39;) THEN &#39;Cash&#39; 
+                WHEN UPPER(payment_type) = &#39;DIS&#39; THEN &#39;Dispute&#39;
+                WHEN UPPER(payment_type) = &#39;NO&#39; THEN &#39;No charge&#39;
+                ELSE &#39;Unknown&#39; END
+  ORDER BY mean_fare DESC&quot;
+
+plan &lt;- dbGetQuery(con, sql3)
+plan</code></pre>
+<pre><code>##                                                                                                                                                                                                                                                                                                                                                  QUERY PLAN
+## 1                                                                                                                                                                                                                                                     Sort  (cost=3411622.93..3411622.96 rows=9 width=72) (actual time=88502.886..88504.878 rows=4 loops=1)
+## 2                                                                                                                                                                                                                                                                                                                        Sort Key: (avg(total_amount)) DESC
+## 3                                                                                                                                                                                                                                                                                                                      Sort Method: quicksort  Memory: 25kB
+## 4                                                                                                                                                                                                                              -&gt;  Finalize GroupAggregate  (cost=3411620.22..3411622.79 rows=9 width=72) (actual time=88502.842..88504.865 rows=4 loops=1)
+## 5                          Group Key: (CASE WHEN (upper(payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(payment_type) = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (upper(payment_type) = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (upper(payment_type) = &#39;NO&#39;::text) THEN &#39;No charge&#39;::text ELSE &#39;Unknown&#39;::text END)
+## 6                                                                                                                                                                                                                                       -&gt;  Gather Merge  (cost=3411620.22..3411622.32 rows=18 width=72) (actual time=88502.812..88504.815 rows=12 loops=1)
+## 7                                                                                                                                                                                                                                                                                                                                        Workers Planned: 2
+## 8                                                                                                                                                                                                                                                                                                                                       Workers Launched: 2
+## 9                                                                                                                                                                                                                                                 -&gt;  Sort  (cost=3410620.19..3410620.22 rows=9 width=72) (actual time=88488.853..88488.855 rows=4 loops=3)
+## 10                          Sort Key: (CASE WHEN (upper(payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(payment_type) = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (upper(payment_type) = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (upper(payment_type) = &#39;NO&#39;::text) THEN &#39;No charge&#39;::text ELSE &#39;Unknown&#39;::text END)
+## 11                                                                                                                                                                                                                                                                                                                     Sort Method: quicksort  Memory: 25kB
+## 12                                                                                                                                                                                                                                                                                                          Worker 0:  Sort Method: quicksort  Memory: 25kB
+## 13                                                                                                                                                                                                                                                                                                          Worker 1:  Sort Method: quicksort  Memory: 25kB
+## 14                                                                                                                                                                                                                               -&gt;  Partial HashAggregate  (cost=3410619.76..3410620.05 rows=9 width=72) (actual time=88488.786..88488.792 rows=4 loops=3)
+## 15                           Group Key: CASE WHEN (upper(payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(payment_type) = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (upper(payment_type) = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (upper(payment_type) = &#39;NO&#39;::text) THEN &#39;No charge&#39;::text ELSE &#39;Unknown&#39;::text END
+## 16                                                                                                                                                                                                                    -&gt;  Parallel Seq Scan on trips t  (cost=0.00..3146993.21 rows=35150207 width=42) (actual time=0.089..72788.584 rows=28115006 loops=3)
+## 17                                                                                                                                                                                                                                                                                                                                  Planning Time: 0.165 ms
+## 18                                                                                                                                                                                                                                                                                                                             Execution Time: 88504.948 ms</code></pre>
+<p>Explain Plan의 결과를 보면 SQL Query &gt; payment2_db &gt; payment_db의 순으로 성능이 좋은 것을 알 수 있다. 복잡한 연산에 대해서는 dbplyr보다는 직접 DB에 접속하여 SQL Query를 수행하는 것이 성능상 이롭다.
+그러나 dbplyr는 버전 업을 통해서 성능이 개선될 것이라는 믿음을 가지고 있다.</p>
+<p>선택은 가용자의 몫이지만 간단한 집계의 경우는 dbplyr를 사용해 보기를 권한다.</p>
+<div id="disconnection" class="section level3">
+<h3>disconnection</h3>
+<p>모든 작업이 마무리되면 연결된 DB 컨넥션을 종료한다.</p>
+<pre class="r"><code>dbDisconnect(con)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+</div>
+<div id="참고-리소스" class="section level2">
+<h2>참고 리소스</h2>
+<ul>
+<li>데이터 관련 : <a href="https://github.com/toddwschneider/nyc-taxi-data" target="_blank">https://github.com/toddwschneider/nyc-taxi-data</a></li>
+<li>dbplyr 관련 : <a href="https://cran.r-project.org/web/packages/dbplyr/vignettes/dbplyr.html" target="_blank">https://cran.r-project.org/web/packages/dbplyr/vignettes/dbplyr.html</a></li>
+</ul>
+</div>
+
+    
+      
+    
+  </article>
+<aside class="sidebar">
+  <section class="sidebar_inner">
+    
+      <h2>Choonghyun Ryu</h2>
+      <div>
+        Scientist with data, take one more step today.
+      </div>
+      <a href='/about/' class="button mt-1" role="button">Read More</a>
+    <h2 class="mt-4">Recent Posts</h2>
+    <ul class="flex-column">
+      <li>
+        <a href="/post/2020-07/ggplot2_exam/" class="nav-link">몇 개의 ggplot tips</a>
+      </li>
+      <li>
+        <a href="/post/2020-03/2020-03-27-r-alookr.ko/" class="nav-link">alookr: Binary classification modeling</a>
+      </li>
+      <li>
+        <a href="/post/2020-03/window_function/" class="nav-link">Introduce window function</a>
+      </li>
+      <li>
+        <a href="/post/2020-02/r_web_application/" class="nav-link">R 웹 어플리케이션 개발에 대한 연구</a>
+      </li>
+      <li>
+        <a href="/post/2020-01/complex_function/" class="nav-link">draw the complex function</a>
+      </li>
+    </ul>
+    <div>
+      <h2 class="mt-4 taxonomy" id="categories-section">Categories</h2>
+      <nav class="tags_nav">
+        <a href='/categories/%EC%98%9B-%EC%9D%B4%EC%95%BC%EA%B8%B0-%ED%95%98%EB%82%98/' class="post_tag button button_translucent">
+          옛-이야기-하나
+          <span class="button_tally">120</span>
+        </a>
+        
+        <a href='/categories/r-analytics/' class="post_tag button button_translucent">
+          R-ANALYTICS
+          <span class="button_tally">19</span>
+        </a>
+        
+        <a href='/categories/gallery/' class="post_tag button button_translucent">
+          GALLERY
+          <span class="button_tally">8</span>
+        </a>
+        
+        <a href='/categories/visualization/' class="post_tag button button_translucent">
+          VISUALIZATION
+          <span class="button_tally">7</span>
+        </a>
+        
+        <a href='/categories/tidyverse/' class="post_tag button button_translucent">
+          TIDYVERSE
+          <span class="button_tally">6</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+    <div>
+      <h2 class="mt-4 taxonomy" id="series-section">Series</h2>
+      <nav class="tags_nav">
+        <a href='/series/drawing/' class="post_tag button button_translucent">
+          DRAWING
+          <span class="button_tally">6</span>
+        </a>
+        
+        <a href='/series/photo/' class="post_tag button button_translucent">
+          PHOTO
+          <span class="button_tally">2</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+    <div>
+      <h2 class="mt-4 taxonomy" id="tags-section">Tags</h2>
+      <nav class="tags_nav">
+        <a href='/tags/plot/' class="post_tag button button_translucent">
+          PLOT
+          <span class="button_tally">6</span>
+        </a>
+        
+        <a href='/tags/dlookr/' class="post_tag button button_translucent">
+          DLOOKR
+          <span class="button_tally">5</span>
+        </a>
+        
+        <a href='/tags/graphics/' class="post_tag button button_translucent">
+          GRAPHICS
+          <span class="button_tally">4</span>
+        </a>
+        
+        <a href='/tags/mathematics/' class="post_tag button button_translucent">
+          MATHEMATICS
+          <span class="button_tally">4</span>
+        </a>
+        
+        <a href='/tags/distribution/' class="post_tag button button_translucent">
+          DISTRIBUTION
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/dplyr/' class="post_tag button button_translucent">
+          DPLYR
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/eda/' class="post_tag button button_translucent">
+          EDA
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/grid/' class="post_tag button button_translucent">
+          GRID
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/text-analytics/' class="post_tag button button_translucent">
+          TEXT-ANALYTICS
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B3%80%ED%99%98/' class="post_tag button button_translucent">
+          데이터-변환
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A7%84%EB%8B%A8/' class="post_tag button button_translucent">
+          데이터-진단
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/development/' class="post_tag button button_translucent">
+          DEVELOPMENT
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='/tags/finance/' class="post_tag button button_translucent">
+          FINANCE
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='/tags/ggplot2/' class="post_tag button button_translucent">
+          GGPLOT2
+          <span class="button_tally">2</span>
+        </a>
+        
+        
+        <br>
+        <div class="post_tags_toggle button">All Tags</div>
+        <div class="post_tags">
+          <div class="tags_list">
+            
+            <a href='/tags/alookr/' class=" post_tag button button_translucent" data-position=1>ALOOKR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/association-ruls/' class=" post_tag button button_translucent" data-position=1>ASSOCIATION-RULS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/asynchronous/' class=" post_tag button button_translucent" data-position=1>ASYNCHRONOUS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/binary-classification/' class=" post_tag button button_translucent" data-position=1>BINARY-CLASSIFICATION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/circle/' class=" post_tag button button_translucent" data-position=1>CIRCLE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/clustering/' class=" post_tag button button_translucent" data-position=1>CLUSTERING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/complex/' class=" post_tag button button_translucent" data-position=1>COMPLEX<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/crawling/' class=" post_tag button button_translucent" data-position=1>CRAWLING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/data-acqusition/' class=" post_tag button button_translucent" data-position=1>DATA-ACQUSITION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/dbplyr/' class=" post_tag button button_translucent" data-position=1>DBPLYR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/deep-learning/' class=" post_tag button button_translucent" data-position=1>DEEP-LEARNING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/development/' class=" post_tag button button_translucent" data-position=2>DEVELOPMENT<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/distribution/' class=" post_tag button button_translucent" data-position=3>DISTRIBUTION<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/dlookr/' class=" post_tag button button_translucent" data-position=5>DLOOKR<span class="button_tally">5</span>
+            </a>
+            
+            
+            <a href='/tags/documents-taxonomy/' class=" post_tag button button_translucent" data-position=1>DOCUMENTS-TAXONOMY<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/dplyr/' class=" post_tag button button_translucent" data-position=3>DPLYR<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/eda/' class=" post_tag button button_translucent" data-position=3>EDA<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/extract/' class=" post_tag button button_translucent" data-position=1>EXTRACT<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/factor/' class=" post_tag button button_translucent" data-position=1>FACTOR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/finance/' class=" post_tag button button_translucent" data-position=2>FINANCE<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/foodfact/' class=" post_tag button button_translucent" data-position=1>FOODFACT<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/forcats/' class=" post_tag button button_translucent" data-position=1>FORCATS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/fractal/' class=" post_tag button button_translucent" data-position=1>FRACTAL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/fuction/' class=" post_tag button button_translucent" data-position=1>FUCTION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/future/' class=" post_tag button button_translucent" data-position=1>FUTURE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/ggplot2/' class=" post_tag button button_translucent" data-position=2>GGPLOT2<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/google-trends/' class=" post_tag button button_translucent" data-position=1>GOOGLE-TRENDS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/graphics/' class=" post_tag button button_translucent" data-position=4>GRAPHICS<span class="button_tally">4</span>
+            </a>
+            
+            
+            <a href='/tags/grid/' class=" post_tag button button_translucent" data-position=3>GRID<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/gtrendsr/' class=" post_tag button button_translucent" data-position=1>GTRENDSR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/lasso/' class=" post_tag button button_translucent" data-position=2>LASSO<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/legend/' class=" post_tag button button_translucent" data-position=1>LEGEND<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/magrittr/' class=" post_tag button button_translucent" data-position=2>MAGRITTR<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/mathematics/' class=" post_tag button button_translucent" data-position=4>MATHEMATICS<span class="button_tally">4</span>
+            </a>
+            
+            
+            <a href='/tags/matrix/' class=" post_tag button button_translucent" data-position=2>MATRIX<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/network-analysis/' class=" post_tag button button_translucent" data-position=1>NETWORK-ANALYSIS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/neural-network/' class=" post_tag button button_translucent" data-position=1>NEURAL-NETWORK<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/nlp/' class=" post_tag button button_translucent" data-position=2>NLP<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/nyc-taxi-data/' class=" post_tag button button_translucent" data-position=1>NYC-TAXI-DATA<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/operator/' class=" post_tag button button_translucent" data-position=1>OPERATOR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/packages/' class=" post_tag button button_translucent" data-position=1>PACKAGES<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/par/' class=" post_tag button button_translucent" data-position=1>PAR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/parallel/' class=" post_tag button button_translucent" data-position=1>PARALLEL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/pictures/' class=" post_tag button button_translucent" data-position=2>PICTURES<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/pipe/' class=" post_tag button button_translucent" data-position=1>PIPE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/plot/' class=" post_tag button button_translucent" data-position=6>PLOT<span class="button_tally">6</span>
+            </a>
+            
+            
+            <a href='/tags/plot-region/' class=" post_tag button button_translucent" data-position=1>PLOT-REGION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/postgresql/' class=" post_tag button button_translucent" data-position=1>POSTGRESQL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/probability/' class=" post_tag button button_translucent" data-position=1>PROBABILITY<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/promises/' class=" post_tag button button_translucent" data-position=1>PROMISES<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/quandl/' class=" post_tag button button_translucent" data-position=1>QUANDL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/r_tips/' class=" post_tag button button_translucent" data-position=1>R_TIPS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/readr/' class=" post_tag button button_translucent" data-position=2>READR<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/regression/' class=" post_tag button button_translucent" data-position=1>REGRESSION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/replace/' class=" post_tag button button_translucent" data-position=1>REPLACE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/rserve/' class=" post_tag button button_translucent" data-position=1>RSERVE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/scraping/' class=" post_tag button button_translucent" data-position=1>SCRAPING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/set/' class=" post_tag button button_translucent" data-position=1>SET<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/sqldf/' class=" post_tag button button_translucent" data-position=1>SQLDF<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/statistics/' class=" post_tag button button_translucent" data-position=2>STATISTICS<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/stock/' class=" post_tag button button_translucent" data-position=1>STOCK<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/stock-data/' class=" post_tag button button_translucent" data-position=1>STOCK-DATA<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/synchronous/' class=" post_tag button button_translucent" data-position=1>SYNCHRONOUS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/taxonomy/' class=" post_tag button button_translucent" data-position=1>TAXONOMY<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/text-analytics/' class=" post_tag button button_translucent" data-position=3>TEXT-ANALYTICS<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/text2vec/' class=" post_tag button button_translucent" data-position=1>TEXT2VEC<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/tidyr/' class=" post_tag button button_translucent" data-position=1>TIDYR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/tidyverse/' class=" post_tag button button_translucent" data-position=1>TIDYVERSE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/topic-analysis/' class=" post_tag button button_translucent" data-position=1>TOPIC-ANALYSIS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/traffic/' class=" post_tag button button_translucent" data-position=1>TRAFFIC<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/vector/' class=" post_tag button button_translucent" data-position=1>VECTOR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/web-application/' class=" post_tag button button_translucent" data-position=1>WEB-APPLICATION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/window-function/' class=" post_tag button button_translucent" data-position=1>WINDOW-FUNCTION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/zoo/' class=" post_tag button button_translucent" data-position=1>ZOO<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B3%80%ED%99%98/' class=" post_tag button button_translucent" data-position=3>데이터-변환<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%95%EC%A0%9C/' class=" post_tag button button_translucent" data-position=1>데이터-정제<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A7%84%EB%8B%A8/' class=" post_tag button button_translucent" data-position=3>데이터-진단<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%AA%A8%EB%8D%B8-%EC%A0%81%ED%95%A9/' class=" post_tag button button_translucent" data-position=1>모델-적합<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%AA%A8%EB%8D%B8-%EC%A7%84%EB%8B%A8/' class=" post_tag button button_translucent" data-position=1>모델-진단<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EC%97%AC%ED%96%89/' class=" post_tag button button_translucent" data-position=2>여행<span class="button_tally">2</span>
+            </a>
+            
+            <div class="tags_sort"><span title="sort alphabetically">[A~Z]</span><span title="sort by count">[0~9]</span>
+            </div>
+            <span class="tags_hide"><svg class="icon">
+            <use xlink:href="#closeme"></use>
+          </svg></span>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </section>
+</aside>
+
+</div>
+    </main><svg width="0" height="0" class="hidden">
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18.001 18.001" id="twitter">
+    <path d="M15.891 4.013c.808-.496 1.343-1.173 1.605-2.034a8.68 8.68 0 0 1-2.351.861c-.703-.756-1.593-1.14-2.66-1.14-1.043 0-1.924.366-2.643 1.078a3.56 3.56 0 0 0-1.076 2.605c0 .309.039.585.117.819-3.076-.105-5.622-1.381-7.628-3.837-.34.601-.51 1.213-.51 1.846 0 1.301.549 2.332 1.645 3.089-.625-.053-1.176-.211-1.645-.47 0 .929.273 1.705.82 2.388a3.623 3.623 0 0 0 2.115 1.291c-.312.08-.641.118-.979.118-.312 0-.533-.026-.664-.083.23.757.664 1.371 1.291 1.841a3.652 3.652 0 0 0 2.152.743C4.148 14.173 2.625 14.69.902 14.69c-.422 0-.721-.006-.902-.038 1.697 1.102 3.586 1.649 5.676 1.649 2.139 0 4.029-.542 5.674-1.626 1.645-1.078 2.859-2.408 3.639-3.974a10.77 10.77 0 0 0 1.172-4.892v-.468a7.788 7.788 0 0 0 1.84-1.921 8.142 8.142 0 0 1-2.11.593z"
+      ></path>
+  </symbol>
+  <symbol aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="mail">
+    <path  d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="calendar">
+    <path d="M452 40h-24V0h-40v40H124V0H84v40H60C26.916 40 0 66.916 0 100v352c0 33.084 26.916 60 60 60h392c33.084 0 60-26.916 60-60V100c0-33.084-26.916-60-60-60zm20 412c0 11.028-8.972 20-20 20H60c-11.028 0-20-8.972-20-20V188h432v264zm0-304H40v-48c0-11.028 8.972-20 20-20h24v40h40V80h264v40h40V80h24c11.028 0 20 8.972 20 20v48z"></path>
+    <path d="M76 230h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 310h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 390h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80-80h40v40h-40z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="github">
+    <path d="M255.968 5.329C114.624 5.329 0 120.401 0 262.353c0 113.536 73.344 209.856 175.104 243.872 12.8 2.368 17.472-5.568 17.472-12.384 0-6.112-.224-22.272-.352-43.712-71.2 15.52-86.24-34.464-86.24-34.464-11.616-29.696-28.416-37.6-28.416-37.6-23.264-15.936 1.728-15.616 1.728-15.616 25.696 1.824 39.2 26.496 39.2 26.496 22.848 39.264 59.936 27.936 74.528 21.344 2.304-16.608 8.928-27.936 16.256-34.368-56.832-6.496-116.608-28.544-116.608-127.008 0-28.064 9.984-51.008 26.368-68.992-2.656-6.496-11.424-32.64 2.496-68 0 0 21.504-6.912 70.4 26.336 20.416-5.696 42.304-8.544 64.096-8.64 21.728.128 43.648 2.944 64.096 8.672 48.864-33.248 70.336-26.336 70.336-26.336 13.952 35.392 5.184 61.504 2.56 68 16.416 17.984 26.304 40.928 26.304 68.992 0 98.72-59.84 120.448-116.864 126.816 9.184 7.936 17.376 23.616 17.376 47.584 0 34.368-.32 62.08-.32 70.496 0 6.88 4.608 14.88 17.6 12.352C438.72 472.145 512 375.857 512 262.353 512 120.401 397.376 5.329 255.968 5.329z"></path>
+  </symbol>
+  <symbol viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="rss">
+    <circle cx="3.429" cy="20.571" r="3.429"></circle>
+    <path d="M11.429 24h4.57C15.999 15.179 8.821 8.001 0 8v4.572c6.302.001 11.429 5.126 11.429 11.428z"></path>
+    <path d="M24 24C24 10.766 13.234 0 0 0v4.571c10.714 0 19.43 8.714 19.43 19.429z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="linkedin">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h362c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zM181 406h-60V196h60zm0-240h-60v-60h60zm210 240h-60V286c0-16.54-13.46-30-30-30s-30 13.46-30 30v120h-60V196h60v11.309C286.719 202.422 296.93 196 316 196c40.691.043 75 36.547 75 79.688zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="arrow">
+    <path d="M604.501 440.509L325.398 134.956c-5.331-5.357-12.423-7.627-19.386-7.27-6.989-.357-14.056 1.913-19.387 7.27L7.499 440.509c-9.999 10.024-9.999 26.298 0 36.323s26.223 10.024 36.222 0l262.293-287.164L568.28 476.832c9.999 10.024 26.222 10.024 36.221 0 9.999-10.023 9.999-26.298 0-36.323z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="carly">
+    <path d="M504.971 239.029L448 182.059V84c0-46.317-37.682-84-84-84h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c19.851 0 36 16.149 36 36v108c0 6.365 2.529 12.47 7.029 16.971L454.059 256l-47.029 47.029A24.002 24.002 0 0 0 400 320v108c0 19.851-16.149 36-36 36h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c46.318 0 84-37.683 84-84v-98.059l56.971-56.971c9.372-9.372 9.372-24.568 0-33.941zM112 192V84c0-19.851 16.149-36 36-36h44c13.255 0 24-10.745 24-24S205.255 0 192 0h-44c-46.318 0-84 37.683-84 84v98.059l-56.971 56.97c-9.373 9.373-9.373 24.568 0 33.941L64 329.941V428c0 46.317 37.682 84 84 84h44c13.255 0 24-10.745 24-24s-10.745-24-24-24h-44c-19.851 0-36-16.149-36-36V320c0-6.365-2.529-12.47-7.029-16.971L57.941 256l47.029-47.029A24.002 24.002 0 0 0 112 192z"></path>
+  </symbol>
+  <symbol viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="copy">
+    <path d="M23 2.75A2.75 2.75 0 0 0 20.25 0H8.75A2.75 2.75 0 0 0 6 2.75v13.5A2.75 2.75 0 0 0 8.75 19h11.5A2.75 2.75 0 0 0 23 16.25zM18.25 14.5h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5zm0-3h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5zm0-3h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5z"></path>
+    <path d="M8.75 20.5a4.255 4.255 0 0 1-4.25-4.25V2.75c0-.086.02-.166.025-.25H3.75A2.752 2.752 0 0 0 1 5.25v16A2.752 2.752 0 0 0 3.75 24h12a2.752 2.752 0 0 0 2.75-2.75v-.75z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001" id="closeme">
+    <path d="M284.286 256.002L506.143 34.144c7.811-7.811 7.811-20.475 0-28.285-7.811-7.81-20.475-7.811-28.285 0L256 227.717 34.143 5.859c-7.811-7.811-20.475-7.811-28.285 0-7.81 7.811-7.811 20.475 0 28.285l221.857 221.857L5.858 477.859c-7.811 7.811-7.811 20.475 0 28.285a19.938 19.938 0 0 0 14.143 5.857 19.94 19.94 0 0 0 14.143-5.857L256 284.287l221.857 221.857c3.905 3.905 9.024 5.857 14.143 5.857s10.237-1.952 14.143-5.857c7.811-7.811 7.811-20.475 0-28.285L284.286 256.002z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="open-menu">
+    <path d="M492 236H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0-160H20C8.954 76 0 84.954 0 96s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0 320H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="instagram">
+    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id=youtube>
+    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="stackoverflow">
+    <path d="M21 27v-8h3v11H0V19h3v8h18z"></path><path d="M17.1.2L15 1.8l7.9 10.6 2.1-1.6L17.1.2zm3.7 14.7L10.6 6.4l1.7-2 10.2 8.5-1.7 2zM7.2 12.3l12 5.6 1.1-2.4-12-5.6-1.1 2.4zm-1.8 6.8l13.56 1.96.17-2.38-13.26-2.55-.47 2.97zM19 25H5v-3h14v3z"></path>
+  </symbol>
+</svg>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+<footer class="footer">
+  <div class="footer_inner wrap pale">
+    <img src='/logos/logo.png' class="icon icon_2 transparent">
+    <p>Copyright<span class="year"></span> DATAHOLIC. All Rights Reserved</p><a class="to_top" href="#documentTop">
+  <svg class="icon">
+  <use xlink:href="#arrow"></use>
+</svg>
+</a>
+
+  </div>
+</footer>
+    <script type="text/javascript" src="/js/bundle.min.03f1cc201c9efa18e14550bff374f58e89f1e6b2a30a0e22f84c87f6eb766e419bd6569c3a60846ea3e65816112dfa454f4785d306d024b6ef2616d067862a7a.js" integrity="sha512-A/HMIBye&#43;hjhRVC/83T1jonx5rKjCg4i&#43;EyH9ut2bkGb1lacOmCEbqPmWBYRLfpFT0eF0wbQJLbvJhbQZ4Yqeg==" crossorigin="anonymous"></script>
+    
+  </body>
+</html>

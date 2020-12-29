@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>finance on Dataholic</title>
+    <link>/tags/finance/</link>
+    <description>Recent content in finance on Dataholic</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 06 Jan 2020 20:50:12 +0800</lastBuildDate><atom:link href="/tags/finance/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>finance analytics</title>
+      <link>/post/2020-01/finance_analytics/</link>
+      <pubDate>Mon, 06 Jan 2020 20:50:12 +0800</pubDate>
+      
+      <guid>/post/2020-01/finance_analytics/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;들어가기&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;들어가기&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;finance&lt;/code&gt; 분석을 위한 여러 R 패키지의 설치 및 &lt;code&gt;finance data&lt;/code&gt;를 수집하기 위한 몇 가지의 방법에 대해서 살펴 본다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div id=&#34;finance-analytics를-위한-r-패키지&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;finance analytics를 위한 R 패키지&lt;/h1&gt;
+&lt;p&gt;finance analytics를 위한 R 패키지 및 그 설치 방법을 소개한다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;quandl-finance-데이터&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Quandl finance 데이터&lt;/h1&gt;
+&lt;p&gt;Quandl은 finance 데이터의 공유 서비스를 수행하는 사이트다. 이 사이트에서 무료 public 데이터를 수집하는 방법을 알아본다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;주가-데이터-수집하기&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;주가 데이터 수집하기&lt;/h1&gt;
+&lt;p&gt;국내외 주가 데이터를 수집하는 방법과 주가 데이터를 분석하는 방법에 대해서 알아본다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;데이터-연산-및-조작에-대한-슬라이드의-공유&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;데이터 연산 및 조작에 대한 슬라이드의 공유&lt;/h1&gt;
+&lt;p&gt;다음에 링크를 걸어 둔 슬라이드 파일은 금융 데이터를 수집하고 분석하는 방법에 관한 자료로 2016년도에 정리되었다. Quandl finance 데이터의 수집에 대한 내용은 현재의 버전과 상이함을 밝혀둔다.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/choonghyunryu/R_Materials/blob/master/Data_Acquisition/00_Finance_Analytics.pdf&#34; target=&#34;_blank&#34;&gt;00_Finance_Analytics.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;차례&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;차례&lt;/h1&gt;
+&lt;p&gt;이 문서는 다음과 같은 아젠다를 이야기 한다.&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;패키지 설치하기&lt;/li&gt;
+&lt;li&gt;Quandl finance 데이터 수집하기&lt;/li&gt;
+&lt;li&gt;주가 데이터 수집하기&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>주가 데이터 분석하기</title>
+      <link>/post/2016-04/2016-04-08-stock/</link>
+      <pubDate>Fri, 08 Apr 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2016-04/2016-04-08-stock/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;주가-데이터-수집하기&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;주가 데이터 수집하기&lt;/h1&gt;
+&lt;div id=&#34;국내-주가데이터-수집&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;국내 주가데이터 수집&lt;/h2&gt;
+&lt;div id=&#34;종목코드-데이터-수집&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;종목코드 데이터 수집&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;야후
+&lt;ul&gt;
+&lt;li&gt;KOSPI : 종목코드.KS&lt;/li&gt;
+&lt;li&gt;코스닥 : 종목코드.KQ&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;구글
+&lt;ul&gt;
+&lt;li&gt;KOSPI : KRX:종목코드&lt;/li&gt;
+&lt;li&gt;코스닥 : KOSDAQ:종목코드&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;그래서 우선 KRX의 상장회사검색(&lt;a href=&#34;http://marketdata.krx.co.kr/mdi#document=040601)메뉴에서&#34; class=&#34;uri&#34;&gt;http://marketdata.krx.co.kr/mdi#document=040601)메뉴에서&lt;/a&gt; 국내 상장 주식회사의 종목코드 정보를 수집하였음. 각각의 코드는 다음의 excel 파일로 저장함.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;KOSPI
+&lt;ul&gt;
+&lt;li&gt;&amp;lt;a href=“../meta/KRX_KOSPI_CODE.xls”, target = &#34;_blank&#34;&amp;gt;KRX_KOSPI_CODE.xls&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;KOSDAQ
+&lt;ul&gt;
+&lt;li&gt;&amp;lt;a href=“../meta/KRX_KOSDAQ_CODE.xls”, target = &#34;_blank&#34;&amp;gt;KRX_KOSDAQ_CODE.xls&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;KONEX
+&lt;ul&gt;
+&lt;li&gt;&amp;lt;a href=“../meta/KRX_KONEX_CODE.xls”, target = &#34;_blank&#34;&amp;gt;KRX_KONEX_CODE.xls&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;종목코드-데이터-적재&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;종목코드 데이터 적재&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; library(xlsx)
+&amp;gt; 
+&amp;gt; path &amp;lt;- &amp;quot;./meta&amp;quot;
+&amp;gt; 
+&amp;gt; KOSPI &amp;lt;- &amp;quot;KRX_KOSPI_CODE.xls&amp;quot;
+&amp;gt; KOSDAQ &amp;lt;- &amp;quot;KRX_KOSDAQ_CODE.xls&amp;quot;
+&amp;gt; KONEX &amp;lt;- &amp;quot;KRX_KONEX_CODE.xls&amp;quot;
+&amp;gt; 
+&amp;gt; fKOSPI &amp;lt;- paste(path, KOSPI, sep=&amp;quot;/&amp;quot;)
+&amp;gt; fKOSDAQ &amp;lt;- paste(path, KOSDAQ, sep=&amp;quot;/&amp;quot;)
+&amp;gt; fKONEX &amp;lt;- paste(path, KONEX, sep=&amp;quot;/&amp;quot;)
+&amp;gt; 
+&amp;gt; KOSPI &amp;lt;- read.xlsx(fKOSPI, sheetIndex = 1, encoding = &amp;quot;UTF-8&amp;quot;)
+&amp;gt; KOSDAQ &amp;lt;- read.xlsx(fKOSDAQ, sheetIndex = 1, encoding = &amp;quot;UTF-8&amp;quot;)
+&amp;gt; KONEX &amp;lt;- read.xlsx(fKONEX, sheetIndex = 1, encoding = &amp;quot;UTF-8&amp;quot;)
+&amp;gt; 
+&amp;gt; KOSPI &amp;lt;- KOSPI[, -1]
+&amp;gt; names(KOSPI) &amp;lt;- c(&amp;quot;symbols&amp;quot;, &amp;quot;company&amp;quot; ,&amp;quot;industry_cd&amp;quot;,
++                   &amp;quot;industry_nm&amp;quot;, &amp;quot;stock_cnt&amp;quot;, &amp;quot;capital&amp;quot;,
++                   &amp;quot;face_value&amp;quot;, &amp;quot;currency&amp;quot;, &amp;quot;phone&amp;quot;, &amp;quot;address&amp;quot;)
+&amp;gt; 
+&amp;gt; KOSPI$symbols &amp;lt;- as.character(KOSPI$symbols)
+&amp;gt; KOSPI$stock_cnt &amp;lt;- as.numeric(gsub(&amp;quot;,&amp;quot;, &amp;quot;&amp;quot;, KOSPI$stock_cnt))
+&amp;gt; KOSPI$capital &amp;lt;- as.numeric(gsub(&amp;quot;,&amp;quot;, &amp;quot;&amp;quot;, KOSPI$capital))
+&amp;gt; KOSPI$face_value &amp;lt;- as.integer(gsub(&amp;quot;,&amp;quot;, &amp;quot;&amp;quot;, KOSPI$face_value))
+&amp;gt; 
+&amp;gt; KOSDAQ &amp;lt;- KOSDAQ[, -1]
+&amp;gt; names(KOSDAQ) &amp;lt;- c(&amp;quot;symbols&amp;quot;, &amp;quot;company&amp;quot; ,&amp;quot;industry_cd&amp;quot;,
++                   &amp;quot;industry_nm&amp;quot;, &amp;quot;stock_cnt&amp;quot;, &amp;quot;capital&amp;quot;,
++                   &amp;quot;face_value&amp;quot;, &amp;quot;currency&amp;quot;, &amp;quot;phone&amp;quot;, &amp;quot;address&amp;quot;)
+&amp;gt; 
+&amp;gt; KOSDAQ$symbols &amp;lt;- as.character(KOSDAQ$symbols)
+&amp;gt; KOSDAQ$stock_cnt &amp;lt;- as.numeric(gsub(&amp;quot;,&amp;quot;, &amp;quot;&amp;quot;, KOSDAQ$stock_cnt))
+&amp;gt; KOSDAQ$capital &amp;lt;- as.numeric(gsub(&amp;quot;,&amp;quot;, &amp;quot;&amp;quot;, KOSDAQ$capital))
+&amp;gt; KOSDAQ$face_value &amp;lt;- as.integer(gsub(&amp;quot;,&amp;quot;, &amp;quot;&amp;quot;, KOSDAQ$face_value))
+&amp;gt; 
+&amp;gt; KONEX &amp;lt;- KONEX[, -1]
+&amp;gt; names(KONEX) &amp;lt;- c(&amp;quot;symbols&amp;quot;, &amp;quot;company&amp;quot; ,&amp;quot;industry_cd&amp;quot;,
++                   &amp;quot;industry_nm&amp;quot;, &amp;quot;stock_cnt&amp;quot;, &amp;quot;capital&amp;quot;,
++                   &amp;quot;face_value&amp;quot;, &amp;quot;currency&amp;quot;, &amp;quot;phone&amp;quot;, &amp;quot;address&amp;quot;)
+&amp;gt; 
+&amp;gt; KONEX$symbols &amp;lt;- as.character(KONEX$symbols)
+&amp;gt; KONEX$stock_cnt &amp;lt;- as.numeric(gsub(&amp;quot;,&amp;quot;, &amp;quot;&amp;quot;, KONEX$stock_cnt))
+&amp;gt; KONEX$capital &amp;lt;- as.numeric(gsub(&amp;quot;,&amp;quot;, &amp;quot;&amp;quot;, KONEX$capital))
+&amp;gt; KONEX$face_value &amp;lt;- as.integer(gsub(&amp;quot;,&amp;quot;, &amp;quot;&amp;quot;, KONEX$face_value))
+&amp;gt; 
+&amp;gt; KOSPI[KOSPI$symbols == &amp;quot;088350&amp;quot;, ]
+    symbols  company industry_cd industry_nm stock_cnt     capital face_value
+717  088350 한화생명      116501      보험업 868530000 4.34265e+12       5000
+    currency       phone                      address
+717  원(KRW) 02-789-5114 서울특별시 영등포구 63로 50 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;종목별-거래정보-가져오기&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;종목별 거래정보 가져오기&lt;/h3&gt;
+&lt;p&gt;종목별 거래정보는 시스템을 구축할 경우에는 적재된 종목코드 데이터의 첫번째 코드부터 마지막 코드까지 반복(iteration) 수행을 통해 개별개별 데이터를 가져와서 쌓아야 함&lt;/p&gt;
+&lt;p&gt;본 종목별 거래정보 가져오기 예제에서는 야후에서 가져옴. 실제로 구글에 비해서 야후의 데이터가 더 많은 기간의 데이터를 수용하고 있음. 다음 예제는 KOSPI의 첫 3종목의 주가 정보를 가져오는 예제임.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; library(&amp;quot;quantmod&amp;quot;)
+&amp;gt; 
+&amp;gt; # getting stock data which 1st KOSPI code from Yahoo
+&amp;gt; symbols &amp;lt;- paste(KOSPI$symbols[1], &amp;quot;KS&amp;quot;, sep = &amp;quot;.&amp;quot;)
+&amp;gt; KOSPI_STOCKS &amp;lt;- getSymbols(symbols, from = &amp;#39;1990-01-01&amp;#39;, auto.assign = FALSE)
+&amp;gt; KOSPI_STOCKS &amp;lt;- data.frame(date = index(KOSPI_STOCKS), symbols = KOSPI$symbols[1], 
++                 Open = as.vector(KOSPI_STOCKS[, 1]), 
++                 High = as.vector(KOSPI_STOCKS[, 2]), 
++                 Low = as.vector(KOSPI_STOCKS[, 3]), 
++                 Close = as.vector(KOSPI_STOCKS[, 4]), 
++                 Volume = as.vector(KOSPI_STOCKS[, 5]), 
++                 Adjusted = as.vector(KOSPI_STOCKS[, 6]))
+&amp;gt; row.names(KOSPI_STOCKS) &amp;lt;- NULL
+&amp;gt; 
+&amp;gt; n &amp;lt;- length(KOSPI[1:3])
+&amp;gt;   
+&amp;gt; # getting stock data which 2nd, 3rd KOSPI code from Yahoo
+&amp;gt; for (i in 2:n) {
++   symbols &amp;lt;- paste(KOSPI$symbols[i], &amp;quot;KS&amp;quot;, sep = &amp;quot;.&amp;quot;)
++   x &amp;lt;- getSymbols(symbols, from = &amp;#39;1990-01-01&amp;#39;, auto.assign = FALSE)
++   x &amp;lt;- data.frame(date = index(x), symbols = KOSPI$symbols[i], 
++                   Open = as.vector(x[, 1]), High = as.vector(x[, 2]), 
++                   Low = as.vector(x[, 3]), Close = as.vector(x[, 4]), 
++                   Volume = as.vector(x[, 5]), Adjusted = as.vector(x[, 6]))
++   row.names(x) &amp;lt;- NULL
++   
++   KOSPI_STOCKS &amp;lt;- rbind(KOSPI_STOCKS, x)
++ }
+&amp;gt; 
+&amp;gt; head(KOSPI_STOCKS)
+        date symbols Open High  Low Close  Volume Adjusted
+1 2015-08-21  095570 6180 7300 5600  7100 9970110 6947.291
+2 2015-08-24  095570 6700 6940 6240  6480 1964155 6340.626
+3 2015-08-25  095570 6610 6730 6190  6220 1213650 6086.218
+4 2015-08-26  095570 6260 7760 6260  7090 3518605 6937.506
+5 2015-08-27  095570 7240 8060 6960  7570 2499565 7407.182
+6 2015-08-28  095570 7660 7840 7090  7140  956575 6986.431
+&amp;gt; tail(KOSPI_STOCKS)
+           date symbols  Open  High   Low Close Volume Adjusted
+7159 2020-12-18  006840 24900 25100 24600 25050  58704    25050
+7160 2020-12-21  006840 24950 25050 24400 24950  49917    24950
+7161 2020-12-22  006840 24550 24750 24300 24550  41056    24550
+7162 2020-12-23  006840 24550 24700 23300 23600  90361    23600
+7163 2020-12-24  006840 23600 25350 23550 25200 112401    25200
+7164 2020-12-28  006840 25300 25300 24750 24750   6280    24750&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;관심종목-거래정보-가져오기&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;관심종목 거래정보 가져오기&lt;/h3&gt;
+&lt;div id=&#34;삼성전자-거래정보-가져오기&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;삼성전자 거래정보 가져오기&lt;/h4&gt;
+&lt;p&gt;삼성전자의 종목코드는 &lt;code&gt;0059301&lt;/code&gt;이다. 이 종목의 거래정보를 Yahoo로부터 가져오기 위해서 종목코드를 &lt;code&gt;005930.KS&lt;/code&gt;로 변환 후 조회한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; symbols &amp;lt;- &amp;quot;005930&amp;quot;
+&amp;gt; symbols &amp;lt;- paste(symbols, &amp;quot;KS&amp;quot;, sep = &amp;quot;.&amp;quot;)
+&amp;gt; symbols
+[1] &amp;quot;005930.KS&amp;quot;
+&amp;gt; samsung.electric &amp;lt;- getSymbols(symbols, from = &amp;#39;1990-01-01&amp;#39;, to = &amp;#39;2016-03-31&amp;#39;,
++                                auto.assign = FALSE)
+&amp;gt; 
+&amp;gt; tail(samsung.electric)
+           005930.KS.Open 005930.KS.High 005930.KS.Low 005930.KS.Close
+2016-03-24          25580          25800         25320           25640
+2016-03-25          25660          25800         25560           25760
+2016-03-28          25760          26000         25760           25880
+2016-03-29          25880          26000         25700           25800
+2016-03-30          26200          26420         26040           26160
+2016-03-31          26120          26280         25960           26240
+           005930.KS.Volume 005930.KS.Adjusted
+2016-03-24         10939750           1231.602
+2016-03-25          7172300           1237.366
+2016-03-28          6060900           1243.130
+2016-03-29          8622700           1239.288
+2016-03-30         13380250           1256.580
+2016-03-31         19130750           1260.423&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;삼성전자-거래정보-시각화&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;삼성전자 거래정보 시각화&lt;/h4&gt;
+&lt;p&gt;주가 거래정보를 시각화하기 위해서는 quantmod 패키지의 chartSeries() 함수를 사용한다. 삼성전자의 주가를 주가 그래프로 즐겨보는 candle sticks chart를 그려보면 그림 1과 같다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;chartSeries(samsung.electric, subset = &amp;quot;2016-01-01::2016-03-31&amp;quot;, 
+            theme = chartTheme(&amp;#39;white&amp;#39;, up.col = &amp;#39;red&amp;#39;, dn.col = &amp;#39;blue&amp;#39;))&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:samsung&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;/post/2016-04/2016-04-08-Stock_files/figure-html/samsung-1.png&#34; alt=&#34;삼성전자 candle sticks chart&#34; width=&#34;85%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 1: 삼성전자 candle sticks chart
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;한화생명삼성생명-거래정보-가져오기&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;한화생명/삼성생명 거래정보 가져오기&lt;/h4&gt;
+&lt;p&gt;한화생명과 삼성생명의 종목코드는 각각 &lt;code&gt;088350&lt;/code&gt;와 &lt;code&gt;032830&lt;/code&gt;이다. 이 종목의 거래정보를 Yahoo로부터 가져오기 위해서 종목코드를 &lt;code&gt;088350.KS&lt;/code&gt;, &lt;code&gt;032830.KS&lt;/code&gt;로 변환 후 조회한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; symbols &amp;lt;- &amp;quot;088350&amp;quot;
+&amp;gt; symbols &amp;lt;- paste(symbols, &amp;quot;KS&amp;quot;, sep = &amp;quot;.&amp;quot;)
+&amp;gt; symbols
+[1] &amp;quot;088350.KS&amp;quot;
+&amp;gt; hli &amp;lt;- getSymbols(symbols, from = &amp;#39;1990-01-01&amp;#39;, to = &amp;#39;2016-03-31&amp;#39;,
++                   auto.assign = FALSE)
+&amp;gt; 
+&amp;gt; tail(hli)
+           088350.KS.Open 088350.KS.High 088350.KS.Low 088350.KS.Close
+2016-03-24           6600           6640          6550            6570
+2016-03-25           6580           6680          6540            6650
+2016-03-28           6680           6680          6580            6640
+2016-03-29           6670           6720          6630            6700
+2016-03-30           6700           6830          6650            6800
+2016-03-31           6820           6830          6700            6700
+           088350.KS.Volume 088350.KS.Adjusted
+2016-03-24           769252           6363.826
+2016-03-25           370720           6441.315
+2016-03-28           230891           6431.629
+2016-03-29           567218           6489.746
+2016-03-30          1192238           6586.608
+2016-03-31          1137339           6489.746
+&amp;gt; symbols &amp;lt;- &amp;quot;032830&amp;quot;
+&amp;gt; symbols &amp;lt;- paste(symbols, &amp;quot;KS&amp;quot;, sep = &amp;quot;.&amp;quot;)
+&amp;gt; symbols
+[1] &amp;quot;032830.KS&amp;quot;
+&amp;gt; sli &amp;lt;- getSymbols(symbols, from = &amp;#39;1990-01-01&amp;#39;, to = &amp;#39;2016-03-31&amp;#39;,
++                   auto.assign = FALSE)
+&amp;gt; 
+&amp;gt; tail(sli)
+           032830.KS.Open 032830.KS.High 032830.KS.Low 032830.KS.Close
+2016-03-24         114000         115000        113000          113500
+2016-03-25         114000         116500        113500          116000
+2016-03-28         116000         117500        115000          116000
+2016-03-29         116000         116000        113500          114500
+2016-03-30         115000         116500        114500          115000
+2016-03-31         115500         118500        115000          117500
+           032830.KS.Volume 032830.KS.Adjusted
+2016-03-24           224176           107018.0
+2016-03-25           217698           109375.2
+2016-03-28           249460           109375.2
+2016-03-29           257648           107960.9
+2016-03-30           220132           108432.3
+2016-03-31           478731           110789.5&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;한화생명삼성생명-거래정보-시각화&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;한화생명/삼성생명 거래정보 시각화&lt;/h4&gt;
+&lt;p&gt;주가 거래정보를 시각화하기 위해서 chartSeries() 함수로 그린 한화생명과 삼성생명의 candle sticks chart는 각각 그림 2와 그림 3과 같다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;chartSeries(hli, subset = &amp;quot;2016-01-01::2016-03-31&amp;quot;, 
+            theme = chartTheme(&amp;#39;white&amp;#39;, up.col = &amp;#39;red&amp;#39;, dn.col = &amp;#39;blue&amp;#39;))&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:hli&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;/post/2016-04/2016-04-08-Stock_files/figure-html/hli-1.png&#34; alt=&#34;한화생명 candle sticks chart&#34; width=&#34;85%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 2: 한화생명 candle sticks chart
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;chartSeries(sli, subset = &amp;quot;2016-01-01::2016-03-31&amp;quot;, 
+            theme = chartTheme(&amp;#39;white&amp;#39;, up.col = &amp;#39;red&amp;#39;, dn.col = &amp;#39;blue&amp;#39;))&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:sli&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;/post/2016-04/2016-04-08-Stock_files/figure-html/sli-1.png&#34; alt=&#34;삼성생명 candle sticks chart&#34; width=&#34;85%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 3: 삼성생명 candle sticks chart
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;해외-주가데이터-수집&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;해외 주가데이터 수집&lt;/h2&gt;
+&lt;div id=&#34;미국-종목코드-데이터-수집&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;미국 종목코드 데이터 수집&lt;/h3&gt;
+&lt;p&gt;TTR 패키지를 이용해서 미국의 AMEX, NASDAQ, NYSE 시장의 종목코드를 가져온다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; stock_symbols &amp;lt;- TTR::stockSymbols()
+&amp;gt; 
+&amp;gt; AMEX &amp;lt;- stock_symbols[stock_symbols$Exchange %in% &amp;quot;AMEX&amp;quot;, ]
+&amp;gt; NASDAQ &amp;lt;- stock_symbols[stock_symbols$Exchange %in% &amp;quot;NASDAQ&amp;quot;, ]
+&amp;gt; NYSE &amp;lt;- stock_symbols[stock_symbols$Exchange %in% &amp;quot;NYSE&amp;quot;, ]
+&amp;gt; 
+&amp;gt; dim(AMEX)
+[1] 303  17
+&amp;gt; dim(NASDAQ)
+[1] 3939   17
+&amp;gt; dim(NYSE)
+[1] 3286   17
+&amp;gt; head(NYSE)
+      Symbol
+6218       A
+6219      AA
+6220    AAIC
+6221 AAIC-PB
+6222 AAIC-PC
+6223     AAN
+                                                                                                               Name
+6218                                                                        Agilent Technologies, Inc. Common Stock
+6219                                                                                Alcoa Corporation Common Stock 
+6220                                                                  Arlington Asset Investment Corp Class A (new)
+6221                                                                         Arlington Asset Investment Corp 7.00% 
+6222 Arlington Asset Investment Corp 8.250% Seies C Fixed-to-Floating Rate Cumulative Redeemable Preferred Stock   
+6223                                                                    Aarons Holdings Company, Inc. Common Stock 
+     LastSale MarketCap IPOyear Sector Industry Exchange Test.Issue
+6218       NA        NA      NA     NA       NA     NYSE      FALSE
+6219       NA        NA      NA     NA       NA     NYSE      FALSE
+6220       NA        NA      NA     NA       NA     NYSE      FALSE
+6221       NA        NA      NA     NA       NA     NYSE      FALSE
+6222       NA        NA      NA     NA       NA     NYSE      FALSE
+6223       NA        NA      NA     NA       NA     NYSE      FALSE
+     Round.Lot.Size   ETF Market.Category Financial.Status Next.Shares
+6218            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
+6219            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
+6220            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
+6221            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
+6222            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
+6223            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
+     ACT.Symbol CQS.Symbol NASDAQ.Symbol
+6218          A          A             A
+6219         AA         AA            AA
+6220       AAIC       AAIC          AAIC
+6221     AAIC$B     AAICpB        AAIC-B
+6222     AAIC$C     AAICpC        AAIC-C
+6223        AAN        AAN           AAN&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;관심종목-거래정보-가져오기-1&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;관심종목 거래정보 가져오기&lt;/h3&gt;
+&lt;div id=&#34;애플-거래정보-가져오기&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;애플 거래정보 가져오기&lt;/h4&gt;
+&lt;p&gt;애플의 종목코드는 &lt;code&gt;AAPL&lt;/code&gt;이다. 이 종목의 거래정보를 Yahoo로부터 가져오자.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; NASDAQ[grep(&amp;quot;Apple&amp;quot;, NASDAQ$Name), ]
+     Symbol                      Name LastSale MarketCap IPOyear Sector
+2287   AAPL Apple Inc. - Common Stock       NA        NA      NA     NA
+     Industry Exchange Test.Issue Round.Lot.Size   ETF
+2287       NA   NASDAQ      FALSE            100 FALSE
+                   Market.Category Financial.Status Next.Shares ACT.Symbol
+2287 NASDAQ Global Select MarketSM Normal (Default)          NA       &amp;lt;NA&amp;gt;
+     CQS.Symbol NASDAQ.Symbol
+2287       &amp;lt;NA&amp;gt;          AAPL
+&amp;gt; symbols &amp;lt;- NASDAQ[grep(&amp;quot;Apple&amp;quot;, NASDAQ$Name), &amp;quot;Symbol&amp;quot;]
+&amp;gt; 
+&amp;gt; apple &amp;lt;- getSymbols(symbols, from = &amp;#39;1990-01-01&amp;#39;, to = &amp;#39;2016-03-31&amp;#39;,
++                     auto.assign = FALSE)
+&amp;gt; 
+&amp;gt; tail(apple)
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
+2016-03-22   26.3125   26.8225  26.3025    26.6800   129777600      24.85239
+2016-03-23   26.6200   26.7675  26.4750    26.5325   102814000      24.71499
+2016-03-24   26.3675   26.5625  26.2225    26.4175   104532000      24.60787
+2016-03-28   26.5000   26.5475  26.2650    26.2975    77645600      24.49608
+2016-03-29   26.2225   26.9475  26.2200    26.9200   124760400      25.07594
+2016-03-30   27.1625   27.6050  27.1500    27.3900   182404400      25.51375&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;애플-거래정보-시각화&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;애플 거래정보 시각화&lt;/h4&gt;
+&lt;p&gt;애플의 candle sticks chart는 그림 4와 같다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;chartSeries(apple, subset = &amp;quot;2016-01-01::2016-03-31&amp;quot;, 
+            theme = chartTheme(&amp;#39;white&amp;#39;, up.col = &amp;#39;red&amp;#39;, dn.col = &amp;#39;blue&amp;#39;))&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:apple&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;/post/2016-04/2016-04-08-Stock_files/figure-html/apple-1.png&#34; alt=&#34;apple candle sticks chart&#34; width=&#34;85%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 4: apple candle sticks chart
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;수익률-분석&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;수익률 분석&lt;/h1&gt;
+&lt;div id=&#34;한화생명-수익률-분석&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;한화생명 수익률 분석&lt;/h2&gt;
+&lt;p&gt;주식 분할 및 배당 정보를 반영한 종가인 &lt;code&gt;Adjusted&lt;/code&gt; 변수로 간단한 수익률 분석을 수행한다.&lt;/p&gt;
+&lt;div id=&#34;최고가최저가&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;최고가/최저가&lt;/h3&gt;
+&lt;p&gt;2010-03-17 이후 2016-03-31까지의 한화생명이 최고가를 친 날은 2015-11-03로 8,090.575원이다. 반대로,
+최저가를 친 날은 2011-09-23로 4,688.99원이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; hli1 &amp;lt;- hli[, &amp;quot;088350.KS.Adjusted&amp;quot;]
+&amp;gt; hli1[which.max(hli1)]
+           088350.KS.Adjusted
+2015-11-03           8090.575
+&amp;gt; hli1[which.min(hli1)]
+           088350.KS.Adjusted
+2011-09-23            4688.99&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;단순-수익률복리-수익률&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;단순 수익률/복리 수익률&lt;/h3&gt;
+&lt;p&gt;매일매일의 단순 수익률과 복리 수익률은 각각 다음과 같이 구한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; ret.simple &amp;lt;- diff(hli1) / stats::lag(hli1, k = -1) * 100
+&amp;gt; tail(ret.simple)
+           088350.KS.Adjusted
+2016-03-24         -1.3533848
+2016-03-25          1.2048230
+2016-03-28         -0.1492589
+2016-03-29          0.8823538
+2016-03-30          1.4925438
+2016-03-31                 NA
+&amp;gt; ret.cont &amp;lt;- diff(log(hli1)) * 100
+&amp;gt; tail(ret.cont)
+           088350.KS.Adjusted
+2016-03-24         -1.3605665
+2016-03-25          1.2103059
+2016-03-28         -0.1504943
+2016-03-29          0.8995572
+2016-03-30          1.4815150
+2016-03-31         -1.4815150&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;단순 수익률을 요약하면 다음과 같다. 가장 큰 일일 손실율은 2013-02-26의 약 -10.8%이고, 가장 큰 일일 수익율은 2011-11-01의 약 10.69%이다. 그런데 평균 일일 수익율은 -0.01975%이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; summary(coredata(ret.simple))
+ 088350.KS.Adjusted 
+ Min.   :-10.81831  
+ 1st Qu.: -1.03488  
+ Median :  0.00000  
+ Mean   : -0.01976  
+ 3rd Qu.:  0.93770  
+ Max.   : 10.68815  
+ NA&amp;#39;s   :2          
+&amp;gt; ret.simple[which.min(ret.simple)]
+           088350.KS.Adjusted
+2013-02-26          -10.81831
+&amp;gt; ret.simple[which.max(ret.simple)]
+           088350.KS.Adjusted
+2011-11-01           10.68815&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;일일 단순 손실율의 분포를 히스토그램으로 그리면 그림 5와 같다. 결과를 보면 0% 근접의 마이너스(-) 수익률의 비율이 가장 높음을 알 수 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;par(family=&amp;#39;NanumGothic&amp;#39;)
+hist(ret.simple, breaks=100, freq = FALSE, 
+     main = &amp;quot;한화생명 - Histogram of Simple Returns&amp;quot;, xlab=&amp;quot;%&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:hist&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;/post/2016-04/2016-04-08-Stock_files/figure-html/hist-1.png&#34; alt=&#34;한화생명 일일 단순 손실율의 분포를 히스토그램&#34; width=&#34;85%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 5: 한화생명 일일 단순 손실율의 분포를 히스토그램
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;value-at-risk&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Value-at-Risk&lt;/h3&gt;
+&lt;p&gt;일일 99% Value-at-Risk 값을 과거 자료로 분석하면 일일 손실율이 4.426724% 이상의 확률은 1% 가량 발생한다. 즉, working day 기준 일년에 약 2.5번 정도가 최대 손실율인 4.426724%가 발생한다는 것을 의미한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; quantile(ret.simple, probs = 0.01, na.rm = TRUE)
+       1% 
+-4.426724 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;복합-연간-성장률&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;복합 연간 성장률&lt;/h3&gt;
+&lt;p&gt;C.A.G.R. : 복합 연간 성장률 (CAGR, 연평균성장률)을 구하면 다음과 같다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; periodReturn(hli, period = &amp;#39;yearly&amp;#39;) 
+           yearly.returns
+2010-12-30    -0.08620690
+2011-12-29    -0.06918239
+2012-12-28     0.04864865
+2013-12-30    -0.02190722
+2014-12-30     0.09222661
+2015-12-30    -0.10856454
+2016-03-31    -0.09336942&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;삼성생명-수익률-분석&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;삼성생명 수익률 분석&lt;/h2&gt;
+&lt;p&gt;주식 분할 및 배당 정보를 반영한 종가인 `Adjusted’ 변수로 간단한 수익률 분석을 수행한다.&lt;/p&gt;
+&lt;div id=&#34;최고가최저가-1&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;최고가/최저가&lt;/h3&gt;
+&lt;p&gt;2010-05-12 이후 2016-03-31까지의 삼성생명이 최고가를 친 날은 2014-12-04로 115,989.5원이다. 반대로,
+최저가를 친 날은 2012-01-16로 70,075.63원이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; sli1 &amp;lt;- sli[, &amp;quot;032830.KS.Adjusted&amp;quot;]
+&amp;gt; sli1[which.max(sli1)]
+           032830.KS.Adjusted
+2014-12-04           115989.5
+&amp;gt; sli1[which.min(sli1)]
+           032830.KS.Adjusted
+2012-01-16           70075.63&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;단순-수익률복리-수익률-1&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;단순 수익률/복리 수익률&lt;/h3&gt;
+&lt;p&gt;매일매일의 단순 수익률과 복리 수익률은 각각 다음과 같이 구한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; ret.simple &amp;lt;- diff(sli1) / stats::lag(sli1, k = -1) * 100
+&amp;gt; tail(ret.simple)
+           032830.KS.Adjusted
+2016-03-24         -0.8620700
+2016-03-25          2.1551677
+2016-03-28          0.0000000
+2016-03-29         -1.3043420
+2016-03-30          0.4255324
+2016-03-31                 NA
+&amp;gt; ret.cont &amp;lt;- diff(log(sli1)) * 100
+&amp;gt; tail(ret.cont)
+           032830.KS.Adjusted
+2016-03-24         -0.8771996
+2016-03-25          2.1787306
+2016-03-28          0.0000000
+2016-03-29         -1.3015311
+2016-03-30          0.4357310
+2016-03-31          2.1506158&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;단순 수익률을 요약하면 다음과 같다. 가장 큰 일일 손실율은 2015-02-13의 -8.415846%이고, 가장 큰 일일 수익율은 2010-05-26의 11.00918%이다. 그런데 평균 일일 수익율은 -0.003446%이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; summary(coredata(ret.simple))
+ 032830.KS.Adjusted 
+ Min.   :-8.415846  
+ 1st Qu.:-0.930233  
+ Median : 0.000000  
+ Mean   :-0.003452  
+ 3rd Qu.: 0.909092  
+ Max.   :11.009178  
+ NA&amp;#39;s   :2          
+&amp;gt; ret.simple[which.min(ret.simple)]
+           032830.KS.Adjusted
+2015-02-13          -8.415846
+&amp;gt; ret.simple[which.max(ret.simple)]
+           032830.KS.Adjusted
+2010-05-26           11.00918&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;일일 단순 손실율의 분포를 히스토그램으로 그리면 그림 6과 같다. 결과를 보면 0% 근접의 마이너스(-) 수익률의 비율이 가장 높음을 알 수 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;par(family=&amp;#39;NanumGothic&amp;#39;)
+hist(ret.simple, breaks=100, freq = FALSE, 
+     main = &amp;quot;삼성생명 - Histogram of Simple Returns&amp;quot;, xlab=&amp;quot;%&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:hist1&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;/post/2016-04/2016-04-08-Stock_files/figure-html/hist1-1.png&#34; alt=&#34;삼성생명 일일 단순 손실율의 분포를 히스토그램&#34; width=&#34;85%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 6: 삼성생명 일일 단순 손실율의 분포를 히스토그램
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;value-at-risk-1&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Value-at-Risk&lt;/h3&gt;
+&lt;p&gt;일일 99% Value-at-Risk 값을 과거 자료로 분석하면 일일 손실율이 3.886695% 이상의 확률은 1% 가량 발생한다. 즉, working day 기준 일년에 약 2.5번 정도가 최대 손실율인 3.886695%가 발생한다는 것을 의미한다. 한화생명보다는 리스크가 작다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; quantile(ret.simple, probs = 0.01, na.rm = TRUE)
+       1% 
+-3.886695 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;복합-연간-성장률-1&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;복합 연간 성장률&lt;/h3&gt;
+&lt;p&gt;C.A.G.R. : 복합 연간 성장률 (CAGR, 연평균성장률)을 구하면 다음과 같다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; periodReturn(sli, period = &amp;#39;yearly&amp;#39;) 
+           yearly.returns
+2010-12-30    -0.14225941
+2011-12-29    -0.21073171
+2012-12-28     0.16563659
+2013-12-30     0.10286320
+2014-12-30     0.12019231
+2015-12-30    -0.05579399
+2016-03-31     0.06818182&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

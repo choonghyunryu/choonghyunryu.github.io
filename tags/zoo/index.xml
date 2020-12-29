@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>zoo on Dataholic</title>
+    <link>/tags/zoo/</link>
+    <description>Recent content in zoo on Dataholic</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 22 Mar 2020 01:05:12 +0800</lastBuildDate><atom:link href="/tags/zoo/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Introduce window function</title>
+      <link>/post/2020-03/window_function/</link>
+      <pubDate>Sun, 22 Mar 2020 01:05:12 +0800</pubDate>
+      
+      <guid>/post/2020-03/window_function/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;windows-function&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;windows function&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;Tidyverse&lt;/code&gt;가 조작하는, 특히 &lt;code&gt;dplyr&lt;/code&gt;가 조작하는 데이터 객체인 &lt;code&gt;data.frame&lt;/code&gt;이나 &lt;code&gt;tbl_df&lt;/code&gt; 객체는 DBMS(Data Base Management System)의 table과 유사하다.
+이들은 컬럼(R에서는 변수, Variable)과 컬럼간의 연산이나 비교가 비교적 쉽다. 또한 집합에 대한 집계도 쉽게 처리한다. 그러나, &lt;strong&gt;행(R에서는 관측치, Observation)과 행간의 관계를 정의하거나 행과 행간을 비교하고 연산하는 것은 쉽지 않다.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;DBMS에서는 &lt;code&gt;SQL(Structured Query Language)&lt;/code&gt;을 이용해서 데이터를 조작한다. 그리고 &lt;code&gt;Tidyverse&lt;/code&gt;에서는 &lt;code&gt;dplyr&lt;/code&gt; 패키지가 마치 SQL과 유사한 방법으로 데이터를 조작한다.&lt;/p&gt;
+&lt;p&gt;데이터 분석의 중요성이 대두되면서 1990년대 말부터 많은 DBMS는 행과 행간의 관계를 정의하거나 행과 행간을 비교하고 연산하는 함수의 기능을 SQL에 추가하기 시작했다. 그리고 이들을 &lt;code&gt;window function&lt;/code&gt;이라 불렀다.&lt;br /&gt;
+&lt;strong&gt;&lt;code&gt;window function&lt;/code&gt;을 활용하면 복잡한 프로그램을 통해 행과 행간의 연산을 수행하던 것을 간단한 SQL 표현으로 쉽게 해결할 수 있다.&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;dplyr에서-windows-function-구현&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;dplyr에서 windows function 구현&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;dplyr&lt;/code&gt; 패키지를 사용하여 SQL의 windows function에 해당하는 기능을 수행해 보자.&lt;/p&gt;
+&lt;div id=&#34;데이터-생성&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;데이터 생성&lt;/h3&gt;
+&lt;p&gt;예제를 위한 데이터를 생성하기 위해서 quantmod 패키지로 KOSPI 지수와 KOSDAQ 지수를 가져온다. 2019-12-01부터 2020-03-20의 주가 지수를 수집했다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(quantmod)
+
+KOSPI &amp;lt;- getSymbols(&amp;#39;^KS11&amp;#39;, from = &amp;#39;2019-12-01&amp;#39;, to = &amp;#39;2020-03-20&amp;#39;, auto.assign = FALSE)
+KOSPI &amp;lt;- data.frame(market = &amp;quot;KOSPI&amp;quot;,
+                    date = as.Date(row.names(as.matrix(KOSPI))), 
+                    open = as.vector(KOSPI[, 1]), 
+                    high = as.vector(KOSPI[, 2]), 
+                    low = as.vector(KOSPI[, 3]), 
+                    close = as.vector(KOSPI[, 4]), 
+                    volume = as.vector(KOSPI[, 5]), 
+                    adjusted = as.vector(KOSPI[, 6]))
+
+KOSDAQ &amp;lt;- getSymbols(&amp;#39;^KQ11&amp;#39;, from = &amp;#39;2019-12-01&amp;#39;, to = &amp;#39;2020-03-20&amp;#39;, auto.assign = FALSE)
+KOSDAQ &amp;lt;- data.frame(market = &amp;quot;KOSDAQ&amp;quot;,
+                     date = as.Date(row.names(as.matrix(KOSDAQ))), 
+                     open = as.vector(KOSDAQ[, 1]), 
+                     high = as.vector(KOSDAQ[, 2]), 
+                     low = as.vector(KOSDAQ[, 3]), 
+                     close = as.vector(KOSDAQ[, 4]), 
+                     volume = as.vector(KOSDAQ[, 5]), 
+                     adjusted = as.vector(KOSDAQ[, 6]))&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;문제정의&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;문제정의&lt;/h3&gt;
+&lt;p&gt;다음의 문제는 SQL에서 windows function을 사용해서 구할 수 있는 문제들이다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;KOSPI 지수 데이터
+&lt;ul&gt;
+&lt;li&gt;2019-12-01부터 2020-03-20에서의 KOSPI 거래량 일일 누계를 구한다.&lt;/li&gt;
+&lt;li&gt;5 거래일 기준으로 KOSPI 지수의 이동평균을 구한다.&lt;/li&gt;
+&lt;li&gt;2019-12-01부터 2020-03-20에서 KOSPI 지수의 순위를 구한다.&lt;/li&gt;
+&lt;li&gt;이전 거래일 대비 주가지수의 차이를 구한다.
+&lt;ul&gt;
+&lt;li&gt;작을수록 상위 랭크&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;KOSPI 시장과 와 KOSDAQ 시장 데이터를 합친 후, 거래소별로
+&lt;ul&gt;
+&lt;li&gt;KOSPI 지수 데이터 사례의 지표들을 구한다.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;kospi-데이터에서의-집계&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;KOSPI 데이터에서의 집계&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;zoo&lt;/code&gt; 패키지는 시계열 분석을 지원하는 패키지다. 그리고 &lt;code&gt;windows function&lt;/code&gt;은 &lt;code&gt;time windows function&lt;/code&gt;을 내포하는 것인만큼 이 패키지가 아주 유용하게 사용된다.&lt;/p&gt;
+&lt;p&gt;cumsum는 누적합을 구하는데 이용하는 함수고, rank는 순위를 구하는 함수다. 이미 여러번 사용해 보았을 것이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;vol &amp;lt;- KOSPI$volume[1:5]
+vol&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 385300 450000 347000 472200 440200&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 누적합
+cumsum(vol)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1]  385300  835300 1182300 1654500 2094700&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 순위
+rank(vol)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 2 4 1 5 3&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;diff는 차분을 구하는 함수로, 이전 거래일 대비 주가지수의 차이를 쉽게 구할 수는 있지만, 관측치의 개수보다 1개 적은 값을 반환하는 문제가 있다. 그리고 이 함수가 &lt;code&gt;dplyr&lt;/code&gt; 내에서 사용되면 1개 모자란 값때문에 에러가 발생한다. 그래서 맨 앞에 NA를 추가하는 것이 필요하다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(dplyr)
+
+close &amp;lt;- KOSPI$close[1:5]
+close&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 2091.92 2084.07 2068.89 2060.74 2081.85&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 차분구하기
+diff(close)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1]  -7.849854 -15.180175  -8.149903  21.110108&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# dplyr 내에서 사용
+KOSPI %&amp;gt;% 
+  head(n = 5) %&amp;gt;% 
+  select(date, close) %&amp;gt;% 
+  mutate(diff_close = c(NA, diff(close)))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##         date   close diff_close
+## 1 2019-12-02 2091.92         NA
+## 2 2019-12-03 2084.07  -7.849854
+## 3 2019-12-04 2068.89 -15.180175
+## 4 2019-12-05 2060.74  -8.149903
+## 5 2019-12-06 2081.85  21.110108&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;이동평균은 &lt;code&gt;zoo&lt;/code&gt; 패키지의 &lt;code&gt;rollapply&lt;/code&gt; 함수를 사용한다. 이 함수는 차수만큰 롤링라면서 특정 함수를 적용하는 기능을 수행한다. 이동평균이므로 &lt;code&gt;mean&lt;/code&gt; 함수를 적용했다.&lt;/p&gt;
+&lt;p&gt;이상을 정리하여, 첫번제 문제인 KOSPI 지수 데이터의 집계를 다음과 같이 수행했다. 관측치가 많아서 마지막 10개 관측치만 출력해 본다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;KOSPI_summary &amp;lt;- KOSPI %&amp;gt;% 
+  select(-(open:low), -adjusted) %&amp;gt;% 
+  arrange(date) %&amp;gt;% 
+  mutate(total_volume = cumsum(volume),
+         rank_close = rank(close),
+         diff_prev = round(c(NA, diff(close)), 2),
+         avg_close_5 = round(zoo::rollapply(close, 5, mean, fill = TRUE, 
+                                        align = &amp;quot;right&amp;quot;, partial = TRUE)))
+
+KOSPI_summary %&amp;gt;% 
+  select(-market) %&amp;gt;% 
+  tail(n = 10)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##          date   close  volume total_volume rank_close diff_prev avg_close_5
+## 66 2020-03-09 1954.77  666900     41200500          9    -85.45        2031
+## 67 2020-03-10 1962.93  638600     41839100         10      8.16        2021
+## 68 2020-03-11 1908.27  679700     42518800          8    -54.66        1990
+## 69 2020-03-12 1834.33  850300     43369100          7    -73.94        1940
+## 70 2020-03-13 1771.44 1035300     44404400          6    -62.89        1886
+## 71 2020-03-16 1714.86  682000     45086400          5    -56.58        1838
+## 72 2020-03-17 1672.44  649800     45736200          4    -42.42        1780
+## 73 2020-03-18 1591.20  728000     46464200          3    -81.24        1717
+## 74 2020-03-19 1457.64  977700     47441900          1   -133.56        1642
+## 75 2020-03-20 1566.15  817000     48258900          2    108.51        1600&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;거래소별로-데이터의-집계&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;거래소별로 데이터의 집계&lt;/h2&gt;
+&lt;p&gt;KOSPI와 KOSDAQ를 합쳐서 stock라는 객체를 생성한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;stock &amp;lt;- KOSPI %&amp;gt;% 
+  union(KOSDAQ)
+
+stock %&amp;gt;% 
+  arrange(date, market) %&amp;gt;% 
+  tail(n = 10)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##     market       date    open    high     low   close volume adjusted
+## 141 KOSDAQ 2020-03-16  538.68  541.87  504.51  504.51   1200   504.51
+## 142  KOSPI 2020-03-16 1805.43 1805.43 1714.38 1714.86 682000  1714.86
+## 143 KOSDAQ 2020-03-17  488.02  518.72  483.51  514.73   1400   514.73
+## 144  KOSPI 2020-03-17 1640.84 1722.97 1637.88 1672.44 649800  1672.44
+## 145 KOSDAQ 2020-03-18  520.79  526.10  485.14  485.14   1300   485.14
+## 146  KOSPI 2020-03-18 1686.12 1693.95 1591.12 1591.20 728000  1591.20
+## 147 KOSDAQ 2020-03-19  501.59  502.12  419.55  428.35   1600   428.35
+## 148  KOSPI 2020-03-19 1626.09 1626.09 1439.43 1457.64 977700  1457.64
+## 149 KOSDAQ 2020-03-20  443.88  467.75  435.11  467.75   1200   467.75
+## 150  KOSPI 2020-03-20 1498.49 1566.82 1466.48 1566.15 817000  1566.15&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;거래소별로 집계하는 방법은 매우 쉽다. 앞서 구한 스크립트에 그룹핑해서 집계할 변수를 &lt;code&gt;group_by&lt;/code&gt; 함수에 적용하면 된다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;stock_summary &amp;lt;- stock %&amp;gt;% 
+  select(-(open:low), -adjusted) %&amp;gt;% 
+  group_by(market) %&amp;gt;% 
+  arrange(date) %&amp;gt;% 
+  mutate(total_volume = cumsum(volume),
+         rank_close = rank(close),
+         diff_prev = round(c(NA, diff(close)), 2),
+         avg_close_5 = round(zoo::rollapply(close, 5, mean, fill = TRUE, 
+                                        align = &amp;quot;right&amp;quot;, partial = TRUE))) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;집계된 KOSPI 결과를 보면, 앞서 개별적으로 구한 결과와 동일하다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;stock_summary %&amp;gt;%   
+  filter(market == &amp;quot;KOSPI&amp;quot;) %&amp;gt;% 
+  tail(n = 10) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 10 x 8
+## # Groups:   market [1]
+##    market date       close  volume total_volume rank_close diff_prev avg_close_5
+##    &amp;lt;chr&amp;gt;  &amp;lt;date&amp;gt;     &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt;        &amp;lt;dbl&amp;gt;      &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;       &amp;lt;dbl&amp;gt;
+##  1 KOSPI  2020-03-09 1955.  666900     41200500          9    -85.4         2031
+##  2 KOSPI  2020-03-10 1963.  638600     41839100         10      8.16        2021
+##  3 KOSPI  2020-03-11 1908.  679700     42518800          8    -54.7         1990
+##  4 KOSPI  2020-03-12 1834.  850300     43369100          7    -73.9         1940
+##  5 KOSPI  2020-03-13 1771. 1035300     44404400          6    -62.9         1886
+##  6 KOSPI  2020-03-16 1715.  682000     45086400          5    -56.6         1838
+##  7 KOSPI  2020-03-17 1672.  649800     45736200          4    -42.4         1780
+##  8 KOSPI  2020-03-18 1591.  728000     46464200          3    -81.2         1717
+##  9 KOSPI  2020-03-19 1458.  977700     47441900          1   -134.          1642
+## 10 KOSPI  2020-03-20 1566.  817000     48258900          2    109.          1600&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;집계된 KOSDAQ 결과를 보면, KOSPI의 시황과 유사하다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;stock_summary %&amp;gt;%   
+  filter(market == &amp;quot;KOSDAQ&amp;quot;) %&amp;gt;% 
+  tail(n = 10) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 10 x 8
+## # Groups:   market [1]
+##    market date       close volume total_volume rank_close diff_prev avg_close_5
+##    &amp;lt;chr&amp;gt;  &amp;lt;date&amp;gt;     &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt;        &amp;lt;dbl&amp;gt;      &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;       &amp;lt;dbl&amp;gt;
+##  1 KOSDAQ 2020-03-09  615.   1300        62400         10    -28.1          635
+##  2 KOSDAQ 2020-03-10  620.   1400        63800         12      5.37         634
+##  3 KOSDAQ 2020-03-11  596.   1600        65400          8    -24.4          625
+##  4 KOSDAQ 2020-03-12  563.   1600        67000          7    -32.1          607
+##  5 KOSDAQ 2020-03-13  524    1500        68500          6    -39.5          584
+##  6 KOSDAQ 2020-03-16  505.   1200        69700          4    -19.5          562
+##  7 KOSDAQ 2020-03-17  515.   1400        71100          5     10.2          540
+##  8 KOSDAQ 2020-03-18  485.   1300        72400          3    -29.6          518
+##  9 KOSDAQ 2020-03-19  428.   1600        74000          1    -56.8          491
+## 10 KOSDAQ 2020-03-20  468.   1200        75200          2     39.4          480&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

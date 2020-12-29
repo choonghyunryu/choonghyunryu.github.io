@@ -1,0 +1,3059 @@
+
+<!DOCTYPE html>
+<html lang="en" data-figures="" class="page">
+  <head>
+<title>하나에서 여러 개를 파생하기 | Dataholic</title>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.79.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-118779401-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-118779401-1');
+</script>
+<meta property="og:locale" content="en" />
+
+<meta property="og:type" content="article">
+<meta name="description" content="들어가기  비정형 텍스트 데이터를 조작할 경우에 종종 발생하는 요건으로, character 벡터의 개별 원소를 특정 구분자로 나누어서 여러 개의 원소로 만들거나, 데이터 프레임에서 상속된 객체에서 특정 character 변수를 동일한 방법으로 나누어서 여러 관측치로 만들 필요성 있다.  …">
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:creator" content="">
+<meta name="twitter:title" content="하나에서 여러 개를 파생하기" />
+<meta property="og:url" content="/post/2019-12/multi_derived/" />
+<meta property="og:title" content="하나에서 여러 개를 파생하기" />
+<meta property="og:description" content="들어가기  비정형 텍스트 데이터를 조작할 경우에 종종 발생하는 요건으로, character 벡터의 개별 원소를 특정 구분자로 나누어서 여러 개의 원소로 만들거나, 데이터 프레임에서 상속된 객체에서 특정 character 변수를 동일한 방법으로 나누어서 여러 관측치로 만들 필요성 있다.  …" />
+<meta property="og:image" content="/" />
+<link rel="apple-touch-icon" sizes="180x180" href='/icons/apple-touch-icon.png'>
+<link rel="icon" type="image/png" sizes="32x32" href='/icons/favicon-32x32.png'>
+<link rel="manifest" href='/icons/site.webmanifest'>
+<link rel="mask-icon" href='/safari-pinned-tab.svg' color="#002538">
+<meta name="msapplication-TileColor" content="#002538">
+<meta name="theme-color" content="#002538">
+
+<link rel="canonical" href="/post/2019-12/multi_derived/">
+
+    
+
+    
+    
+    <link rel="preload" href="/css/styles.2b3290fc6e94839826981c23ed76e1831472bd3f8af68332da00b97d9430b56bfb7e9394d5c09aca633c093c621709cdd745eec940be733933ac5d876223de52.css" integrity = "sha512-KzKQ/G6Ug5gmmBwj7XbhgxRyvT&#43;K9oMy2gC5fZQwtWv7fpOU1cCaymM8CTxiFwnN10XuyUC&#43;czkzrF2HYiPeUg==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="/js/bundle.min.03f1cc201c9efa18e14550bff374f58e89f1e6b2a30a0e22f84c87f6eb766e419bd6569c3a60846ea3e65816112dfa454f4785d306d024b6ef2616d067862a7a.js" as="script" integrity=
+    "sha512-A/HMIBye&#43;hjhRVC/83T1jonx5rKjCg4i&#43;EyH9ut2bkGb1lacOmCEbqPmWBYRLfpFT0eF0wbQJLbvJhbQZ4Yqeg==" crossorigin="anonymous">
+
+    
+    <link rel="stylesheet" type="text/css" href="/css/styles.2b3290fc6e94839826981c23ed76e1831472bd3f8af68332da00b97d9430b56bfb7e9394d5c09aca633c093c621709cdd745eec940be733933ac5d876223de52.css" integrity="sha512-KzKQ/G6Ug5gmmBwj7XbhgxRyvT&#43;K9oMy2gC5fZQwtWv7fpOU1cCaymM8CTxiFwnN10XuyUC&#43;czkzrF2HYiPeUg==" crossorigin="anonymous">
+    
+  </head>
+  
+  
+    
+  
+  <body data-code="7" data-lines="false" id="documentTop">
+
+<header class="nav_header" >
+  <nav class="nav">
+    <a href='/' class="nav_brand nav_item">
+      <img src="/logos/logo.png" class="logo">
+      <div class="nav_close">
+        <div>
+          <svg class="icon">
+  <use xlink:href="#open-menu"></use>
+</svg>
+          <svg class="icon">
+  <use xlink:href="#closeme"></use>
+</svg>
+        </div>
+      </div>
+    </a>
+    <div class='nav_body nav_body_left'>
+      
+      
+      
+        
+
+  <div class="nav_parent">
+    <a href="/" class="nav_item">Home </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/post/" class="nav_item">R </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/gallery/" class="nav_item">Gellary </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/moment/" class="nav_item">Moment </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/about/" class="nav_item">About </a>
+  </div>
+      
+      <div class="nav_parent">
+        <a href="#" class="nav_item"></a>
+        <div class="nav_sub">
+          <span class="nav_child"></span>
+          
+          <a href="/" class="nav_child nav_item">English</a>
+          
+          <a href="/kr/" class="nav_child nav_item">Korean</a>
+          
+        </div>
+      </div>
+      
+<div class='follow'>
+  <a href="https://github.com/choonghyunryu">
+    <svg class="icon">
+  <use xlink:href="#github"></use>
+</svg>
+  </a>
+  <a href="https://www.facebook.com/choonghyun.ryu">
+    <svg class="icon">
+  <use xlink:href="#facebook"></use>
+</svg>
+  </a>
+  <a href="https://www.linkedin.com/in/choonghyun-ryu-10a95726/">
+    <svg class="icon">
+  <use xlink:href="#linkedin"></use>
+</svg>
+  </a>
+    
+  <a href="/index.xml">
+    <svg class="icon">
+  <use xlink:href="#rss"></use>
+</svg>
+  </a>
+<div class="color_mode">
+  <input type="checkbox" class="color_choice" id="mode">
+</div>
+
+</div>
+
+    </div>
+  </nav>
+</header>
+
+    <main>
+  
+<div class="grid-inverse wrap content">
+  <article class="post_content">
+    <h1 class="post_title">하나에서 여러 개를 파생하기</h1><div class="post_meta">
+  
+    <svg class="icon">
+  <use xlink:href="#calendar"></use>
+</svg>
+    <span class="post_date">
+      2019-12-28</span>
+      <a href='/tags/dplyr' class="post_tag button button_translucent">dplyr
+      </a>
+      <a href='/tags/tidyr' class="post_tag button button_translucent">tidyr
+      </a>
+      <a href='/tags/foodfact' class="post_tag button button_translucent">foodfact
+      </a>
+      <a href='/tags/ggplot2' class="post_tag button button_translucent">ggplot2
+      </a>
+      <a href='/tags/readr' class="post_tag button button_translucent">readr
+      </a>
+</div>
+
+    
+  <div class="post_share">
+    Share on:
+    <a href="https://twitter.com/intent/tweet?text=%ed%95%98%eb%82%98%ec%97%90%ec%84%9c%20%ec%97%ac%eb%9f%ac%20%ea%b0%9c%eb%a5%bc%20%ed%8c%8c%ec%83%9d%ed%95%98%ea%b8%b0&url=%2fpost%2f2019-12%2fmulti_derived%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#twitter"></use>
+</svg>
+    </a>
+    <a href="https://www.facebook.com/sharer.php?u=%2fpost%2f2019-12%2fmulti_derived%2f&t=%ed%95%98%eb%82%98%ec%97%90%ec%84%9c%20%ec%97%ac%eb%9f%ac%20%ea%b0%9c%eb%a5%bc%20%ed%8c%8c%ec%83%9d%ed%95%98%ea%b8%b0" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#facebook"></use>
+</svg>
+    </a>
+    <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#linkedin"></use>
+</svg>
+    </a>
+    <a href="/post/2019-12/multi_derived/" title="Copy Link" class="link link_yank">
+      <svg class="icon">
+  <use xlink:href="#copy"></use>
+</svg>
+    </a>
+  </div>
+
+    
+    
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+
+<div id="들어가기" class="section level1">
+<h1>들어가기</h1>
+<blockquote>
+<p>비정형 텍스트 데이터를 조작할 경우에 종종 발생하는 요건으로, <code>character 벡터의 개별 원소</code>를 특정 구분자로 나누어서 <code>여러 개의 원소로 만들거나</code>, 데이터 프레임에서 상속된 객체에서 특정 <code>character 변수</code>를 동일한 방법으로 나누어서 <code>여러 관측치로 만들 필요성</code> 있다.
+텍스트 조작처럼 성가신 것이 없는데, 이들 두 요건에 대한 솔루션을 제시해 본다. 결국은 <code>dplyr</code> 패키지와 <code>tidyr</code> 패키지의 사용법에 대한 소개다.</p>
+</blockquote>
+</div>
+<div id="데이터의-준비" class="section level1">
+<h1>데이터의 준비</h1>
+<p><a href="https://www.kaggle.com/openfoodfacts/world-food-facts에서" class="uri">https://www.kaggle.com/openfoodfacts/world-food-facts에서</a> <code>world-food-facts.zip</code>를 다운로드한 후 압축을 풀면 <code>en.openfoodfacts.org.products.tsv</code>라는 이름의 텍스트 파일을 얻을 수 있다. 이 파일은 컬럼의 구분자를 탭문자로 정의한 데이터 파일이다.</p>
+<p>예제에서는 <code>en.openfoodfacts.org.products.tsv</code>를 <code>FoodFacts.tsv</code>라는 이름으로 변경 후 <code>./data</code> 경로에 저장한 것을 전제로 수행한다.</p>
+<p>이 데이터는 전 세계 식품의 영양 정보를 수집한 데이터로 <code>Open Food Facts</code>라는 단체에서 공개한 public 데이터다.</p>
+<pre class="r"><code>data_repo &lt;- &quot;./data&quot; 
+fname &lt;- paste(data_repo, &quot;FoodFacts.tsv&quot;, sep =&quot;/&quot;)
+
+# 파일의 용량
+file.size(fname) / 1024^2
+## [1] 963.456
+# 데이터를 R로 가져온다.
+foodfact &lt;- readr::read_tsv(fname, progress = FALSE)
+
+# 메모리에 적재된 R 데이터의 용량
+format(object.size(foodfact), units = &quot;Mb&quot;)
+## [1] &quot;938.7 Mb&quot;
+# 차원
+dim(foodfact)
+## [1] 314496    163
+# 변수의 이름
+names(foodfact)
+##   [1] &quot;code&quot;                                      
+##   [2] &quot;url&quot;                                       
+##   [3] &quot;creator&quot;                                   
+##   [4] &quot;created_t&quot;                                 
+##   [5] &quot;created_datetime&quot;                          
+##   [6] &quot;last_modified_t&quot;                           
+##   [7] &quot;last_modified_datetime&quot;                    
+##   [8] &quot;product_name&quot;                              
+##   [9] &quot;generic_name&quot;                              
+##  [10] &quot;quantity&quot;                                  
+##  [11] &quot;packaging&quot;                                 
+##  [12] &quot;packaging_tags&quot;                            
+##  [13] &quot;brands&quot;                                    
+##  [14] &quot;brands_tags&quot;                               
+##  [15] &quot;categories&quot;                                
+##  [16] &quot;categories_tags&quot;                           
+##  [17] &quot;categories_en&quot;                             
+##  [18] &quot;origins&quot;                                   
+##  [19] &quot;origins_tags&quot;                              
+##  [20] &quot;manufacturing_places&quot;                      
+##  [21] &quot;manufacturing_places_tags&quot;                 
+##  [22] &quot;labels&quot;                                    
+##  [23] &quot;labels_tags&quot;                               
+##  [24] &quot;labels_en&quot;                                 
+##  [25] &quot;emb_codes&quot;                                 
+##  [26] &quot;emb_codes_tags&quot;                            
+##  [27] &quot;first_packaging_code_geo&quot;                  
+##  [28] &quot;cities&quot;                                    
+##  [29] &quot;cities_tags&quot;                               
+##  [30] &quot;purchase_places&quot;                           
+##  [31] &quot;stores&quot;                                    
+##  [32] &quot;countries&quot;                                 
+##  [33] &quot;countries_tags&quot;                            
+##  [34] &quot;countries_en&quot;                              
+##  [35] &quot;ingredients_text&quot;                          
+##  [36] &quot;allergens&quot;                                 
+##  [37] &quot;allergens_en&quot;                              
+##  [38] &quot;traces&quot;                                    
+##  [39] &quot;traces_tags&quot;                               
+##  [40] &quot;traces_en&quot;                                 
+##  [41] &quot;serving_size&quot;                              
+##  [42] &quot;no_nutriments&quot;                             
+##  [43] &quot;additives_n&quot;                               
+##  [44] &quot;additives&quot;                                 
+##  [45] &quot;additives_tags&quot;                            
+##  [46] &quot;additives_en&quot;                              
+##  [47] &quot;ingredients_from_palm_oil_n&quot;               
+##  [48] &quot;ingredients_from_palm_oil&quot;                 
+##  [49] &quot;ingredients_from_palm_oil_tags&quot;            
+##  [50] &quot;ingredients_that_may_be_from_palm_oil_n&quot;   
+##  [51] &quot;ingredients_that_may_be_from_palm_oil&quot;     
+##  [52] &quot;ingredients_that_may_be_from_palm_oil_tags&quot;
+##  [53] &quot;nutrition_grade_uk&quot;                        
+##  [54] &quot;nutrition_grade_fr&quot;                        
+##  [55] &quot;pnns_groups_1&quot;                             
+##  [56] &quot;pnns_groups_2&quot;                             
+##  [57] &quot;states&quot;                                    
+##  [58] &quot;states_tags&quot;                               
+##  [59] &quot;states_en&quot;                                 
+##  [60] &quot;main_category&quot;                             
+##  [61] &quot;main_category_en&quot;                          
+##  [62] &quot;image_url&quot;                                 
+##  [63] &quot;image_small_url&quot;                           
+##  [64] &quot;energy_100g&quot;                               
+##  [65] &quot;energy-from-fat_100g&quot;                      
+##  [66] &quot;fat_100g&quot;                                  
+##  [67] &quot;saturated-fat_100g&quot;                        
+##  [68] &quot;-butyric-acid_100g&quot;                        
+##  [69] &quot;-caproic-acid_100g&quot;                        
+##  [70] &quot;-caprylic-acid_100g&quot;                       
+##  [71] &quot;-capric-acid_100g&quot;                         
+##  [72] &quot;-lauric-acid_100g&quot;                         
+##  [73] &quot;-myristic-acid_100g&quot;                       
+##  [74] &quot;-palmitic-acid_100g&quot;                       
+##  [75] &quot;-stearic-acid_100g&quot;                        
+##  [76] &quot;-arachidic-acid_100g&quot;                      
+##  [77] &quot;-behenic-acid_100g&quot;                        
+##  [78] &quot;-lignoceric-acid_100g&quot;                     
+##  [79] &quot;-cerotic-acid_100g&quot;                        
+##  [80] &quot;-montanic-acid_100g&quot;                       
+##  [81] &quot;-melissic-acid_100g&quot;                       
+##  [82] &quot;monounsaturated-fat_100g&quot;                  
+##  [83] &quot;polyunsaturated-fat_100g&quot;                  
+##  [84] &quot;omega-3-fat_100g&quot;                          
+##  [85] &quot;-alpha-linolenic-acid_100g&quot;                
+##  [86] &quot;-eicosapentaenoic-acid_100g&quot;               
+##  [87] &quot;-docosahexaenoic-acid_100g&quot;                
+##  [88] &quot;omega-6-fat_100g&quot;                          
+##  [89] &quot;-linoleic-acid_100g&quot;                       
+##  [90] &quot;-arachidonic-acid_100g&quot;                    
+##  [91] &quot;-gamma-linolenic-acid_100g&quot;                
+##  [92] &quot;-dihomo-gamma-linolenic-acid_100g&quot;         
+##  [93] &quot;omega-9-fat_100g&quot;                          
+##  [94] &quot;-oleic-acid_100g&quot;                          
+##  [95] &quot;-elaidic-acid_100g&quot;                        
+##  [96] &quot;-gondoic-acid_100g&quot;                        
+##  [97] &quot;-mead-acid_100g&quot;                           
+##  [98] &quot;-erucic-acid_100g&quot;                         
+##  [99] &quot;-nervonic-acid_100g&quot;                       
+## [100] &quot;trans-fat_100g&quot;                            
+## [101] &quot;cholesterol_100g&quot;                          
+## [102] &quot;carbohydrates_100g&quot;                        
+## [103] &quot;sugars_100g&quot;                               
+## [104] &quot;-sucrose_100g&quot;                             
+## [105] &quot;-glucose_100g&quot;                             
+## [106] &quot;-fructose_100g&quot;                            
+## [107] &quot;-lactose_100g&quot;                             
+## [108] &quot;-maltose_100g&quot;                             
+## [109] &quot;-maltodextrins_100g&quot;                       
+## [110] &quot;starch_100g&quot;                               
+## [111] &quot;polyols_100g&quot;                              
+## [112] &quot;fiber_100g&quot;                                
+## [113] &quot;proteins_100g&quot;                             
+## [114] &quot;casein_100g&quot;                               
+## [115] &quot;serum-proteins_100g&quot;                       
+## [116] &quot;nucleotides_100g&quot;                          
+## [117] &quot;salt_100g&quot;                                 
+## [118] &quot;sodium_100g&quot;                               
+## [119] &quot;alcohol_100g&quot;                              
+## [120] &quot;vitamin-a_100g&quot;                            
+## [121] &quot;beta-carotene_100g&quot;                        
+## [122] &quot;vitamin-d_100g&quot;                            
+## [123] &quot;vitamin-e_100g&quot;                            
+## [124] &quot;vitamin-k_100g&quot;                            
+## [125] &quot;vitamin-c_100g&quot;                            
+## [126] &quot;vitamin-b1_100g&quot;                           
+## [127] &quot;vitamin-b2_100g&quot;                           
+## [128] &quot;vitamin-pp_100g&quot;                           
+## [129] &quot;vitamin-b6_100g&quot;                           
+## [130] &quot;vitamin-b9_100g&quot;                           
+## [131] &quot;folates_100g&quot;                              
+## [132] &quot;vitamin-b12_100g&quot;                          
+## [133] &quot;biotin_100g&quot;                               
+## [134] &quot;pantothenic-acid_100g&quot;                     
+## [135] &quot;silica_100g&quot;                               
+## [136] &quot;bicarbonate_100g&quot;                          
+## [137] &quot;potassium_100g&quot;                            
+## [138] &quot;chloride_100g&quot;                             
+## [139] &quot;calcium_100g&quot;                              
+## [140] &quot;phosphorus_100g&quot;                           
+## [141] &quot;iron_100g&quot;                                 
+## [142] &quot;magnesium_100g&quot;                            
+## [143] &quot;zinc_100g&quot;                                 
+## [144] &quot;copper_100g&quot;                               
+## [145] &quot;manganese_100g&quot;                            
+## [146] &quot;fluoride_100g&quot;                             
+## [147] &quot;selenium_100g&quot;                             
+## [148] &quot;chromium_100g&quot;                             
+## [149] &quot;molybdenum_100g&quot;                           
+## [150] &quot;iodine_100g&quot;                               
+## [151] &quot;caffeine_100g&quot;                             
+## [152] &quot;taurine_100g&quot;                              
+## [153] &quot;ph_100g&quot;                                   
+## [154] &quot;fruits-vegetables-nuts_100g&quot;               
+## [155] &quot;fruits-vegetables-nuts-estimate_100g&quot;      
+## [156] &quot;collagen-meat-protein-ratio_100g&quot;          
+## [157] &quot;cocoa_100g&quot;                                
+## [158] &quot;chlorophyl_100g&quot;                           
+## [159] &quot;carbon-footprint_100g&quot;                     
+## [160] &quot;nutrition-score-fr_100g&quot;                   
+## [161] &quot;nutrition-score-uk_100g&quot;                   
+## [162] &quot;glycemic-index_100g&quot;                       
+## [163] &quot;water-hardness_100g&quot;</code></pre>
+</div>
+<div id="벡터의-한-개-원소에서-여러-개-원소-추출하기" class="section level1">
+<h1>벡터의 한 개 원소에서 여러 개 원소 추출하기</h1>
+<div id="식품의-식자재-추출" class="section level2">
+<h2>식품의 식자재 추출</h2>
+<p>식품의 식자재 종류는 ingredients_text 변수에 텍스트로 들어 있다. 그래서 텍스트의 조작을 통해서 식자재를 분리해야 한다. 그러나 다음 예시처럼 일부 몇 건을 살펴보자. 하나의 ingredients_text에는 여러 개의 식자재들이 기술되어 있다.</p>
+<pre class="r"><code>exam &lt;- foodfact$ingredients_text[c(2:3, 13)]
+exam
+## [1] &quot;Bananas, vegetable oil (coconut oil, corn oil and/or palm oil) sugar, natural banana flavor.&quot;                                                                                                                                                                                                                                                                                     
+## [2] &quot;Peanuts, wheat flour, sugar, rice flour, tapioca starch, salt, leavening (ammonium bicarbonate, baking soda), soy sauce (water, soybeans, wheat, salt), potato starch.&quot;                                                                                                                                                                                                           
+## [3] &quot;Roasted peanuts (peanuts, peanut or canola oil, salt), sesame sticks (unbleached wheat flour, sesame seeds, sunflower oil, sa;t, beet powder, turmeric), chili crackers (rice, corn starch, soy sauce[water, soybeans, wheat, salt], brown rice syrup, paprika, onion powder, garlic powder), tamari roasted almonds (almonds, tamari shoyu [water, wheat, soybeans, salt]), salt&quot;</code></pre>
+</div>
+<div id="벡터를-리스트로-그리고-다시-벡터로-변경하기" class="section level2">
+<h2>벡터를 리스트로, 그리고 다시 벡터로 변경하기</h2>
+<p>하나의 벡터에는 임의의 갯수의 식자재가 포함되어 있다. 그런데 자세히 보면 다음과 같은 몇 가지의 대표적인 구분자 패턴이 존재한다.</p>
+<ul>
+<li>콤마(,)로 분리</li>
+<li>괄호로 분리</li>
+<li>중괄호로 분리</li>
+</ul>
+<p>먼저 앞에서 찾은 식자재들의 분리 패턴을 이용해서, 여러 개의 식자재를 추출해 보자. 구분자로 분리된 수 많큼 원소의 개수가 늘어난다. 벡터의 길이가 3개에서 60으로 늘어났다.
+중요한 것은 <code>str_split() 함수</code>는 분리된 개별 문자열의 결과를 <code>리스트</code>로 반환하기 때문에 <code>unlist() 함수</code>로 리스트를 벡터로 변경해 주어야 한는 것이다.</p>
+<pre class="r"><code>library(dplyr)
+library(stringr)
+
+foodfact %&gt;%
+  .[c(2:3, 13), ] %&gt;% 
+  transmute(ingredients = str_split(ingredients_text, pattern = &quot;,|\\(|\\)|\\[|\\]&quot;)) %&gt;%
+  unlist()
+##                ingredients1                ingredients2 
+##                   &quot;Bananas&quot;           &quot; vegetable oil &quot; 
+##                ingredients3                ingredients4 
+##               &quot;coconut oil&quot; &quot; corn oil and/or palm oil&quot; 
+##                ingredients5                ingredients6 
+##                    &quot; sugar&quot;   &quot; natural banana flavor.&quot; 
+##                ingredients7                ingredients8 
+##                   &quot;Peanuts&quot;              &quot; wheat flour&quot; 
+##                ingredients9               ingredients10 
+##                    &quot; sugar&quot;               &quot; rice flour&quot; 
+##               ingredients11               ingredients12 
+##           &quot; tapioca starch&quot;                     &quot; salt&quot; 
+##               ingredients13               ingredients14 
+##               &quot; leavening &quot;      &quot;ammonium bicarbonate&quot; 
+##               ingredients15               ingredients16 
+##              &quot; baking soda&quot;                          &quot;&quot; 
+##               ingredients17               ingredients18 
+##               &quot; soy sauce &quot;                     &quot;water&quot; 
+##               ingredients19               ingredients20 
+##                 &quot; soybeans&quot;                    &quot; wheat&quot; 
+##               ingredients21               ingredients22 
+##                     &quot; salt&quot;                          &quot;&quot; 
+##               ingredients23               ingredients24 
+##           &quot; potato starch.&quot;          &quot;Roasted peanuts &quot; 
+##               ingredients25               ingredients26 
+##                   &quot;peanuts&quot;     &quot; peanut or canola oil&quot; 
+##               ingredients27               ingredients28 
+##                     &quot; salt&quot;                          &quot;&quot; 
+##               ingredients29               ingredients30 
+##           &quot; sesame sticks &quot;    &quot;unbleached wheat flour&quot; 
+##               ingredients31               ingredients32 
+##             &quot; sesame seeds&quot;            &quot; sunflower oil&quot; 
+##               ingredients33               ingredients34 
+##                     &quot; sa;t&quot;              &quot; beet powder&quot; 
+##               ingredients35               ingredients36 
+##                 &quot; turmeric&quot;                          &quot;&quot; 
+##               ingredients37               ingredients38 
+##          &quot; chili crackers &quot;                      &quot;rice&quot; 
+##               ingredients39               ingredients40 
+##              &quot; corn starch&quot;                &quot; soy sauce&quot; 
+##               ingredients41               ingredients42 
+##                     &quot;water&quot;                 &quot; soybeans&quot; 
+##               ingredients43               ingredients44 
+##                    &quot; wheat&quot;                     &quot; salt&quot; 
+##               ingredients45               ingredients46 
+##                          &quot;&quot;         &quot; brown rice syrup&quot; 
+##               ingredients47               ingredients48 
+##                  &quot; paprika&quot;             &quot; onion powder&quot; 
+##               ingredients49               ingredients50 
+##            &quot; garlic powder&quot;                          &quot;&quot; 
+##               ingredients51               ingredients52 
+##  &quot; tamari roasted almonds &quot;                   &quot;almonds&quot; 
+##               ingredients53               ingredients54 
+##            &quot; tamari shoyu &quot;                     &quot;water&quot; 
+##               ingredients55               ingredients56 
+##                    &quot; wheat&quot;                 &quot; soybeans&quot; 
+##               ingredients57               ingredients58 
+##                     &quot; salt&quot;                          &quot;&quot; 
+##               ingredients59               ingredients60 
+##                          &quot;&quot;                     &quot; salt&quot;</code></pre>
+</div>
+<div id="벡터를-tbl_df로-변경하기" class="section level2">
+<h2>벡터를 tbl_df로 변경하기</h2>
+<p>앞의 결과는 길이가 60인 벡터를 반환한다. 그러나, 우리는 <code>dplyr 패키지</code>를 사용하기 위해서 <code>tibble 패키지</code>의 <code>enframe() 함수</code>를 사용해서 벡터를 <code>tbl_df 객체</code>로 변경할 수 있다.</p>
+<pre class="r"><code>foodfact %&gt;%
+  .[c(2:3, 13), ] %&gt;% 
+  transmute(ingredients = str_split(ingredients_text, pattern = &quot;,|\\(|\\)|\\[|\\]&quot;)) %&gt;%
+  unlist() %&gt;% 
+  tibble::enframe() %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">name</th>
+<th align="left">value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ingredients1</td>
+<td align="left">Bananas</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients2</td>
+<td align="left">vegetable oil</td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients3</td>
+<td align="left">coconut oil</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients4</td>
+<td align="left">corn oil and/or palm oil</td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients5</td>
+<td align="left">sugar</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients6</td>
+<td align="left">natural banana flavor.</td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients7</td>
+<td align="left">Peanuts</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients8</td>
+<td align="left">wheat flour</td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients9</td>
+<td align="left">sugar</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients10</td>
+<td align="left">rice flour</td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients11</td>
+<td align="left">tapioca starch</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients12</td>
+<td align="left">salt</td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients13</td>
+<td align="left">leavening</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients14</td>
+<td align="left">ammonium bicarbonate</td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients15</td>
+<td align="left">baking soda</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients16</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients17</td>
+<td align="left">soy sauce</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients18</td>
+<td align="left">water</td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients19</td>
+<td align="left">soybeans</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients20</td>
+<td align="left">wheat</td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients21</td>
+<td align="left">salt</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients22</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients23</td>
+<td align="left">potato starch.</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients24</td>
+<td align="left">Roasted peanuts</td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients25</td>
+<td align="left">peanuts</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients26</td>
+<td align="left">peanut or canola oil</td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients27</td>
+<td align="left">salt</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients28</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients29</td>
+<td align="left">sesame sticks</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients30</td>
+<td align="left">unbleached wheat flour</td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients31</td>
+<td align="left">sesame seeds</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients32</td>
+<td align="left">sunflower oil</td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients33</td>
+<td align="left">sa;t</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients34</td>
+<td align="left">beet powder</td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients35</td>
+<td align="left">turmeric</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients36</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients37</td>
+<td align="left">chili crackers</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients38</td>
+<td align="left">rice</td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients39</td>
+<td align="left">corn starch</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients40</td>
+<td align="left">soy sauce</td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients41</td>
+<td align="left">water</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients42</td>
+<td align="left">soybeans</td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients43</td>
+<td align="left">wheat</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients44</td>
+<td align="left">salt</td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients45</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">ingredients46</td>
+<td align="left">brown rice syrup</td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients47</td>
+<td align="left">paprika</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients48</td>
+<td align="left">onion powder</td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients49</td>
+<td align="left">garlic powder</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients50</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients51</td>
+<td align="left">tamari roasted almonds</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients52</td>
+<td align="left">almonds</td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients53</td>
+<td align="left">tamari shoyu</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients54</td>
+<td align="left">water</td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients55</td>
+<td align="left">wheat</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients56</td>
+<td align="left">soybeans</td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients57</td>
+<td align="left">salt</td>
+</tr>
+<tr class="even">
+<td align="left">ingredients58</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">ingredients59</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">ingredients60</td>
+<td align="left">salt</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="부수적인-텍스트-전처리" class="section level2">
+<h2>부수적인 텍스트 전처리</h2>
+<p>전체 데이터로 부수적인 텍스트 전처리를 수행한다. 식자재를 의미하지 않는 몇몇 텍스트의 패턴을 정규표현식을 이용해서 제거한다. 모든 의미 없는 텍스트를 제거하거나 보정하기에는 많은 시간과 노력이 필요하므로, 적당한 선에서 타협을 하였다.</p>
+<p>다음 코드는 간단한 전처리 후 도출된 식자재의 <code>돗수(frequency)</code>를 구한다. 그리고 마지막으로 돗수가 큰 상위 100개의 식자재를 추출하였다. 상위에 랭크된 것들은 제대로 추출된 식자재의 이름이다. 아마도 상위 100개의 식자재 이름은 무리없이 사용할 수 있을 것이다.</p>
+<pre class="r"><code># dplyr, tibble을 이용한 식자재의 추출
+ingredients &lt;- foodfact %&gt;%
+  transmute(ingredients = str_split(ingredients_text, pattern = &quot;,|\\(|\\)|\\[|\\]&quot;)) %&gt;%
+  unlist() %&gt;%
+  tibble::enframe() %&gt;%
+  mutate(value = str_replace(value, &quot;org|organic&quot;, &quot;&quot;),
+         value = str_replace(value, &quot;and/or&quot;, &quot;&quot;),
+         value = str_replace(value, &quot;-&gt; en:\\w+&quot;, &quot;&quot;),
+         value = str_replace(value, &quot;-&gt; exists  -- ok&quot;, &quot;&quot;),
+         value = str_replace(value, &quot;-&quot;, &quot; &quot;),
+         value = str_replace_all(value, &quot;[[:punct:]]&quot;, &quot; &quot;),
+         value = str_replace_all(value, &quot;  &quot;, &quot; &quot;),
+         value = str_trim(value)) %&gt;%
+  filter(value != &quot;&quot;, !str_detect(value, &quot;completed|\\d&quot;)) %&gt;%
+  count(value) %&gt;%
+  transmute(ingredient = value, freq = n) %&gt;% 
+  arrange(desc(freq))
+
+# 도수가 큰 상위 100건 추출
+top100 &lt;- head(ingredients, 100)
+top100 %&gt;% 
+  knitr::kable(format.args = list(big.mark = &#39;,&#39;))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">ingredient</th>
+<th align="right">freq</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">salt</td>
+<td align="right">126,773</td>
+</tr>
+<tr class="even">
+<td align="left">sugar</td>
+<td align="right">89,559</td>
+</tr>
+<tr class="odd">
+<td align="left">water</td>
+<td align="right">80,908</td>
+</tr>
+<tr class="even">
+<td align="left">sel</td>
+<td align="right">48,846</td>
+</tr>
+<tr class="odd">
+<td align="left">citric acid</td>
+<td align="right">39,481</td>
+</tr>
+<tr class="even">
+<td align="left">sucre</td>
+<td align="right">35,886</td>
+</tr>
+<tr class="odd">
+<td align="left">eau</td>
+<td align="right">33,956</td>
+</tr>
+<tr class="even">
+<td align="left">riboflavin</td>
+<td align="right">26,053</td>
+</tr>
+<tr class="odd">
+<td align="left">niacin</td>
+<td align="right">25,903</td>
+</tr>
+<tr class="even">
+<td align="left">dextrose</td>
+<td align="right">22,365</td>
+</tr>
+<tr class="odd">
+<td align="left">milk</td>
+<td align="right">21,562</td>
+</tr>
+<tr class="even">
+<td align="left">folic acid</td>
+<td align="right">20,871</td>
+</tr>
+<tr class="odd">
+<td align="left">oil</td>
+<td align="right">20,347</td>
+</tr>
+<tr class="even">
+<td align="left">flour</td>
+<td align="right">20,082</td>
+</tr>
+<tr class="odd">
+<td align="left">spices</td>
+<td align="right">19,379</td>
+</tr>
+<tr class="even">
+<td align="left">corn syrup</td>
+<td align="right">17,366</td>
+</tr>
+<tr class="odd">
+<td align="left">wheat flour</td>
+<td align="right">17,137</td>
+</tr>
+<tr class="even">
+<td align="left">enzymes</td>
+<td align="right">16,898</td>
+</tr>
+<tr class="odd">
+<td align="left">natural flavor</td>
+<td align="right">16,876</td>
+</tr>
+<tr class="even">
+<td align="left">soy lecithin</td>
+<td align="right">15,825</td>
+</tr>
+<tr class="odd">
+<td align="left">garlic</td>
+<td align="right">14,646</td>
+</tr>
+<tr class="even">
+<td align="left">vinegar</td>
+<td align="right">14,557</td>
+</tr>
+<tr class="odd">
+<td align="left">sea salt</td>
+<td align="right">13,809</td>
+</tr>
+<tr class="even">
+<td align="left">maltodextrin</td>
+<td align="right">13,524</td>
+</tr>
+<tr class="odd">
+<td align="left">reduced iron</td>
+<td align="right">13,255</td>
+</tr>
+<tr class="even">
+<td align="left">xanthan gum</td>
+<td align="right">12,650</td>
+</tr>
+<tr class="odd">
+<td align="left">cream</td>
+<td align="right">12,524</td>
+</tr>
+<tr class="even">
+<td align="left">thiamine mononitrate</td>
+<td align="right">12,482</td>
+</tr>
+<tr class="odd">
+<td align="left">soybean oil</td>
+<td align="right">11,849</td>
+</tr>
+<tr class="even">
+<td align="left">flavor</td>
+<td align="right">11,738</td>
+</tr>
+<tr class="odd">
+<td align="left">iron</td>
+<td align="right">11,643</td>
+</tr>
+<tr class="even">
+<td align="left">whey</td>
+<td align="right">11,531</td>
+</tr>
+<tr class="odd">
+<td align="left">natural flavors</td>
+<td align="right">11,441</td>
+</tr>
+<tr class="even">
+<td align="left">color</td>
+<td align="right">11,004</td>
+</tr>
+<tr class="odd">
+<td align="left">syrup</td>
+<td align="right">10,724</td>
+</tr>
+<tr class="even">
+<td align="left">high fructose corn syrup</td>
+<td align="right">10,716</td>
+</tr>
+<tr class="odd">
+<td align="left">preservative</td>
+<td align="right">10,566</td>
+</tr>
+<tr class="even">
+<td align="left">ascorbic acid</td>
+<td align="right">10,472</td>
+</tr>
+<tr class="odd">
+<td align="left">butter</td>
+<td align="right">9,714</td>
+</tr>
+<tr class="even">
+<td align="left">Sugar</td>
+<td align="right">9,661</td>
+</tr>
+<tr class="odd">
+<td align="left">powder</td>
+<td align="right">9,404</td>
+</tr>
+<tr class="even">
+<td align="left">caramel color</td>
+<td align="right">9,375</td>
+</tr>
+<tr class="odd">
+<td align="left">yeast</td>
+<td align="right">9,348</td>
+</tr>
+<tr class="even">
+<td align="left">guar gum</td>
+<td align="right">8,817</td>
+</tr>
+<tr class="odd">
+<td align="left">cocoa butter</td>
+<td align="right">8,812</td>
+</tr>
+<tr class="even">
+<td align="left">thiamin mononitrate</td>
+<td align="right">8,760</td>
+</tr>
+<tr class="odd">
+<td align="left">onion</td>
+<td align="right">8,707</td>
+</tr>
+<tr class="even">
+<td align="left">farine de blé</td>
+<td align="right">8,701</td>
+</tr>
+<tr class="odd">
+<td align="left">huile de tournesol</td>
+<td align="right">8,560</td>
+</tr>
+<tr class="even">
+<td align="left">arômes</td>
+<td align="right">8,468</td>
+</tr>
+<tr class="odd">
+<td align="left">Water</td>
+<td align="right">8,348</td>
+</tr>
+<tr class="even">
+<td align="left">arôme</td>
+<td align="right">8,074</td>
+</tr>
+<tr class="odd">
+<td align="left">starch</td>
+<td align="right">7,896</td>
+</tr>
+<tr class="even">
+<td align="left">palm oil</td>
+<td align="right">7,850</td>
+</tr>
+<tr class="odd">
+<td align="left">corn syrup syrup</td>
+<td align="right">7,776</td>
+</tr>
+<tr class="even">
+<td align="left">wheat flour flour</td>
+<td align="right">7,746</td>
+</tr>
+<tr class="odd">
+<td align="left">vegetable oil</td>
+<td align="right">7,655</td>
+</tr>
+<tr class="even">
+<td align="left">paprika</td>
+<td align="right">7,406</td>
+</tr>
+<tr class="odd">
+<td align="left">carrageenan</td>
+<td align="right">7,277</td>
+</tr>
+<tr class="even">
+<td align="left">huile de colza</td>
+<td align="right">7,249</td>
+</tr>
+<tr class="odd">
+<td align="left">corn starch</td>
+<td align="right">7,082</td>
+</tr>
+<tr class="even">
+<td align="left">sirop de glucose</td>
+<td align="right">7,039</td>
+</tr>
+<tr class="odd">
+<td align="left">lait</td>
+<td align="right">6,981</td>
+</tr>
+<tr class="even">
+<td align="left">honey</td>
+<td align="right">6,942</td>
+</tr>
+<tr class="odd">
+<td align="left">beurre de cacao</td>
+<td align="right">6,883</td>
+</tr>
+<tr class="even">
+<td align="left">sodium citrate</td>
+<td align="right">6,683</td>
+</tr>
+<tr class="odd">
+<td align="left">garlic powder</td>
+<td align="right">6,640</td>
+</tr>
+<tr class="even">
+<td align="left">mono and diglycerides</td>
+<td align="right">6,567</td>
+</tr>
+<tr class="odd">
+<td align="left">lactic acid</td>
+<td align="right">6,520</td>
+</tr>
+<tr class="even">
+<td align="left">potassium sorbate</td>
+<td align="right">6,403</td>
+</tr>
+<tr class="odd">
+<td align="left">onion powder</td>
+<td align="right">6,284</td>
+</tr>
+<tr class="even">
+<td align="left">modified corn starch</td>
+<td align="right">6,186</td>
+</tr>
+<tr class="odd">
+<td align="left">canola oil</td>
+<td align="right">6,122</td>
+</tr>
+<tr class="even">
+<td align="left">épices</td>
+<td align="right">6,065</td>
+</tr>
+<tr class="odd">
+<td align="left">flavors</td>
+<td align="right">6,037</td>
+</tr>
+<tr class="even">
+<td align="left">concentrate</td>
+<td align="right">6,013</td>
+</tr>
+<tr class="odd">
+<td align="left">modified food starch</td>
+<td align="right">5,984</td>
+</tr>
+<tr class="even">
+<td align="left">lactose</td>
+<td align="right">5,931</td>
+</tr>
+<tr class="odd">
+<td align="left">ail</td>
+<td align="right">5,923</td>
+</tr>
+<tr class="even">
+<td align="left">malted barley flour</td>
+<td align="right">5,859</td>
+</tr>
+<tr class="odd">
+<td align="left">pâte de cacao</td>
+<td align="right">5,740</td>
+</tr>
+<tr class="even">
+<td align="left">cheese culture</td>
+<td align="right">5,640</td>
+</tr>
+<tr class="odd">
+<td align="left">spice</td>
+<td align="right">5,609</td>
+</tr>
+<tr class="even">
+<td align="left">sodium bicarbonate</td>
+<td align="right">5,587</td>
+</tr>
+<tr class="odd">
+<td align="left">onions</td>
+<td align="right">5,492</td>
+</tr>
+<tr class="even">
+<td align="left">wheat</td>
+<td align="right">5,413</td>
+</tr>
+<tr class="odd">
+<td align="left">natural flavor flavor</td>
+<td align="right">5,400</td>
+</tr>
+<tr class="even">
+<td align="left">sodium phosphate</td>
+<td align="right">5,386</td>
+</tr>
+<tr class="odd">
+<td align="left">molasses</td>
+<td align="right">5,365</td>
+</tr>
+<tr class="even">
+<td align="left">cocoa</td>
+<td align="right">5,339</td>
+</tr>
+<tr class="odd">
+<td align="left">pectin</td>
+<td align="right">5,328</td>
+</tr>
+<tr class="even">
+<td align="left">acid</td>
+<td align="right">5,312</td>
+</tr>
+<tr class="odd">
+<td align="left">corn</td>
+<td align="right">5,308</td>
+</tr>
+<tr class="even">
+<td align="left">almonds</td>
+<td align="right">5,283</td>
+</tr>
+<tr class="odd">
+<td align="left">vitamin c</td>
+<td align="right">5,281</td>
+</tr>
+<tr class="even">
+<td align="left">emulsifier</td>
+<td align="right">5,280</td>
+</tr>
+<tr class="odd">
+<td align="left">calcium chloride</td>
+<td align="right">5,265</td>
+</tr>
+<tr class="even">
+<td align="left">natural and artificial flavors</td>
+<td align="right">5,264</td>
+</tr>
+<tr class="odd">
+<td align="left">eggs</td>
+<td align="right">5,168</td>
+</tr>
+<tr class="even">
+<td align="left">mononitrate</td>
+<td align="right">5,163</td>
+</tr>
+</tbody>
+</table>
+<p>하위 10건을 살펴보니, 한자와 일본어가 포함되어 있다. 달걀과 식용색소인 황색5호도 눈에 띈다.</p>
+<pre class="r"><code># 하위 10건 추출
+tail(ingredients, 10) %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">ingredient</th>
+<th align="right">freq</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">食用黃梔子色素</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">香料 カラメル色素</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">高分岐環狀糊精</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">高果糖糖漿</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">高梁</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">鶏卵</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">鹿角菜膠</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">麦芽エキス</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">黃色五號</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">黑醋粉</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="대표적인-식재료의-wordcloud" class="section level2">
+<h2>대표적인 식재료의 <code>wordcloud</code></h2>
+<p>앞서 구한 상위 100개의 식재료로 wordcloud 플롯을 그려본다. 식품에 소금, 설탕, 물이 가장 많이 사용되는 식재료임을 쉽게 알 수 있는 플롯이다.</p>
+<pre class="r"><code>par(mar = c(0, 0, 0, 0))
+
+# 팔레트 정의
+pal &lt;- RColorBrewer::brewer.pal(6, &quot;Dark2&quot;)
+
+# 워드클라우드 생성
+wordcloud::wordcloud(top100$ingredient, top100$freq, colors = pal)</code></pre>
+<p><img src="/post/2019-12/multi_derived_files/figure-html/unnamed-chunk-8-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="하나의-레코드에서-여러-레코드-파생하기" class="section level1">
+<h1>하나의 레코드에서 여러 레코드 파생하기</h1>
+<p>앞서 다룬 식자재 데이터는 일차원 데이터다. 그런데 이차원 이상의 데이터는 결국 하나의 레코드(관측치, Observations)를 여러 레코드로 분리하는 방법으로 데이터를 조작해야 한다.</p>
+<p>다음의 시나리오를 적용해 본다.</p>
+<ol style="list-style-type: decimal">
+<li>국가의 영문명인 <code>countries_en</code> 변수는 식품의 국가명을 영문으로 표현한 변수다.
+<ul>
+<li><strong>복수의 나라 명을 포함하며 컴마(,)로 분리하고 있다.</strong>
+<ul>
+<li><strong>개별 국가로 분리해야 하며, 관심있는 나머지 변수로 추출한다.</strong></li>
+<li><strong>관심있는 나머지 변수는 개별 국가의 관측치에 복제된다.</strong></li>
+</ul></li>
+<li>영문 외의 여러 나라 문자를 포함한다.
+<ul>
+<li>영문으로 변경해야 한다.</li>
+</ul></li>
+</ul></li>
+<li>식품에 포함된 여러 영양소의 규모를 제공한다.
+<ul>
+<li>접미어 <code>_100g</code>로 끝나는 변수들은 100g 당 해당 영양소의 포함 중량이다.</li>
+<li>관심있는 몇 개의 영양소를 국가별로 살펴보자.</li>
+</ul></li>
+<li>식품의 카테고리와 라벨에도 몇몇 정보를 얻을 수 있다.
+<ul>
+<li>카테고리 변수인 <code>categories_en</code>에서 고기가 포함된 식품을 추출해 본다.</li>
+<li>라벨 변수인 <code>labels</code>에서 <code>채식</code> 식품을 추출해 본다.</li>
+</ul></li>
+</ol>
+<div id="국가명-보정-함수-정의" class="section level2">
+<h2>국가명 보정 함수 정의</h2>
+<p>국가명은 여러 국가의 언어로 표현되어 있다. 그래서 이들을 영문으로 변경하는 <code>clean_country</code>라는 이름의 함수를 정의하였다. 이 함수는 국가의 이름을 영문 대문자로 변경해 준다.</p>
+<pre class="r"><code># 국가명 보정 사용자 정의 함수
+clean_country &lt;- function(x) {
+  library(magrittr)
+  
+  x %&gt;% 
+    stringr::str_to_upper() %&gt;% 
+    stringr::str_replace(&quot;UNITED STATES|EN:US&quot;, &quot;US&quot;) %&gt;%
+    stringr::str_replace(&quot;UNITED KINGDOM|EN:GB|FR:GRANDE-BRETAGNE&quot;, &quot;UK&quot;) %&gt;% 
+    stringr::str_replace(&quot;FR:REINO-UNIDO|FR:ANGLETERRE|المملكة-المتحدة&quot;, &quot;UK&quot;) %&gt;% 
+    stringr::str_replace(&quot;FR:SCOTLAND&quot;, &quot;SCOTLAND&quot;) %&gt;%
+    stringr::str_replace(&quot;FR:DEUTSCHLAND|FR:ALEMANIA|NL:DEUTSCHLAND&quot;, &quot;GERMANY&quot;) %&gt;%
+    stringr::str_replace(&quot;EN:FR|FR:ФРАНЦИЯ|FR:FRANKRIJK|FR:FRANKREICH&quot;, &quot;FRANCE&quot;) %&gt;% 
+    stringr::str_replace(&quot;FR:MARSEILLE-5|FR:PUYRICARD|NL:FRANKREICH&quot;, &quot;FRANCE&quot;) %&gt;% 
+    stringr::str_replace(&quot;FR:BOURGOGNE-AUBE-NOGENT-SUR-SEINE|RÉUNION&quot;, &quot;FRANCE&quot;) %&gt;% 
+    stringr::str_replace(&quot;HOLLAND|FR:NEDERLAND&quot;, &quot;NETHERLANDS&quot;) %&gt;% 
+    stringr::str_replace(&quot;FR:GRIEKENLAND&quot;, &quot;GREECE&quot;) %&gt;% 
+    stringr::str_replace(&quot;FR:IRLAND&quot;, &quot;IRELAND&quot;) %&gt;% 
+    stringr::str_replace(&quot;EN:CN|FR:QUEBEC&quot;, &quot;CANADA&quot;) %&gt;% 
+    stringr::str_replace(&quot;EN:AU&quot;, &quot;AUSTRALIA&quot;) %&gt;% 
+    stringr::str_replace(&quot;EN:ES|ESPAÑA|FR:SPANJE|FR:SPANIEN&quot;, &quot;SPAIN&quot;) %&gt;% 
+    stringr::str_replace(&quot;CÔTE D&#39;IVOIRE&quot;, &quot;IVORY COAST&quot;) %&gt;% 
+    stringr::str_replace(&quot;FR:MAURICIO&quot;, &quot;MAURITIUS&quot;) %&gt;% 
+    stringr::str_replace(&quot;FR:SCHWEIZ|NL:SCHWEIZ&quot;, &quot;SWITZERLAND&quot;) %&gt;% 
+    stringr::str_replace(&quot;FR:BELGIQU|NL:BELGIEN&quot;, &quot;BELGIUM&quot;) %&gt;% 
+    stringr::str_replace(&quot;XX:DANEMARK&quot;, &quot;DENMARK&quot;) %&gt;%
+    stringr::str_replace(&quot;OTHER-TURQUIE&quot;, &quot;TURKEY&quot;) %&gt;%
+    stringr::str_replace(&quot;OTHER-JAPON|OTHER-日本&quot;, &quot;JAPAN&quot;) %&gt;% 
+    stringr::str_replace(&quot;日本&quot;, &quot;JAPAN&quot;) %&gt;% 
+    stringr::str_replace(&quot;السعودية&quot;, &quot;SAUDI ARABIA&quot;) %&gt;% 
+    stringr::str_replace(&quot;سلطنة-عمان&quot;, &quot;OMAN&quot;) %&gt;%
+    stringr::str_replace(&quot;العراق&quot;, &quot;IRAQ&quot;) %&gt;%
+    stringr::str_replace(&quot;العراق&quot;, &quot;IRAQ&quot;) %&gt;%
+    stringr::str_replace(&quot;中华人民共和国|香港&quot;, &quot;CHINA&quot;) %&gt;%
+    stringr::str_replace(&quot;ព្រះរាជាណាចក្រកម្ពុជា&quot;, &quot;CAMBODIA&quot;)
+}</code></pre>
+</div>
+<div id="국가명-보정하고-추출하기" class="section level2">
+<h2>국가명 보정하고 추출하기</h2>
+<p>벡터를 컴마 구분자로 분리하여 리스트로 만든 후 벡터로 변경한다.</p>
+<pre class="r"><code># 원래의 데이터 건수
+nrow(foodfact)
+## [1] 314496
+# 국가명 추출
+countries &lt;- foodfact %&gt;% 
+  mutate(countries_clean = clean_country(countries_en)) %&gt;% 
+  select(countries_clean) %&gt;% 
+  pull() %&gt;% 
+  stringr::str_split(&quot;,&quot;) %&gt;% 
+  unlist
+
+# 추출된 국가의 건수
+length(countries)
+## [1] 322226
+# 상위 10개의 국가
+countries %&gt;% 
+  table() %&gt;% 
+  sort(decreasing = TRUE) %&gt;% 
+  head(n = 10) %&gt;% 
+  knitr::kable(format.args = list(big.mark = &#39;,&#39;))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">.</th>
+<th align="right">Freq</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">US</td>
+<td align="right">132,765</td>
+</tr>
+<tr class="even">
+<td align="left">FRANCE</td>
+<td align="right">129,221</td>
+</tr>
+<tr class="odd">
+<td align="left">SWITZERLAND</td>
+<td align="right">17,191</td>
+</tr>
+<tr class="even">
+<td align="left">GERMANY</td>
+<td align="right">9,439</td>
+</tr>
+<tr class="odd">
+<td align="left">SPAIN</td>
+<td align="right">6,043</td>
+</tr>
+<tr class="even">
+<td align="left">UK</td>
+<td align="right">5,863</td>
+</tr>
+<tr class="odd">
+<td align="left">BELGIUM</td>
+<td align="right">4,082</td>
+</tr>
+<tr class="even">
+<td align="left">AUSTRALIA</td>
+<td align="right">2,309</td>
+</tr>
+<tr class="odd">
+<td align="left">RUSSIA</td>
+<td align="right">1,637</td>
+</tr>
+<tr class="even">
+<td align="left">ITALY</td>
+<td align="right">1,630</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="하나에서-여러-레코드-파생하기" class="section level2">
+<h2>하나에서 여러 레코드 파생하기</h2>
+<p>예시로 데이터 프레임을 생성한다. 컴마로 여러 단어를 묶은 city 변수를 주목하자.</p>
+<pre class="r"><code># 예제 데이터프레임
+exam &lt;- data.frame(city = c(&quot;서울&quot;, &quot;부산,인천,광주&quot;, &quot;강원,경기&quot;), 
+                   falg = c(&quot;특별시&quot;, &quot;광역시&quot;, &quot;시도&quot;),
+                   num = c(234, 123, 53)) 
+exam %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">city</th>
+<th align="left">falg</th>
+<th align="right">num</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">서울</td>
+<td align="left">특별시</td>
+<td align="right">234</td>
+</tr>
+<tr class="even">
+<td align="left">부산,인천,광주</td>
+<td align="left">광역시</td>
+<td align="right">123</td>
+</tr>
+<tr class="odd">
+<td align="left">강원,경기</td>
+<td align="left">시도</td>
+<td align="right">53</td>
+</tr>
+</tbody>
+</table>
+<p>city 변수를 컴마를 기준으로 분리해서 new_city 변수를 생성한다. 이 변수는 <code>stringr::str_split</code>의 결과인 리스트 객체를 포함하는 변수다.</p>
+<pre class="r"><code># 컴마로 분리 후 new_city 변수 생성
+exam %&gt;% 
+  mutate(new_city = stringr::str_split(city, &quot;,&quot;)) %&gt;% 
+  select(-city) %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">falg</th>
+<th align="right">num</th>
+<th align="left">new_city</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">특별시</td>
+<td align="right">234</td>
+<td align="left">서울</td>
+</tr>
+<tr class="even">
+<td align="left">광역시</td>
+<td align="right">123</td>
+<td align="left">부산, 인천, 광주</td>
+</tr>
+<tr class="odd">
+<td align="left">시도</td>
+<td align="right">53</td>
+<td align="left">강원, 경기</td>
+</tr>
+</tbody>
+</table>
+<p>new_city 변수의 개별 리스트의 성분별로 레코드를 만들어 주기 위해서 <code>tidyr</code> 패키지의 <code>unnest()</code> 함수를 사용한다. 이제 비로소 도시별로 관측치가 만들어졌다.</p>
+<pre class="r"><code># 최종 결과
+exam %&gt;% 
+  mutate(new_city = stringr::str_split(city, &quot;,&quot;)) %&gt;% 
+  select(-city) %&gt;% 
+  tidyr::unnest(new_city) %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">falg</th>
+<th align="right">num</th>
+<th align="left">new_city</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">특별시</td>
+<td align="right">234</td>
+<td align="left">서울</td>
+</tr>
+<tr class="even">
+<td align="left">광역시</td>
+<td align="right">123</td>
+<td align="left">부산</td>
+</tr>
+<tr class="odd">
+<td align="left">광역시</td>
+<td align="right">123</td>
+<td align="left">인천</td>
+</tr>
+<tr class="even">
+<td align="left">광역시</td>
+<td align="right">123</td>
+<td align="left">광주</td>
+</tr>
+<tr class="odd">
+<td align="left">시도</td>
+<td align="right">53</td>
+<td align="left">강원</td>
+</tr>
+<tr class="even">
+<td align="left">시도</td>
+<td align="right">53</td>
+<td align="left">경기</td>
+</tr>
+</tbody>
+</table>
+<p>foodfact를 개별 국가별로 레코드를 분리하면서 몇 개의 관심있는 변수를 추출하고, 파생한다.</p>
+<pre class="r"><code># 국가별 관심 지표의 추출
+countries_additives &lt;- foodfact %&gt;% 
+  mutate(meat_flag = stringr::str_detect(categories_en, &quot;meat|Meat&quot;),
+         vegan_flag = stringr::str_detect(labels, &quot;vegan|Vegan&quot;)) %&gt;% 
+  mutate(countries_clean = clean_country(countries_en)) %&gt;% 
+  select(countries_clean, energy_100g, sugars_100g, salt_100g,
+         alcohol_100g, sodium_100g, cholesterol_100g,
+         meat_flag, vegan_flag) %&gt;% 
+  mutate(countries = stringr::str_split(countries_clean, &quot;,&quot;)) %&gt;% 
+  select(-countries_clean) %&gt;% 
+  tidyr::unnest(countries)</code></pre>
+<pre class="r"><code>head(countries_additives) %&gt;% 
+  as.data.frame() %&gt;% 
+  knitr::kable(format.args = list(big.mark = &#39;,&#39;))</code></pre>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="11%" />
+<col width="9%" />
+<col width="12%" />
+<col width="11%" />
+<col width="15%" />
+<col width="9%" />
+<col width="10%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">energy_100g</th>
+<th align="right">sugars_100g</th>
+<th align="right">salt_100g</th>
+<th align="right">alcohol_100g</th>
+<th align="right">sodium_100g</th>
+<th align="right">cholesterol_100g</th>
+<th align="left">meat_flag</th>
+<th align="left">vegan_flag</th>
+<th align="left">countries</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">FRANCE</td>
+</tr>
+<tr class="even">
+<td align="right">2,243</td>
+<td align="right">14.29</td>
+<td align="right">0.00000</td>
+<td align="right">NA</td>
+<td align="right">0.000</td>
+<td align="right">0.018</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">US</td>
+</tr>
+<tr class="odd">
+<td align="right">1,941</td>
+<td align="right">17.86</td>
+<td align="right">0.63500</td>
+<td align="right">NA</td>
+<td align="right">0.250</td>
+<td align="right">0.000</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">US</td>
+</tr>
+<tr class="even">
+<td align="right">2,540</td>
+<td align="right">3.57</td>
+<td align="right">1.22428</td>
+<td align="right">NA</td>
+<td align="right">0.482</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">US</td>
+</tr>
+<tr class="odd">
+<td align="right">1,552</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">US</td>
+</tr>
+<tr class="even">
+<td align="right">1,933</td>
+<td align="right">11.54</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">US</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="국가별-식품-정보-분석하기" class="section level1">
+<h1>국가별 식품 정보 분석하기</h1>
+<p>우여곡절로 만든 데이터 셋을 이용해서 몇 가지 분석을 수행해 보자.</p>
+<div id="국가별-설탕에-대한-기호" class="section level2">
+<h2>국가별 설탕에 대한 기호</h2>
+<p>국가별 식품에 설탕 함량이 높은 국가는 다음과 같다. 건수가 적은 국가의 경우에는 Outlier에 영향을 받는 등 대표성을 띠지 못하기 때문에 5개 이상 설탕이 함유된 식품이 있는 국가만 대상으로 삼았다.</p>
+<pre class="r"><code># 국가별 설탕 관련 지표의 생성
+sugar &lt;- countries_additives %&gt;% 
+  group_by(countries) %&gt;% 
+  summarise(sugar_mean = mean(sugars_100g, na.rm = TRUE),
+            freq_food = n(),
+            freq_sugar = sum(!is.na(sugars_100g)),
+            sugar_percn = round(freq_sugar / freq_food * 100, 2)) %&gt;% 
+  filter(freq_sugar &gt; 5) %&gt;% 
+  arrange(desc(sugar_mean))
+## `summarise()` ungrouping output (override with `.groups` argument)
+sugar %&gt;% 
+  knitr::kable(format.args = list(big.mark = &#39;,&#39;))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">countries</th>
+<th align="right">sugar_mean</th>
+<th align="right">freq_food</th>
+<th align="right">freq_sugar</th>
+<th align="right">sugar_percn</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">MADAGASCAR</td>
+<td align="right">40.916667</td>
+<td align="right">114</td>
+<td align="right">6</td>
+<td align="right">5.26</td>
+</tr>
+<tr class="even">
+<td align="left">UNITED ARAB EMIRATES</td>
+<td align="right">31.077778</td>
+<td align="right">84</td>
+<td align="right">9</td>
+<td align="right">10.71</td>
+</tr>
+<tr class="odd">
+<td align="left">ARGENTINA</td>
+<td align="right">29.938333</td>
+<td align="right">66</td>
+<td align="right">6</td>
+<td align="right">9.09</td>
+</tr>
+<tr class="even">
+<td align="left">JAPAN</td>
+<td align="right">27.373846</td>
+<td align="right">365</td>
+<td align="right">13</td>
+<td align="right">3.56</td>
+</tr>
+<tr class="odd">
+<td align="left">TUNISIA</td>
+<td align="right">27.092414</td>
+<td align="right">159</td>
+<td align="right">29</td>
+<td align="right">18.24</td>
+</tr>
+<tr class="even">
+<td align="left">MOROCCO</td>
+<td align="right">26.799167</td>
+<td align="right">208</td>
+<td align="right">36</td>
+<td align="right">17.31</td>
+</tr>
+<tr class="odd">
+<td align="left">SAUDI ARABIA</td>
+<td align="right">26.486957</td>
+<td align="right">117</td>
+<td align="right">23</td>
+<td align="right">19.66</td>
+</tr>
+<tr class="even">
+<td align="left">MONACO</td>
+<td align="right">25.933333</td>
+<td align="right">14</td>
+<td align="right">9</td>
+<td align="right">64.29</td>
+</tr>
+<tr class="odd">
+<td align="left">ALGERIA</td>
+<td align="right">25.338889</td>
+<td align="right">188</td>
+<td align="right">18</td>
+<td align="right">9.57</td>
+</tr>
+<tr class="even">
+<td align="left">LITHUANIA</td>
+<td align="right">25.100000</td>
+<td align="right">20</td>
+<td align="right">8</td>
+<td align="right">40.00</td>
+</tr>
+<tr class="odd">
+<td align="left">BULGARIA</td>
+<td align="right">25.005714</td>
+<td align="right">66</td>
+<td align="right">14</td>
+<td align="right">21.21</td>
+</tr>
+<tr class="even">
+<td align="left">MONTENEGRO</td>
+<td align="right">24.622353</td>
+<td align="right">19</td>
+<td align="right">17</td>
+<td align="right">89.47</td>
+</tr>
+<tr class="odd">
+<td align="left">COLOMBIA</td>
+<td align="right">24.451875</td>
+<td align="right">44</td>
+<td align="right">16</td>
+<td align="right">36.36</td>
+</tr>
+<tr class="even">
+<td align="left">FINLAND</td>
+<td align="right">23.461111</td>
+<td align="right">49</td>
+<td align="right">18</td>
+<td align="right">36.73</td>
+</tr>
+<tr class="odd">
+<td align="left">CHINA</td>
+<td align="right">23.037235</td>
+<td align="right">199</td>
+<td align="right">17</td>
+<td align="right">8.54</td>
+</tr>
+<tr class="even">
+<td align="left">CZECH REPUBLIC</td>
+<td align="right">22.945652</td>
+<td align="right">441</td>
+<td align="right">46</td>
+<td align="right">10.43</td>
+</tr>
+<tr class="odd">
+<td align="left">BRAZIL</td>
+<td align="right">22.404615</td>
+<td align="right">363</td>
+<td align="right">26</td>
+<td align="right">7.16</td>
+</tr>
+<tr class="even">
+<td align="left">TURKEY</td>
+<td align="right">19.653158</td>
+<td align="right">49</td>
+<td align="right">19</td>
+<td align="right">38.78</td>
+</tr>
+<tr class="odd">
+<td align="left">RUSSIA</td>
+<td align="right">19.523095</td>
+<td align="right">1,637</td>
+<td align="right">90</td>
+<td align="right">5.50</td>
+</tr>
+<tr class="even">
+<td align="left">NEW ZEALAND</td>
+<td align="right">19.241333</td>
+<td align="right">116</td>
+<td align="right">75</td>
+<td align="right">64.66</td>
+</tr>
+<tr class="odd">
+<td align="left">FRENCH POLYNESIA</td>
+<td align="right">19.018077</td>
+<td align="right">86</td>
+<td align="right">26</td>
+<td align="right">30.23</td>
+</tr>
+<tr class="even">
+<td align="left">NEDERLAND</td>
+<td align="right">18.807143</td>
+<td align="right">7</td>
+<td align="right">7</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="odd">
+<td align="left">NETHERLANDS</td>
+<td align="right">18.796199</td>
+<td align="right">804</td>
+<td align="right">392</td>
+<td align="right">48.76</td>
+</tr>
+<tr class="even">
+<td align="left">DENMARK</td>
+<td align="right">18.124776</td>
+<td align="right">435</td>
+<td align="right">201</td>
+<td align="right">46.21</td>
+</tr>
+<tr class="odd">
+<td align="left">CANADA</td>
+<td align="right">17.701837</td>
+<td align="right">1,029</td>
+<td align="right">280</td>
+<td align="right">27.21</td>
+</tr>
+<tr class="even">
+<td align="left">BOSNIA AND HERZEGOVINA</td>
+<td align="right">17.335714</td>
+<td align="right">17</td>
+<td align="right">14</td>
+<td align="right">82.35</td>
+</tr>
+<tr class="odd">
+<td align="left">NEW CALEDONIA</td>
+<td align="right">17.329167</td>
+<td align="right">108</td>
+<td align="right">24</td>
+<td align="right">22.22</td>
+</tr>
+<tr class="even">
+<td align="left">MARTINIQUE</td>
+<td align="right">17.258139</td>
+<td align="right">120</td>
+<td align="right">43</td>
+<td align="right">35.83</td>
+</tr>
+<tr class="odd">
+<td align="left">SLOVENIA</td>
+<td align="right">17.209091</td>
+<td align="right">46</td>
+<td align="right">22</td>
+<td align="right">47.83</td>
+</tr>
+<tr class="even">
+<td align="left">POLAND</td>
+<td align="right">17.199130</td>
+<td align="right">227</td>
+<td align="right">69</td>
+<td align="right">30.40</td>
+</tr>
+<tr class="odd">
+<td align="left">US</td>
+<td align="right">17.109738</td>
+<td align="right">132,765</td>
+<td align="right">122,367</td>
+<td align="right">92.17</td>
+</tr>
+<tr class="even">
+<td align="left">NA</td>
+<td align="right">16.765593</td>
+<td align="right">267</td>
+<td align="right">59</td>
+<td align="right">22.10</td>
+</tr>
+<tr class="odd">
+<td align="left">MALI</td>
+<td align="right">16.533333</td>
+<td align="right">7</td>
+<td align="right">6</td>
+<td align="right">85.71</td>
+</tr>
+<tr class="even">
+<td align="left">SINGAPORE</td>
+<td align="right">16.430000</td>
+<td align="right">57</td>
+<td align="right">10</td>
+<td align="right">17.54</td>
+</tr>
+<tr class="odd">
+<td align="left">SENEGAL</td>
+<td align="right">16.363000</td>
+<td align="right">52</td>
+<td align="right">10</td>
+<td align="right">19.23</td>
+</tr>
+<tr class="even">
+<td align="left">BELGIUM</td>
+<td align="right">15.734168</td>
+<td align="right">4,082</td>
+<td align="right">1,633</td>
+<td align="right">40.00</td>
+</tr>
+<tr class="odd">
+<td align="left">SLOVAKIA</td>
+<td align="right">15.720000</td>
+<td align="right">34</td>
+<td align="right">10</td>
+<td align="right">29.41</td>
+</tr>
+<tr class="even">
+<td align="left">SWITZERLAND</td>
+<td align="right">15.718281</td>
+<td align="right">17,191</td>
+<td align="right">11,896</td>
+<td align="right">69.20</td>
+</tr>
+<tr class="odd">
+<td align="left">AUSTRALIA</td>
+<td align="right">15.301966</td>
+<td align="right">2,309</td>
+<td align="right">610</td>
+<td align="right">26.42</td>
+</tr>
+<tr class="even">
+<td align="left">UK</td>
+<td align="right">15.102567</td>
+<td align="right">5,863</td>
+<td align="right">2,192</td>
+<td align="right">37.39</td>
+</tr>
+<tr class="odd">
+<td align="left">IRELAND</td>
+<td align="right">15.102544</td>
+<td align="right">221</td>
+<td align="right">68</td>
+<td align="right">30.77</td>
+</tr>
+<tr class="even">
+<td align="left">ROMANIA</td>
+<td align="right">15.093158</td>
+<td align="right">266</td>
+<td align="right">95</td>
+<td align="right">35.71</td>
+</tr>
+<tr class="odd">
+<td align="left">GERMANY</td>
+<td align="right">14.885447</td>
+<td align="right">9,439</td>
+<td align="right">5,777</td>
+<td align="right">61.20</td>
+</tr>
+<tr class="even">
+<td align="left">SERBIA</td>
+<td align="right">14.664797</td>
+<td align="right">350</td>
+<td align="right">296</td>
+<td align="right">84.57</td>
+</tr>
+<tr class="odd">
+<td align="left">LUXEMBOURG</td>
+<td align="right">14.616463</td>
+<td align="right">232</td>
+<td align="right">82</td>
+<td align="right">35.34</td>
+</tr>
+<tr class="even">
+<td align="left">PORTUGAL</td>
+<td align="right">14.407170</td>
+<td align="right">919</td>
+<td align="right">516</td>
+<td align="right">56.15</td>
+</tr>
+<tr class="odd">
+<td align="left">NORWAY</td>
+<td align="right">14.382727</td>
+<td align="right">133</td>
+<td align="right">55</td>
+<td align="right">41.35</td>
+</tr>
+<tr class="even">
+<td align="left">REPUBLIC OF MACEDONIA</td>
+<td align="right">14.062500</td>
+<td align="right">9</td>
+<td align="right">8</td>
+<td align="right">88.89</td>
+</tr>
+<tr class="odd">
+<td align="left">GUADELOUPE</td>
+<td align="right">13.917464</td>
+<td align="right">240</td>
+<td align="right">138</td>
+<td align="right">57.50</td>
+</tr>
+<tr class="even">
+<td align="left">ITALY</td>
+<td align="right">13.883119</td>
+<td align="right">1,630</td>
+<td align="right">545</td>
+<td align="right">33.44</td>
+</tr>
+<tr class="odd">
+<td align="left">ANDORRA</td>
+<td align="right">13.817500</td>
+<td align="right">17</td>
+<td align="right">8</td>
+<td align="right">47.06</td>
+</tr>
+<tr class="even">
+<td align="left">FRANCE</td>
+<td align="right">13.418091</td>
+<td align="right">129,221</td>
+<td align="right">94,819</td>
+<td align="right">73.38</td>
+</tr>
+<tr class="odd">
+<td align="left">SAINT PIERRE AND MIQUELON</td>
+<td align="right">13.390000</td>
+<td align="right">40</td>
+<td align="right">22</td>
+<td align="right">55.00</td>
+</tr>
+<tr class="even">
+<td align="left">SWEDEN</td>
+<td align="right">13.303786</td>
+<td align="right">414</td>
+<td align="right">317</td>
+<td align="right">76.57</td>
+</tr>
+<tr class="odd">
+<td align="left">HUNGARY</td>
+<td align="right">13.023129</td>
+<td align="right">327</td>
+<td align="right">179</td>
+<td align="right">54.74</td>
+</tr>
+<tr class="even">
+<td align="left">SOUTH AFRICA</td>
+<td align="right">12.914667</td>
+<td align="right">42</td>
+<td align="right">15</td>
+<td align="right">35.71</td>
+</tr>
+<tr class="odd">
+<td align="left">TAIWAN</td>
+<td align="right">12.705714</td>
+<td align="right">170</td>
+<td align="right">28</td>
+<td align="right">16.47</td>
+</tr>
+<tr class="even">
+<td align="left">SPAIN</td>
+<td align="right">12.680907</td>
+<td align="right">6,043</td>
+<td align="right">3,128</td>
+<td align="right">51.76</td>
+</tr>
+<tr class="odd">
+<td align="left">GREECE</td>
+<td align="right">12.430750</td>
+<td align="right">106</td>
+<td align="right">40</td>
+<td align="right">37.74</td>
+</tr>
+<tr class="even">
+<td align="left">EUROPEAN UNION</td>
+<td align="right">12.356111</td>
+<td align="right">48</td>
+<td align="right">18</td>
+<td align="right">37.50</td>
+</tr>
+<tr class="odd">
+<td align="left">AUSTRIA</td>
+<td align="right">12.314074</td>
+<td align="right">471</td>
+<td align="right">135</td>
+<td align="right">28.66</td>
+</tr>
+<tr class="even">
+<td align="left">MEXICO</td>
+<td align="right">12.012467</td>
+<td align="right">172</td>
+<td align="right">92</td>
+<td align="right">53.49</td>
+</tr>
+<tr class="odd">
+<td align="left">HONG KONG</td>
+<td align="right">11.557895</td>
+<td align="right">157</td>
+<td align="right">38</td>
+<td align="right">24.20</td>
+</tr>
+<tr class="even">
+<td align="left">SCOTLAND</td>
+<td align="right">11.190909</td>
+<td align="right">20</td>
+<td align="right">11</td>
+<td align="right">55.00</td>
+</tr>
+<tr class="odd">
+<td align="left">CROATIA</td>
+<td align="right">11.058889</td>
+<td align="right">29</td>
+<td align="right">18</td>
+<td align="right">62.07</td>
+</tr>
+<tr class="even">
+<td align="left">THAILAND</td>
+<td align="right">10.873667</td>
+<td align="right">254</td>
+<td align="right">30</td>
+<td align="right">11.81</td>
+</tr>
+<tr class="odd">
+<td align="left">INDIA</td>
+<td align="right">10.483333</td>
+<td align="right">92</td>
+<td align="right">12</td>
+<td align="right">13.04</td>
+</tr>
+<tr class="even">
+<td align="left">ALBANIA</td>
+<td align="right">10.392857</td>
+<td align="right">13</td>
+<td align="right">7</td>
+<td align="right">53.85</td>
+</tr>
+<tr class="odd">
+<td align="left">FRENCH GUIANA</td>
+<td align="right">10.106609</td>
+<td align="right">104</td>
+<td align="right">64</td>
+<td align="right">61.54</td>
+</tr>
+<tr class="even">
+<td align="left">CHILE</td>
+<td align="right">9.997826</td>
+<td align="right">119</td>
+<td align="right">23</td>
+<td align="right">19.33</td>
+</tr>
+<tr class="odd">
+<td align="left">SOUTH KOREA</td>
+<td align="right">8.995000</td>
+<td align="right">41</td>
+<td align="right">6</td>
+<td align="right">14.63</td>
+</tr>
+<tr class="even">
+<td align="left">BELGIE</td>
+<td align="right">8.525000</td>
+<td align="right">27</td>
+<td align="right">26</td>
+<td align="right">96.30</td>
+</tr>
+<tr class="odd">
+<td align="left">CUBA</td>
+<td align="right">7.546667</td>
+<td align="right">11</td>
+<td align="right">6</td>
+<td align="right">54.55</td>
+</tr>
+<tr class="even">
+<td align="left">CAMBODIA</td>
+<td align="right">5.751111</td>
+<td align="right">44</td>
+<td align="right">9</td>
+<td align="right">20.45</td>
+</tr>
+<tr class="odd">
+<td align="left">LEBANON</td>
+<td align="right">5.537500</td>
+<td align="right">42</td>
+<td align="right">8</td>
+<td align="right">19.05</td>
+</tr>
+<tr class="even">
+<td align="left">MALTA</td>
+<td align="right">3.781818</td>
+<td align="right">21</td>
+<td align="right">11</td>
+<td align="right">52.38</td>
+</tr>
+<tr class="odd">
+<td align="left">AZERBAIJAN</td>
+<td align="right">0.000000</td>
+<td align="right">19</td>
+<td align="right">12</td>
+<td align="right">63.16</td>
+</tr>
+</tbody>
+</table>
+<p>시각화를 통해서 국가별 식품에 설탕 함량이 높은 국가에 대한 이해를 더 쉽게 할 수 있다.</p>
+<p><code>마다가스카르</code>, <code>아랍 에미레이트</code>, <code>아르헨티나</code>의 식품에는 평균적으로 많은 설탕이 함유됨을 알 수 있다. <code>마다가스카르</code>는 독보적이다.</p>
+<pre class="r"><code>library(ggplot2)
+
+# 테마와 한글 폰트 설정
+theme_set(theme_classic(base_family=&#39;NanumSquare&#39;))
+
+sugar %&gt;% 
+  arrange(desc(sugar_mean)) %&gt;% 
+  head(10) %&gt;% 
+  mutate(order_seq = 10:1) %&gt;% 
+  ggplot(aes(x = reorder(countries, order_seq), y = sugar_mean ))  +
+  geom_bar(fill = &quot;orange&quot;, colour = &quot;orange&quot;, alpha = .5, stat = &#39;identity&#39;) + 
+  scale_y_continuous(name = &quot;100g 중 식품의 평균 설탕 함유량&quot;) +
+  xlab(&quot;국가&quot;) + 
+  ggtitle(&quot;식품의 평균 설탕 함유량이 높은 상위 10개 국가&quot;) +
+  coord_flip()</code></pre>
+<p><img src="/post/2019-12/multi_derived_files/figure-html/unnamed-chunk-18-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p>식품 중에 설탕 함량이 낮은 국가는 <code>아제르바이잔</code>, <code>몰타</code>, <code>레바논</code>, <code>캄보디아</code> 등이다.</p>
+<pre class="r"><code>sugar %&gt;% 
+  arrange(sugar_mean) %&gt;% 
+  head(10) %&gt;% 
+  knitr::kable(format.args = list(big.mark = &#39;,&#39;))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">countries</th>
+<th align="right">sugar_mean</th>
+<th align="right">freq_food</th>
+<th align="right">freq_sugar</th>
+<th align="right">sugar_percn</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">AZERBAIJAN</td>
+<td align="right">0.000000</td>
+<td align="right">19</td>
+<td align="right">12</td>
+<td align="right">63.16</td>
+</tr>
+<tr class="even">
+<td align="left">MALTA</td>
+<td align="right">3.781818</td>
+<td align="right">21</td>
+<td align="right">11</td>
+<td align="right">52.38</td>
+</tr>
+<tr class="odd">
+<td align="left">LEBANON</td>
+<td align="right">5.537500</td>
+<td align="right">42</td>
+<td align="right">8</td>
+<td align="right">19.05</td>
+</tr>
+<tr class="even">
+<td align="left">CAMBODIA</td>
+<td align="right">5.751111</td>
+<td align="right">44</td>
+<td align="right">9</td>
+<td align="right">20.45</td>
+</tr>
+<tr class="odd">
+<td align="left">CUBA</td>
+<td align="right">7.546667</td>
+<td align="right">11</td>
+<td align="right">6</td>
+<td align="right">54.55</td>
+</tr>
+<tr class="even">
+<td align="left">BELGIE</td>
+<td align="right">8.525000</td>
+<td align="right">27</td>
+<td align="right">26</td>
+<td align="right">96.30</td>
+</tr>
+<tr class="odd">
+<td align="left">SOUTH KOREA</td>
+<td align="right">8.995000</td>
+<td align="right">41</td>
+<td align="right">6</td>
+<td align="right">14.63</td>
+</tr>
+<tr class="even">
+<td align="left">CHILE</td>
+<td align="right">9.997826</td>
+<td align="right">119</td>
+<td align="right">23</td>
+<td align="right">19.33</td>
+</tr>
+<tr class="odd">
+<td align="left">FRENCH GUIANA</td>
+<td align="right">10.106609</td>
+<td align="right">104</td>
+<td align="right">64</td>
+<td align="right">61.54</td>
+</tr>
+<tr class="even">
+<td align="left">ALBANIA</td>
+<td align="right">10.392857</td>
+<td align="right">13</td>
+<td align="right">7</td>
+<td align="right">53.85</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>sugar %&gt;% 
+  arrange(sugar_mean) %&gt;% 
+  head(10) %&gt;% 
+  mutate(order_seq = 10:1) %&gt;% 
+  ggplot(aes(x = reorder(countries, order_seq), y = sugar_mean ))  +
+  geom_bar(fill = &quot;blue&quot;, colour = &quot;blue&quot;, alpha = .5, stat = &#39;identity&#39;) + 
+  scale_y_continuous(name = &quot;100g 중 식품의 평균 설탕 함유량&quot;) +
+  xlab(&quot;국가&quot;) +
+  ggtitle(&quot;식품의 평균 설탕 함유량이 낮은 상위 10개 국가&quot;) +  
+  coord_flip()</code></pre>
+<p><img src="/post/2019-12/multi_derived_files/figure-html/unnamed-chunk-20-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p>식품 중에 설탕이 포함된 비율이 높은 국가는 <code>네덜란드</code>, <code>벨기에</code>, <code>미국</code> 등이다. <code>네덜란드</code>는 모든 식품에 설탕이 함유되어 있음을 알 수 있다.</p>
+<pre class="r"><code>sugar %&gt;% 
+  arrange(desc(sugar_percn)) %&gt;% 
+  head(10) %&gt;% 
+  knitr::kable(format.args = list(big.mark = &#39;,&#39;))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">countries</th>
+<th align="right">sugar_mean</th>
+<th align="right">freq_food</th>
+<th align="right">freq_sugar</th>
+<th align="right">sugar_percn</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">NEDERLAND</td>
+<td align="right">18.80714</td>
+<td align="right">7</td>
+<td align="right">7</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td align="left">BELGIE</td>
+<td align="right">8.52500</td>
+<td align="right">27</td>
+<td align="right">26</td>
+<td align="right">96.30</td>
+</tr>
+<tr class="odd">
+<td align="left">US</td>
+<td align="right">17.10974</td>
+<td align="right">132,765</td>
+<td align="right">122,367</td>
+<td align="right">92.17</td>
+</tr>
+<tr class="even">
+<td align="left">MONTENEGRO</td>
+<td align="right">24.62235</td>
+<td align="right">19</td>
+<td align="right">17</td>
+<td align="right">89.47</td>
+</tr>
+<tr class="odd">
+<td align="left">REPUBLIC OF MACEDONIA</td>
+<td align="right">14.06250</td>
+<td align="right">9</td>
+<td align="right">8</td>
+<td align="right">88.89</td>
+</tr>
+<tr class="even">
+<td align="left">MALI</td>
+<td align="right">16.53333</td>
+<td align="right">7</td>
+<td align="right">6</td>
+<td align="right">85.71</td>
+</tr>
+<tr class="odd">
+<td align="left">SERBIA</td>
+<td align="right">14.66480</td>
+<td align="right">350</td>
+<td align="right">296</td>
+<td align="right">84.57</td>
+</tr>
+<tr class="even">
+<td align="left">BOSNIA AND HERZEGOVINA</td>
+<td align="right">17.33571</td>
+<td align="right">17</td>
+<td align="right">14</td>
+<td align="right">82.35</td>
+</tr>
+<tr class="odd">
+<td align="left">SWEDEN</td>
+<td align="right">13.30379</td>
+<td align="right">414</td>
+<td align="right">317</td>
+<td align="right">76.57</td>
+</tr>
+<tr class="even">
+<td align="left">FRANCE</td>
+<td align="right">13.41809</td>
+<td align="right">129,221</td>
+<td align="right">94,819</td>
+<td align="right">73.38</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>sugar %&gt;% 
+  arrange(desc(sugar_percn)) %&gt;% 
+  head(10) %&gt;% 
+  mutate(order_seq = 10:1) %&gt;% 
+  ggplot(aes(x = reorder(countries, order_seq), y = sugar_percn ))  +
+  geom_bar(fill = &quot;orange&quot;, colour = &quot;orange&quot;, alpha = .5, stat = &#39;identity&#39;) + 
+  scale_y_continuous(name = &quot;식품 중 설탕 포함 비율&quot;) +
+  xlab(&quot;국가&quot;) +
+  ggtitle(&quot;식품 중에 설탕의 포함 비율이 높은 상위 10개 국가&quot;)  +
+  coord_flip()</code></pre>
+<p><img src="/post/2019-12/multi_derived_files/figure-html/unnamed-chunk-22-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p>식품 중에 설탕이 포함된 비율이 낮은 국가는 <code>일본</code>, <code>마다가스카르</code>, <code>러시아</code> 등이다. 특히 <code>마다가스카르</code>는 앞에서 식품 중에 설탕의 함량이 높은 국가였다. <strong>식품에 설탕이 들어가는 음식은 적지만, 설탕이 들어가는 식품의 설탕 함유량은 높은 국가</strong>다.</p>
+<pre class="r"><code>sugar %&gt;% 
+  arrange(sugar_percn) %&gt;% 
+  head(10) %&gt;% 
+  knitr::kable(format.args = list(big.mark = &#39;,&#39;))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">countries</th>
+<th align="right">sugar_mean</th>
+<th align="right">freq_food</th>
+<th align="right">freq_sugar</th>
+<th align="right">sugar_percn</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">JAPAN</td>
+<td align="right">27.37385</td>
+<td align="right">365</td>
+<td align="right">13</td>
+<td align="right">3.56</td>
+</tr>
+<tr class="even">
+<td align="left">MADAGASCAR</td>
+<td align="right">40.91667</td>
+<td align="right">114</td>
+<td align="right">6</td>
+<td align="right">5.26</td>
+</tr>
+<tr class="odd">
+<td align="left">RUSSIA</td>
+<td align="right">19.52310</td>
+<td align="right">1,637</td>
+<td align="right">90</td>
+<td align="right">5.50</td>
+</tr>
+<tr class="even">
+<td align="left">BRAZIL</td>
+<td align="right">22.40462</td>
+<td align="right">363</td>
+<td align="right">26</td>
+<td align="right">7.16</td>
+</tr>
+<tr class="odd">
+<td align="left">CHINA</td>
+<td align="right">23.03724</td>
+<td align="right">199</td>
+<td align="right">17</td>
+<td align="right">8.54</td>
+</tr>
+<tr class="even">
+<td align="left">ARGENTINA</td>
+<td align="right">29.93833</td>
+<td align="right">66</td>
+<td align="right">6</td>
+<td align="right">9.09</td>
+</tr>
+<tr class="odd">
+<td align="left">ALGERIA</td>
+<td align="right">25.33889</td>
+<td align="right">188</td>
+<td align="right">18</td>
+<td align="right">9.57</td>
+</tr>
+<tr class="even">
+<td align="left">CZECH REPUBLIC</td>
+<td align="right">22.94565</td>
+<td align="right">441</td>
+<td align="right">46</td>
+<td align="right">10.43</td>
+</tr>
+<tr class="odd">
+<td align="left">UNITED ARAB EMIRATES</td>
+<td align="right">31.07778</td>
+<td align="right">84</td>
+<td align="right">9</td>
+<td align="right">10.71</td>
+</tr>
+<tr class="even">
+<td align="left">THAILAND</td>
+<td align="right">10.87367</td>
+<td align="right">254</td>
+<td align="right">30</td>
+<td align="right">11.81</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>sugar %&gt;% 
+  arrange(desc(sugar_percn)) %&gt;% 
+  tail(10) %&gt;% 
+  mutate(order_seq = 1:10) %&gt;% 
+  ggplot(aes(x = reorder(countries, order_seq), y = sugar_percn ))  +
+  geom_bar(fill = &quot;blue&quot;, colour = &quot;blue&quot;, alpha = .5, stat = &#39;identity&#39;) + 
+  scale_y_continuous(name = &quot;식품 중 설탕 포함 비율&quot;) +
+  xlab(&quot;국가&quot;) + 
+  ggtitle(&quot;식품 중에 설탕의 포함 비율이 낮은 상위 10개 국가&quot;) +
+  coord_flip()</code></pre>
+<p><img src="/post/2019-12/multi_derived_files/figure-html/unnamed-chunk-24-1.png" width="864" style="display: block; margin: auto;" /></p>
+</div>
+<div id="나머지-관심-지표의-확인" class="section level2">
+<h2>나머지 관심 지표의 확인</h2>
+<p>설탕의 함량에 대한 변수로 국가별 몇 가지 분석을 수행하였다. 집계한 데이터에는 설탕의 함량 이외에도 소금, 알콜, 나트륨, 콜레스테롤의 함량과 고기의 포함 여부와 채식식품 여부의 변수가 있으니 유사 분석을 수행할 수 있을 것이다.</p>
+<pre class="r"><code>names(countries_additives)
+## [1] &quot;energy_100g&quot;      &quot;sugars_100g&quot;      &quot;salt_100g&quot;        &quot;alcohol_100g&quot;    
+## [5] &quot;sodium_100g&quot;      &quot;cholesterol_100g&quot; &quot;meat_flag&quot;        &quot;vegan_flag&quot;      
+## [9] &quot;countries&quot;</code></pre>
+</div>
+</div>
+
+    
+      
+    
+  </article>
+<aside class="sidebar">
+  <section class="sidebar_inner">
+    
+      <h2>Choonghyun Ryu</h2>
+      <div>
+        Scientist with data, take one more step today.
+      </div>
+      <a href='/about/' class="button mt-1" role="button">Read More</a>
+    <h2 class="mt-4">Recent Posts</h2>
+    <ul class="flex-column">
+      <li>
+        <a href="/post/2020-07/ggplot2_exam/" class="nav-link">몇 개의 ggplot tips</a>
+      </li>
+      <li>
+        <a href="/post/2020-03/2020-03-27-r-alookr.ko/" class="nav-link">alookr: Binary classification modeling</a>
+      </li>
+      <li>
+        <a href="/post/2020-03/window_function/" class="nav-link">Introduce window function</a>
+      </li>
+      <li>
+        <a href="/post/2020-02/r_web_application/" class="nav-link">R 웹 어플리케이션 개발에 대한 연구</a>
+      </li>
+      <li>
+        <a href="/post/2020-01/introduce_dbplyr/" class="nav-link">Introduce dbplyr package</a>
+      </li>
+    </ul>
+    <div>
+      <h2 class="mt-4 taxonomy" id="categories-section">Categories</h2>
+      <nav class="tags_nav">
+        <a href='/categories/%EC%98%9B-%EC%9D%B4%EC%95%BC%EA%B8%B0-%ED%95%98%EB%82%98/' class="post_tag button button_translucent">
+          옛-이야기-하나
+          <span class="button_tally">120</span>
+        </a>
+        
+        <a href='/categories/r-analytics/' class="post_tag button button_translucent">
+          R-ANALYTICS
+          <span class="button_tally">19</span>
+        </a>
+        
+        <a href='/categories/gallery/' class="post_tag button button_translucent">
+          GALLERY
+          <span class="button_tally">8</span>
+        </a>
+        
+        <a href='/categories/visualization/' class="post_tag button button_translucent">
+          VISUALIZATION
+          <span class="button_tally">7</span>
+        </a>
+        
+        <a href='/categories/tidyverse/' class="post_tag button button_translucent">
+          TIDYVERSE
+          <span class="button_tally">6</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+    <div>
+      <h2 class="mt-4 taxonomy" id="series-section">Series</h2>
+      <nav class="tags_nav">
+        <a href='/series/drawing/' class="post_tag button button_translucent">
+          DRAWING
+          <span class="button_tally">6</span>
+        </a>
+        
+        <a href='/series/photo/' class="post_tag button button_translucent">
+          PHOTO
+          <span class="button_tally">2</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+    <div>
+      <h2 class="mt-4 taxonomy" id="tags-section">Tags</h2>
+      <nav class="tags_nav">
+        <a href='/tags/plot/' class="post_tag button button_translucent">
+          PLOT
+          <span class="button_tally">6</span>
+        </a>
+        
+        <a href='/tags/dlookr/' class="post_tag button button_translucent">
+          DLOOKR
+          <span class="button_tally">5</span>
+        </a>
+        
+        <a href='/tags/graphics/' class="post_tag button button_translucent">
+          GRAPHICS
+          <span class="button_tally">4</span>
+        </a>
+        
+        <a href='/tags/mathematics/' class="post_tag button button_translucent">
+          MATHEMATICS
+          <span class="button_tally">4</span>
+        </a>
+        
+        <a href='/tags/distribution/' class="post_tag button button_translucent">
+          DISTRIBUTION
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/dplyr/' class="post_tag button button_translucent">
+          DPLYR
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/eda/' class="post_tag button button_translucent">
+          EDA
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/grid/' class="post_tag button button_translucent">
+          GRID
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/text-analytics/' class="post_tag button button_translucent">
+          TEXT-ANALYTICS
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B3%80%ED%99%98/' class="post_tag button button_translucent">
+          데이터-변환
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A7%84%EB%8B%A8/' class="post_tag button button_translucent">
+          데이터-진단
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/development/' class="post_tag button button_translucent">
+          DEVELOPMENT
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='/tags/finance/' class="post_tag button button_translucent">
+          FINANCE
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='/tags/ggplot2/' class="post_tag button button_translucent">
+          GGPLOT2
+          <span class="button_tally">2</span>
+        </a>
+        
+        
+        <br>
+        <div class="post_tags_toggle button">All Tags</div>
+        <div class="post_tags">
+          <div class="tags_list">
+            
+            <a href='/tags/alookr/' class=" post_tag button button_translucent" data-position=1>ALOOKR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/association-ruls/' class=" post_tag button button_translucent" data-position=1>ASSOCIATION-RULS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/asynchronous/' class=" post_tag button button_translucent" data-position=1>ASYNCHRONOUS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/binary-classification/' class=" post_tag button button_translucent" data-position=1>BINARY-CLASSIFICATION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/circle/' class=" post_tag button button_translucent" data-position=1>CIRCLE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/clustering/' class=" post_tag button button_translucent" data-position=1>CLUSTERING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/complex/' class=" post_tag button button_translucent" data-position=1>COMPLEX<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/crawling/' class=" post_tag button button_translucent" data-position=1>CRAWLING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/data-acqusition/' class=" post_tag button button_translucent" data-position=1>DATA-ACQUSITION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/dbplyr/' class=" post_tag button button_translucent" data-position=1>DBPLYR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/deep-learning/' class=" post_tag button button_translucent" data-position=1>DEEP-LEARNING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/development/' class=" post_tag button button_translucent" data-position=2>DEVELOPMENT<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/distribution/' class=" post_tag button button_translucent" data-position=3>DISTRIBUTION<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/dlookr/' class=" post_tag button button_translucent" data-position=5>DLOOKR<span class="button_tally">5</span>
+            </a>
+            
+            
+            <a href='/tags/documents-taxonomy/' class=" post_tag button button_translucent" data-position=1>DOCUMENTS-TAXONOMY<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/dplyr/' class=" post_tag button button_translucent" data-position=3>DPLYR<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/eda/' class=" post_tag button button_translucent" data-position=3>EDA<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/extract/' class=" post_tag button button_translucent" data-position=1>EXTRACT<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/factor/' class=" post_tag button button_translucent" data-position=1>FACTOR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/finance/' class=" post_tag button button_translucent" data-position=2>FINANCE<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/foodfact/' class=" post_tag button button_translucent" data-position=1>FOODFACT<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/forcats/' class=" post_tag button button_translucent" data-position=1>FORCATS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/fractal/' class=" post_tag button button_translucent" data-position=1>FRACTAL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/fuction/' class=" post_tag button button_translucent" data-position=1>FUCTION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/future/' class=" post_tag button button_translucent" data-position=1>FUTURE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/ggplot2/' class=" post_tag button button_translucent" data-position=2>GGPLOT2<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/google-trends/' class=" post_tag button button_translucent" data-position=1>GOOGLE-TRENDS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/graphics/' class=" post_tag button button_translucent" data-position=4>GRAPHICS<span class="button_tally">4</span>
+            </a>
+            
+            
+            <a href='/tags/grid/' class=" post_tag button button_translucent" data-position=3>GRID<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/gtrendsr/' class=" post_tag button button_translucent" data-position=1>GTRENDSR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/lasso/' class=" post_tag button button_translucent" data-position=2>LASSO<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/legend/' class=" post_tag button button_translucent" data-position=1>LEGEND<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/magrittr/' class=" post_tag button button_translucent" data-position=2>MAGRITTR<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/mathematics/' class=" post_tag button button_translucent" data-position=4>MATHEMATICS<span class="button_tally">4</span>
+            </a>
+            
+            
+            <a href='/tags/matrix/' class=" post_tag button button_translucent" data-position=2>MATRIX<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/network-analysis/' class=" post_tag button button_translucent" data-position=1>NETWORK-ANALYSIS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/neural-network/' class=" post_tag button button_translucent" data-position=1>NEURAL-NETWORK<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/nlp/' class=" post_tag button button_translucent" data-position=2>NLP<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/nyc-taxi-data/' class=" post_tag button button_translucent" data-position=1>NYC-TAXI-DATA<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/operator/' class=" post_tag button button_translucent" data-position=1>OPERATOR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/packages/' class=" post_tag button button_translucent" data-position=1>PACKAGES<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/par/' class=" post_tag button button_translucent" data-position=1>PAR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/parallel/' class=" post_tag button button_translucent" data-position=1>PARALLEL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/pictures/' class=" post_tag button button_translucent" data-position=2>PICTURES<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/pipe/' class=" post_tag button button_translucent" data-position=1>PIPE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/plot/' class=" post_tag button button_translucent" data-position=6>PLOT<span class="button_tally">6</span>
+            </a>
+            
+            
+            <a href='/tags/plot-region/' class=" post_tag button button_translucent" data-position=1>PLOT-REGION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/postgresql/' class=" post_tag button button_translucent" data-position=1>POSTGRESQL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/probability/' class=" post_tag button button_translucent" data-position=1>PROBABILITY<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/promises/' class=" post_tag button button_translucent" data-position=1>PROMISES<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/quandl/' class=" post_tag button button_translucent" data-position=1>QUANDL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/r_tips/' class=" post_tag button button_translucent" data-position=1>R_TIPS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/readr/' class=" post_tag button button_translucent" data-position=2>READR<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/regression/' class=" post_tag button button_translucent" data-position=1>REGRESSION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/replace/' class=" post_tag button button_translucent" data-position=1>REPLACE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/rserve/' class=" post_tag button button_translucent" data-position=1>RSERVE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/scraping/' class=" post_tag button button_translucent" data-position=1>SCRAPING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/set/' class=" post_tag button button_translucent" data-position=1>SET<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/sqldf/' class=" post_tag button button_translucent" data-position=1>SQLDF<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/statistics/' class=" post_tag button button_translucent" data-position=2>STATISTICS<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/stock/' class=" post_tag button button_translucent" data-position=1>STOCK<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/stock-data/' class=" post_tag button button_translucent" data-position=1>STOCK-DATA<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/synchronous/' class=" post_tag button button_translucent" data-position=1>SYNCHRONOUS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/taxonomy/' class=" post_tag button button_translucent" data-position=1>TAXONOMY<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/text-analytics/' class=" post_tag button button_translucent" data-position=3>TEXT-ANALYTICS<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/text2vec/' class=" post_tag button button_translucent" data-position=1>TEXT2VEC<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/tidyr/' class=" post_tag button button_translucent" data-position=1>TIDYR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/tidyverse/' class=" post_tag button button_translucent" data-position=1>TIDYVERSE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/topic-analysis/' class=" post_tag button button_translucent" data-position=1>TOPIC-ANALYSIS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/traffic/' class=" post_tag button button_translucent" data-position=1>TRAFFIC<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/vector/' class=" post_tag button button_translucent" data-position=1>VECTOR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/web-application/' class=" post_tag button button_translucent" data-position=1>WEB-APPLICATION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/window-function/' class=" post_tag button button_translucent" data-position=1>WINDOW-FUNCTION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/zoo/' class=" post_tag button button_translucent" data-position=1>ZOO<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B3%80%ED%99%98/' class=" post_tag button button_translucent" data-position=3>데이터-변환<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%95%EC%A0%9C/' class=" post_tag button button_translucent" data-position=1>데이터-정제<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A7%84%EB%8B%A8/' class=" post_tag button button_translucent" data-position=3>데이터-진단<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%AA%A8%EB%8D%B8-%EC%A0%81%ED%95%A9/' class=" post_tag button button_translucent" data-position=1>모델-적합<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%AA%A8%EB%8D%B8-%EC%A7%84%EB%8B%A8/' class=" post_tag button button_translucent" data-position=1>모델-진단<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EC%97%AC%ED%96%89/' class=" post_tag button button_translucent" data-position=2>여행<span class="button_tally">2</span>
+            </a>
+            
+            <div class="tags_sort"><span title="sort alphabetically">[A~Z]</span><span title="sort by count">[0~9]</span>
+            </div>
+            <span class="tags_hide"><svg class="icon">
+            <use xlink:href="#closeme"></use>
+          </svg></span>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </section>
+</aside>
+
+</div>
+    </main><svg width="0" height="0" class="hidden">
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18.001 18.001" id="twitter">
+    <path d="M15.891 4.013c.808-.496 1.343-1.173 1.605-2.034a8.68 8.68 0 0 1-2.351.861c-.703-.756-1.593-1.14-2.66-1.14-1.043 0-1.924.366-2.643 1.078a3.56 3.56 0 0 0-1.076 2.605c0 .309.039.585.117.819-3.076-.105-5.622-1.381-7.628-3.837-.34.601-.51 1.213-.51 1.846 0 1.301.549 2.332 1.645 3.089-.625-.053-1.176-.211-1.645-.47 0 .929.273 1.705.82 2.388a3.623 3.623 0 0 0 2.115 1.291c-.312.08-.641.118-.979.118-.312 0-.533-.026-.664-.083.23.757.664 1.371 1.291 1.841a3.652 3.652 0 0 0 2.152.743C4.148 14.173 2.625 14.69.902 14.69c-.422 0-.721-.006-.902-.038 1.697 1.102 3.586 1.649 5.676 1.649 2.139 0 4.029-.542 5.674-1.626 1.645-1.078 2.859-2.408 3.639-3.974a10.77 10.77 0 0 0 1.172-4.892v-.468a7.788 7.788 0 0 0 1.84-1.921 8.142 8.142 0 0 1-2.11.593z"
+      ></path>
+  </symbol>
+  <symbol aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="mail">
+    <path  d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="calendar">
+    <path d="M452 40h-24V0h-40v40H124V0H84v40H60C26.916 40 0 66.916 0 100v352c0 33.084 26.916 60 60 60h392c33.084 0 60-26.916 60-60V100c0-33.084-26.916-60-60-60zm20 412c0 11.028-8.972 20-20 20H60c-11.028 0-20-8.972-20-20V188h432v264zm0-304H40v-48c0-11.028 8.972-20 20-20h24v40h40V80h264v40h40V80h24c11.028 0 20 8.972 20 20v48z"></path>
+    <path d="M76 230h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 310h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 390h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80-80h40v40h-40z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="github">
+    <path d="M255.968 5.329C114.624 5.329 0 120.401 0 262.353c0 113.536 73.344 209.856 175.104 243.872 12.8 2.368 17.472-5.568 17.472-12.384 0-6.112-.224-22.272-.352-43.712-71.2 15.52-86.24-34.464-86.24-34.464-11.616-29.696-28.416-37.6-28.416-37.6-23.264-15.936 1.728-15.616 1.728-15.616 25.696 1.824 39.2 26.496 39.2 26.496 22.848 39.264 59.936 27.936 74.528 21.344 2.304-16.608 8.928-27.936 16.256-34.368-56.832-6.496-116.608-28.544-116.608-127.008 0-28.064 9.984-51.008 26.368-68.992-2.656-6.496-11.424-32.64 2.496-68 0 0 21.504-6.912 70.4 26.336 20.416-5.696 42.304-8.544 64.096-8.64 21.728.128 43.648 2.944 64.096 8.672 48.864-33.248 70.336-26.336 70.336-26.336 13.952 35.392 5.184 61.504 2.56 68 16.416 17.984 26.304 40.928 26.304 68.992 0 98.72-59.84 120.448-116.864 126.816 9.184 7.936 17.376 23.616 17.376 47.584 0 34.368-.32 62.08-.32 70.496 0 6.88 4.608 14.88 17.6 12.352C438.72 472.145 512 375.857 512 262.353 512 120.401 397.376 5.329 255.968 5.329z"></path>
+  </symbol>
+  <symbol viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="rss">
+    <circle cx="3.429" cy="20.571" r="3.429"></circle>
+    <path d="M11.429 24h4.57C15.999 15.179 8.821 8.001 0 8v4.572c6.302.001 11.429 5.126 11.429 11.428z"></path>
+    <path d="M24 24C24 10.766 13.234 0 0 0v4.571c10.714 0 19.43 8.714 19.43 19.429z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="linkedin">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h362c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zM181 406h-60V196h60zm0-240h-60v-60h60zm210 240h-60V286c0-16.54-13.46-30-30-30s-30 13.46-30 30v120h-60V196h60v11.309C286.719 202.422 296.93 196 316 196c40.691.043 75 36.547 75 79.688zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="arrow">
+    <path d="M604.501 440.509L325.398 134.956c-5.331-5.357-12.423-7.627-19.386-7.27-6.989-.357-14.056 1.913-19.387 7.27L7.499 440.509c-9.999 10.024-9.999 26.298 0 36.323s26.223 10.024 36.222 0l262.293-287.164L568.28 476.832c9.999 10.024 26.222 10.024 36.221 0 9.999-10.023 9.999-26.298 0-36.323z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="carly">
+    <path d="M504.971 239.029L448 182.059V84c0-46.317-37.682-84-84-84h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c19.851 0 36 16.149 36 36v108c0 6.365 2.529 12.47 7.029 16.971L454.059 256l-47.029 47.029A24.002 24.002 0 0 0 400 320v108c0 19.851-16.149 36-36 36h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c46.318 0 84-37.683 84-84v-98.059l56.971-56.971c9.372-9.372 9.372-24.568 0-33.941zM112 192V84c0-19.851 16.149-36 36-36h44c13.255 0 24-10.745 24-24S205.255 0 192 0h-44c-46.318 0-84 37.683-84 84v98.059l-56.971 56.97c-9.373 9.373-9.373 24.568 0 33.941L64 329.941V428c0 46.317 37.682 84 84 84h44c13.255 0 24-10.745 24-24s-10.745-24-24-24h-44c-19.851 0-36-16.149-36-36V320c0-6.365-2.529-12.47-7.029-16.971L57.941 256l47.029-47.029A24.002 24.002 0 0 0 112 192z"></path>
+  </symbol>
+  <symbol viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="copy">
+    <path d="M23 2.75A2.75 2.75 0 0 0 20.25 0H8.75A2.75 2.75 0 0 0 6 2.75v13.5A2.75 2.75 0 0 0 8.75 19h11.5A2.75 2.75 0 0 0 23 16.25zM18.25 14.5h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5zm0-3h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5zm0-3h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5z"></path>
+    <path d="M8.75 20.5a4.255 4.255 0 0 1-4.25-4.25V2.75c0-.086.02-.166.025-.25H3.75A2.752 2.752 0 0 0 1 5.25v16A2.752 2.752 0 0 0 3.75 24h12a2.752 2.752 0 0 0 2.75-2.75v-.75z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001" id="closeme">
+    <path d="M284.286 256.002L506.143 34.144c7.811-7.811 7.811-20.475 0-28.285-7.811-7.81-20.475-7.811-28.285 0L256 227.717 34.143 5.859c-7.811-7.811-20.475-7.811-28.285 0-7.81 7.811-7.811 20.475 0 28.285l221.857 221.857L5.858 477.859c-7.811 7.811-7.811 20.475 0 28.285a19.938 19.938 0 0 0 14.143 5.857 19.94 19.94 0 0 0 14.143-5.857L256 284.287l221.857 221.857c3.905 3.905 9.024 5.857 14.143 5.857s10.237-1.952 14.143-5.857c7.811-7.811 7.811-20.475 0-28.285L284.286 256.002z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="open-menu">
+    <path d="M492 236H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0-160H20C8.954 76 0 84.954 0 96s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0 320H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="instagram">
+    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id=youtube>
+    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="stackoverflow">
+    <path d="M21 27v-8h3v11H0V19h3v8h18z"></path><path d="M17.1.2L15 1.8l7.9 10.6 2.1-1.6L17.1.2zm3.7 14.7L10.6 6.4l1.7-2 10.2 8.5-1.7 2zM7.2 12.3l12 5.6 1.1-2.4-12-5.6-1.1 2.4zm-1.8 6.8l13.56 1.96.17-2.38-13.26-2.55-.47 2.97zM19 25H5v-3h14v3z"></path>
+  </symbol>
+</svg>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+<footer class="footer">
+  <div class="footer_inner wrap pale">
+    <img src='/logos/logo.png' class="icon icon_2 transparent">
+    <p>Copyright<span class="year"></span> DATAHOLIC. All Rights Reserved</p><a class="to_top" href="#documentTop">
+  <svg class="icon">
+  <use xlink:href="#arrow"></use>
+</svg>
+</a>
+
+  </div>
+</footer>
+    <script type="text/javascript" src="/js/bundle.min.03f1cc201c9efa18e14550bff374f58e89f1e6b2a30a0e22f84c87f6eb766e419bd6569c3a60846ea3e65816112dfa454f4785d306d024b6ef2616d067862a7a.js" integrity="sha512-A/HMIBye&#43;hjhRVC/83T1jonx5rKjCg4i&#43;EyH9ut2bkGb1lacOmCEbqPmWBYRLfpFT0eF0wbQJLbvJhbQZ4Yqeg==" crossorigin="anonymous"></script>
+    
+  </body>
+</html>

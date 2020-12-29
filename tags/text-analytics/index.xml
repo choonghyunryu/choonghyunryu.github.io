@@ -1,0 +1,975 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Text Analytics on Dataholic</title>
+    <link>/tags/text-analytics/</link>
+    <description>Recent content in Text Analytics on Dataholic</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 31 Dec 2019 08:10:12 +0800</lastBuildDate><atom:link href="/tags/text-analytics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Documents Taxonomy</title>
+      <link>/post/2019-12/documents_taxonomy/</link>
+      <pubDate>Tue, 31 Dec 2019 08:10:12 +0800</pubDate>
+      
+      <guid>/post/2019-12/documents_taxonomy/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;들어가기&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;들어가기&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;Taxonomy&lt;/code&gt;는 사전적으로 &lt;strong&gt;“사물이나 생명체 등을 분류하기 위해서 사용되는 분류체계”&lt;/strong&gt;로 해석되며, &lt;code&gt;분류체계&lt;/code&gt;는 &lt;code&gt;트리형의 위계적 (Hirerachy) 구조&lt;/code&gt;로 표현한다.
+&lt;code&gt;Documents Taxonomy&lt;/code&gt;는 &lt;code&gt;문서(텍스트)들을 분류체계 기준으로 분류&lt;/code&gt;하는 것으로, 대표적인 것에 콜센터의 상담 내용을 상담 분류 체계로 분류하는 것이 있다.
+엄밀하게 구분하면 Taxonomy와 Classification은 다른 개념이지만, 여기서는 &lt;code&gt;Classification Model로 Documents Taxonomy의 가능성을 진단&lt;/code&gt;해 본다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div id=&#34;학습목표&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;학습목표&lt;/h1&gt;
+&lt;p&gt;다음을 네 가지 섹션의 이해를 목표로 학습을 수행한다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;데이터 구조의 이해:
+&lt;ul&gt;
+&lt;li&gt;Vectorization&lt;/li&gt;
+&lt;li&gt;DTM(Document Term Matrix)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;데이터 처리의 이해:
+&lt;ul&gt;
+&lt;li&gt;TF-IDF&lt;/li&gt;
+&lt;li&gt;n-gram&lt;/li&gt;
+&lt;li&gt;Feature hashing&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;모델의 이해:
+&lt;ul&gt;
+&lt;li&gt;LASSO regression&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;패키지의 이해:
+&lt;ul&gt;
+&lt;li&gt;text2vec&lt;/li&gt;
+&lt;li&gt;glmnet&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;학습방법&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;학습방법&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;“사람들의 대화를 들어보면 개인별로 즐겨 사용하는 언어적 특징이 있는 것처럼, 대통령의 연설문에도 개인적 특징이 담겨있지 않을까?”&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;연설문만으로 어떤 대통령이 연설했는가를 분류&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;데이터:
+&lt;ul&gt;
+&lt;li&gt;대통령 연설문 전문&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;분류 방법:
+&lt;ul&gt;
+&lt;li&gt;연설문 내용으로 어느 대통령이 연설했는지 분류&lt;/li&gt;
+&lt;li&gt;김대중, 노무현, 이명박&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;성능 비교:
+&lt;ul&gt;
+&lt;li&gt;몇 가지 방법에 대해서 분류의 성능 비교&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;documents-taxonomy에-대한-슬라이드의-공유&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Documents Taxonomy에 대한 슬라이드의 공유&lt;/h1&gt;
+&lt;p&gt;다음에 링크를 걸어 둔 슬라이드 파일은 2017년도에 모 미트업에서 발표한 슬라이드 pdf 파일이다. 그 이후에 많은 시간이 흘렀기 때문에 일부 개선된 것들이 있을 수 있다. 감안해서 참고하기 바란다.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/choonghyunryu/R_Materials/blob/master/Text_Analytics/Documents_Texonomy.pdf&#34; target=&#34;_blank&#34;&gt;Documents_Texonomy.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;차례&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;차례&lt;/h1&gt;
+&lt;p&gt;이 문서는 다음과 같은 아젠다를 이야기 한다.&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;들어가기&lt;/li&gt;
+&lt;li&gt;데이터 전처리&lt;/li&gt;
+&lt;li&gt;모델 생성&lt;/li&gt;
+&lt;li&gt;모델 성능 비교&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>대통령 연설문 분석하기</title>
+      <link>/post/2019-12/president_speech/</link>
+      <pubDate>Sun, 29 Dec 2019 18:48:12 +0800</pubDate>
+      
+      <guid>/post/2019-12/president_speech/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;들어가기&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;들어가기&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;R에서 데이터를 &lt;code&gt;scraping&lt;/code&gt;하는 기술은 데이터 조작 함수를 구사하는 능력에 비례한다. 그 이유는 원하는 부분의 데이터만 취하기 위해서는 데이터 조작이 필수적이기 때문이다. 물론 원천 데이터가 웹 채널에 있기 때문에 HTML 문법과 이를 긁어올 수 있는 &lt;code&gt;rvest 패키지&lt;/code&gt; 등의 사용법도 중요하다.
+&lt;code&gt;Text Analytics&lt;/code&gt;는 &lt;code&gt;NLP(Natural language processing)&lt;/code&gt;를 위한 전문적인 도구와 기술이 필요하다. 그러나 다행이도 일반적인 데이터 분석 기법을 적용할 수도 있고, 최근에는 Deep Learning 기법이 응용되는 분야이기도 하다. 일반적인 데이터 분석 기법을 적용하여 Text Analytics을 이해해 보자.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div id=&#34;crawling&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Crawling&lt;/h1&gt;
+&lt;p&gt;대통령기록연구실 홈페이지에서 특정 대통령의 재임 기간의 연설문을 수집한다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;preprocessing&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Preprocessing&lt;/h1&gt;
+&lt;p&gt;텍스트 분석을 위해서 수집한 텍스트 데이터를 전처리한다. 몇 가지의 형태소 분석기를 분석해 본다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;text-analytics&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Text Analytics&lt;/h1&gt;
+&lt;p&gt;Document Term Matrix를 생성한 다음, 여러 기법의 텍스트 데이터 분석을 수행한다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;데이터-조작에-대한-슬라이드의-공유&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;데이터 조작에 대한 슬라이드의 공유&lt;/h1&gt;
+&lt;p&gt;다음에 링크를 걸어 둔 슬라이드 파일은 2017년도에 모 미트업에서 발표한 슬라이드 pdf 파일이다. 그 이후에 많은 시간이 흘렀기 때문에 일부 개선된 것들이 있을 수 있다. 감안해서 참고하기 바란다.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/choonghyunryu/R_Materials/blob/master/Text_Analytics/01_President_Speech_Slide.pdf&#34; target=&#34;_blank&#34;&gt;01_President_Speech_Slide.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;차례&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;차례&lt;/h1&gt;
+&lt;p&gt;이 문서는 다음과 같은 아젠다를 이야기 한다.&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Learning Outline&lt;/li&gt;
+&lt;li&gt;Scraping Data&lt;/li&gt;
+&lt;li&gt;수집 데이터 전처리&lt;/li&gt;
+&lt;li&gt;Text Analytics 개요&lt;/li&gt;
+&lt;li&gt;Frequency Analysis&lt;/li&gt;
+&lt;li&gt;Association Rules&lt;/li&gt;
+&lt;li&gt;Clustering/Topic Analytics&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>Documents Taxonomy - Speech</title>
+      <link>/post/2017-11/2017-11-13-taxonomy/</link>
+      <pubDate>Wed, 08 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2017-11/2017-11-13-taxonomy/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;들어가기&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;들어가기&lt;/h1&gt;
+&lt;div id=&#34;배경&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;배경&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;STT 데이터의 상담내역별 Taxonomy나 긍부정의 분류를 룰을 이용하지 않고, &lt;strong&gt;Machine Learning 기법을 이용해서 Documents Taxonomy를 수행하기 위한 Prototyping&lt;/strong&gt;을 목적으로 한다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;분석 방법은 text2vec 패키지로 text를 vector 구조로 변환한 다음, Lasso and Elastic-Net Regularized Generalized Linear Models을 지원하는 glmnet 패키지를 이용해서 모델을 생성한다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;데이터-준비&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;데이터 준비&lt;/h2&gt;
+&lt;p&gt;그림과 같은 대통령기록연구실 홈페이지(&lt;a href=&#34;http://www.pa.go.kr/research/contents/speech/index.jsp&#34; class=&#34;uri&#34;&gt;http://www.pa.go.kr/research/contents/speech/index.jsp&lt;/a&gt;) 에는 역대 퇴임 대통령들의 연설문을 제공하고 있다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-2&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/homepage.png&#34; alt=&#34;대통령기록연구실 홈페이지&#34; width=&#34;70%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 1: 대통령기록연구실 홈페이지
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;역대 대통령별로 연설문의 차이가 있는지 살펴보기 위해서 R로 Crawling 프로그램을 작성하여 이 홈페이지에서 김대중, 노무현, 이명박 전 대통령의 연설문 수집하였다.&lt;/p&gt;
+&lt;p&gt;이 leture에서는 김대중, 노무현, 이명박 전 대통령의 연설문만으로 모델을 생성하여, 연설문이 어느 전직 대통령이 연설한 것인지를 예측하는 방법으로 Documents Taxonomy 방법을 제시한다.&lt;/p&gt;
+&lt;div id=&#34;데이터-구조&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;데이터 구조&lt;/h3&gt;
+&lt;p&gt;수집한 데이터는 R 데이터 프레임 객체로 만들었으며, “data/speech.rda” 파일에 저장하였으며 변수는 다음과 같다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;id
+&lt;ul&gt;
+&lt;li&gt;연설문(문서) 아이디&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;president
+&lt;ul&gt;
+&lt;li&gt;연설 대통령&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;category
+&lt;ul&gt;
+&lt;li&gt;연설문 분야&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;type
+&lt;ul&gt;
+&lt;li&gt;연설문 유형&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;title
+&lt;ul&gt;
+&lt;li&gt;연설문 제목&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;data
+&lt;ul&gt;
+&lt;li&gt;연설 일자&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;doc
+&lt;ul&gt;
+&lt;li&gt;연설문 내용&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;시작하기&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;시작하기&lt;/h1&gt;
+&lt;div id=&#34;패키지-로딩&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;패키지 로딩&lt;/h2&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(text2vec)
+library(data.table)
+library(dplyr)
+library(RMeCab)
+library(glmnet)
+library(caret)
+require(doMC)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;데이터-로딩&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;데이터 로딩&lt;/h2&gt;
+&lt;p&gt;“data/speech.rda” 파일로부터 데이터를 읽어 speech 데이퍼 프레임을 가져온다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; load(&amp;quot;speech.rda&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;preparation-data&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Preparation data&lt;/h2&gt;
+&lt;div id=&#34;data.table-객체-생성&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;data.table 객체 생성&lt;/h3&gt;
+&lt;p&gt;데이터의 조작 속도의 개선을 위해서 data.frame 객체를 data.table 객체로 변환해주었다. 적은 양의 데이터는 data.frame 객체로 분석해도 상관 없지만, 일정 규모의 데이터 사이즈는 data.table 객체로 변환하여 분석하는 것이 바람직하다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; setDT(speech)
+&amp;gt; setkey(speech, id)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;모델링을-위한-데이터셋-분리&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;모델링을 위한 데이터셋 분리&lt;/h3&gt;
+&lt;p&gt;연산 속도의 개선을 위해서 데이터 프레임 객체를 데이터 테이블 객체로 변환한다. 그리고 변환한 객체를 traing set과 test ste으로 분리한다.&lt;/p&gt;
+&lt;p&gt;random simple sampling을 수행하여 원 데이터를 traing : test = 70% : 30%로 분리를 수행한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; ids &amp;lt;- speech$id
+&amp;gt; 
+&amp;gt; n &amp;lt;- NROW(speech) * 0.7
+&amp;gt; 
+&amp;gt; set.seed(1234L)
+&amp;gt; train_ids &amp;lt;- sample(ids, n)
+&amp;gt; test_ids &amp;lt;- setdiff(ids, train_ids)
+&amp;gt; 
+&amp;gt; train &amp;lt;- speech[J(train_ids)]
+&amp;gt; test &amp;lt;- speech[J(test_ids)]&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;vectorization&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Vectorization&lt;/h2&gt;
+&lt;p&gt;모델링을 위해서 documents 데이터를 vector로 변환해야 한다. 이 경우 엄청난 데이터의 증가가 필연적으로 따라온다. 그래서 연산 속도의 개선을 위해서 vectorization 구조로 연산을 해야하기 때문에 Vectorization 연산을 수행하기 위한 구조로 변환해야 한다.&lt;/p&gt;
+&lt;p&gt;documents를 vector로 변환하는 tokenizer는 RMeCab 패키지를 이용해서 명사로 정의했다. 그러나 Mac 환경에서는 정상적으로 수행되었으나, 분석서버인 Centos Linux 환경에서는 에러가 발생하였다. 그래서 tokenizer는 명사가 아닌 words로 정의하였다. 이 경우에는 term의 개수가 증가하기 때문에 상대적으로 vector의 원소 개수가 증가하게된다.&lt;/p&gt;
+&lt;p&gt;또한 word2vec 패키지의 함수들은 parallel processing을 지원하므로, parallel 처리를 위한 multicores 사용을 지원하는 doMC, doParallel 패키지의 사용이 필요하다. 본 예제에서는 doMC 패키지를 사용한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; noun_tokenizer &amp;lt;- function(docs, pos = c(&amp;quot;NNG&amp;quot;, &amp;quot;NNP&amp;quot;)) {
++   docs %&amp;gt;% lapply(function(x) {
++     morpheme &amp;lt;- RMeCabC(x)
++     morpheme &amp;lt;- unlist(morpheme[
++       which(sapply(morpheme, names) %in% pos)])
++     morpheme[nchar(morpheme) &amp;gt; 0]
++   })  
++ }
+&amp;gt; 
+&amp;gt; # not used  
+&amp;gt; token_fun &amp;lt;- noun_tokenizer
+&amp;gt; 
+&amp;gt; token_fun &amp;lt;- tokenizers::tokenize_words
+&amp;gt; 
+&amp;gt; # parallel cores
+&amp;gt; nc &amp;lt;- parallel::detectCores()
+&amp;gt; registerDoMC(cores = nc)
+&amp;gt; 
+&amp;gt; it_train &amp;lt;- itoken_parallel(train$doc, 
++                    tokenizer = token_fun, 
++                    ids = train$id, 
++                    progressbar = FALSE)
+&amp;gt; 
+&amp;gt; it_test &amp;lt;- itoken_parallel(test$doc, 
++                   tokenizer = token_fun, 
++                   ids = test$id, 
++                   progressbar = FALSE)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;모델-적합하기&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;모델 적합하기&lt;/h1&gt;
+&lt;div id=&#34;vocabulary-기반-모델링&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Vocabulary 기반 모델링&lt;/h2&gt;
+&lt;div id=&#34;vocabulary-생성&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Vocabulary 생성&lt;/h3&gt;
+&lt;p&gt;vocabulary는 documents로부터 생성된 terms의 집합이다. 여기서는 tokenizer를 words로 정의했기 때문에 띄어쓰기 단위의 단어 집합으로 vocabulary가 생성된다.&lt;/p&gt;
+&lt;p&gt;몇몇 데이터를 조회해보면 term별로 frequency와 document frequency가 도출되었음을 알 수 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; vocab &amp;lt;- create_vocabulary(it_train)
+Warning in selectChildren(jobs, timeout): cannot wait for child 34664 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34663 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34668 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34667 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34666 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34665 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34670 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34672 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34671 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34673 as it does
+not exist
+&amp;gt; tail(vocab, n = 10) %&amp;gt;%
++   knitr::kable(., row.names = FALSE, format.args = list(big.mark = &amp;quot;,&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;left&#34;&gt;term&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;term_count&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;doc_count&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;한&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3,846&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1,129&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;그리고&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4,136&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1,226&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;이&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4,991&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1,216&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;있는&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4,994&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1,240&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;합니다&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,084&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1,098&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;여러분&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5,548&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1,386&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;우리&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7,395&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1,444&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;수&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8,449&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1,381&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;것입니다&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8,897&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1,430&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;있습니다&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;11,950&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1,527&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div id=&#34;document-term-matrix-생성하기&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Document Term Matrix 생성하기&lt;/h3&gt;
+&lt;p&gt;documents taxonomy 분류 모델을 수행하는 데이터셋은 DTM(Document Term Matrix) 구조여야 한다. 그래서 vocabulary를 DTM으로 변환하는 작업을 수행한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; vectorizer &amp;lt;-  vocab_vectorizer(vocab)
+&amp;gt; 
+&amp;gt; dtm_train &amp;lt;- create_dtm(it_train, vectorizer)
+Warning in selectChildren(jobs, timeout): cannot wait for child 34675 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34679 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34678 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34677 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34676 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34674 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34681 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34683 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34682 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34684 as it does
+not exist
+&amp;gt; dim(dtm_train)
+[1]   1685 127048
+&amp;gt; dtm_test &amp;lt;- create_dtm(it_test, vectorizer)
+Warning in selectChildren(jobs, timeout): cannot wait for child 34686 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34689 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34688 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34687 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34691 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34690 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34693 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34694 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34695 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34696 as it does
+not exist
+&amp;gt; dim(dtm_test)
+[1]    723 127048&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;모델-생성&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;모델 생성&lt;/h3&gt;
+&lt;p&gt;모든 terms을 모델의 독립변수로 사용하려 하기 때문에, terms의 개수가 독립변수의 개수와 같게 된다. 이 경우에는 over-fitting의 이슈가 발생하므로 이를 해경하기 위해서 over-fitting을 방지해주는 LASSO 모델을 사용하기로 한다.
+또한 target 변수가 binary가 아닌 3개의 class이기 때문에 family 함수는 “multinomial”을 지정한다. 즉, multinomial logistic regression의 알고리즘에 기반한 LASSO 모델을 만든다.&lt;/p&gt;
+&lt;p&gt;LASSO 모델을 생성하기 위해서는 cv.glmnet() 함수에서 penalty값인 alpha의 값을 1로 지정해야 LASSO Generalized Linear Model로 모델이 만들어진다. alpha의 값이 0이면 Ridge Generalized Linear Model, 0.5이면 Elastic Net Regularized Generalized Linear Model이 생성된다.&lt;/p&gt;
+&lt;p&gt;type.measure은 cross-validation을 위한 loss값 계산에 사용하는 측도를 지원한다. 일반적으로 binomial family 함수의 경우에는 type.measure 인수를 AUC(Area Under Curve)인 “auc”를 사용하지만, multinomial family 함수의 경우에는 이를 사용할 수 없기 때문에 여기서는 “deviance”를 사용하였다. 이 값이 기본값이다.&lt;/p&gt;
+&lt;p&gt;그리고 k-folds cross-validation의 k의 값은 10으로 지정하여, 10-fold cross-validation을 수행하여 over-fitting 또한 방지하도록 한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; NFOLDS &amp;lt;- 10
+&amp;gt; 
+&amp;gt; classifier &amp;lt;- cv.glmnet(x = dtm_train, y = train$president, 
++                         family = &amp;#39;multinomial&amp;#39;, 
++                         alpha = 1,
++                         type.measure = &amp;quot;deviance&amp;quot;,
++                         nfolds = NFOLDS,
++                         thresh = 0.001,
++                         maxit = 1000,
++                         parallel = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;모델의-검증&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;모델의 검증&lt;/h3&gt;
+&lt;p&gt;test 데이터로 검증한 결과 Accuracy가 0.9378로 비교적 높게 나타났다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; pred_voca &amp;lt;- predict(classifier, dtm_test, type = &amp;#39;response&amp;#39;)[, , 1]
+&amp;gt; president_voca &amp;lt;- apply(pred_voca, 1, 
++                         function(x) colnames(pred_voca)[which(max(x) == x)])
+&amp;gt; 
+&amp;gt; cmat_voca &amp;lt;- caret::confusionMatrix(factor(president_voca), factor(test$president))
+&amp;gt; cmat_voca
+Confusion Matrix and Statistics
+
+          Reference
+Prediction 김대중 노무현 이명박
+    김대중    226      3      3
+    노무현     16    220     10
+    이명박      2      8    235
+
+Overall Statistics
+                                          
+               Accuracy : 0.9419          
+                 95% CI : (0.9223, 0.9578)
+    No Information Rate : 0.343           
+    P-Value [Acc &amp;gt; NIR] : &amp;lt; 2e-16         
+                                          
+                  Kappa : 0.9129          
+                                          
+ Mcnemar&amp;#39;s Test P-Value : 0.02536         
+
+Statistics by Class:
+
+                     Class: 김대중 Class: 노무현 Class: 이명박
+Sensitivity                 0.9262        0.9524        0.9476
+Specificity                 0.9875        0.9472        0.9789
+Pos Pred Value              0.9741        0.8943        0.9592
+Neg Pred Value              0.9633        0.9769        0.9728
+Prevalence                  0.3375        0.3195        0.3430
+Detection Rate              0.3126        0.3043        0.3250
+Detection Prevalence        0.3209        0.3402        0.3389
+Balanced Accuracy           0.9569        0.9498        0.9633&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;n-grams-기반-모델링&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;N-Grams 기반 모델링&lt;/h2&gt;
+&lt;p&gt;N-grams은 N개의 연속된 terms의 조합을 terms로 간주하여 vocabulary를 생성하고 이 데이터 기반으로 모델을 생성한다. 파편화된 terms이 아니기 때문에 일반적인 vocabulary를 이용한 TA보다는 좀 더 정확하게 문맥을 파악할 수 있는 장점이 있다.&lt;/p&gt;
+&lt;div id=&#34;vocabulary-생성-1&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Vocabulary 생성&lt;/h3&gt;
+&lt;p&gt;N-grams vocabulary는 create_vocabulary() 함수의 ngram 인수를 이용해서 생성한다. 여기서는 N의 값이 2인 2-grams 즉, bigram vocabulary를 생성한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; vocab_bigram &amp;lt;- create_vocabulary(it_train, ngram = c(1L, 2L))
+Warning in selectChildren(jobs, timeout): cannot wait for child 34726 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34728 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34725 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34730 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34729 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34727 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34731 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34732 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34733 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34735 as it does
+not exist
+&amp;gt; dim(vocab_bigram)
+[1] 764732      3
+&amp;gt; head(vocab_bigram, n = 10) %&amp;gt;%
++   knitr::kable(., row.names = FALSE, format.args = list(big.mark = &amp;quot;,&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;left&#34;&gt;term&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;term_count&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;doc_count&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;0.15&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;0.15_수준으로&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;0.1_를&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;0.1_미만의&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;0.230&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;0.230_입니다&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;0.291&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;0.291_에서&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;0.301&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;0.301_에&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div id=&#34;prune-vocabulary&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Prune Vocabulary&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Documents의 개수가 증가하거나 Documents의 길이가 증가하면, Vocabulary의 규모도 증가한다. 이것은 모델을 생성하는데 많은 컴퓨팅 리소스를 소모해서 속도가 느려지게 된다. 그래서 모델에 영향을 덜 줄 수 있는 terms를 제거하는 작업이 필요하다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;prune_vocabulary() 함수는 Vocabulary에 포함된 terms를 제거하는 작업 수행해 준다. 여기서는 term_count_min 인수를 이용해서 term frequency가 10 미만이고, doc_proportion_max 인수를 이용해서 term을 포함해야하는 문서의 최대 비율이 0.5보다 큰 term을 제거하였다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; vocab_bigram &amp;lt;- vocab_bigram %&amp;gt;% 
++   prune_vocabulary(term_count_min = 10,
++                    doc_proportion_max = 0.5)
+&amp;gt; dim(vocab_bigram)
+[1] 18781     3&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;documents-term-matrix-생성&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Documents Term Matrix 생성&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; vectorizer_bigram &amp;lt;- vocab_vectorizer(vocab_bigram)
+&amp;gt; 
+&amp;gt; dtm_train_bigram &amp;lt;- create_dtm(it_train, vectorizer_bigram)
+Warning in selectChildren(jobs, timeout): cannot wait for child 34741 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34740 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34745 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34744 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34743 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34742 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34746 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34747 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34748 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34749 as it does
+not exist
+&amp;gt; dim(dtm_train_bigram)
+[1]  1685 18781
+&amp;gt; dtm_test_bigram  &amp;lt;- create_dtm(it_test, vectorizer_bigram)
+Warning in selectChildren(jobs, timeout): cannot wait for child 34751 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34752 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34753 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34755 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34754 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34757 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34756 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34759 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34760 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34761 as it does
+not exist
+&amp;gt; dim(dtm_test_bigram)
+[1]   723 18781&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;모델-생성-1&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;모델 생성&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; classifier &amp;lt;- cv.glmnet(x = dtm_train_bigram, y = train$president, 
++                         family = &amp;#39;multinomial&amp;#39;, 
++                         type.measure = &amp;quot;deviance&amp;quot;,
++                         alpha = 1,                        
++                         nfolds = NFOLDS,
++                         parallel = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;모델-검증&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;모델 검증&lt;/h3&gt;
+&lt;p&gt;vocabulary를 가지지기했음에도 불구하고, 전체 vocabulary를 사용한 모델보다 성능이 좋아졌다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; pred_bigram &amp;lt;- predict(classifier, dtm_test_bigram, type = &amp;#39;response&amp;#39;)[, , 1]
+&amp;gt; 
+&amp;gt; president_bigram &amp;lt;- apply(pred_bigram, 1, 
++                           function(x) colnames(pred_bigram)[which(max(x) == x)])
+&amp;gt; 
+&amp;gt; cmat_bigram &amp;lt;- confusionMatrix(factor(president_bigram), factor(test$president)) 
+&amp;gt; cmat_bigram
+Confusion Matrix and Statistics
+
+          Reference
+Prediction 김대중 노무현 이명박
+    김대중    232      2      7
+    노무현     10    223     11
+    이명박      2      6    230
+
+Overall Statistics
+                                          
+               Accuracy : 0.9474          
+                 95% CI : (0.9286, 0.9625)
+    No Information Rate : 0.343           
+    P-Value [Acc &amp;gt; NIR] : &amp;lt; 2e-16         
+                                          
+                  Kappa : 0.9212          
+                                          
+ Mcnemar&amp;#39;s Test P-Value : 0.02248         
+
+Statistics by Class:
+
+                     Class: 김대중 Class: 노무현 Class: 이명박
+Sensitivity                 0.9508        0.9654        0.9274
+Specificity                 0.9812        0.9573        0.9832
+Pos Pred Value              0.9627        0.9139        0.9664
+Neg Pred Value              0.9751        0.9833        0.9629
+Prevalence                  0.3375        0.3195        0.3430
+Detection Rate              0.3209        0.3084        0.3181
+Detection Prevalence        0.3333        0.3375        0.3292
+Balanced Accuracy           0.9660        0.9613        0.9553&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;feature-hashing-기반의-모델&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Feature hashing 기반의 모델&lt;/h2&gt;
+&lt;p&gt;Feature hashing은 Yahoo에서 개발한 기법으로 변수에 해시함수를 적용하고 이를 인덱스로 사용하는 기법이다. 이 방법을 적용하면 vecterization의 수행속도가 빨라지고, 연산 과정에서의 메로리 공간도 절약된다고 한다.&lt;/p&gt;
+&lt;div id=&#34;hash-vectorize-정의&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Hash Vectorize 정의&lt;/h3&gt;
+&lt;p&gt;hash_vectorizer() 함수로 Feature hashing 적용한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; vectorizer_hash &amp;lt;- hash_vectorizer(hash_size = 2 ^ 14, ngram = c(1L, 2L))&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;document-term-matrix-생성&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Document Term Matrix 생성&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; dtm_train_hash &amp;lt;- create_dtm(it_train, vectorizer_hash)
+Warning in selectChildren(jobs, timeout): cannot wait for child 34780 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34779 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34782 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34783 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34781 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34784 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34785 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34786 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34787 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34788 as it does
+not exist
+&amp;gt; dtm_test_hash &amp;lt;- create_dtm(it_test, vectorizer_hash)
+Warning in selectChildren(jobs, timeout): cannot wait for child 34792 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34793 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34795 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34794 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34796 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34798 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34797 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34800 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34801 as it does
+not exist
+Warning in selectChildren(jobs, timeout): cannot wait for child 34802 as it does
+not exist&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;모델-생성-2&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;모델 생성&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; classifier &amp;lt;- cv.glmnet(x = dtm_train_hash, y = train$president, 
++                         family = &amp;#39;multinomial&amp;#39;, 
++                         type.multinomial = &amp;quot;grouped&amp;quot;, 
++                         nfolds = NFOLDS,
++                         thresh = 1e-3,
++                         maxit = 1e3,
++                         parallel = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;모델-검증-1&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;모델 검증&lt;/h3&gt;
+&lt;p&gt;모델의 성능은 다른 기법보다는 낮아졌지만, 대용량의 데이터를 분석할 경우에는 속도의 개선을 위해서 사용해봄직 하다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; pred_hash &amp;lt;- predict(classifier, dtm_test_hash, type = &amp;#39;response&amp;#39;)[, , 1]
+&amp;gt; 
+&amp;gt; president_hash &amp;lt;- apply(pred_hash, 1, 
++                         function(x) colnames(pred_hash)[which(max(x) == x)])
+&amp;gt; 
+&amp;gt; cmat_hash &amp;lt;- confusionMatrix(factor(president_hash), factor(test$president))
+&amp;gt; cmat_hash
+Confusion Matrix and Statistics
+
+          Reference
+Prediction 김대중 노무현 이명박
+    김대중    222      5      2
+    노무현     17    215      9
+    이명박      5     11    237
+
+Overall Statistics
+                                          
+               Accuracy : 0.9322          
+                 95% CI : (0.9114, 0.9494)
+    No Information Rate : 0.343           
+    P-Value [Acc &amp;gt; NIR] : &amp;lt; 2e-16         
+                                          
+                  Kappa : 0.8983          
+                                          
+ Mcnemar&amp;#39;s Test P-Value : 0.04537         
+
+Statistics by Class:
+
+                     Class: 김대중 Class: 노무현 Class: 이명박
+Sensitivity                 0.9098        0.9307        0.9556
+Specificity                 0.9854        0.9472        0.9663
+Pos Pred Value              0.9694        0.8921        0.9368
+Neg Pred Value              0.9555        0.9668        0.9766
+Prevalence                  0.3375        0.3195        0.3430
+Detection Rate              0.3071        0.2974        0.3278
+Detection Prevalence        0.3167        0.3333        0.3499
+Balanced Accuracy           0.9476        0.9389        0.9610&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;tf-idf-기반의-모델&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;TF-IDF 기반의 모델&lt;/h2&gt;
+&lt;p&gt;대통령 연설문에서는 대부분 “존경하는 국민 여러분”으로 시작할 것이다. 그러므로 “존경하는”이라는 term은 모든 연설문에 포함되기 때문에 term frequency와 document term frequency가 상당히 클 것이다. 그러나 이 term으로 세명의 전직 대통령의 연설문을 구분하기 어렵다. 세명의 전직 대통령이 즐겨 사용하는 단어이기 때문이다. 즉, term frequency와 document term frequency가 상당히 큰 terms은 모델 개발에 의미가 없는 terms인 것이다.&lt;/p&gt;
+&lt;p&gt;TF-IDF는 단일문서, 혹은 소수의 문서에서 의미가 있는 terms의 가중치를 높이고 대부분의 문서에서 발현하는 terms의 가중치를 줄이는 용도로 만들어진 측도다. 그러므로
+DTM에 TF-IDF 변환을 수행하면 모델의 성능이 개선된다.&lt;/p&gt;
+&lt;p&gt;Text Anaytics에서는 documents의 길이의 차이가 있으면, 상대적으로 짧거나 긴 documents에서 발현하는 terms들로 인해서 frequency scale에 왜곡이 있을 수 있다. 이 경우에는 표준화를 수행해야 한다. 그런데 TF-IDF 변환은 자동으로 표준화가 되기 때문에 표준화의 잇점이 있다.
+만약 표준화를 수행하려면, normalize() 함수를 사용하면 된다.&lt;/p&gt;
+&lt;div id=&#34;dtm의-tf-idf-변환&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;DTM의 TF-IDF 변환&lt;/h3&gt;
+&lt;p&gt;TfIdf class와 fit_transform() 함수를 이용해서 DTM에 TF-IDF 변환을 수행한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; tfidf &amp;lt;- TfIdf$new()
+&amp;gt; 
+&amp;gt; dtm_train_tfidf &amp;lt;- fit_transform(dtm_train, tfidf)
+&amp;gt; dtm_test_tfidf &amp;lt;- fit_transform(dtm_test, tfidf) &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;모델-생성-3&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;모델 생성&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; classifier &amp;lt;- cv.glmnet(x = dtm_train_tfidf, y = train$president, 
++                         family = &amp;#39;multinomial&amp;#39;, 
++                         nfolds = NFOLDS,
++                         thresh = 1e-3,
++                         maxit = 1e3,
++                         parallel = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;모델의-검증-1&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;모델의 검증&lt;/h3&gt;
+&lt;p&gt;TF-IDF 변환된 데이터로 생성한 모델의 성능이 상대적으로 높다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; pred_tfidf &amp;lt;- predict(classifier, dtm_test_tfidf, type = &amp;#39;response&amp;#39;)[, , 1]
+&amp;gt; 
+&amp;gt; president_tfidf &amp;lt;- apply(pred_tfidf, 1, 
++                          function(x) colnames(pred_tfidf)
++                          [which(max(x) == x)])
+&amp;gt; 
+&amp;gt; cmat_tfidf &amp;lt;- confusionMatrix(factor(president_tfidf), factor(test$president))
+&amp;gt; cmat_tfidf
+Confusion Matrix and Statistics
+
+          Reference
+Prediction 김대중 노무현 이명박
+    김대중    236      5      3
+    노무현      7    218      4
+    이명박      1      8    241
+
+Overall Statistics
+                                          
+               Accuracy : 0.9613          
+                 95% CI : (0.9445, 0.9741)
+    No Information Rate : 0.343           
+    P-Value [Acc &amp;gt; NIR] : &amp;lt;2e-16          
+                                          
+                  Kappa : 0.9419          
+                                          
+ Mcnemar&amp;#39;s Test P-Value : 0.4459          
+
+Statistics by Class:
+
+                     Class: 김대중 Class: 노무현 Class: 이명박
+Sensitivity                 0.9672        0.9437        0.9718
+Specificity                 0.9833        0.9776        0.9811
+Pos Pred Value              0.9672        0.9520        0.9640
+Neg Pred Value              0.9833        0.9737        0.9852
+Prevalence                  0.3375        0.3195        0.3430
+Detection Rate              0.3264        0.3015        0.3333
+Detection Prevalence        0.3375        0.3167        0.3458
+Balanced Accuracy           0.9753        0.9607        0.9764&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;모델-성능의-비교&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;모델 성능의 비교&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;모델의 성능은 TF-IDF &amp;gt; Bigram &amp;gt; Vocabulary &amp;gt; Feature Hashing의 순서로 나타난다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;그러므로 &lt;strong&gt;성능을 높이기 위해서는 TF-IDF 방법을 사용&lt;/strong&gt;하는 것이 좋으며, 대용량의 데이터 분석에서는 적은 성능 감소와 &lt;strong&gt;수행 속도의 개선을 가져오는 Feature Hashing 기법&lt;/strong&gt;을 사용하면 될 것이다. 이 경우에는 &lt;strong&gt;Purne Vocabulary 전처리도 필요&lt;/strong&gt;할 것이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; accuracy &amp;lt;- rbind(cmat_voca$overall, cmat_bigram$overall, 
++                   cmat_hash$overall, cmat_tfidf$overall) %&amp;gt;%
++   round(3)
+&amp;gt; 
+&amp;gt; data.frame(Method = c(&amp;quot;Vocabulary&amp;quot;, &amp;quot;Bigram&amp;quot;, &amp;quot;FeatueHash&amp;quot;, &amp;quot;TF-IDF&amp;quot;),
++            accuracy) %&amp;gt;%
++   arrange(desc(Accuracy)) %&amp;gt;%
++   knitr::kable()&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;colgroup&gt;
+&lt;col width=&#34;11%&#34; /&gt;
+&lt;col width=&#34;9%&#34; /&gt;
+&lt;col width=&#34;6%&#34; /&gt;
+&lt;col width=&#34;14%&#34; /&gt;
+&lt;col width=&#34;14%&#34; /&gt;
+&lt;col width=&#34;13%&#34; /&gt;
+&lt;col width=&#34;15%&#34; /&gt;
+&lt;col width=&#34;14%&#34; /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;left&#34;&gt;Method&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;Accuracy&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;Kappa&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;AccuracyLower&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;AccuracyUpper&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;AccuracyNull&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;AccuracyPValue&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;McnemarPValue&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;TF-IDF&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.961&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.942&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.945&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.974&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.343&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.446&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Bigram&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.947&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.921&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.929&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.963&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.343&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.022&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Vocabulary&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.942&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.913&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.922&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.958&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.343&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.025&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;FeatueHash&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.932&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.898&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.911&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.949&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.343&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.045&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div id=&#34;reference&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Reference&lt;/h1&gt;
+&lt;p&gt;본 분석 사례는 Vectorization(‘&lt;a href=&#34;http://text2vec.org/vectorization.html&#34; class=&#34;uri&#34;&gt;http://text2vec.org/vectorization.html&lt;/a&gt;’)을 참고하였다.&lt;/p&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

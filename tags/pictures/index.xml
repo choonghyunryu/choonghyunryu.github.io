@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>pictures on Dataholic</title>
+    <link>/tags/pictures/</link>
+    <description>Recent content in pictures on Dataholic</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sat, 02 Jan 2016 00:00:00 +0000</lastBuildDate><atom:link href="/tags/pictures/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>grid package로 그림 그리기</title>
+      <link>/post/2016-01/2016-01-02-grid_picture/</link>
+      <pubDate>Sat, 02 Jan 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2016-01/2016-01-02-grid_picture/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;오클랜드 대학교의 Paul Murrell은 &lt;code&gt;grid&lt;/code&gt;라는 이름의 그래픽 라이브러리(package)를 개발했다. 이 라이브러리가 바로 &lt;code&gt;lattice&lt;/code&gt;와 &lt;code&gt;ggplot2&lt;/code&gt; package의 토대가 된다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;grid&lt;/code&gt; package를 이용해여 멋진 풍경을 그려보자. &lt;strong&gt;‘R로도 그림을 그릴 수 있겠구나’&lt;/strong&gt;하는 흥미차원의 시도다.&lt;/p&gt;
+&lt;p&gt;먼저 야경을 그려보고, 한 낮의 풍경을 그려보겠다. 동심으로 돌아가 하얀 스케치북에 그레파스를 이용해서 산도 그리고, 달고 그리고, 별과 해도 그려보자. 밤의 그림은 Paul Murrell가 그렸고, 필자가 Paul Murrell의 스케치북과 그레파스를 빌려서 모사해보겠다. 해가 중천에 걸린 여름 산은 녹음이 우거져 있다.&lt;/p&gt;
+&lt;div id=&#34;r로-그린-밤-하늘의-풍경&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;R로 그린 밤 하늘의 풍경&lt;/h3&gt;
+&lt;p&gt;아마 Paul Murrell는 검은색과 회색 크레파스가 다 떨어졌을 것이고, 필자는 하늘색 크레파스가 다 달아 없어졌다. Paul Murrell이 그린 밤 하늘의 풍경이다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2016-01/2016-01-02-grid_picture_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;75%&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;r로-그린-대낮의-풍경&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;R로 그린 대낮의 풍경&lt;/h3&gt;
+&lt;p&gt;이번에는 낮의 풍경을 그려보자. 파란 하늘에 노란 태양이 떠 있는 그림이다.
+Paul Murrell 그림을 응용해서 그려 보았다. 산을 그리는 로직은 Paul Murrell 그린 밤하늘을 것에 색상만 바꾸었다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2016-01/2016-01-02-grid_picture_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;75%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;구름 한 점 없는 맑은 날이다. 소풍가기 딱 좋은 날인 것 같다.&lt;/p&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

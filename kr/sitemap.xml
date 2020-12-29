@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>/kr/categories/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="kr"
+                href="/kr/categories/"
+                />
+  </url>
+  
+  <url>
+    <loc>/kr/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="kr"
+                href="/kr/"
+                />
+  </url>
+  
+  <url>
+    <loc>/kr/series/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="/series/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="kr"
+                href="/kr/series/"
+                />
+  </url>
+  
+  <url>
+    <loc>/kr/tags/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="kr"
+                href="/kr/tags/"
+                />
+  </url>
+  
+</urlset>

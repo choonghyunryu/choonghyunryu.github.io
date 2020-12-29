@@ -1,0 +1,1378 @@
+
+<!DOCTYPE html>
+<html lang="en" data-figures="" class="page">
+  <head>
+<title>Google Trends Analysis_Case Study | Dataholic</title>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.79.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-118779401-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-118779401-1');
+</script>
+  
+<meta property="og:locale" content="en" />
+
+<meta property="og:type" content="article">
+<meta name="description" content="들어가기 “Google Trends Analysis - Case Study”는 R에서 Google Trends API를 이용해서 관심 검색어의 traffic과 traffic 추이를 분석하는 방법을 실 사례로 따라가면서 학습할 수 있도로 정리한 학습자료다.
+배경 일반 대중들의 관심사와 관 …">
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:creator" content="">
+<meta name="twitter:title" content="Google Trends Analysis_Case Study" />
+<meta property="og:url" content="/post/2018-01/2018-01-12-google_trends/" />
+<meta property="og:title" content="Google Trends Analysis_Case Study" />
+<meta property="og:description" content="들어가기 “Google Trends Analysis - Case Study”는 R에서 Google Trends API를 이용해서 관심 검색어의 traffic과 traffic 추이를 분석하는 방법을 실 사례로 따라가면서 학습할 수 있도로 정리한 학습자료다.
+배경 일반 대중들의 관심사와 관 …" />
+<meta property="og:image" content="/" />
+<link rel="apple-touch-icon" sizes="180x180" href='/icons/apple-touch-icon.png'>
+<link rel="icon" type="image/png" sizes="32x32" href='/icons/favicon-32x32.png'>
+<link rel="manifest" href='/icons/site.webmanifest'>
+<link rel="mask-icon" href='/safari-pinned-tab.svg' color="#002538">
+<meta name="msapplication-TileColor" content="#002538">
+<meta name="theme-color" content="#002538">
+
+<link rel="canonical" href="/post/2018-01/2018-01-12-google_trends/">
+
+    
+
+    
+    
+    <link rel="preload" href="/css/styles.2b3290fc6e94839826981c23ed76e1831472bd3f8af68332da00b97d9430b56bfb7e9394d5c09aca633c093c621709cdd745eec940be733933ac5d876223de52.css" integrity = "sha512-KzKQ/G6Ug5gmmBwj7XbhgxRyvT&#43;K9oMy2gC5fZQwtWv7fpOU1cCaymM8CTxiFwnN10XuyUC&#43;czkzrF2HYiPeUg==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="/js/bundle.min.03f1cc201c9efa18e14550bff374f58e89f1e6b2a30a0e22f84c87f6eb766e419bd6569c3a60846ea3e65816112dfa454f4785d306d024b6ef2616d067862a7a.js" as="script" integrity=
+    "sha512-A/HMIBye&#43;hjhRVC/83T1jonx5rKjCg4i&#43;EyH9ut2bkGb1lacOmCEbqPmWBYRLfpFT0eF0wbQJLbvJhbQZ4Yqeg==" crossorigin="anonymous">
+
+    
+    <link rel="stylesheet" type="text/css" href="/css/styles.2b3290fc6e94839826981c23ed76e1831472bd3f8af68332da00b97d9430b56bfb7e9394d5c09aca633c093c621709cdd745eec940be733933ac5d876223de52.css" integrity="sha512-KzKQ/G6Ug5gmmBwj7XbhgxRyvT&#43;K9oMy2gC5fZQwtWv7fpOU1cCaymM8CTxiFwnN10XuyUC&#43;czkzrF2HYiPeUg==" crossorigin="anonymous">
+    
+  </head>
+  
+  
+    
+  
+  <body data-code="7" data-lines="false" id="documentTop">
+
+<header class="nav_header" >
+  <nav class="nav">
+    <a href='/' class="nav_brand nav_item">
+      <img src="/logos/logo.png" class="logo">
+      <div class="nav_close">
+        <div>
+          <svg class="icon">
+  <use xlink:href="#open-menu"></use>
+</svg>
+          <svg class="icon">
+  <use xlink:href="#closeme"></use>
+</svg>
+        </div>
+      </div>
+    </a>
+    <div class='nav_body nav_body_left'>
+      
+      
+      
+        
+
+  <div class="nav_parent">
+    <a href="/" class="nav_item">Home </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/post/" class="nav_item">R </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/gallery/" class="nav_item">Gellary </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/moment/" class="nav_item">Moment </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/about/" class="nav_item">About </a>
+  </div>
+      
+      <div class="nav_parent">
+        <a href="#" class="nav_item"></a>
+        <div class="nav_sub">
+          <span class="nav_child"></span>
+          
+          <a href="/" class="nav_child nav_item">English</a>
+          
+          <a href="/kr/" class="nav_child nav_item">Korean</a>
+          
+        </div>
+      </div>
+      
+<div class='follow'>
+  <a href="https://github.com/choonghyunryu">
+    <svg class="icon">
+  <use xlink:href="#github"></use>
+</svg>
+  </a>
+  <a href="https://www.facebook.com/choonghyun.ryu">
+    <svg class="icon">
+  <use xlink:href="#facebook"></use>
+</svg>
+  </a>
+  <a href="https://www.linkedin.com/in/choonghyun-ryu-10a95726/">
+    <svg class="icon">
+  <use xlink:href="#linkedin"></use>
+</svg>
+  </a>
+    
+  <a href="/index.xml">
+    <svg class="icon">
+  <use xlink:href="#rss"></use>
+</svg>
+  </a>
+<div class="color_mode">
+  <input type="checkbox" class="color_choice" id="mode">
+</div>
+
+</div>
+
+    </div>
+  </nav>
+</header>
+
+    <main>
+  
+<div class="grid-inverse wrap content">
+  <article class="post_content">
+    <h1 class="post_title">Google Trends Analysis_Case Study</h1><div class="post_meta">
+  
+    <svg class="icon">
+  <use xlink:href="#calendar"></use>
+</svg>
+    <span class="post_date">
+      2018-01-12</span>
+      <a href='/tags/google-trends' class="post_tag button button_translucent">Google Trends
+      </a>
+      <a href='/tags/traffic' class="post_tag button button_translucent">traffic
+      </a>
+      <a href='/tags/graphics' class="post_tag button button_translucent">graphics
+      </a>
+      <a href='/tags/gtrendsr' class="post_tag button button_translucent">gtrendsR
+      </a>
+</div>
+
+    
+  <div class="post_share">
+    Share on:
+    <a href="https://twitter.com/intent/tweet?text=Google%20Trends%20Analysis_Case%20Study&url=%2fpost%2f2018-01%2f2018-01-12-google_trends%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#twitter"></use>
+</svg>
+    </a>
+    <a href="https://www.facebook.com/sharer.php?u=%2fpost%2f2018-01%2f2018-01-12-google_trends%2f&t=Google%20Trends%20Analysis_Case%20Study" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#facebook"></use>
+</svg>
+    </a>
+    <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#linkedin"></use>
+</svg>
+    </a>
+    <a href="/post/2018-01/2018-01-12-google_trends/" title="Copy Link" class="link link_yank">
+      <svg class="icon">
+  <use xlink:href="#copy"></use>
+</svg>
+    </a>
+  </div>
+
+    
+    
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/rmarkdown-libs/d3/d3.js"></script>
+<script src="/rmarkdown-libs/bubbles-binding/bubbles.js"></script>
+
+
+<div id="들어가기" class="section level1">
+<h1>들어가기</h1>
+<p>“Google Trends Analysis - Case Study”는 R에서 <code>Google Trends API</code>를 이용해서 관심 검색어의 traffic과 traffic 추이를 분석하는 방법을 실 사례로 따라가면서 학습할 수 있도로 정리한 학습자료다.</p>
+<div id="배경" class="section level2">
+<h2>배경</h2>
+<p>일반 대중들의 관심사와 관심의 트랜드를 설명할 데이터 소스로 검색 포털의 검색 통계를 하나의 대상으로 선정하였다. 그리고 그 가능성을 검증하기 위해서 Google Trends의 통계를 수집하고 표현한 방법을 정리하였고, 그 과정에서의 R 코드를 공유한다.</p>
+</div>
+<div id="학습-목표" class="section level2">
+<h2>학습 목표</h2>
+<ol style="list-style-type: decimal">
+<li>Google Trends로부터 관심 키워드의 traffic을 수집하는 방법을 숙지한다.
+<ul>
+<li>단일 키워드와 두개 이상의 키워드로 traffic을 수집하는 방법</li>
+<li>지역별 (geographic regions)로 traffic을 수집하는 방법
+<ul>
+<li>예) 한국, 미국</li>
+</ul></li>
+<li>임의의 기간동안의 traffic을 수집하는 방법</li>
+</ul></li>
+<li>Google Trends에서 제공하는 통계 정보를 이해한다.
+<ul>
+<li>일자별 검색 관심도</li>
+<li>단위 기간동안의 지역(region, 광역시도, 주)별 키워드 관심도</li>
+<li>단위 기간동안의 도시별 키워드 관심도</li>
+<li>단위 기간동안의 관련 주제(topics)별 키워드 관심도
+<ul>
+<li>관련 주제 Top Rank</li>
+<li>인기 급상승 관련 주제 Top Rank</li>
+</ul></li>
+<li>단위 기간동안의 관련 검색어(related queries)별 키워드 관심도
+<ul>
+<li>관련 검색어 Top Rank</li>
+<li>인기 급상승 관련 검색어 Top Rank</li>
+</ul></li>
+</ul></li>
+<li>Google Trends에서 제공하는 통계 정보를 시각화하는 방법을 이해한다.
+<ul>
+<li>traffic의 추이를 표현하는 시계열 플롯</li>
+<li>top traffic을 파악하는 버블(bubble) 플롯</li>
+</ul></li>
+</ol>
+</div>
+</div>
+<div id="buzz-trafics-analysis" class="section level1">
+<h1>Buzz Trafics Analysis</h1>
+<p>Naver, Google 등의 검색 포털에서의 검색 traffic은 그 시대의 일반 대중들의 관심사를 대변해준다. 또한 시간의 추이에 따른 traffic의 증감은 단위 기간 안에서의 관심의 트랜드를 보여 주는 주요한 정보다.</p>
+<div id="google-trends" class="section level2">
+<h2>Google Trends</h2>
+<p>Google Trends는 Google 검색 로그로부터 집계된 검색 통계정보를 제공하는 서비스로 일부 기능들은 Open API로 조회가 가능하다.</p>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-2"></span>
+<img src="../img/google_trends.png" alt="Google Trends Logo" width="70%" />
+<p class="caption">
+Figure 1: Google Trends Logo
+</p>
+</div>
+</div>
+</div>
+<div id="google-trends-통계정보의-활용" class="section level1">
+<h1>Google Trends 통계정보의 활용</h1>
+<div id="준비하기" class="section level2">
+<h2>준비하기</h2>
+<div id="패키지-로드" class="section level3">
+<h3>패키지 로드</h3>
+<p>Google Trends 정보를 수집하는 패키지는 gtrendsR 패키지다. 분석과 관련된 패키지를 로드한다.</p>
+<pre class="r"><code>&gt; ###############################################################
+&gt; ## 필요한 패키지 로드
+&gt; ###############################################################
+&gt; library(gtrendsR)
+&gt; library(dplyr)
+&gt; library(magrittr)
+&gt; library(ggplot2)</code></pre>
+</div>
+<div id="사용자-함수의-정의" class="section level3">
+<h3>사용자 함수의 정의</h3>
+<p>필요한 패키지를 로드하고, 버블플롯을 그리는 함수를 정의한다. Case Study 후반부에 이 사용자 정의함수로 버블플롯을 그릴 것이므로 미리 생성해 두자.</p>
+<pre class="r"><code>###############################################################
+## 사용자 정의함수 - 버블 플롯을 그리는 함수
+###############################################################
+bbplot &lt;- function(label, value, textColor = &quot;#333333&quot;,
+                   color = RColorBrewer::brewer.pal(8, &quot;Dark2&quot;)) {
+  library(bubbles)
+  library(RColorBrewer)
+
+  color &lt;- substr(color, 1, 7)
+  
+  n &lt;- length(label)
+  n.pal &lt;- length(color)
+
+  if (n &gt; n.pal) {
+    color &lt;- c(color, rep(color[n.pal], n - n.pal))
+  }
+
+  if (n &lt; n.pal) {
+    color &lt;- color[1:n]
+  }
+
+  bubbles(value, label, color = color, textColor = textColor)
+}</code></pre>
+</div>
+<div id="bitcoin-거래-시세-데이터" class="section level3">
+<h3>Bitcoin 거래 시세 데이터</h3>
+<p>Bitcoin 거래 시세는 별도로 수집해서 CSV 파일에 담아 놓았다.
+시세를 담은 CSV 파일인 &lt;a href=“../data/market-price.csv”, target = "_blank"&gt;market-price.csv</a>을 로드한다.</p>
+<pre class="r"><code>&gt; ###############################################################
+&gt; ## Bitcoin 거래 시세 정보
+&gt; ###############################################################
+&gt; dpath &lt;- &quot;data&quot;
+&gt; bitprice &lt;- read.csv(paste(dpath, &quot;market-price.csv&quot;, sep = &quot;/&quot;), header = FALSE)
+&gt; 
+&gt; bitprice &lt;- bitprice %&gt;%
++   transmute(date = as.POSIXct(V1),
++             value = V2)</code></pre>
+</div>
+</div>
+<div id="google-trends-데이터-수집하기" class="section level2">
+<h2>Google Trends 데이터 수집하기</h2>
+<p>Google Trends 데이터를 수집하기 위해서는 인터넷에 접속된 온라인 환경이어야만 가능하다. 그러므로 이 절의 예제는 온라인에 접속된 인터넷 환경에서만 사용하기 바란다.</p>
+<div id="두-개의-키워드로-traffic-데이터-수집" class="section level3">
+<h3>두 개의 키워드로 traffic 데이터 수집</h3>
+<p>다음처럼 <code>gtrends()</code>로 “YOLO”와 “DINK”의 두 검색 키워드로 traffic을 조회한다. 이 경우는 world 기준의 traffic이다. 즉, 전세계 사람들이 Google에서 검색한 통계를 수집하게 된다.</p>
+<pre class="r"><code>&gt; yolo_trend &lt;- gtrends(c(&quot;YOLO&quot;, &quot;DINK&quot;))</code></pre>
+<div id="traffic-trend-plot" class="section level4">
+<h4>traffic trend plot</h4>
+<p>수집한 traffic 데이터는 다음처럼 plot() 함수로 간단하게 시계열 그래프를 그릴 수 있다.</p>
+<pre class="r"><code>&gt; plot(yolo_trend)</code></pre>
+<p><img src="/post/2018-01/2018-01-12-google_trends_files/figure-html/unnamed-chunk-7-1.png" width="768" /></p>
+<p>시계열 그래프를 보면 y-축인 Search hits의 최대값이 100임을 알수 있다. 즉, traffic 데이터는 검색 건수가 아니라 통계 시점에서 가장 큰 규모의 traffic을 100으로 놓고 산정한 상대적인 측도이다.
+traffic 데이터의 시계열 그래프는 <code>ggplot2</code> 패키지로 생성한다. 그래서 다음의 ggplot2 패키지의 기능을 추가하여 좀 더 팬시하게 그래프를 그릴 수도 있다. 두번 째 플롯이 범례를 아래로 이동해서 가독성을 높인 것이다.</p>
+<pre class="r"><code>&gt; p &lt;- plot(yolo_trend) </code></pre>
+<pre class="r"><code>&gt; p +
++   ggtitle(&quot;Google Trend Traffics (Interest over Time)&quot;) +
++   theme(plot.title = element_text(hjust = 0.5)) +
++   theme(legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="/post/2018-01/2018-01-12-google_trends_files/figure-html/unnamed-chunk-9-1.png" width="768" /></p>
+</div>
+</div>
+<div id="대한민국-traffic-데이터-수집" class="section level3">
+<h3>대한민국 traffic 데이터 수집</h3>
+<p>geo 인수값을 “KR”로 지정하면 우리 나라에서 검색한 traffic 통계를 수집한다.</p>
+<pre class="r"><code>&gt; yolo_trend2 &lt;- gtrends(c(&quot;YOLO&quot;, &quot;DINK&quot;), geo = &quot;KR&quot;)</code></pre>
+<p>YOLO 검색 traffic은 전세계적으로 줄어드는 추세이지만, 우리나라에서는 2016년도 말부터 증가하다가 2017년도 하반기부터 줄어드틑 추세임을 알 수 있다.</p>
+<pre class="r"><code>&gt; p &lt;- plot(yolo_trend2) </code></pre>
+<pre class="r"><code>&gt; p + 
++   ggtitle(&quot;Google Trend Traffics (Interest over Time)&quot;) +
++   theme(plot.title = element_text(hjust = 0.5)) +
++   theme(legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="/post/2018-01/2018-01-12-google_trends_files/figure-html/unnamed-chunk-12-1.png" width="768" /></p>
+</div>
+<div id="한글-키워드-traffic-데이터-수집" class="section level3">
+<h3>한글 키워드 traffic 데이터 수집</h3>
+<p>한글 키워드로 비트코인이라는 검색어의 traffic을 수집한다.</p>
+<pre class="r"><code>&gt; bit_trend &lt;- gtrends(c(&quot;비트코인&quot;), geo = &quot;KR&quot;)</code></pre>
+<p>2013년도 하반기 반짝 상승 이후로 traffic이 없다가 2017년 초부터 급증함을 알 수 있다.</p>
+<pre class="r"><code>&gt; p &lt;- plot(bit_trend) </code></pre>
+<pre class="r"><code>&gt; p +
++   ggtitle(&quot;Google Trend Traffics (Interest over Time)&quot;) +
++   theme(plot.title = element_text(hjust = 0.5)) +
++   theme(legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="../img/bit.png" width="85%" style="display: block; margin: auto auto auto 0;" /></p>
+</div>
+<div id="두-나라의-traffic-데이터-수집" class="section level3">
+<h3>두 나라의 traffic 데이터 수집</h3>
+<p>비트코인 검색어의 traffic을 미국과 우리 나라를 비교하기 위해서, 영문으로 검색한다.</p>
+<pre class="r"><code>&gt; bit_trend2 &lt;- gtrends(c(&quot;bitcoin&quot;), geo = c(&quot;KR&quot;, &quot;US&quot;))</code></pre>
+<p>두 나라의 traffic이 유사하지만 2017년도 말의 급등세는 미국에서의 규모가 더 크다.</p>
+<pre class="r"><code>&gt; p &lt;- plot(bit_trend2) </code></pre>
+<pre class="r"><code>&gt; p +
++   ggtitle(&quot;Google Trend Traffics (Interest over Time)&quot;) +
++   theme(plot.title = element_text(hjust = 0.5)) +
++   theme(legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="/post/2018-01/2018-01-12-google_trends_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p>참고로 앞에서 수집한 CSV의 비트코인 시세 데이터인 bitprice 데이터 프레임객체를 시계열 플롯으로 출력해보자.</p>
+<pre class="r"><code>&gt; head(bitprice)
+        date value
+1 2009-01-03     0
+2 2009-01-05     0
+3 2009-01-07     0
+4 2009-01-09     0
+5 2009-01-11     0
+6 2009-01-13     0
+&gt; bitprice %&gt;%
++   ggplot(aes_string(x = &quot;date&quot;, y = &quot;value&quot;)) +
++   geom_line() +
++   xlab(&quot;Date&quot;) +
++   ylab(&quot;Price ($)&quot;) +
++   ggtitle(&quot;Bitcoin Price Trend&quot;) +
++   theme_bw() +
++   theme(plot.title = element_text(hjust = 0.5)) +
++   theme(legend.title = element_blank()) </code></pre>
+<p><img src="/post/2018-01/2018-01-12-google_trends_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>비트코인 매매 시세가 정확히 traffic 데이터와 유사한 패턴을 보여줌을 알 수 있다.</p>
+</div>
+<div id="특정-기간의-traffic-데이터-수집" class="section level3">
+<h3>특정 기간의 traffic 데이터 수집</h3>
+<p>임의의 기간동안의 검색 traffic을 수집하기 위해서는 time 인수에 다음 예제와 같은 포맷으로 시작 일자와 종료 일자를 지정할 수 있다.</p>
+<p>2013, 2014, 2015, 2016, 2017년의 각각의 5년치 traffic을 수집한다.</p>
+<pre class="r"><code>&gt; bit_trend_2013 &lt;- gtrends(c(&quot;bitcoin&quot;), geo = c(&quot;KR&quot;, &quot;US&quot;),
++                           time = &quot;2013-01-01 2013-12-31&quot;)
+&gt; 
+&gt; bit_trend_2014 &lt;- gtrends(c(&quot;bitcoin&quot;), geo = c(&quot;KR&quot;, &quot;US&quot;),
++                           time = &quot;2014-01-01 2014-12-31&quot;)
+&gt; 
+&gt; bit_trend_2015 &lt;- gtrends(c(&quot;bitcoin&quot;), geo = c(&quot;KR&quot;, &quot;US&quot;),
++                           time = &quot;2015-01-01 2015-12-31&quot;)
+&gt; 
+&gt; bit_trend_2016 &lt;- gtrends(c(&quot;bitcoin&quot;), geo = c(&quot;KR&quot;, &quot;US&quot;),
++                           time = &quot;2016-01-01 2016-12-31&quot;)
+&gt; 
+&gt; bit_trend_2017 &lt;- gtrends(c(&quot;bitcoin&quot;), geo = c(&quot;KR&quot;, &quot;US&quot;),
++                           time = &quot;2017-01-01 2017-12-31&quot;)
+&gt; 
+&gt; bit_trend_2013_k &lt;- gtrends(c(&quot;비트코인&quot;), geo = c(&quot;KR&quot;),
++                           time = &quot;2013-01-01 2013-12-31&quot;)
+&gt; 
+&gt; bit_trend_2014_k &lt;- gtrends(c(&quot;비트코인&quot;), geo = c(&quot;KR&quot;),
++                           time = &quot;2014-01-01 2014-12-31&quot;)
+&gt; 
+&gt; bit_trend_2015_k &lt;- gtrends(c(&quot;비트코인&quot;), geo = c(&quot;KR&quot;),
++                           time = &quot;2015-01-01 2015-12-31&quot;)
+&gt; 
+&gt; bit_trend_2016_k &lt;- gtrends(c(&quot;비트코인&quot;), geo = c(&quot;KR&quot;),
++                           time = &quot;2016-01-01 2016-12-31&quot;)
+&gt; 
+&gt; bit_trend_2017_k &lt;- gtrends(c(&quot;비트코인&quot;), geo = c(&quot;KR&quot;),
++                           time = &quot;2017-01-01 2017-12-31&quot;)</code></pre>
+<p>2017년도 말의 급등세가 우리 나라보다 미국이 크다는 것은 4/4분기의 중반 이후부터 두드러짐으로 알 수 있다.</p>
+<pre class="r"><code>&gt; p &lt;- plot(bit_trend_2017) </code></pre>
+<pre class="r"><code>&gt; p + 
++   ggtitle(&quot;Google Trend Traffics (Interest over Time)&quot;) +
++   theme(plot.title = element_text(hjust = 0.5)) +
++   theme(legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="/post/2018-01/2018-01-12-google_trends_files/figure-html/unnamed-chunk-24-1.png" width="768" /></p>
+</div>
+</div>
+<div id="google-trends-데이터의-구조" class="section level2">
+<h2>Google Trends 데이터의 구조</h2>
+<div id="gtrends-객체" class="section level3">
+<h3>gtrends 객체</h3>
+<p>gtrends 패키지로 수집한 Google Trends 데이터는 gtrends 객체로 저장된다.</p>
+<pre class="r"><code>&gt; is(bit_trend2)
+[1] &quot;gtrends&quot;</code></pre>
+<p>gtrends 객체는 다음처럼 6개의 속성 데이터를 가지고 있다.</p>
+<pre class="r"><code>&gt; names(bit_trend2)
+[1] &quot;interest_over_time&quot;  &quot;interest_by_country&quot; &quot;interest_by_region&quot; 
+[4] &quot;interest_by_dma&quot;     &quot;interest_by_city&quot;    &quot;related_topics&quot;     
+[7] &quot;related_queries&quot;    </code></pre>
+</div>
+<div id="interest_over_time" class="section level3">
+<h3>interest_over_time</h3>
+<p>interest_over_time는 일자별로 traffic 정보를 담고 있는 데이터 프레임이다. 일자, 상대 traffic, 키워드, 국가, 그룹, 카테고리 정보를 담고 있다.</p>
+<p>그룹(gprop)은 web, news, images, froogle, youtube 중에서 한가지 값을 갖는데 기본값으로 수집하면 웹검색 traffic인 web으로 지정된다.</p>
+<pre class="r"><code>&gt; head(bit_trend2$interest_over_time)
+        date hits keyword geo      time gprop category
+1 2015-12-27    1 bitcoin  KR today+5-y   web        0
+2 2016-01-03    1 bitcoin  KR today+5-y   web        0
+3 2016-01-10    1 bitcoin  KR today+5-y   web        0
+4 2016-01-17    1 bitcoin  KR today+5-y   web        0
+5 2016-01-24    1 bitcoin  KR today+5-y   web        0
+6 2016-01-31    2 bitcoin  KR today+5-y   web        0
+&gt; tail(bit_trend2$interest_over_time)
+          date hits keyword geo      time gprop category
+517 2020-11-15   18 bitcoin  US today+5-y   web        0
+518 2020-11-22   19 bitcoin  US today+5-y   web        0
+519 2020-11-29   17 bitcoin  US today+5-y   web        0
+520 2020-12-06   13 bitcoin  US today+5-y   web        0
+521 2020-12-13   23 bitcoin  US today+5-y   web        0
+522 2020-12-20   21 bitcoin  US today+5-y   web        0</code></pre>
+</div>
+<div id="interest_by_region" class="section level3">
+<h3>interest_by_region</h3>
+<p>interest_by_region은 검색한 사람이 거주하는 지역으로서의 광역시도(우리나라)와 주(States, 미국) 정보를 담고 있다.</p>
+<pre class="r"><code>&gt; bit_trend2$interest_by_region
+               location hits keyword geo gprop
+1                 Seoul  100 bitcoin  KR   web
+2               Daejeon   77 bitcoin  KR   web
+3               Jeju-do   74 bitcoin  KR   web
+4           Gyeonggi-do   66 bitcoin  KR   web
+5               Incheon   54 bitcoin  KR   web
+6      Gyeongsangbuk-do   53 bitcoin  KR   web
+7      Gyeongsangnam-do   49 bitcoin  KR   web
+8                 Daegu   46 bitcoin  KR   web
+9                 Busan   45 bitcoin  KR   web
+10    Chungcheongnam-do   42 bitcoin  KR   web
+11                Ulsan   40 bitcoin  KR   web
+12         Jeollanam-do   39 bitcoin  KR   web
+13         Jeollabuk-do   37 bitcoin  KR   web
+14              Gwangju   36 bitcoin  KR   web
+15    Chungcheongbuk-do   34 bitcoin  KR   web
+16           Gangwon-do   31 bitcoin  KR   web
+17               Hawaii  100 bitcoin  US   web
+18               Nevada   99 bitcoin  US   web
+19           California   96 bitcoin  US   web
+20           Washington   94 bitcoin  US   web
+21             New York   91 bitcoin  US   web
+22                 Utah   83 bitcoin  US   web
+23           New Jersey   83 bitcoin  US   web
+24             Colorado   82 bitcoin  US   web
+25              Florida   78 bitcoin  US   web
+26               Oregon   76 bitcoin  US   web
+27               Alaska   75 bitcoin  US   web
+28        Massachusetts   74 bitcoin  US   web
+29             Illinois   74 bitcoin  US   web
+30          Connecticut   74 bitcoin  US   web
+31              Arizona   72 bitcoin  US   web
+32             Maryland   68 bitcoin  US   web
+33        New Hampshire   67 bitcoin  US   web
+34         Pennsylvania   66 bitcoin  US   web
+35             Virginia   66 bitcoin  US   web
+36                Idaho   65 bitcoin  US   web
+37         Rhode Island   65 bitcoin  US   web
+38              Montana   64 bitcoin  US   web
+39            Minnesota   63 bitcoin  US   web
+40         North Dakota   62 bitcoin  US   web
+41 District of Columbia   62 bitcoin  US   web
+42             Michigan   61 bitcoin  US   web
+43                Texas   61 bitcoin  US   web
+44              Vermont   61 bitcoin  US   web
+45              Georgia   58 bitcoin  US   web
+46             Delaware   58 bitcoin  US   web
+47            Wisconsin   57 bitcoin  US   web
+48             Nebraska   55 bitcoin  US   web
+49                Maine   55 bitcoin  US   web
+50             Missouri   55 bitcoin  US   web
+51       North Carolina   54 bitcoin  US   web
+52               Kansas   54 bitcoin  US   web
+53                 Iowa   53 bitcoin  US   web
+54                 Ohio   53 bitcoin  US   web
+55           New Mexico   52 bitcoin  US   web
+56              Wyoming   51 bitcoin  US   web
+57            Tennessee   49 bitcoin  US   web
+58              Indiana   49 bitcoin  US   web
+59         South Dakota   48 bitcoin  US   web
+60            Louisiana   48 bitcoin  US   web
+61       South Carolina   47 bitcoin  US   web
+62             Oklahoma   46 bitcoin  US   web
+63              Alabama   45 bitcoin  US   web
+64             Kentucky   45 bitcoin  US   web
+65             Arkansas   45 bitcoin  US   web
+66        West Virginia   40 bitcoin  US   web
+67          Mississippi   39 bitcoin  US   web</code></pre>
+</div>
+<div id="interest_by_dma" class="section level3">
+<h3>interest_by_dma</h3>
+<p>interest_by_dma는 DMA(Designated Market Area) 정보를 담고 있다. DMA는 시장분석 전문회사인 Nielsen이 시장 분석을 위해서 지정한 지역 분류체계로 우리나라는 없고, 미국에서만 정의되어 있다.</p>
+<pre class="r"><code>&gt; dim(bit_trend2$interest_by_dma)
+[1] 210   5
+&gt; head(bit_trend2$interest_by_dma)
+                           location hits keyword geo gprop
+1 San Francisco-Oakland-San Jose CA  100 bitcoin  US   web
+2                 Seattle-Tacoma WA   86 bitcoin  US   web
+3                      Las Vegas NV   86 bitcoin  US   web
+4                       Honolulu HI   83 bitcoin  US   web
+5     West Palm Beach-Ft. Pierce FL   81 bitcoin  US   web
+6                    Los Angeles CA   79 bitcoin  US   web
+&gt; tail(bit_trend2$interest_by_dma)
+                                    location hits keyword geo gprop
+205                    Hattiesburg-Laurel MS   27 bitcoin  US   web
+206                                Albany GA   27 bitcoin  US   web
+207 Harlingen-Weslaco-Brownsville-McAllen TX   26 bitcoin  US   web
+208                  Greenwood-Greenville MS   26 bitcoin  US   web
+209                              Meridian MS   26 bitcoin  US   web
+210                                Laredo TX   22 bitcoin  US   web</code></pre>
+</div>
+<div id="interest_by_city" class="section level3">
+<h3>interest_by_city</h3>
+<p>interest_by_city는 검색한 사람이 거주하는 지역으로서의 도시 정보를 담고 있다.</p>
+<pre class="r"><code>&gt; dim(bit_trend2$interest_by_city)
+[1] 90  5
+&gt; head(bit_trend2$interest_by_city)
+       location hits keyword geo gprop
+1   Seongnam-si  100 bitcoin  KR   web
+2         Seoul   73 bitcoin  KR   web
+3 Pyeongtaek-si   70 bitcoin  KR   web
+4   Hwaseong-si   65 bitcoin  KR   web
+5     Yongin-si   60 bitcoin  KR   web
+6       Daejeon   58 bitcoin  KR   web
+&gt; tail(bit_trend2$interest_by_city)
+        location hits keyword geo gprop
+85        Dallas   41 bitcoin  US   web
+86  Indianapolis   NA bitcoin  US   web
+87 Oklahoma City   NA bitcoin  US   web
+88    Louisville   NA bitcoin  US   web
+89   San Antonio   35 bitcoin  US   web
+90       Memphis   NA bitcoin  US   web</code></pre>
+</div>
+<div id="related_topics" class="section level3">
+<h3>related_topics</h3>
+<p>related_topics는 검색 키워드와 관련있는 주제(topics)에 대한 통계 정보를 담고 있다.</p>
+<p>이 정보는 2개 이상의 지역에서는 표현되지 않아서 bit_trend로 살펴본다.</p>
+<p>subject 변수는 상대적 traffics 정보이며, related_topics 변수는 통계의 기준을 의마한다. top은 top frequency를 의미하며, rising는 최근 급상승 관련 주제를 의미한다.</p>
+<pre class="r"><code>&gt; head(bit_trend$related_topics)
+  subject related_topics   value geo  keyword category
+1     100            top Bitcoin  KR 비트코인        0
+2      99            top     Bit  KR 비트코인        0
+3       8            top   UPbit  KR 비트코인        0
+4       5            top    Coin  KR 비트코인        0
+5       5            top Eclipse  KR 비트코인        0
+6       4            top bithumb  KR 비트코인        0
+&gt; tail(bit_trend$related_topics)
+   subject related_topics            value geo  keyword category
+17       1            top futures contract  KR 비트코인        0
+18       1            top           Korbit  KR 비트코인        0
+19       1            top             Volt  KR 비트코인        0
+20       1            top             Comb  KR 비트코인        0
+21       1         rising        Half-life  KR 비트코인        0
+22       1         rising          Binance  KR 비트코인        0</code></pre>
+</div>
+<div id="related_queries" class="section level3">
+<h3>related_queries</h3>
+<p>related_queries는 검색 키워드와 관련있는 검색어에 대한 통계 정보를 담고 있다.</p>
+<p>이 정보는 2개 이상의 지역에서는 표현되지 않아서 bit_trend로 살펴본다.</p>
+<p>subject 변수는 상대적 traffics 정보이며, related_queries 변수는 통계의 기준을 의마한다. top은 top frequency를 의미하며, rising는 최근 급상승 관련 검색어를 의미한다.</p>
+<pre class="r"><code>&gt; bit_trend$related_queries
+    subject related_queries                     value geo  keyword category
+1       100             top                 비트 코인  KR 비트코인        0
+2       100             top                      비트  KR 비트코인        0
+3        98             top                      코인  KR 비트코인        0
+4        16             top            비트 코인 시세  KR 비트코인        0
+5         8             top                   업 비트  KR 비트코인        0
+6         8             top               코인 갤러리  KR 비트코인        0
+7         8             top          비트 코인 갤러리  KR 비트코인        0
+8         4             top                      빗썸  KR 비트코인        0
+9         4             top 비트 코인 뽀 개기 rndcoin  KR 비트코인        0
+10        4             top            비트 코인 빗썸  KR 비트코인        0
+11        4             top            빗썸 비트 코인  KR 비트코인        0
+12        3             top          비트 코인 거래소  KR 비트코인        0
+13        3             top            비트 코인 가격  KR 비트코인        0
+14        3             top            비트 코인 채굴  KR 비트코인        0
+15        3             top                   코인 판  KR 비트코인        0
+16        2             top            비트 코인 전망  KR 비트코인        0
+17        2             top                   코인 원  KR 비트코인        0
+18        2             top            비트 코인 캐시  KR 비트코인        0
+19        2             top            비트 코인 거래  KR 비트코인        0
+20        2             top                 이더 리움  KR 비트코인        0
+21        2             top       비트 코인 이더 리움  KR 비트코인        0
+22        1             top            비트 코인 주가  KR 비트코인        0
+23        1             top               코인 네스트  KR 비트코인        0
+24        1             top                   bitcoin  KR 비트코인        0
+25        1             top                 가상 화폐  KR 비트코인        0
+26 Breakout          rising               코인 갤러리  KR 비트코인        0
+27 Breakout          rising          비트 코인 갤러리  KR 비트코인        0
+28 Breakout          rising                      빗썸  KR 비트코인        0
+29 Breakout          rising 비트 코인 뽀 개기 rndcoin  KR 비트코인        0
+30 Breakout          rising            비트 코인 빗썸  KR 비트코인        0
+31 Breakout          rising            빗썸 비트 코인  KR 비트코인        0
+32 Breakout          rising                   코인 판  KR 비트코인        0
+33 Breakout          rising            비트 코인 전망  KR 비트코인        0
+34 Breakout          rising            비트 코인 캐시  KR 비트코인        0
+35 Breakout          rising                 이더 리움  KR 비트코인        0
+36 Breakout          rising       비트 코인 이더 리움  KR 비트코인        0
+37 Breakout          rising            비트 코인 주가  KR 비트코인        0
+38 Breakout          rising               코인 네스트  KR 비트코인        0
+39 Breakout          rising            비트 코인 차트  KR 비트코인        0
+40 Breakout          rising            비트 코인 달러  KR 비트코인        0
+41 Breakout          rising            비트 코인 골드  KR 비트코인        0
+42 Breakout          rising              비트 코인 갤  KR 비트코인        0
+43 Breakout          rising                 비트 렉스  KR 비트코인        0
+44 Breakout          rising            비트 코인 선물  KR 비트코인        0
+45 Breakout          rising            비트 코인 리플  KR 비트코인        0
+46 Breakout          rising                 코인 레일  KR 비트코인        0
+47 Breakout          rising            비트 코인 이란  KR 비트코인        0
+48 Breakout          rising                   코인 빗  KR 비트코인        0
+49 Breakout          rising            비트 코인 볼트  KR 비트코인        0
+50 Breakout          rising                 바이 낸스  KR 비트코인        0</code></pre>
+</div>
+</div>
+<div id="google-trends-traffic-시각화" class="section level2">
+<h2>Google Trends traffic 시각화</h2>
+<div id="시계열-그래프" class="section level3">
+<h3>시계열 그래프</h3>
+<p>일자별 시계열 그래프는 이미 앞에서 다루었으므로 생략한다.</p>
+</div>
+<div id="top-rank-시각화" class="section level3">
+<h3>Top Rank 시각화</h3>
+<p>앞서 만들어 놓은 bbplot() 함수를 이용해서 시각화한다.</p>
+<div id="관련-주제별-traffic-현황" class="section level4">
+<h4>관련 주제별 traffic 현황</h4>
+<p>관련 주제가 영문으로 출력되지만, 비트코인 검색어의 관련 주제의 규모를 버블차트로 출력해 보자.</p>
+<pre class="r"><code>&gt; ##===========================================================
+&gt; ## 관련 Topic별 Traffics
+&gt; ##===========================================================
+&gt; bit_trend$related_topics %&gt;%
++   filter(related_topics == &quot;top&quot;) %&gt;%
++   mutate(relative = as.integer(subject) + 1) %&gt;%
++   mutate(label = gsub(&quot; &quot;, &quot;&quot;, value)) %&gt;%
++   filter(relative &gt; 0) %&gt;%
++   select(label, relative) %$%
++   bbplot(label, relative)</code></pre>
+<div id="htmlwidget-1" style="width:864px;height:576px;" class="bubbles html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"value":[101,100,9,6,6,5,5,3,3,3,2,2,2,2,2,2,2,2,2,2],"label":["Bitcoin","Bit","UPbit","Coin","Eclipse","bithumb","Exchange","BitcoinCash","Coinone","Chart","Ethereum","Virtualcurrency","BitcoinGold","Wallet","Bittrex","Ripple","futurescontract","Korbit","Volt","Comb"],"tooltip":["","","","","","","","","","","","","","","","","","","",""],"color":["#1B9E77","#D95F02","#7570B3","#E7298A","#66A61E","#E6AB02","#A6761D","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666"],"textColor":["#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
+<p>color 인수를 사용하면 버블의 색상을 바꿀 수도 있다.</p>
+<pre class="r"><code>&gt; bit_trend$related_topics %&gt;%
++   filter(related_topics == &quot;top&quot;) %&gt;%
++   mutate(relative = as.integer(subject) + 1) %&gt;%
++   mutate(label = gsub(&quot; &quot;, &quot;&quot;, value)) %&gt;%
++   filter(relative &gt; 0) %&gt;%
++   select(label, relative) %$%
++   bbplot(label, relative, color = terrain.colors(35, alpha = NULL))</code></pre>
+<div id="htmlwidget-2" style="width:864px;height:576px;" class="bubbles html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"value":[101,100,9,6,6,5,5,3,3,3,2,2,2,2,2,2,2,2,2,2],"label":["Bitcoin","Bit","UPbit","Coin","Eclipse","bithumb","Exchange","BitcoinCash","Coinone","Chart","Ethereum","Virtualcurrency","BitcoinGold","Wallet","Bittrex","Ripple","futurescontract","Korbit","Volt","Comb"],"tooltip":["","","","","","","","","","","","","","","","","","","",""],"color":["#00A600","#0BAA00","#16AE00","#21B200","#2DB600","#3ABA00","#47BE00","#55C200","#63C600","#71CA00","#80CE00","#90D200","#A0D600","#B1DA00","#C2DE00","#D3E200","#E6E600","#E6DA0D","#E7D01A","#E8C727"],"textColor":["#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>&gt; bit_trend$related_topics %&gt;%
++   filter(related_topics == &quot;top&quot;) %&gt;%
++   mutate(relative = as.integer(subject) + 1) %&gt;%
++   mutate(label = gsub(&quot; &quot;, &quot;&quot;, value)) %&gt;%
++   filter(relative &gt; 0) %&gt;%
++   select(label, relative) %$%
++   bbplot(label, relative, color = rainbow(20, alpha = NULL))</code></pre>
+<div id="htmlwidget-3" style="width:864px;height:576px;" class="bubbles html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3">{"x":{"value":[101,100,9,6,6,5,5,3,3,3,2,2,2,2,2,2,2,2,2,2],"label":["Bitcoin","Bit","UPbit","Coin","Eclipse","bithumb","Exchange","BitcoinCash","Coinone","Chart","Ethereum","Virtualcurrency","BitcoinGold","Wallet","Bittrex","Ripple","futurescontract","Korbit","Volt","Comb"],"tooltip":["","","","","","","","","","","","","","","","","","","",""],"color":["#FF0000","#FF4D00","#FF9900","#FFE500","#CCFF00","#80FF00","#33FF00","#00FF19","#00FF66","#00FFB2","#00FFFF","#00B3FF","#0066FF","#001AFF","#3300FF","#7F00FF","#CC00FF","#FF00E6","#FF0099","#FF004D"],"textColor":["#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="관련-검색어별-traffic-현황" class="section level4">
+<h4>관련 검색어별 traffic 현황</h4>
+<pre class="r"><code>&gt; ##===========================================================
+&gt; ## 관련 검색어별 Traffics
+&gt; ##===========================================================
+&gt; bit_trend$related_queries %&gt;%
++   filter(related_queries == &quot;top&quot;) %&gt;%
++   mutate(relative = as.integer(subject) + 1) %&gt;%
++   mutate(label = gsub(&quot; &quot;, &quot;&quot;, value)) %&gt;%
++   filter(relative &gt; 0) %&gt;%
++   select(label, relative) %$%
++   bbplot(label, relative)</code></pre>
+<div id="htmlwidget-4" style="width:864px;height:576px;" class="bubbles html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4">{"x":{"value":[101,101,99,17,9,9,9,5,5,5,5,4,4,4,4,3,3,3,3,3,3,2,2,2,2],"label":["비트코인","비트","코인","비트코인시세","업비트","코인갤러리","비트코인갤러리","빗썸","비트코인뽀개기rndcoin","비트코인빗썸","빗썸비트코인","비트코인거래소","비트코인가격","비트코인채굴","코인판","비트코인전망","코인원","비트코인캐시","비트코인거래","이더리움","비트코인이더리움","비트코인주가","코인네스트","bitcoin","가상화폐"],"tooltip":["","","","","","","","","","","","","","","","","","","","","","","","",""],"color":["#1B9E77","#D95F02","#7570B3","#E7298A","#66A61E","#E6AB02","#A6761D","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666"],"textColor":["#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
+<p>관련 검색어별 통계를 보면 상대 traffic이 0인 건도 통계로 집계되어 있다. 그래서 시각화 함수에서 traffic이 0인 건의 포함여부를 지정할 수 있도록 gplot.queries() 함수를 만들어 보았다.</p>
+<pre class="r"><code>&gt; gplot.queries &lt;- function(x, rm.zero = FALSE, geos = &quot;KR&quot;, 
++                          color = RColorBrewer::brewer.pal(8, &quot;Dark2&quot;)) {
++   x$related_queries %&gt;%
++     filter(geo %in% geos) %&gt;%
++     filter(related_queries == &quot;top&quot;) %&gt;%
++     mutate(relative = as.integer(subject) + !rm.zero) %&gt;%
++     mutate(label = gsub(&quot; &quot;, &quot;&quot;, value)) %&gt;%
++     filter(relative &gt; 0) %&gt;%
++     select(label, relative, geo) %$%
++     bbplot(label, relative, color = color)
++ }</code></pre>
+<p>다음 예제는 traffic이 0인 건을 제거한 후 버블차트를 그리는 예제다.</p>
+<pre class="r"><code>&gt; gplot.queries(bit_trend, rm.zero = TRUE)</code></pre>
+<div id="htmlwidget-5" style="width:864px;height:576px;" class="bubbles html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5">{"x":{"value":[100,100,98,16,8,8,8,4,4,4,4,3,3,3,3,2,2,2,2,2,2,1,1,1,1],"label":["비트코인","비트","코인","비트코인시세","업비트","코인갤러리","비트코인갤러리","빗썸","비트코인뽀개기rndcoin","비트코인빗썸","빗썸비트코인","비트코인거래소","비트코인가격","비트코인채굴","코인판","비트코인전망","코인원","비트코인캐시","비트코인거래","이더리움","비트코인이더리움","비트코인주가","코인네스트","bitcoin","가상화폐"],"tooltip":["","","","","","","","","","","","","","","","","","","","","","","","",""],"color":["#1B9E77","#D95F02","#7570B3","#E7298A","#66A61E","#E6AB02","#A6761D","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666"],"textColor":["#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
+<p>2013년부터 2017년까지의 관련 검색어 Top 랭크를 살펴보자.</p>
+<div id="년도" class="section level5">
+<h5>2013년도</h5>
+<pre class="r"><code>&gt; gplot.queries(bit_trend_2013_k, rm.zero = TRUE,
++               color = terrain.colors(20, alpha = NULL))</code></pre>
+<div id="htmlwidget-6" style="width:864px;height:576px;" class="bubbles html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6">{"x":{"value":[100,17,5,1],"label":["비트코인","비트코인채굴","비트코인원리","비트코인거래소"],"tooltip":["","","",""],"color":["#00A600","#13AD00","#28B400","#3EBB00"],"textColor":["#333333","#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="년도-1" class="section level5">
+<h5>2014년도</h5>
+<pre class="r"><code>&gt; gplot.queries(bit_trend_2014_k, rm.zero = TRUE,
++               color = terrain.colors(20, alpha = NULL))</code></pre>
+<div id="htmlwidget-7" style="width:864px;height:576px;" class="bubbles html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7">{"x":{"value":[100,10,5,4,3],"label":["비트코인","비트코인채굴","비트코인시세","비트코인거래소","비트코인채굴기"],"tooltip":["","","","",""],"color":["#00A600","#13AD00","#28B400","#3EBB00","#56C200"],"textColor":["#333333","#333333","#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="년도-2" class="section level5">
+<h5>2015년도</h5>
+<pre class="r"><code>&gt; if (!is.null(bit_trend_2015_k$related_queries)) {
++  gplot.queries(bit_trend_2015_k, rm.zero = TRUE,
++               color = terrain.colors(20, alpha = NULL)) 
++ }</code></pre>
+<div id="htmlwidget-8" style="width:864px;height:576px;" class="bubbles html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8">{"x":{"value":[100,10,8],"label":["비트코인","비트코인채굴","비트코인시세"],"tooltip":["","",""],"color":["#00A600","#13AD00","#28B400"],"textColor":["#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="년도-3" class="section level5">
+<h5>2016년도</h5>
+<pre class="r"><code>&gt; gplot.queries(bit_trend_2016_k, rm.zero = TRUE,
++               color = terrain.colors(20, alpha = NULL))</code></pre>
+<div id="htmlwidget-9" style="width:864px;height:576px;" class="bubbles html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9">{"x":{"value":[100,13,7,4],"label":["비트코인","비트코인시세","비트코인채굴","비트코인이란"],"tooltip":["","","",""],"color":["#00A600","#13AD00","#28B400","#3EBB00"],"textColor":["#333333","#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="년도-4" class="section level5">
+<h5>2017년도</h5>
+<pre class="r"><code>&gt; gplot.queries(bit_trend_2017_k, rm.zero = TRUE,
++               color = terrain.colors(20, alpha = NULL))</code></pre>
+<div id="htmlwidget-10" style="width:864px;height:576px;" class="bubbles html-widget"></div>
+<script type="application/json" data-for="htmlwidget-10">{"x":{"value":[100,98,16,14,8,7,6,6,6,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2],"label":["비트","비트코인","비트코인시세","비트코인갤러리","업비트","비트코인빗썸","빗썸","비트코인거래소","비트코인채굴","비트코인캐시","코인원","비트코인가격","비트코인골드","코인네스트","bitcoin","코인판","비트코인이더리움","이더리움","비트코인전망","비트렉스","비트코인이란","리플","리플코인","가상화폐","비트코인하드포크"],"tooltip":["","","","","","","","","","","","","","","","","","","","","","","","",""],"color":["#00A600","#13AD00","#28B400","#3EBB00","#56C200","#70C900","#8BD000","#A7D700","#C6DE00","#E6E600","#E7D217","#E8C32E","#E9B846","#EBB25E","#ECB176","#EDB48E","#EEBCA7","#F0C9C0","#F1DBD9","#F2F2F2","#F2F2F2","#F2F2F2","#F2F2F2","#F2F2F2","#F2F2F2"],"textColor":["#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="광역시도별-traffic-현황" class="section level4">
+<h4>광역시도별 traffic 현황</h4>
+<p>광역시도별 traffic 현황을 그리지 위해서 다음의 함수를 만들었다.</p>
+<pre class="r"><code>&gt; gplot.region &lt;- function(x, geos = &quot;KR&quot;, 
++                          color = RColorBrewer::brewer.pal(8, &quot;Dark2&quot;)) {
++   x$interest_by_region %&gt;%
++     filter(geo %in% geos) %&gt;%
++     mutate(region = location) %&gt;%
++     mutate(region = ifelse(region %in% c(&quot;Daejeon&quot;), &quot;대전광역시&quot;, region)) %&gt;% 
++     mutate(region = ifelse(region %in% c(&quot;Incheon&quot;), &quot;인천광역시&quot;, region)) %&gt;%
++     mutate(region = ifelse(region %in% c(&quot;Seoul&quot;), &quot;서울특별시&quot;, region)) %&gt;%
++     mutate(region = ifelse(region %in% c(&quot;Ulsan&quot;), &quot;울산광역시&quot;, region)) %&gt;%
++     mutate(region = ifelse(region %in% c(&quot;Gwangju&quot;), &quot;광주광역시&quot;, region)) %&gt;%
++     mutate(region = ifelse(region %in% c(&quot;Daegu&quot;), &quot;대구광역시&quot;, region)) %&gt;%
++     mutate(region = ifelse(region %in% c(&quot;Busan&quot;), &quot;부산광역시&quot;, region)) %&gt;%
++     mutate(region = ifelse(region %in% c(&quot;Chungcheongnam-do&quot;), &quot;충청남도&quot;, region)) %&gt;%
++     mutate(region = ifelse(region %in% c(&quot;Jeollanam-do&quot;), &quot;전라남도&quot;, region)) %&gt;%
++     mutate(region = ifelse(region %in% c(&quot;Chungcheongbuk-do&quot;), &quot;충청북도&quot;, region)) %&gt;%
++     mutate(region = ifelse(region %in% c(&quot;Gyeongsangbuk-do&quot;), &quot;경상북도&quot;, region)) %&gt;%
++     mutate(region = ifelse(region %in% c(&quot;Jeollabuk-do&quot;), &quot;전라북도&quot;, region)) %&gt;%
++     mutate(region = ifelse(region %in% c(&quot;Gyeongsangnam-do&quot;), &quot;경상남도&quot;, region)) %&gt;%
++     mutate(region = ifelse(region %in% c(&quot;Gangwon-do&quot;), &quot;강원도&quot;, region)) %&gt;%
++     mutate(region = ifelse(region %in% c(&quot;Gyeonggi-do&quot;), &quot;경기도&quot;, region)) %&gt;%
++     mutate(region = ifelse(region %in% c(&quot;Jeju-do&quot;), &quot;제주도&quot;, region)) %&gt;%    
++     select(region, hits, geo) %$%
++     bbplot(region, hits, color = color)
++ }</code></pre>
+<p>광역시도별 traffic 현황은 다음과 같다.</p>
+<pre class="r"><code>&gt; gplot.region(bit_trend)</code></pre>
+<div id="htmlwidget-11" style="width:864px;height:576px;" class="bubbles html-widget"></div>
+<script type="application/json" data-for="htmlwidget-11">{"x":{"value":[100,94,93,92,90,85,85,85,84,82,79,77,75,71,70,null],"label":["대전광역시","서울특별시","광주광역시","인천광역시","울산광역시","경기도","부산광역시","대구광역시","충청북도","충청남도","전라북도","전라남도","경상북도","경상남도","강원도","제주도"],"tooltip":["","","","","","","","","","","","","","","",""],"color":["#1B9E77","#D95F02","#7570B3","#E7298A","#66A61E","#E6AB02","#A6761D","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666"],"textColor":["#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
+<p>2017년도 광역시도별 traffic 현황은 다음과 같다.</p>
+<pre class="r"><code>&gt; gplot.region(bit_trend_2017)</code></pre>
+<div id="htmlwidget-12" style="width:864px;height:576px;" class="bubbles html-widget"></div>
+<script type="application/json" data-for="htmlwidget-12">{"x":{"value":[100,72,69,64,63,59,58,51,44,43,38,34,31,29,29,25],"label":["서울특별시","경기도","제주도","인천광역시","대전광역시","경상북도","울산광역시","대구광역시","경상남도","부산광역시","광주광역시","충청북도","충청남도","전라북도","전라남도","강원도"],"tooltip":["","","","","","","","","","","","","","","",""],"color":["#1B9E77","#D95F02","#7570B3","#E7298A","#66A61E","#E6AB02","#A6761D","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666"],"textColor":["#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
+<p>2017년도 미국의 주별 traffic 현황은 다음과 같다.</p>
+<pre class="r"><code>&gt; gplot.region(bit_trend_2017, geos = &quot;US&quot;, 
++              color = terrain.colors(60, alpha = NULL))</code></pre>
+<div id="htmlwidget-13" style="width:864px;height:576px;" class="bubbles html-widget"></div>
+<script type="application/json" data-for="htmlwidget-13">{"x":{"value":[100,92,91,91,84,83,78,73,72,71,71,70,67,66,64,64,63,63,62,60,59,59,58,57,56,56,54,54,54,53,53,52,52,52,51,50,49,49,48,45,45,45,44,44,43,42,41,41,41,37,31],"label":["Hawaii","California","New York","Washington","Nevada","New Jersey","Utah","Illinois","Connecticut","Massachusetts","Colorado","Florida","Maryland","Alaska","New Hampshire","Arizona","Oregon","Rhode Island","Virginia","Pennsylvania","Montana","Minnesota","Michigan","Delaware","Idaho","Texas","Wisconsin","North Dakota","Vermont","District of Columbia","Georgia","North Carolina","Ohio","Nebraska","Maine","Missouri","Iowa","New Mexico","Indiana","Tennessee","South Dakota","Kansas","Oklahoma","Louisiana","Wyoming","Arkansas","Kentucky","South Carolina","Alabama","West Virginia","Mississippi"],"tooltip":["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""],"color":["#00A600","#06A800","#0CAA00","#12AC00","#18AF00","#1EB100","#25B300","#2CB500","#33B700","#3ABA00","#41BC00","#48BE00","#50C000","#57C200","#5FC500","#67C700","#6FC900","#77CB00","#7FCD00","#88D000","#91D200","#99D400","#A2D600","#ACD800","#B5DB00","#BEDD00","#C8DF00","#D2E100","#DBE300","#E6E600","#E6DF08","#E6D80F","#E7D217","#E7CC1F","#E8C727","#E8C32E","#E8BF36","#E9BB3E","#E9B846","#EAB64E","#EAB456","#EBB25E","#EBB166","#EBB16E","#ECB176","#ECB17E","#EDB386","#EDB48E","#EEB696","#EEB99F","#EEBCA7"],"textColor":["#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</div>
+</div>
+
+    
+      
+    
+  </article>
+<aside class="sidebar">
+  <section class="sidebar_inner">
+    
+      <h2>Choonghyun Ryu</h2>
+      <div>
+        Scientist with data, take one more step today.
+      </div>
+      <a href='/about/' class="button mt-1" role="button">Read More</a>
+    <h2 class="mt-4">Recent Posts</h2>
+    <ul class="flex-column">
+      <li>
+        <a href="/post/2020-07/ggplot2_exam/" class="nav-link">몇 개의 ggplot tips</a>
+      </li>
+      <li>
+        <a href="/post/2020-03/2020-03-27-r-alookr.ko/" class="nav-link">alookr: Binary classification modeling</a>
+      </li>
+      <li>
+        <a href="/post/2020-03/window_function/" class="nav-link">Introduce window function</a>
+      </li>
+      <li>
+        <a href="/post/2020-02/r_web_application/" class="nav-link">R 웹 어플리케이션 개발에 대한 연구</a>
+      </li>
+      <li>
+        <a href="/post/2020-01/introduce_dbplyr/" class="nav-link">Introduce dbplyr package</a>
+      </li>
+    </ul>
+    <div>
+      <h2 class="mt-4 taxonomy" id="categories-section">Categories</h2>
+      <nav class="tags_nav">
+        <a href='/categories/%EC%98%9B-%EC%9D%B4%EC%95%BC%EA%B8%B0-%ED%95%98%EB%82%98/' class="post_tag button button_translucent">
+          옛-이야기-하나
+          <span class="button_tally">120</span>
+        </a>
+        
+        <a href='/categories/r-analytics/' class="post_tag button button_translucent">
+          R-ANALYTICS
+          <span class="button_tally">19</span>
+        </a>
+        
+        <a href='/categories/gallery/' class="post_tag button button_translucent">
+          GALLERY
+          <span class="button_tally">8</span>
+        </a>
+        
+        <a href='/categories/visualization/' class="post_tag button button_translucent">
+          VISUALIZATION
+          <span class="button_tally">7</span>
+        </a>
+        
+        <a href='/categories/tidyverse/' class="post_tag button button_translucent">
+          TIDYVERSE
+          <span class="button_tally">6</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+    <div>
+      <h2 class="mt-4 taxonomy" id="series-section">Series</h2>
+      <nav class="tags_nav">
+        <a href='/series/drawing/' class="post_tag button button_translucent">
+          DRAWING
+          <span class="button_tally">6</span>
+        </a>
+        
+        <a href='/series/photo/' class="post_tag button button_translucent">
+          PHOTO
+          <span class="button_tally">2</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+    <div>
+      <h2 class="mt-4 taxonomy" id="tags-section">Tags</h2>
+      <nav class="tags_nav">
+        <a href='/tags/plot/' class="post_tag button button_translucent">
+          PLOT
+          <span class="button_tally">6</span>
+        </a>
+        
+        <a href='/tags/dlookr/' class="post_tag button button_translucent">
+          DLOOKR
+          <span class="button_tally">5</span>
+        </a>
+        
+        <a href='/tags/graphics/' class="post_tag button button_translucent">
+          GRAPHICS
+          <span class="button_tally">4</span>
+        </a>
+        
+        <a href='/tags/mathematics/' class="post_tag button button_translucent">
+          MATHEMATICS
+          <span class="button_tally">4</span>
+        </a>
+        
+        <a href='/tags/distribution/' class="post_tag button button_translucent">
+          DISTRIBUTION
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/dplyr/' class="post_tag button button_translucent">
+          DPLYR
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/eda/' class="post_tag button button_translucent">
+          EDA
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/grid/' class="post_tag button button_translucent">
+          GRID
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/text-analytics/' class="post_tag button button_translucent">
+          TEXT-ANALYTICS
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B3%80%ED%99%98/' class="post_tag button button_translucent">
+          데이터-변환
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A7%84%EB%8B%A8/' class="post_tag button button_translucent">
+          데이터-진단
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/development/' class="post_tag button button_translucent">
+          DEVELOPMENT
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='/tags/finance/' class="post_tag button button_translucent">
+          FINANCE
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='/tags/ggplot2/' class="post_tag button button_translucent">
+          GGPLOT2
+          <span class="button_tally">2</span>
+        </a>
+        
+        
+        <br>
+        <div class="post_tags_toggle button">All Tags</div>
+        <div class="post_tags">
+          <div class="tags_list">
+            
+            <a href='/tags/alookr/' class=" post_tag button button_translucent" data-position=1>ALOOKR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/association-ruls/' class=" post_tag button button_translucent" data-position=1>ASSOCIATION-RULS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/asynchronous/' class=" post_tag button button_translucent" data-position=1>ASYNCHRONOUS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/binary-classification/' class=" post_tag button button_translucent" data-position=1>BINARY-CLASSIFICATION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/circle/' class=" post_tag button button_translucent" data-position=1>CIRCLE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/clustering/' class=" post_tag button button_translucent" data-position=1>CLUSTERING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/complex/' class=" post_tag button button_translucent" data-position=1>COMPLEX<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/crawling/' class=" post_tag button button_translucent" data-position=1>CRAWLING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/data-acqusition/' class=" post_tag button button_translucent" data-position=1>DATA-ACQUSITION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/dbplyr/' class=" post_tag button button_translucent" data-position=1>DBPLYR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/deep-learning/' class=" post_tag button button_translucent" data-position=1>DEEP-LEARNING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/development/' class=" post_tag button button_translucent" data-position=2>DEVELOPMENT<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/distribution/' class=" post_tag button button_translucent" data-position=3>DISTRIBUTION<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/dlookr/' class=" post_tag button button_translucent" data-position=5>DLOOKR<span class="button_tally">5</span>
+            </a>
+            
+            
+            <a href='/tags/documents-taxonomy/' class=" post_tag button button_translucent" data-position=1>DOCUMENTS-TAXONOMY<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/dplyr/' class=" post_tag button button_translucent" data-position=3>DPLYR<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/eda/' class=" post_tag button button_translucent" data-position=3>EDA<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/extract/' class=" post_tag button button_translucent" data-position=1>EXTRACT<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/factor/' class=" post_tag button button_translucent" data-position=1>FACTOR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/finance/' class=" post_tag button button_translucent" data-position=2>FINANCE<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/foodfact/' class=" post_tag button button_translucent" data-position=1>FOODFACT<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/forcats/' class=" post_tag button button_translucent" data-position=1>FORCATS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/fractal/' class=" post_tag button button_translucent" data-position=1>FRACTAL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/fuction/' class=" post_tag button button_translucent" data-position=1>FUCTION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/future/' class=" post_tag button button_translucent" data-position=1>FUTURE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/ggplot2/' class=" post_tag button button_translucent" data-position=2>GGPLOT2<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/google-trends/' class=" post_tag button button_translucent" data-position=1>GOOGLE-TRENDS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/graphics/' class=" post_tag button button_translucent" data-position=4>GRAPHICS<span class="button_tally">4</span>
+            </a>
+            
+            
+            <a href='/tags/grid/' class=" post_tag button button_translucent" data-position=3>GRID<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/gtrendsr/' class=" post_tag button button_translucent" data-position=1>GTRENDSR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/lasso/' class=" post_tag button button_translucent" data-position=2>LASSO<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/legend/' class=" post_tag button button_translucent" data-position=1>LEGEND<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/magrittr/' class=" post_tag button button_translucent" data-position=2>MAGRITTR<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/mathematics/' class=" post_tag button button_translucent" data-position=4>MATHEMATICS<span class="button_tally">4</span>
+            </a>
+            
+            
+            <a href='/tags/matrix/' class=" post_tag button button_translucent" data-position=2>MATRIX<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/network-analysis/' class=" post_tag button button_translucent" data-position=1>NETWORK-ANALYSIS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/neural-network/' class=" post_tag button button_translucent" data-position=1>NEURAL-NETWORK<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/nlp/' class=" post_tag button button_translucent" data-position=2>NLP<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/nyc-taxi-data/' class=" post_tag button button_translucent" data-position=1>NYC-TAXI-DATA<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/operator/' class=" post_tag button button_translucent" data-position=1>OPERATOR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/packages/' class=" post_tag button button_translucent" data-position=1>PACKAGES<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/par/' class=" post_tag button button_translucent" data-position=1>PAR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/parallel/' class=" post_tag button button_translucent" data-position=1>PARALLEL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/pictures/' class=" post_tag button button_translucent" data-position=2>PICTURES<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/pipe/' class=" post_tag button button_translucent" data-position=1>PIPE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/plot/' class=" post_tag button button_translucent" data-position=6>PLOT<span class="button_tally">6</span>
+            </a>
+            
+            
+            <a href='/tags/plot-region/' class=" post_tag button button_translucent" data-position=1>PLOT-REGION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/postgresql/' class=" post_tag button button_translucent" data-position=1>POSTGRESQL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/probability/' class=" post_tag button button_translucent" data-position=1>PROBABILITY<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/promises/' class=" post_tag button button_translucent" data-position=1>PROMISES<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/quandl/' class=" post_tag button button_translucent" data-position=1>QUANDL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/r_tips/' class=" post_tag button button_translucent" data-position=1>R_TIPS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/readr/' class=" post_tag button button_translucent" data-position=2>READR<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/regression/' class=" post_tag button button_translucent" data-position=1>REGRESSION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/replace/' class=" post_tag button button_translucent" data-position=1>REPLACE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/rserve/' class=" post_tag button button_translucent" data-position=1>RSERVE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/scraping/' class=" post_tag button button_translucent" data-position=1>SCRAPING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/set/' class=" post_tag button button_translucent" data-position=1>SET<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/sqldf/' class=" post_tag button button_translucent" data-position=1>SQLDF<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/statistics/' class=" post_tag button button_translucent" data-position=2>STATISTICS<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/stock/' class=" post_tag button button_translucent" data-position=1>STOCK<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/stock-data/' class=" post_tag button button_translucent" data-position=1>STOCK-DATA<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/synchronous/' class=" post_tag button button_translucent" data-position=1>SYNCHRONOUS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/taxonomy/' class=" post_tag button button_translucent" data-position=1>TAXONOMY<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/text-analytics/' class=" post_tag button button_translucent" data-position=3>TEXT-ANALYTICS<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/text2vec/' class=" post_tag button button_translucent" data-position=1>TEXT2VEC<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/tidyr/' class=" post_tag button button_translucent" data-position=1>TIDYR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/tidyverse/' class=" post_tag button button_translucent" data-position=1>TIDYVERSE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/topic-analysis/' class=" post_tag button button_translucent" data-position=1>TOPIC-ANALYSIS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/traffic/' class=" post_tag button button_translucent" data-position=1>TRAFFIC<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/vector/' class=" post_tag button button_translucent" data-position=1>VECTOR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/web-application/' class=" post_tag button button_translucent" data-position=1>WEB-APPLICATION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/window-function/' class=" post_tag button button_translucent" data-position=1>WINDOW-FUNCTION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/zoo/' class=" post_tag button button_translucent" data-position=1>ZOO<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B3%80%ED%99%98/' class=" post_tag button button_translucent" data-position=3>데이터-변환<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%95%EC%A0%9C/' class=" post_tag button button_translucent" data-position=1>데이터-정제<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A7%84%EB%8B%A8/' class=" post_tag button button_translucent" data-position=3>데이터-진단<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%AA%A8%EB%8D%B8-%EC%A0%81%ED%95%A9/' class=" post_tag button button_translucent" data-position=1>모델-적합<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%AA%A8%EB%8D%B8-%EC%A7%84%EB%8B%A8/' class=" post_tag button button_translucent" data-position=1>모델-진단<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EC%97%AC%ED%96%89/' class=" post_tag button button_translucent" data-position=2>여행<span class="button_tally">2</span>
+            </a>
+            
+            <div class="tags_sort"><span title="sort alphabetically">[A~Z]</span><span title="sort by count">[0~9]</span>
+            </div>
+            <span class="tags_hide"><svg class="icon">
+            <use xlink:href="#closeme"></use>
+          </svg></span>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </section>
+</aside>
+
+</div>
+    </main><svg width="0" height="0" class="hidden">
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18.001 18.001" id="twitter">
+    <path d="M15.891 4.013c.808-.496 1.343-1.173 1.605-2.034a8.68 8.68 0 0 1-2.351.861c-.703-.756-1.593-1.14-2.66-1.14-1.043 0-1.924.366-2.643 1.078a3.56 3.56 0 0 0-1.076 2.605c0 .309.039.585.117.819-3.076-.105-5.622-1.381-7.628-3.837-.34.601-.51 1.213-.51 1.846 0 1.301.549 2.332 1.645 3.089-.625-.053-1.176-.211-1.645-.47 0 .929.273 1.705.82 2.388a3.623 3.623 0 0 0 2.115 1.291c-.312.08-.641.118-.979.118-.312 0-.533-.026-.664-.083.23.757.664 1.371 1.291 1.841a3.652 3.652 0 0 0 2.152.743C4.148 14.173 2.625 14.69.902 14.69c-.422 0-.721-.006-.902-.038 1.697 1.102 3.586 1.649 5.676 1.649 2.139 0 4.029-.542 5.674-1.626 1.645-1.078 2.859-2.408 3.639-3.974a10.77 10.77 0 0 0 1.172-4.892v-.468a7.788 7.788 0 0 0 1.84-1.921 8.142 8.142 0 0 1-2.11.593z"
+      ></path>
+  </symbol>
+  <symbol aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="mail">
+    <path  d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="calendar">
+    <path d="M452 40h-24V0h-40v40H124V0H84v40H60C26.916 40 0 66.916 0 100v352c0 33.084 26.916 60 60 60h392c33.084 0 60-26.916 60-60V100c0-33.084-26.916-60-60-60zm20 412c0 11.028-8.972 20-20 20H60c-11.028 0-20-8.972-20-20V188h432v264zm0-304H40v-48c0-11.028 8.972-20 20-20h24v40h40V80h264v40h40V80h24c11.028 0 20 8.972 20 20v48z"></path>
+    <path d="M76 230h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 310h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 390h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80-80h40v40h-40z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="github">
+    <path d="M255.968 5.329C114.624 5.329 0 120.401 0 262.353c0 113.536 73.344 209.856 175.104 243.872 12.8 2.368 17.472-5.568 17.472-12.384 0-6.112-.224-22.272-.352-43.712-71.2 15.52-86.24-34.464-86.24-34.464-11.616-29.696-28.416-37.6-28.416-37.6-23.264-15.936 1.728-15.616 1.728-15.616 25.696 1.824 39.2 26.496 39.2 26.496 22.848 39.264 59.936 27.936 74.528 21.344 2.304-16.608 8.928-27.936 16.256-34.368-56.832-6.496-116.608-28.544-116.608-127.008 0-28.064 9.984-51.008 26.368-68.992-2.656-6.496-11.424-32.64 2.496-68 0 0 21.504-6.912 70.4 26.336 20.416-5.696 42.304-8.544 64.096-8.64 21.728.128 43.648 2.944 64.096 8.672 48.864-33.248 70.336-26.336 70.336-26.336 13.952 35.392 5.184 61.504 2.56 68 16.416 17.984 26.304 40.928 26.304 68.992 0 98.72-59.84 120.448-116.864 126.816 9.184 7.936 17.376 23.616 17.376 47.584 0 34.368-.32 62.08-.32 70.496 0 6.88 4.608 14.88 17.6 12.352C438.72 472.145 512 375.857 512 262.353 512 120.401 397.376 5.329 255.968 5.329z"></path>
+  </symbol>
+  <symbol viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="rss">
+    <circle cx="3.429" cy="20.571" r="3.429"></circle>
+    <path d="M11.429 24h4.57C15.999 15.179 8.821 8.001 0 8v4.572c6.302.001 11.429 5.126 11.429 11.428z"></path>
+    <path d="M24 24C24 10.766 13.234 0 0 0v4.571c10.714 0 19.43 8.714 19.43 19.429z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="linkedin">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h362c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zM181 406h-60V196h60zm0-240h-60v-60h60zm210 240h-60V286c0-16.54-13.46-30-30-30s-30 13.46-30 30v120h-60V196h60v11.309C286.719 202.422 296.93 196 316 196c40.691.043 75 36.547 75 79.688zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="arrow">
+    <path d="M604.501 440.509L325.398 134.956c-5.331-5.357-12.423-7.627-19.386-7.27-6.989-.357-14.056 1.913-19.387 7.27L7.499 440.509c-9.999 10.024-9.999 26.298 0 36.323s26.223 10.024 36.222 0l262.293-287.164L568.28 476.832c9.999 10.024 26.222 10.024 36.221 0 9.999-10.023 9.999-26.298 0-36.323z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="carly">
+    <path d="M504.971 239.029L448 182.059V84c0-46.317-37.682-84-84-84h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c19.851 0 36 16.149 36 36v108c0 6.365 2.529 12.47 7.029 16.971L454.059 256l-47.029 47.029A24.002 24.002 0 0 0 400 320v108c0 19.851-16.149 36-36 36h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c46.318 0 84-37.683 84-84v-98.059l56.971-56.971c9.372-9.372 9.372-24.568 0-33.941zM112 192V84c0-19.851 16.149-36 36-36h44c13.255 0 24-10.745 24-24S205.255 0 192 0h-44c-46.318 0-84 37.683-84 84v98.059l-56.971 56.97c-9.373 9.373-9.373 24.568 0 33.941L64 329.941V428c0 46.317 37.682 84 84 84h44c13.255 0 24-10.745 24-24s-10.745-24-24-24h-44c-19.851 0-36-16.149-36-36V320c0-6.365-2.529-12.47-7.029-16.971L57.941 256l47.029-47.029A24.002 24.002 0 0 0 112 192z"></path>
+  </symbol>
+  <symbol viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="copy">
+    <path d="M23 2.75A2.75 2.75 0 0 0 20.25 0H8.75A2.75 2.75 0 0 0 6 2.75v13.5A2.75 2.75 0 0 0 8.75 19h11.5A2.75 2.75 0 0 0 23 16.25zM18.25 14.5h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5zm0-3h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5zm0-3h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5z"></path>
+    <path d="M8.75 20.5a4.255 4.255 0 0 1-4.25-4.25V2.75c0-.086.02-.166.025-.25H3.75A2.752 2.752 0 0 0 1 5.25v16A2.752 2.752 0 0 0 3.75 24h12a2.752 2.752 0 0 0 2.75-2.75v-.75z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001" id="closeme">
+    <path d="M284.286 256.002L506.143 34.144c7.811-7.811 7.811-20.475 0-28.285-7.811-7.81-20.475-7.811-28.285 0L256 227.717 34.143 5.859c-7.811-7.811-20.475-7.811-28.285 0-7.81 7.811-7.811 20.475 0 28.285l221.857 221.857L5.858 477.859c-7.811 7.811-7.811 20.475 0 28.285a19.938 19.938 0 0 0 14.143 5.857 19.94 19.94 0 0 0 14.143-5.857L256 284.287l221.857 221.857c3.905 3.905 9.024 5.857 14.143 5.857s10.237-1.952 14.143-5.857c7.811-7.811 7.811-20.475 0-28.285L284.286 256.002z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="open-menu">
+    <path d="M492 236H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0-160H20C8.954 76 0 84.954 0 96s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0 320H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="instagram">
+    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id=youtube>
+    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="stackoverflow">
+    <path d="M21 27v-8h3v11H0V19h3v8h18z"></path><path d="M17.1.2L15 1.8l7.9 10.6 2.1-1.6L17.1.2zm3.7 14.7L10.6 6.4l1.7-2 10.2 8.5-1.7 2zM7.2 12.3l12 5.6 1.1-2.4-12-5.6-1.1 2.4zm-1.8 6.8l13.56 1.96.17-2.38-13.26-2.55-.47 2.97zM19 25H5v-3h14v3z"></path>
+  </symbol>
+</svg>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+<footer class="footer">
+  <div class="footer_inner wrap pale">
+    <img src='/logos/logo.png' class="icon icon_2 transparent">
+    <p>Copyright<span class="year"></span> DATAHOLIC. All Rights Reserved</p><a class="to_top" href="#documentTop">
+  <svg class="icon">
+  <use xlink:href="#arrow"></use>
+</svg>
+</a>
+
+  </div>
+</footer>
+    <script type="text/javascript" src="/js/bundle.min.03f1cc201c9efa18e14550bff374f58e89f1e6b2a30a0e22f84c87f6eb766e419bd6569c3a60846ea3e65816112dfa454f4785d306d024b6ef2616d067862a7a.js" integrity="sha512-A/HMIBye&#43;hjhRVC/83T1jonx5rKjCg4i&#43;EyH9ut2bkGb1lacOmCEbqPmWBYRLfpFT0eF0wbQJLbvJhbQZ4Yqeg==" crossorigin="anonymous"></script>
+    
+  </body>
+</html>

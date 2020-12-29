@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>legend on Dataholic</title>
+    <link>/tags/legend/</link>
+    <description>Recent content in legend on Dataholic</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 01 Jan 2016 00:00:00 +0000</lastBuildDate><atom:link href="/tags/legend/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>plot region 밖에 legend 출력하기</title>
+      <link>/post/2016-01/2016-01-01-outside_plotregion_legend/</link>
+      <pubDate>Fri, 01 Jan 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2016-01/2016-01-01-outside_plotregion_legend/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;Excel처럼 plot 영역의 밖에 legend를 출력할 수 없냐는 혹자의 질문이 있었다.
+한번도 생각해보지 않은 주제라 막연히 &lt;code&gt;mtext()&lt;/code&gt;, &lt;code&gt;ploygon()&lt;/code&gt; 등의 함수로 사용자 정의 함수를 만들어 구현할 수 있을 것 같았다. 그런데, &lt;strong&gt;R graphics parameter&lt;/strong&gt;를 이용하면 쉽게 해결할 수 있다.&lt;/p&gt;
+&lt;div id=&#34;r-graphics-device의-이해&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;R Graphics Device의 이해&lt;/h3&gt;
+&lt;p&gt;우선 R Graphics Device에 플롯을 출력하는 영역의 구분에 대해서 알아보자.&lt;/p&gt;
+&lt;p&gt;플롯을 그리는 영역에는 figure region과 figure margin이 있다. figure region은 플롯을 표현하는 영역으로 실제로 플롯이 위치하는 plot region을 포함한다.
+figure margin은 figure region 안에서의 plot region의 여백이다. 그리고 figure region 밖의 여백을 outer margin이라 한다.&lt;/p&gt;
+&lt;p&gt;R Graphics Device의 구조는 다음 그림을 통해 쉽게 이해할 수 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; par(oma = c(2, 2, 2, 2))
+&amp;gt; set.seed(1)
+&amp;gt; x &amp;lt;- rnorm(100)
+&amp;gt; hist(x, col = &amp;quot;lightblue&amp;quot;)
+&amp;gt; 
+&amp;gt; box(which = &amp;quot;plot&amp;quot;  , lty = 1, cex = 1.5, col = &amp;quot;red&amp;quot;)
+&amp;gt; box(which = &amp;quot;figure&amp;quot;, lty = 2, cex = 1.5, col = &amp;quot;blue&amp;quot;)
+&amp;gt; #box(which = &amp;quot;inner&amp;quot; , lty = 3, cex = 1.5)
+&amp;gt; box(which = &amp;quot;outer&amp;quot; , lty = 4, cex = 1.5, col = &amp;quot;black&amp;quot;)
+&amp;gt; 
+&amp;gt; text(-2, 15, &amp;quot;plot region&amp;quot;)
+&amp;gt; 
+&amp;gt; mtext(&amp;quot;figure region&amp;quot;, side = 3, adj = 0, at = -3, line = 2)
+&amp;gt; mtext(&amp;quot;margin 1&amp;quot;, side = 1, col = &amp;quot;red&amp;quot;)
+&amp;gt; mtext(&amp;quot;margin 2&amp;quot;, side = 2, col = &amp;quot;red&amp;quot;)
+&amp;gt; mtext(&amp;quot;margin 3&amp;quot;, side = 3, col = &amp;quot;red&amp;quot;)
+&amp;gt; mtext(&amp;quot;margin 4&amp;quot;, side = 4, col = &amp;quot;red&amp;quot;)
+&amp;gt; 
+&amp;gt; mtext(&amp;quot;outer margin area&amp;quot;, side = 3, adj = 0, line = 1, outer = TRUE)
+&amp;gt; mtext(&amp;quot;outer margin 1&amp;quot;, side = 1, outer = TRUE, col = &amp;quot;blue&amp;quot;)
+&amp;gt; mtext(&amp;quot;outer margin 2&amp;quot;, side = 2, outer = TRUE, col = &amp;quot;blue&amp;quot;)
+&amp;gt; mtext(&amp;quot;outer margin 3&amp;quot;, side = 3, outer = TRUE, col = &amp;quot;blue&amp;quot;)
+&amp;gt; mtext(&amp;quot;outer margin 4&amp;quot;, side = 4, outer = TRUE, col = &amp;quot;blue&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;figure&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-2&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;/post/2016-01/2016-01-01-outside_plotregion_legend_files/figure-html/unnamed-chunk-2-1.png&#34; alt=&#34;R Graphics Device의 구조&#34; width=&#34;1400&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 1: R Graphics Device의 구조
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;legend-표현하기&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;legend 표현하기&lt;/h3&gt;
+&lt;p&gt;일반적인 legend 사용법은 다음과 같으며, legend는 plot region 안에 위치하게 된다. 그러나 plot region이 legend를 표시한 공간이 없이 빼곡하게 플롯으로 채워진다면 legend를 표시할 수 없게 된다. 이 경우는 plot region 밖에 legend를 출력하고 싶어질 것이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; n.row &amp;lt;- 10
+&amp;gt; n.col &amp;lt;- 3
+&amp;gt; 
+&amp;gt; mat &amp;lt;- matrix(0, nrow = n.row, ncol = n.col)
+&amp;gt; 
+&amp;gt; set.seed(123)
+&amp;gt; for (i in 1:n.col)
++   mat[, i] &amp;lt;- sample(1:(n.row * n.col), 
++                      size = n.row, replace = TRUE)
+&amp;gt;  
+&amp;gt; matplot(mat, type=&amp;quot;n&amp;quot;, ylim = c(0, 40))
+&amp;gt; matpoints(mat, type=&amp;quot;p&amp;quot;, pch = 1:3) 
+&amp;gt; matlines(mat)
+&amp;gt; 
+&amp;gt; title(&amp;quot;Inside plot region example&amp;quot;)
+&amp;gt; legend(&amp;quot;topright&amp;quot;, legend = paste(&amp;quot;Sample&amp;quot;, 1:n.col), 
++        col = 1:n.col, pch = 1:n.col, lty = 1:n.col)&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;figure&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-3&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;/post/2016-01/2016-01-01-outside_plotregion_legend_files/figure-html/unnamed-chunk-3-1.png&#34; alt=&#34;legend의 일반적인 사용 사례&#34; width=&#34;1400&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 2: legend의 일반적인 사용 사례
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;plot-영역-밖에-legend-출력하기&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;plot 영역 밖에 legend 출력하기&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;par()&lt;/code&gt; 함수를 이용해서 R Graphics Device를 두 개의 영역으로 적당히 나눈 후 하나의 figure region에는 플롯을, 나머지 figure region에는 legend를 표시하면 plot region 밖에 legend를 출력할 수 있다.&lt;/p&gt;
+&lt;p&gt;plot region 밖에 legend를 출력하는 로직과 예제는 다음과 같다.&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;code&gt;par()&lt;/code&gt; 함수의 fig 인수를 이용해서 플롯을 출력할 figure region을 적당히 두 개로 분할한다.&lt;/li&gt;
+&lt;li&gt;첫번 째 figure region의 plot region에 플롯을 출력한다.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;par()&lt;/code&gt; 함수의 new 인수로 신규 플롯을 현재의 graphic device에 출력하도록 설정한다.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;par()&lt;/code&gt; 함수의 fig 인수로 남은 figure region을 legend를 출력할 figure region으로 설정한다.&lt;/li&gt;
+&lt;li&gt;두번 째 figure region의 plot region에 빈 플롯을 그린 후, 그 위에 legend를 출력한다.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; par(fig = c(0, 1, 0.2, 1), mar = c(2, 4, 4, 4))
+&amp;gt; matplot(mat, type=&amp;quot;n&amp;quot;)
+&amp;gt; matpoints(mat, type=&amp;quot;p&amp;quot;, pch=1:n.col) 
+&amp;gt; matlines(mat)
+&amp;gt; title(&amp;quot;Outside plot region example&amp;quot;)
+&amp;gt;  
+&amp;gt; par(new = TRUE)
+&amp;gt; par(fig = c(0, 1, 0, 0.2), mar = c(0, 0, 0, 0))
+&amp;gt; plot(0, xlim = c(0, 1), ylim = c(0, 5), 
++      axes = FALSE, xlab = &amp;quot;&amp;quot;, ylab = &amp;quot;&amp;quot;, type = &amp;quot;n&amp;quot;)
+&amp;gt; legend(0.2, 3.5, legend = paste(&amp;quot;Sample&amp;quot;, 1:n.col), 
++        col = 1:n.col, pch = 1:n.col, lty = 1:n.col, horiz = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;figure&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-4&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;/post/2016-01/2016-01-01-outside_plotregion_legend_files/figure-html/unnamed-chunk-4-1.png&#34; alt=&#34;plot region 밖의 legend&#34; width=&#34;1400&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 3: plot region 밖의 legend
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;그런데 이 예제를 엄밀하게 설명하자면 plot region 밖에 legend를 출력하는 것이 아니라, 다른 figure region의 plot region에 legend를 출력하는 것이다. 그러나 시각적으로 plot region 밖에 legend가 출력된 것처럼 착각하게 된다.&lt;/p&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

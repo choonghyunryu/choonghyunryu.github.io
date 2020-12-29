@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>extract on Dataholic</title>
+    <link>/tags/extract/</link>
+    <description>Recent content in extract on Dataholic</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 05 Jan 2020 16:18:12 +0800</lastBuildDate><atom:link href="/tags/extract/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>데이터 연산 및 조작</title>
+      <link>/post/2020-01/manipulation_extract/</link>
+      <pubDate>Sun, 05 Jan 2020 16:18:12 +0800</pubDate>
+      
+      <guid>/post/2020-01/manipulation_extract/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;들어가기&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;들어가기&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;벡터&lt;/code&gt;의 조작과 &lt;code&gt;행렬&lt;/code&gt;의 조작은 기본적인 데이터 조작의 방법이다. 일차원으로서의 벡터와 이차원으로서의 행렬의 조작에 익숙하면 데이터 프레임이나 여기서 상속된 &lt;code&gt;tibble&lt;/code&gt; 객체의 데이터 조작을 쉽게 수행할 수 있을 것이다. 물론 &lt;code&gt;tibble&lt;/code&gt;이나 여기서 파생된 &lt;code&gt;data_df&lt;/code&gt;는 &lt;code&gt;dplyr&lt;/code&gt; 패키지로 또 다른 방법에 의한 데이터 조작을 지원하기도 한다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div id=&#34;벡터&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;벡터&lt;/h1&gt;
+&lt;p&gt;순서가 있는 일차원 데이터인 벡터의 원소 조작에 대한 방법을 소개한다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;행렬&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;행렬&lt;/h1&gt;
+&lt;p&gt;동일한 모드로 구성된 이차원 행렬의 행과 열을 기준으로 원소를 조작하는 방법을 소개한다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;데이터-연산-및-조작에-대한-슬라이드의-공유&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;데이터 연산 및 조작에 대한 슬라이드의 공유&lt;/h1&gt;
+&lt;p&gt;다음에 링크를 걸어 둔 슬라이드 파일은 Extract과 Replace를 중심으로 작성된 벡터와 행렬의 데이터 조작에 관한 자료다. 2017년도에 정리된 자료를 공유한다.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/choonghyunryu/R_Materials/blob/master/Data_Maniputation/01_DataManipulation_Extract.pdf&#34; target=&#34;_blank&#34;&gt;01_DataManipulation_Extract.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;차례&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;차례&lt;/h1&gt;
+&lt;p&gt;이 문서는 다음과 같은 아젠다를 이야기 한다.&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;벡터의 조작&lt;/li&gt;
+&lt;li&gt;행렬의 조작&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

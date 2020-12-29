@@ -1,0 +1,994 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Visualization on Dataholic</title>
+    <link>/categories/visualization/</link>
+    <description>Recent content in Visualization on Dataholic</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 12 Jul 2020 18:18:12 +0800</lastBuildDate><atom:link href="/categories/visualization/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>몇 개의 ggplot tips</title>
+      <link>/post/2020-07/ggplot2_exam/</link>
+      <pubDate>Sun, 12 Jul 2020 18:18:12 +0800</pubDate>
+      
+      <guid>/post/2020-07/ggplot2_exam/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;다룰-이야기&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;다룰 이야기&lt;/h2&gt;
+&lt;p&gt;R에서 데이터를 조작할 때, 가장 까다로운 것이 범주형 데이터를 표현하는 factor다. 이번 이야기에서는 시각화를 위해서 factor를 다루는 방법과 몇몇 ggplot2 패키지를 사용할 때의 몇 가지 팁을 소개한다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;플롯에서 factor의 경우에는, 데이터의 표현이 levels 순서로 이루어진다. 그러나 표현 순서를 변경하고 싶다.
+&lt;ul&gt;
+&lt;li&gt;솔루션) factor의 levels을 표현하는 순서에 맞게 변경한다.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;factor의 모든 levels이 아닌 상위.하위 몇 개의 levels에 해당하는 것만 시각화하고 싶다.
+&lt;ul&gt;
+&lt;li&gt;솔루션) 필터링 기능의 함수를 사용하며 몇 개의 levels에 해당하는 데이터만 추출한다.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;또한 다음처럼 ggplot에서 응용할 수 있는 몇 가지 팁도 제시한다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;플롯에서 x-축의 tick 마크에 출력할 라벨 이름이 길 경우에는 서로 겹쳐서 읽기 어려운 경우가 있다.
+&lt;ul&gt;
+&lt;li&gt;솔루션 1) 라벨을 회전시켜 겹치지 않게 출력한다.&lt;/li&gt;
+&lt;li&gt;솔루션 2) x-축과 y-축을 바꿔서 출력한다.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;x-축과 y-축을 바꿔서 출력하고 싶다.
+&lt;ul&gt;
+&lt;li&gt;솔루션) coord_flip() 함수를 적용하여 축을 바꾼다.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;y-축에 데이터를 배치하는 순서를 역순으로 변경하고 싶다.
+&lt;ul&gt;
+&lt;li&gt;솔루션 1) aes() 함수 안에서 forcats::fct_reorder() 함수를 이용한다. 혹은,&lt;/li&gt;
+&lt;li&gt;솔루션 2) aes() 함수 안에서 ggplot2::reorder() 함수를 이용한다.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div id=&#34;데이터&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;데이터&lt;/h3&gt;
+&lt;p&gt;ggplot2 패키지에 포함된 txhousing는 Texas A&amp;amp;M University(TAMU)의 The Real Estate Center에서 제공한 Texas의 주택 시장에 대한 정보를 담고 있다. 이 데이터로 이야기를 풀어나가려 한다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;city
+&lt;ul&gt;
+&lt;li&gt;Name of MLS area&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;year,month,date
+&lt;ul&gt;
+&lt;li&gt;Date&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;sales
+&lt;ul&gt;
+&lt;li&gt;Number of sales&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;volume
+&lt;ul&gt;
+&lt;li&gt;Total value of sales&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;median
+&lt;ul&gt;
+&lt;li&gt;Median sale price&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;listings
+&lt;ul&gt;
+&lt;li&gt;Total active listings&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;inventory
+&lt;ul&gt;
+&lt;li&gt;“Months inventory”:
+&lt;ul&gt;
+&lt;li&gt;amount of time it would take to sell all current listings at current pace of sales.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;str(ggplot2::txhousing)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## tibble [8,602 × 9] (S3: tbl_df/tbl/data.frame)
+##  $ city     : chr [1:8602] &amp;quot;Abilene&amp;quot; &amp;quot;Abilene&amp;quot; &amp;quot;Abilene&amp;quot; &amp;quot;Abilene&amp;quot; ...
+##  $ year     : int [1:8602] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 ...
+##  $ month    : int [1:8602] 1 2 3 4 5 6 7 8 9 10 ...
+##  $ sales    : num [1:8602] 72 98 130 98 141 156 152 131 104 101 ...
+##  $ volume   : num [1:8602] 5380000 6505000 9285000 9730000 10590000 ...
+##  $ median   : num [1:8602] 71400 58700 58100 68600 67300 66900 73500 75000 64500 59300 ...
+##  $ listings : num [1:8602] 701 746 784 785 794 780 742 765 771 764 ...
+##  $ inventory: num [1:8602] 6.3 6.6 6.8 6.9 6.8 6.6 6.2 6.4 6.5 6.6 ...
+##  $ date     : num [1:8602] 2000 2000 2000 2000 2000 ...&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;시각화&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;시각화&lt;/h2&gt;
+&lt;div id=&#34;조작하지-않은-플롯&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;조작하지 않은 플롯&lt;/h3&gt;
+&lt;p&gt;도시별 일별 부동산 판매 건수의 분포를 박스플롯을 그려 살펴보자. 그런데 도시 개수가 적지 않아, x-축의 도시 이름이 겹쳐서 출력되었다. 어떤 도시의 부동산 판매 건수가 많은지 혹은 적은지 알 수 없다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(dplyr)
+library(ggplot2)
+
+txhousing %&amp;gt;% 
+  filter(!is.na(sales)) %&amp;gt;% 
+  ggplot(aes(x = city, y = sales, fill = city)) +
+  geom_boxplot() +
+  theme(legend.position = &amp;quot;none&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-07/ggplot2_exam_files/figure-html/box-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;x-축의-tick-마크-라벨-회전&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;x-축의 tick 마크 라벨 회전&lt;/h3&gt;
+&lt;p&gt;도시 이름이 겹쳐서 출력되었다. 어떤 도시의 부동산 판매 건수가 많은지 혹은 적은지 알 수 없다.&lt;/p&gt;
+&lt;p&gt;만약 x-축이 연속형 변수일 경우에는 라벨이 겹치지 않을 정도로 몇 개의 tick 마크만 출력하면 문제가 해결된다. 그러나 이 경우처럼 x-축이 범주형 변수일 경우에는 이 방법을 적용할 수 없다.&lt;/p&gt;
+&lt;p&gt;x-축의 tick 마크 라벨을 회전하면 겹쳐지는 것을 방지할 수 있다. 다음처럼 theme() 함수를 이용해서 axis.text.x의 출력 각도 90도로 조정한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;txhousing %&amp;gt;% 
+  filter(!is.na(sales)) %&amp;gt;% 
+  ggplot(aes(x = city, y = sales, fill = city)) +
+  geom_boxplot() +
+  theme(legend.position = &amp;quot;none&amp;quot;) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-07/ggplot2_exam_files/figure-html/rotate-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;이제 도시 이름이 겹치지 않아서 Houstion에서의 부동산 거래가 활발함을 할 수 있다. 그러나 한가지 문제점이 있다. 도시 이름이 회전하다보니, 그 이름을 읽어서 인식하기가 다소 어려워 졌다. 또한 도시 이름이 긴 것이 많아 전체 시각화 결과에서 x-축의 영역이 필요 이상으로 커졌다.&lt;/p&gt;
+&lt;p&gt;이번에는 각도를 45도로 조정해 보자.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;txhousing %&amp;gt;% 
+  filter(!is.na(sales)) %&amp;gt;% 
+  ggplot(aes(x = city, y = sales, fill = city)) +
+  geom_boxplot() +
+  theme(legend.position = &amp;quot;none&amp;quot;) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-07/ggplot2_exam_files/figure-html/rotate2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;출력된 플롯에서 x-축의 영역이 줄어들었고, 좀더 가로 모양에 가까워져서 이름을 읽어서 인식하기가 다소 쉬워 졌다. 그러나 도시간의 간격이 좀 줄어들어, 도시 이름간을 분리하는데 다소 간섭이 발생한다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;데이터-크기별로-정렬하여-출력&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;데이터 크기별로 정렬하여 출력&lt;/h3&gt;
+&lt;p&gt;도시별 부동산 거래 규모를 파악하는 시나리오는“&lt;strong&gt;&lt;code&gt;어느 도시가 거래량이 많은지, 혹은 어느 도시가 거래량이 적은지?&lt;/code&gt;&lt;/strong&gt;”를 파악하는 것이다. 지극히 일반적인 시나리오다. 만약 관심있는 도시가 정해져 있고, 그 도시의 순서가 의미가 있다면 관심있는 도시 순서로 표현되길 원할 것이다.&lt;/p&gt;
+&lt;p&gt;앞에서 정의한 시나리오는 거래량이 많은 도시부터 시작해서 적은 도시의 순서(내림차순)로 표현하거나, 반대로 거래량이 적은 도시부터 시작해서 많은 도시의 순서(오름차순)로 표현하는 방법이다. 만약 수치 변수가 positive 지표일 경우에는 내림차순으로, negative일 경우에는 오름차숨으로 표현하는 것이 바람직하다. 거래량은 부정적인 지표가 아니므로 내림차순으로 표현하는 것이 바람직하다.&lt;/p&gt;
+&lt;p&gt;범주형 데이터인 factor나 ordered factor는 정의된 levels 순서로 데이터가 표현된다. 그러므로 levels을 거래량의 내림차순에 해당하는 도시 이름으로 변경해주면 도시별 박스 플롯이 내림차순으로 표현된다.&lt;/p&gt;
+&lt;p&gt;forcats 패키지의 fct_reorder() 함수는 지정한 수치변수의 정렬 순서에 따라 factor의 levels 순서를 변경한다. 그러므로 다음과 같이 mutate() 함수에 적용하여 거래량의 내림차순 순으로 도시 이름의 순서를 변경해 준다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;txhousing %&amp;gt;% 
+  filter(!is.na(sales)) %&amp;gt;% 
+  mutate(city = forcats::fct_reorder(city, sales, .desc = TRUE)) %&amp;gt;% 
+  ggplot(aes(x = city, y = sales, fill = city)) +
+  geom_boxplot() +
+  theme(legend.position = &amp;quot;none&amp;quot;) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-07/ggplot2_exam_files/figure-html/desc-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;일부-범주의-정보만-출력하기&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;일부 범주의 정보만 출력하기&lt;/h3&gt;
+&lt;p&gt;Top-n을 분석할 경우, 예를 들면 &lt;code&gt;부동산 거래량 상위 10개 도시만 시각화는 경우&lt;/code&gt;, &lt;code&gt;부동산 거래량 하위 7개 도시만 시각화는 경우&lt;/code&gt;에는 전체 도시가 아닌 일부 도시를 필터링하여 출력해야 한다. 예제 데이터는 46개의 도시 정보를 포함하고 있다. 이 경우 46개의 도시에 대한 거래량을 이해하는 것보다 규모가 크거나 작은 몇 개의 도시에 대한 정보를 재빨리 파악하는 것이 중요하다.&lt;/p&gt;
+&lt;p&gt;filter() 함수는 조건을 만족하는 사례만 취하는 함수다. 다음처럼 조건에 상위, 혹은 하위 Top-n 개의 도시를 추려서 시각화하면 원하는 결과를 얻을 수 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;n &amp;lt;- 12
+txhousing %&amp;gt;% 
+  filter(!is.na(sales)) %&amp;gt;% 
+  mutate(city = forcats::fct_reorder(city, sales, .desc = TRUE)) %&amp;gt;% 
+  filter(city %in% levels(city)[1:n]) %&amp;gt;% 
+  ggplot(aes(x = city, y = sales, fill = city)) +
+  geom_boxplot() +
+  theme(legend.position = &amp;quot;none&amp;quot;) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-07/ggplot2_exam_files/figure-html/topn-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;축을-바꿔서-출력하기&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;축을 바꿔서 출력하기&lt;/h3&gt;
+&lt;p&gt;일반화된 법칙은 아니지만 경우에 따라서, x-축과 y-축을 바꿔서 출력하면 몇 가지 잇점을 얻을 수 있다.&lt;/p&gt;
+&lt;p&gt;x-축에 표현할 범주형 변수의 levels 개수가 많아서 겹쳐 출력할 경우에 겹치는 문제를 해결할 수 있다. 그리고 박스 플롯처럼 분포를 파악하는 시각화의 경우에는 위 아래로 시선을 훑으면서 해석하는 것보다는 왼쪽에서 오른쪽으로 시선을 훑는 것이 정보를 이해하는데 수월하다. 유사한 기능을 수행하는 히스토그램이나 밀도 그래프(density plot)는 횡으로 나열하여 표현한 것도 이런 이유다. 그러나 절대적이지는 않다. 세로로 표현해도 해석하는 데 문제는 없다. 다만, 세심한 배려가 시각화 결과를 해석하는 분석가나 정보를 재공받는 플롯 해석가에게 해석에 존더 집중할 수 있는 환경을 만들어 줄 수 있다는 점을 고려해야 한다.&lt;/p&gt;
+&lt;p&gt;ggplot의 경우에는 coord_flip() 함수를 적용해서 x-축과 y-축을 바꿔서 출력할 수 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;n &amp;lt;- 12
+txhousing %&amp;gt;% 
+  filter(!is.na(sales)) %&amp;gt;% 
+  mutate(city = forcats::fct_reorder(city, sales, .desc = TRUE)) %&amp;gt;% 
+  filter(city %in% levels(city)[1:n]) %&amp;gt;% 
+  ggplot(aes(x = city, y = sales, fill = city)) +
+  geom_boxplot() +
+  coord_flip() +
+  theme(legend.position = &amp;quot;none&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-07/ggplot2_exam_files/figure-html/flip-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;유클리드 공간을 표현하는 &lt;code&gt;직교좌표계&lt;/code&gt;인 &lt;code&gt;데카르트 좌표계(Cartesian coordinate system)&lt;/code&gt;는 우리가 흔히 사용하는 좌표계다. x-축과 y-축이 교차하는 좌표계에 플롯을 그릴 경우에는, x-축의 경우는 왼쪽에서 오른쪽의 방향성이 있고, y-축의 경우에는 아래에서 윗쪽으로의 방향성이 있다. 앞의 경과에서 Houstion이 맨 아래에 표현된 이유다.&lt;/p&gt;
+&lt;p&gt;사람의 공간 인지 능력은 아래서 시작해서 위로 시선을 옮기는 접근보다 위에서 아래로 시선을 옮겨가면서 파악하는 것이 수월하다. 그런데 앞의 결과는 축이 바뀌면서 y-축에 표현되는 정보가 내림차순이 아닌 오름차순으로 바뀌었다.&lt;/p&gt;
+&lt;p&gt;forcats 패키지의 fct_reorder()를 이용하면 순서를 바꿔 값이 큰 Houstion을 맨 위에 표현할 수 있다. 이 경우 xlab() 함수를 이용해서 x-축의 레이블을 변경해 준다. x-축과 y-축이 바뀌었으므로, xlab() 함수는 실제로 x-축의 레이블을 변경시키며, 시각적으로는 우리가 익숙하게 인식하는 y-축 방향의 레이블을 변경한다. 만약 ylab() 함수를 사용하면 &lt;code&gt;sales&lt;/code&gt;에 해당하는, 우리가 익숙하게 인식하는 y-축 방향의 레이블이 변경되므로 주의해야 한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;n &amp;lt;- 12
+txhousing %&amp;gt;% 
+  filter(!is.na(sales)) %&amp;gt;% 
+  mutate(city = forcats::fct_reorder(city, sales, .desc = TRUE)) %&amp;gt;% 
+  filter(city %in% levels(city)[1:n]) %&amp;gt;% 
+  ggplot(aes(x = forcats::fct_reorder(city, desc(city)), y = sales, fill = city)) +
+  geom_boxplot() +
+  coord_flip() +
+  xlab(&amp;quot;city&amp;quot;) + 
+  ggtitle(&amp;quot;Boxplot of sales by cities&amp;quot;) +
+  theme(legend.position = &amp;quot;none&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-07/ggplot2_exam_files/figure-html/reorder-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;forcats 패키지의 fct_reorder()는 ggplot의 reorder() 함수로 대체할 수도 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;n &amp;lt;- 12
+txhousing %&amp;gt;% 
+  filter(!is.na(sales)) %&amp;gt;% 
+  mutate(city = forcats::fct_reorder(city, sales, .desc = TRUE)) %&amp;gt;% 
+  filter(city %in% levels(city)[1:n]) %&amp;gt;% 
+  ggplot(aes(x = reorder(city, desc(city)), y = sales, fill = city)) +
+  geom_boxplot() +
+  coord_flip() +
+  xlab(&amp;quot;city&amp;quot;) + 
+  ggtitle(&amp;quot;Boxplot of sales by cities&amp;quot;) +  
+  theme(legend.position = &amp;quot;none&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-07/ggplot2_exam_files/figure-html/reorder2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>원에 대하여</title>
+      <link>/post/2016-01/2016-01-02-circle/</link>
+      <pubDate>Sat, 02 Jan 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2016-01/2016-01-02-circle/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;이론적-배경&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;이론적 배경&lt;/h2&gt;
+&lt;p&gt;가상의 한 점에서 같은 거리 만큼 떨어진 점들의 집합을 원이라 할수 있다. 한 점(원점)에서 1의 거리 만큼 떨어진 점들의 모임인 단위원을 생각해 보자. \( x^2 + y^2 = 1^2 \)인 원의 공식을 기억할지 모르겠다. 중학교 수학 시간에 배운 기억이 어렴풋이 나지 않는가?&lt;/p&gt;
+&lt;p&gt;그러면 한 점에서 1만큼 떨어진 위치에 꼭지점을 갖는 정n각형을 생각하자. 정삼각형, 정사각형, 정오각형 무수히 많다. 그러면 n의 수가 커질수록 이 정다각형의 모양은 원에 가깝게 된다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;이러한 사실을 다음 과정을 수행하는 R 시각화를 이용해서 증명해 보자.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;\( x^2 + y^2 = 1^2 \)인 단위원을 그린다. 이 원은 n각형의 외접원이 될 것이다.&lt;/li&gt;
+&lt;li&gt;\( x^2 + y^2 = cos( {n })^2 \)인 단위원을 그린다. 이 원은 n각형의 내접원이 될 것이다.&lt;/li&gt;
+&lt;li&gt;원점에서 1만큼 떨어진 곳에 n개의 점을 찍고 이 점을 연결한 n각형을 그린다.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;내접원의 반지름이 \( cos( {n}) \)인 이유는 다음과 같다.&lt;/p&gt;
+&lt;p&gt;n각형의 중심에서 각각의 꼭지점을 잇는 선을 그리면 n개의 동일한 면적의 이등변 삼각형이 만들어 진다. 그리고 이 이등변삼각형을 반으로 나누면 두개의 직각 삼각형이 되는데 이 직각삼각형의 원점에서의 각이 \(  \)인 직각삼각형이고, 내접원의 반지름은 \( r cos() \)이므로 \( cos() \)이 된다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;r-시각화&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;R 시각화&lt;/h2&gt;
+&lt;p&gt;내접원과 외접원을 그리는 R 코드와 결과는 다음과 같다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; par(family=&amp;#39;NanumGothic&amp;#39;)
+&amp;gt; 
+&amp;gt; radius &amp;lt;- function () {
++   par(mfrow = c(1, 1), mar=c(1, 1, 1, 1), pty = &amp;#39;s&amp;#39;)
++   
++   plot(c(-1, 1), c(-1, 1), type = &amp;#39;n&amp;#39;, 
++        axes = FALSE, xlab = &amp;#39;&amp;#39;, ylab = &amp;#39;&amp;#39;)
++  
++   angle &amp;lt;- (0:(10 * 6)) / (10 * 6) * 2 * pi
++   x1 &amp;lt;- cos(angle) / 2
++   y1 &amp;lt;- sin(angle) / 2
++   
++   lines(x1, y1, col = &amp;quot;blue&amp;quot;)
++   x &amp;lt;- rep(0, 3)
++   y &amp;lt;- rep(0, 3)
++   
++   for (i in 0:3) {
++    x[i+1] &amp;lt;- cos(angle[i * 20 + 1])
++    y[i+1] &amp;lt;- sin(angle[i * 20 + 1])
++    }
++   
++   lines(x, y)
++   points(0,0, pch = 19)
++   lines(c(0, x[2]), c(0, y[2]))
++   lines(c(0, cos(pi) / 2), c(0, 0), col = &amp;quot;red&amp;quot;, lwd = 2)
++   
++   text(cos(pi) / 4, -0.05, &amp;quot;반지름&amp;quot;, cex = 0.7)
++   text(-0.15, 0.1, labels = expression(frac(pi, 2 * n)), 
++        cex = 0.8)
++ }
+&amp;gt; 
+&amp;gt; radius()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2016-01/2016-01-02-circle_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;1400&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;원으로의-수렴&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;원으로의 수렴&lt;/h2&gt;
+&lt;p&gt;그러면 앞의 방법으로 &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt;각형과 내접원, 외접원을 그려보자. &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt;이 클수록 다각형은 원에 가까워지고, 내접원과 외접원의 크기도 점점 같아지게 된다. 즉, 원에 가까워진다는 반증이다.&lt;/p&gt;
+&lt;p&gt;정 3, 6, 9, 12각형을 그려보자.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; circle &amp;lt;- function (points) {
++   par(pty = &amp;#39;s&amp;#39;)
++   
++   plot(c(-1, 1), c(-1, 1), type = &amp;#39;n&amp;#39;, 
++        axes = FALSE, xlab = &amp;#39;&amp;#39;, ylab = &amp;#39;&amp;#39;)
++   
++   angle &amp;lt;- (0:(10 * points)) / (10 * points) * 2 * pi
++   x1 &amp;lt;- cos(2 * pi / (points * 2)) * cos(angle)
++   y1 &amp;lt;- cos(2 * pi / (points * 2)) * sin(angle)
++   x2 &amp;lt;- cos(angle)
++   y2 &amp;lt;- sin(angle)
++   
++   lines(x1, y1, col = &amp;quot;blue&amp;quot;)
++   lines(x2, y2)
++   
++   x &amp;lt;- rep(0, points)
++   y &amp;lt;- rep(0, points)
++   
++   for (i in 0:points) {
++     x[i+1] &amp;lt;- cos(angle[i * 10 + 1])
++     y[i+1] &amp;lt;- sin(angle[i * 10 + 1])
++   }
++  
++   lines(x, y, col = &amp;quot;red&amp;quot;, lwd = 1.7)
++ }
+&amp;gt; 
+&amp;gt; par(mfrow = c(2, 2), mar = c(1, 1, 1, 1))
+&amp;gt; circle(3)
+&amp;gt; circle(6)
+&amp;gt; circle(12)
+&amp;gt; circle(30)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2016-01/2016-01-02-circle_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;1400&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;circle() 함수로 정30각형만 그려도 거의 원과 구분되지 않는다. 물론 반지름이 1인 경우이다. 여기서 1이라 함은 &lt;code&gt;graphics device&lt;/code&gt;에서의 절대좌표 크기다. 실생활에서 그림을 그릴 때, 반지름이 1미터라고 한다면 30각형은 원으로 보기 어려울 것이다. 단지 R의 &lt;code&gt;graphics device&lt;/code&gt; 세계에서 원의 성질을 보여주는 예로 이해하기 바란다.&lt;/p&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>plot region 밖에 legend 출력하기</title>
+      <link>/post/2016-01/2016-01-01-outside_plotregion_legend/</link>
+      <pubDate>Fri, 01 Jan 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2016-01/2016-01-01-outside_plotregion_legend/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;Excel처럼 plot 영역의 밖에 legend를 출력할 수 없냐는 혹자의 질문이 있었다.
+한번도 생각해보지 않은 주제라 막연히 &lt;code&gt;mtext()&lt;/code&gt;, &lt;code&gt;ploygon()&lt;/code&gt; 등의 함수로 사용자 정의 함수를 만들어 구현할 수 있을 것 같았다. 그런데, &lt;strong&gt;R graphics parameter&lt;/strong&gt;를 이용하면 쉽게 해결할 수 있다.&lt;/p&gt;
+&lt;div id=&#34;r-graphics-device의-이해&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;R Graphics Device의 이해&lt;/h3&gt;
+&lt;p&gt;우선 R Graphics Device에 플롯을 출력하는 영역의 구분에 대해서 알아보자.&lt;/p&gt;
+&lt;p&gt;플롯을 그리는 영역에는 figure region과 figure margin이 있다. figure region은 플롯을 표현하는 영역으로 실제로 플롯이 위치하는 plot region을 포함한다.
+figure margin은 figure region 안에서의 plot region의 여백이다. 그리고 figure region 밖의 여백을 outer margin이라 한다.&lt;/p&gt;
+&lt;p&gt;R Graphics Device의 구조는 다음 그림을 통해 쉽게 이해할 수 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; par(oma = c(2, 2, 2, 2))
+&amp;gt; set.seed(1)
+&amp;gt; x &amp;lt;- rnorm(100)
+&amp;gt; hist(x, col = &amp;quot;lightblue&amp;quot;)
+&amp;gt; 
+&amp;gt; box(which = &amp;quot;plot&amp;quot;  , lty = 1, cex = 1.5, col = &amp;quot;red&amp;quot;)
+&amp;gt; box(which = &amp;quot;figure&amp;quot;, lty = 2, cex = 1.5, col = &amp;quot;blue&amp;quot;)
+&amp;gt; #box(which = &amp;quot;inner&amp;quot; , lty = 3, cex = 1.5)
+&amp;gt; box(which = &amp;quot;outer&amp;quot; , lty = 4, cex = 1.5, col = &amp;quot;black&amp;quot;)
+&amp;gt; 
+&amp;gt; text(-2, 15, &amp;quot;plot region&amp;quot;)
+&amp;gt; 
+&amp;gt; mtext(&amp;quot;figure region&amp;quot;, side = 3, adj = 0, at = -3, line = 2)
+&amp;gt; mtext(&amp;quot;margin 1&amp;quot;, side = 1, col = &amp;quot;red&amp;quot;)
+&amp;gt; mtext(&amp;quot;margin 2&amp;quot;, side = 2, col = &amp;quot;red&amp;quot;)
+&amp;gt; mtext(&amp;quot;margin 3&amp;quot;, side = 3, col = &amp;quot;red&amp;quot;)
+&amp;gt; mtext(&amp;quot;margin 4&amp;quot;, side = 4, col = &amp;quot;red&amp;quot;)
+&amp;gt; 
+&amp;gt; mtext(&amp;quot;outer margin area&amp;quot;, side = 3, adj = 0, line = 1, outer = TRUE)
+&amp;gt; mtext(&amp;quot;outer margin 1&amp;quot;, side = 1, outer = TRUE, col = &amp;quot;blue&amp;quot;)
+&amp;gt; mtext(&amp;quot;outer margin 2&amp;quot;, side = 2, outer = TRUE, col = &amp;quot;blue&amp;quot;)
+&amp;gt; mtext(&amp;quot;outer margin 3&amp;quot;, side = 3, outer = TRUE, col = &amp;quot;blue&amp;quot;)
+&amp;gt; mtext(&amp;quot;outer margin 4&amp;quot;, side = 4, outer = TRUE, col = &amp;quot;blue&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;figure&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-2&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;/post/2016-01/2016-01-01-outside_plotregion_legend_files/figure-html/unnamed-chunk-2-1.png&#34; alt=&#34;R Graphics Device의 구조&#34; width=&#34;1400&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 1: R Graphics Device의 구조
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;legend-표현하기&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;legend 표현하기&lt;/h3&gt;
+&lt;p&gt;일반적인 legend 사용법은 다음과 같으며, legend는 plot region 안에 위치하게 된다. 그러나 plot region이 legend를 표시한 공간이 없이 빼곡하게 플롯으로 채워진다면 legend를 표시할 수 없게 된다. 이 경우는 plot region 밖에 legend를 출력하고 싶어질 것이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; n.row &amp;lt;- 10
+&amp;gt; n.col &amp;lt;- 3
+&amp;gt; 
+&amp;gt; mat &amp;lt;- matrix(0, nrow = n.row, ncol = n.col)
+&amp;gt; 
+&amp;gt; set.seed(123)
+&amp;gt; for (i in 1:n.col)
++   mat[, i] &amp;lt;- sample(1:(n.row * n.col), 
++                      size = n.row, replace = TRUE)
+&amp;gt;  
+&amp;gt; matplot(mat, type=&amp;quot;n&amp;quot;, ylim = c(0, 40))
+&amp;gt; matpoints(mat, type=&amp;quot;p&amp;quot;, pch = 1:3) 
+&amp;gt; matlines(mat)
+&amp;gt; 
+&amp;gt; title(&amp;quot;Inside plot region example&amp;quot;)
+&amp;gt; legend(&amp;quot;topright&amp;quot;, legend = paste(&amp;quot;Sample&amp;quot;, 1:n.col), 
++        col = 1:n.col, pch = 1:n.col, lty = 1:n.col)&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;figure&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-3&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;/post/2016-01/2016-01-01-outside_plotregion_legend_files/figure-html/unnamed-chunk-3-1.png&#34; alt=&#34;legend의 일반적인 사용 사례&#34; width=&#34;1400&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 2: legend의 일반적인 사용 사례
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;plot-영역-밖에-legend-출력하기&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;plot 영역 밖에 legend 출력하기&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;par()&lt;/code&gt; 함수를 이용해서 R Graphics Device를 두 개의 영역으로 적당히 나눈 후 하나의 figure region에는 플롯을, 나머지 figure region에는 legend를 표시하면 plot region 밖에 legend를 출력할 수 있다.&lt;/p&gt;
+&lt;p&gt;plot region 밖에 legend를 출력하는 로직과 예제는 다음과 같다.&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;code&gt;par()&lt;/code&gt; 함수의 fig 인수를 이용해서 플롯을 출력할 figure region을 적당히 두 개로 분할한다.&lt;/li&gt;
+&lt;li&gt;첫번 째 figure region의 plot region에 플롯을 출력한다.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;par()&lt;/code&gt; 함수의 new 인수로 신규 플롯을 현재의 graphic device에 출력하도록 설정한다.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;par()&lt;/code&gt; 함수의 fig 인수로 남은 figure region을 legend를 출력할 figure region으로 설정한다.&lt;/li&gt;
+&lt;li&gt;두번 째 figure region의 plot region에 빈 플롯을 그린 후, 그 위에 legend를 출력한다.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; par(fig = c(0, 1, 0.2, 1), mar = c(2, 4, 4, 4))
+&amp;gt; matplot(mat, type=&amp;quot;n&amp;quot;)
+&amp;gt; matpoints(mat, type=&amp;quot;p&amp;quot;, pch=1:n.col) 
+&amp;gt; matlines(mat)
+&amp;gt; title(&amp;quot;Outside plot region example&amp;quot;)
+&amp;gt;  
+&amp;gt; par(new = TRUE)
+&amp;gt; par(fig = c(0, 1, 0, 0.2), mar = c(0, 0, 0, 0))
+&amp;gt; plot(0, xlim = c(0, 1), ylim = c(0, 5), 
++      axes = FALSE, xlab = &amp;quot;&amp;quot;, ylab = &amp;quot;&amp;quot;, type = &amp;quot;n&amp;quot;)
+&amp;gt; legend(0.2, 3.5, legend = paste(&amp;quot;Sample&amp;quot;, 1:n.col), 
++        col = 1:n.col, pch = 1:n.col, lty = 1:n.col, horiz = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;figure&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-4&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;/post/2016-01/2016-01-01-outside_plotregion_legend_files/figure-html/unnamed-chunk-4-1.png&#34; alt=&#34;plot region 밖의 legend&#34; width=&#34;1400&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 3: plot region 밖의 legend
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;그런데 이 예제를 엄밀하게 설명하자면 plot region 밖에 legend를 출력하는 것이 아니라, 다른 figure region의 plot region에 legend를 출력하는 것이다. 그러나 시각적으로 plot region 밖에 legend가 출력된 것처럼 착각하게 된다.&lt;/p&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>grid package로 그림 그리기</title>
+      <link>/post/2005-05/2005-05-21-grid/</link>
+      <pubDate>Sat, 21 May 2005 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2005-05/2005-05-21-grid/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;일러두기&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;일러두기&lt;/h2&gt;
+&lt;p&gt;2005-05-21 네이버 블로그에 게시된 내용을 옮겨 온 글입니다. 지금의 R 환경과 다소 내용이 다를 수 있음을 밝여둡니다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;graphics---grid-library를-이용한-그림그리기&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Graphics - grid Library를 이용한 그림그리기&lt;/h2&gt;
+&lt;p&gt;오클랜드 대학교의 &lt;code&gt;Paul Murrell&lt;/code&gt;은 &lt;code&gt;grid&lt;/code&gt;라는 그래픽 라이브러리를 개발했다.
+이 라이브러리가 바로 &lt;code&gt;lattice&lt;/code&gt;의 기저 프로그램이다.&lt;/p&gt;
+&lt;p&gt;이 라이브러리를 이용해여 멋진 풍경을 그려보자.
+이번에는 R로도 이런 그림을 그릴 수 있구나하는 흥미차원의 이야기다.&lt;/p&gt;
+&lt;p&gt;먼제 밤의 야경을 그려보고, 한 낮의 풍경도 그려본다.
+동심으로 돌아가 하얀 스케치북에 그래파스를 이용해서 산도 그리고, 달고 그리고, 별과 해도 그려보기로 한다. 밤의 그림은 Paul Murrell가 그렸고, 스케치북과 크레용을 빌려서 해가 뜬 낮의 모습도 그려보았다.&lt;/p&gt;
+&lt;p&gt;Paul Murrell는 검은색과 회색 크레파스가 다 떨어졌고, 나는 하늘색 크레파스가 다 떨어졌다. ^^&lt;/p&gt;
+&lt;div id=&#34;밤의-풍경&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;밤의 풍경&lt;/h3&gt;
+&lt;p&gt;Paul Murrell가 그린 그림과 프로그램이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; library(grid)
+&amp;gt; 
+&amp;gt; # 도화지를 준비했다
+&amp;gt; pushViewport(viewport(xscale = c(0, 1), yscale = c(0.5, 1), clip = TRUE))   
+&amp;gt;              
+&amp;gt; # 검은색과 회색으로 밤하늘을 칠한다
+&amp;gt; res &amp;lt;- 50
+&amp;gt; for (i in 1:res)
++   grid.rect(y=1 - (i - 1) / res, just = &amp;quot;top&amp;quot;,
++             gp = gpar(lwd = 0, col = NULL, fill = grey(0.5 * i / res)))
+&amp;gt; 
+&amp;gt; # 달을 그리는 함수
+&amp;gt; moon &amp;lt;- function(x, y, size) { 
++   t &amp;lt;- seq(-90, 90, length = 50) / 180 * pi
++   x1 &amp;lt;- x + size * cos(t)
++   y1 &amp;lt;- y + size * sin(t)
++   mod &amp;lt;- 0.8
++   x2 &amp;lt;- x + mod * (x1 - x)
++   grid.polygon(c(x1, rev(x2)), c(y1, rev(y1)),
++                default.unit = &amp;quot;native&amp;quot;,
++                gp = gpar(col = NULL, fill = &amp;quot;white&amp;quot;))
++ }
+&amp;gt; 
+&amp;gt; # 달을 그린다.
+&amp;gt; moon(.1, .9, .03) 
+&amp;gt; 
+&amp;gt; # 별을 그리는 함수는 함수
+&amp;gt; star &amp;lt;- function(x, y, size) { 
++   x1 &amp;lt;- c(x, x + size * .1, x + size * .5, x + size * .1,
++           x, x - size * .1, x - size * .5, x - size * .1) + .05
++   y1 &amp;lt;- c(y - size, y - size * .1, y, y + size * .1,
++           y + size * .7, y + size * .1, y, y - size * .1) + .05
++   grid.polygon(x1, y1, 
++                default.unit = &amp;quot;native&amp;quot;,
++                gp = gpar(col = NULL, fill = &amp;quot;white&amp;quot;))
++ }
+&amp;gt; 
+&amp;gt; # 별을 네개 그린다.
+&amp;gt; star(.5, .7, .02)
+&amp;gt; star(.8, .9, .02)
+&amp;gt; star(.72, .74, .02)
+&amp;gt; star(.62, .88, .02)
+&amp;gt; 
+&amp;gt; # 작은별을 스무 개 그린다.
+&amp;gt; grid.circle(runif(20, .2, 1), runif(20, .6, 1), r = .002,
++             default.unit = &amp;quot;native&amp;quot;,
++             gp = gpar(col = NULL, fill = &amp;quot;white&amp;quot;))
+&amp;gt; 
+&amp;gt; # 산을 그리는 함수
+&amp;gt; hill &amp;lt;- function(height = 0.1, col = &amp;quot;black&amp;quot;) {
++   n &amp;lt;- 100
++   x &amp;lt;- seq(0, 1, length = n)
++   y1 &amp;lt;- sin(runif(1) + x * 2 * pi)
++   y2 &amp;lt;- sin(runif(1) + x * 4 * pi)
++   y3 &amp;lt;- sin(runif(1) + x * 8 * pi)
++   y &amp;lt;- 0.6 + height*((y1 + y2 + y3) / 3)
++   grid.polygon(c(x, rev(x)), c(y, rep(0, n)),
++                default.unit = &amp;quot;native&amp;quot;,
++                gp=gpar(col = NULL, fill = col))
++ }
+&amp;gt; 
+&amp;gt; # 산을 그린다
+&amp;gt; hill()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2005-05/2005-05-21-grid_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;1400&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;낮의-풍경&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;낮의 풍경&lt;/h3&gt;
+&lt;p&gt;이번에는 낮의 풍경을 그려보자.
+파란 하늘에 노란 태양이 떠 있는 그림이다.
+산을 그리는 함수는 Paul Murrell것에 크레파스만 바꾸었다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; library(grid)
+&amp;gt; 
+&amp;gt; # 도화지를 준비했다
+&amp;gt; pushViewport(viewport(xscale = c(0, 1), yscale = c(0.5, 1), clip = TRUE))   
+&amp;gt; 
+&amp;gt; # 하늘색 크레파스
+&amp;gt; sky &amp;lt;- cm.colors(100)
+&amp;gt; sky &amp;lt;- sky[-(51:100)] 
+&amp;gt; 
+&amp;gt; # 하늘색 크레파스로 하늘을 그린다
+&amp;gt; for (i in 1:res) 
++   grid.rect(y = 1 - (i - 1) / res, just = &amp;quot;top&amp;quot;,
++             gp = gpar(lwd = 0, col = NULL, fill = sky[i]))
+&amp;gt; 
+&amp;gt; # 낮에 보니 푸른 산이다
+&amp;gt; hill(col = &amp;quot;green4&amp;quot;) 
+&amp;gt; 
+&amp;gt; # 해를 그리는 함수
+&amp;gt; sun &amp;lt;- function(x, y, r) grid.circle(x, y, r = r,
++             default.unit = &amp;quot;native&amp;quot;,
++             gp = gpar(col = NULL, fill = &amp;quot;yellow&amp;quot;))
+&amp;gt; 
+&amp;gt; # 해를 그린다
+&amp;gt; sun(0.5, 0.9, 0.04)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2005-05/2005-05-21-grid_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;1400&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;구름 한 점 없는 맑은 날이다.
+소풍가기 딱 좋은 날인 것 같다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>color</title>
+      <link>/post/2005-04/2005-04-25-color/</link>
+      <pubDate>Mon, 25 Apr 2005 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2005-04/2005-04-25-color/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;일러두기&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;일러두기&lt;/h2&gt;
+&lt;p&gt;2005-04-25 네이버 블로그에 게시된 내용을 옮겨 온 글입니다. 지금의 R 환경과 다소 내용이 다를 수 있음을 밝여둡니다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;colors&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;colors&lt;/h2&gt;
+&lt;p&gt;Chart를 그리기 위해서는 점, 선, 면, 문자 등의 가시적인 요소가 필연적이다. 이들 요소가 모여서, 범례를 만들고, 좌표축을 만들고, 타이틀 등과 그래프를 만든다. 여기에 각각의 객체들에 색상을 부여해서 가독성을 높일 수 있다. 단일 색상이 아니라 여러 색상을 적절하게 조합하면 보다 직관적인 Chart를 생성할 수 있다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;색채학&lt;/code&gt;이라는 학문이 있을 정도로 색에 대한 과학적인 정보는 무궁무진하다. 여기서는 기본적인 색에 대한 부분을 다루고자 한다. 구체적인 색의 원리 등은 다른 문서를 참고하기 바란다.&lt;/p&gt;
+&lt;p&gt;그러면 R Graphics에서의 색상에 대해서 알아보자.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;colorscolours&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;colors/colours&lt;/h2&gt;
+&lt;p&gt;R이 인식할 수 있는 내장된 색상 이름을 리턴하는 함수다. 657개의 색상 이름을 반환하며, 두 함수는 이름만 다를 뿐 동일한 함수이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; colors
+function (distinct = FALSE) 
+{
+    c &amp;lt;- .Call(C_colors)
+    if (distinct) 
+        c[!duplicated(t(col2rgb(c)))]
+    else c
+}
+&amp;lt;bytecode: 0x7f94ec5478c8&amp;gt;
+&amp;lt;environment: namespace:grDevices&amp;gt;
+&amp;gt; colours
+function (distinct = FALSE) 
+{
+    c &amp;lt;- .Call(C_colors)
+    if (distinct) 
+        c[!duplicated(t(col2rgb(c)))]
+    else c
+}
+&amp;lt;bytecode: 0x7f94ec5b3820&amp;gt;
+&amp;lt;environment: namespace:grDevices&amp;gt;
+&amp;gt; length(colors())
+[1] 657
+&amp;gt; colors()[1:10]
+ [1] &amp;quot;white&amp;quot;         &amp;quot;aliceblue&amp;quot;     &amp;quot;antiquewhite&amp;quot;  &amp;quot;antiquewhite1&amp;quot;
+ [5] &amp;quot;antiquewhite2&amp;quot; &amp;quot;antiquewhite3&amp;quot; &amp;quot;antiquewhite4&amp;quot; &amp;quot;aquamarine&amp;quot;   
+ [9] &amp;quot;aquamarine1&amp;quot;   &amp;quot;aquamarine2&amp;quot;  &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;다음과 같은 함수를 만들었다. 이 함수는 그래프 좌표에 주어진 색깔들을 바둑판처럼 출력한다. 단, 가로와 세로의 동수를 만들기 위해서 몇 개의 색상은 출력이 되지 않을 수 있다. 만약 모든 입력 색상을 다 출력하려면 &lt;code&gt;floor&lt;/code&gt; 대신 &lt;code&gt;round&lt;/code&gt; 함수를 사용하면 되지만 출력 모양이 사각형이 되지 않을 수 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;col.map &amp;lt;- function(cols = colours()) {
+  n = length(cols)
+  cnt = floor(sqrt(n))
+ 
+  plot.new()
+  plot.window(xlim = c(0,cnt),
+              ylim = c(0,cnt))
+ 
+  for (i in 1:cnt)
+     for (j in 1:cnt)
+       rect(i - 1, j - 1, i, j, col = cols[(i - 1) * cnt + j], border = NA)
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;그러면 colors()를 색상으로 그래픽 디바이스에 출력해 보자.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; col.map()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2005-04/2005-04-25-color_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;1400&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;이 색상으로 우리는 좌표를 그릴 수 있고, 문자를 출력하는 등 Graphic Device에 자유롭게 활용 수 있다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;hsv&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;hsv&lt;/h2&gt;
+&lt;p&gt;색의 삼속성인 h=색상, s=채도, v=명도를 사용해서 색깔을 지정한다. 이외에 감마나, 알파도 지정할 수 있다. R에서의 많은 색상관련 함수들이 이 함수를 사용해서 구현하였다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; par(mfrow = c(2, 2))
+&amp;gt; col.map(c(hsv(.5, .5, .5), hsv(.6, .5, .5), hsv(.7, .5, .5), hsv(.8, .5, .5)))
+&amp;gt; col.map(c(hsv(.5, .5, .5), hsv(.5, .6, .5), hsv(.5, .7, .5), hsv(.5, .8, .5)))
+&amp;gt; col.map(c(hsv(.5, .5, .5), hsv(.5, .5, .6), hsv(.5, .5, .7), hsv(.5, .5, .8)))
+&amp;gt; col.map(c(hsv(.5, .5, .5), hsv(.6, .6, .6), hsv(.7, .7, .7), hsv(.8, .8, .8)))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2005-04/2005-04-25-color_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;1400&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;rainbow-family-함수&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;rainbow Family 함수&lt;/h2&gt;
+&lt;p&gt;R에서 hsv 함수를 이용해서 근접한 연속선상의 색상들을 n개의 벡터로 반환하는 함수를 다음과 같이 재공한다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;rainbow(n, s = 1, v = 1, start = 0, end = max(1,n - 1)/n, gamma = 1)
+heat.colors(n)
+terrain.colors(n)
+topo.colors(n)
+cm.colors(n)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2005-04/2005-04-25-color_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;1400&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;그러면 앞서 만든 col.map를 이용해서 몇가지 연속선상의 색깔을 출력해 보자.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; par(mfrow = c(2, 2)) 
+&amp;gt; col.map(rainbow(400))
+&amp;gt; col.map(heat.colors(400))
+&amp;gt; col.map(cm.colors(400))
+&amp;gt; col.map(topo.colors(400))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2005-04/2005-04-25-color_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;1400&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;rgb&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;rgb&lt;/h2&gt;
+&lt;p&gt;빛의 3원색인 Red, Green, Blue를 이용해서 색상을 나타낸다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;rgb(red, green, blue, alpha, names = NULL, maxColorValue = 1)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; reds &amp;lt;- rgb((0:15) / 15, g = 0, b = 0, names = paste(&amp;quot;red&amp;quot;, 0:15, sep = &amp;quot;.&amp;quot;))
+&amp;gt; reds
+    red.0     red.1     red.2     red.3     red.4     red.5     red.6     red.7 
+&amp;quot;#000000&amp;quot; &amp;quot;#110000&amp;quot; &amp;quot;#220000&amp;quot; &amp;quot;#330000&amp;quot; &amp;quot;#440000&amp;quot; &amp;quot;#550000&amp;quot; &amp;quot;#660000&amp;quot; &amp;quot;#770000&amp;quot; 
+    red.8     red.9    red.10    red.11    red.12    red.13    red.14    red.15 
+&amp;quot;#880000&amp;quot; &amp;quot;#990000&amp;quot; &amp;quot;#AA0000&amp;quot; &amp;quot;#BB0000&amp;quot; &amp;quot;#CC0000&amp;quot; &amp;quot;#DD0000&amp;quot; &amp;quot;#EE0000&amp;quot; &amp;quot;#FF0000&amp;quot; 
+&amp;gt; col.map(reds)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2005-04/2005-04-25-color_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;1400&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;gray&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;gray&lt;/h2&gt;
+&lt;p&gt;회색계열의 색상을 만든다. level은 0과 1사이의 숫자이며, 1이면 흰색, 0이면 검정색이다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;gray(level)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; gray(0:8 / 8)
+[1] &amp;quot;#000000&amp;quot; &amp;quot;#202020&amp;quot; &amp;quot;#404040&amp;quot; &amp;quot;#606060&amp;quot; &amp;quot;#808080&amp;quot; &amp;quot;#9F9F9F&amp;quot; &amp;quot;#BFBFBF&amp;quot;
+[8] &amp;quot;#DFDFDF&amp;quot; &amp;quot;#FFFFFF&amp;quot;
+&amp;gt; col.map(gray(0:8 / 8))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2005-04/2005-04-25-color_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;1400&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>RADAR Plot</title>
+      <link>/post/2005-04/2005-04-19-radar/</link>
+      <pubDate>Tue, 19 Apr 2005 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2005-04/2005-04-19-radar/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;일러두기&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;일러두기&lt;/h2&gt;
+&lt;p&gt;2005-04-19 네이버 블로그에 게시된 내용을 옮겨 온 글입니다. 지금의 R 환경과 다소 내용이 다를 수 있음을 밝여둡니다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;graphics-development---radar-plot&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Graphics Development - RADAR Plot&lt;/h2&gt;
+&lt;p&gt;90년대 초 &lt;code&gt;S-PLUS&lt;/code&gt;라는 놈을 처음 접했을 때 가장 매료되었던 부분은 미려한 Graphic의 출력물과 다양한 프로그램으로 원하는 Graph를 그릴 수 있다는 점이 었다. 개인적으로 C 언어를 즐겨 사용했던 시절이라 S 언어의 Script 프로그램은 그리 부담이 가지 않았었다.
+&lt;code&gt;SAS&lt;/code&gt;는 Procedure 중심의 절차적인 언어라 정해진 Procedure의 틀안에서만 움직여야 했다. 물론 &lt;code&gt;IML&lt;/code&gt;을 이용해서 조금은 융통성이 있는 노력을 시도한 적은 있지만…&lt;/p&gt;
+&lt;p&gt;그러나 근 십년이 넘었고, 개인적으로 그 후 SAS를 사용하지 않았기 때문에 십 여년의 전 기준으로 두 언어를 비교할 수는 없다. SAS도 나름대로의 강점이 있다고는 생각하기 때문이다. 하지만 S 언어는 Linux 시스템처럼 생각하는 것은 다 구현할 수있는 자유로움을 선사해 주었으며, 이점은 SAS를 비롯한 다른 통계 언어가 따라 오지 못하는 독보적인 영역이라 생각한다.&lt;/p&gt;
+&lt;p&gt;R과 S-PLUS도 비교의 여지는 있다. 공개 프로그램이냐, 상업적인 프로그램이냐의 성격도 중요한 점이다. 개인적으로는 &lt;code&gt;HP-UX&lt;/code&gt;나 &lt;code&gt;Sun OS&lt;/code&gt;의 &lt;code&gt;UNIX&lt;/code&gt;냐 &lt;code&gt;LINUX&lt;/code&gt;냐의 차이점과 유사하다고 생각한다.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;상용 vs 공개,&lt;/strong&gt;
+&lt;strong&gt;Commercial 라이브러리 vs 다양한 3-Party의 라이브러리&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;이번에는 이정도까지만 하자. 90년대 초에는 어둠의 S-PLUS를 사용했고 근래에는 1개월 짜리 Trial Version의 S-PLUS를 사용하다보니 짧은 기간 안에 S-PLUS에 대해 섭렵하기는 어렵고 다분히 주관적인 비교만 가능할 뿐이다. 그래서 그냥 고민 없이 R을 쓰고 있기는 하다.&lt;/p&gt;
+&lt;p&gt;미안한 점은 여기에 실리는 script가 S-PLUS에서 제대로 돌아가느냐 하는 점이다. 물론 R의 확장 라이브러리는 S-PLUS에서 안돌아 갈 수도 있으며, Porting이 필요한 부분이 있겠다. 그러나 S Language의 Base로 작성된 부분은 동일하게 작동이 되거나 일부의 수정을 전제로 작동이 가능 할 것이다. 그래도 여전히 R &amp;amp; S-PLUS라는 Category에 Blog을 연재하기로 한다.&lt;/p&gt;
+&lt;p&gt;그리고 R의 버젼은 2.1.0을 기준으로 작성하였음을 밝혀둔다. 아마 2.0 이전 버전을 사용할 경우 &lt;code&gt;Mosaic Plot&lt;/code&gt;을 설명할 때, hcl function이 작동하지 않았을 것이다. hcl은 2.1.0의 grDevices package에 포함된 function인데 2.0 이전에는 이 패키지가 기본 패키지가 아니었기 때문이다. 물론 이 패키지를 library 함수 등을 써서 사용할 수는 있다.&lt;/p&gt;
+&lt;div id=&#34;예제&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;예제&lt;/h3&gt;
+&lt;p&gt;각설하고, 이번에는 &lt;code&gt;RADAR Plot&lt;/code&gt;을 한번 만들어 보자. 2003년도 모 회사에 근무할 적에 실제 사용했던 Plot이다.&lt;/p&gt;
+&lt;p&gt;RADAR Plot은 특정 그룹의 성격을 설명하는 N개의 변수의 점수분포를 비교하는 그림이다. 단위 그룹별로 각각의 변수의 관계를 볼 수도 있고, 여러 개의 그룹의 차이도 비교할 수 있는 그림이다. 다변량 분석에서 사용하는 Star Plot과도 유사한 그림이라 하겠다.&lt;/p&gt;
+&lt;p&gt;그러면 예제 그림을 한번 보자.&lt;/p&gt;
+&lt;p&gt;2001년, 2002년, 2003년도의 자료를 가지고 ACR, AHT, ASA, MCR, OCR, AAR의 점수를 비교한 그림이다. ACR, AHT, ASA, MCR, OCR, AAR에 대해서는 알 필요가 없을 듯하다. 일단 RADAR Plot이 뭔가 하는 것만 이해 하면 된다.&lt;/p&gt;
+&lt;p&gt;다음이 위 RADAR Plot을 그리는 function을 비롯한 R Script이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; my.radar &amp;lt;- function (score, legends, labels) 
++ {
++  par(mfrow = c(1, 1), pty = &amp;#39;s&amp;#39;, mar = c(2, 4, 2, 4))
++  plot(c(-2.5, 2.5), c(-2.5, 2.5), type = &amp;#39;n&amp;#39;, axes = FALSE, 
++       xlab = &amp;#39;&amp;#39;, ylab = &amp;#39;&amp;#39;)
++  
++  angle &amp;lt;- (0:60) / 60 * 2 * pi
++  
++  x1 &amp;lt;- cos(angle)
++  y1 &amp;lt;- sin(angle)
++  x2 &amp;lt;- 2 * cos(angle)
++  y2 &amp;lt;- 2 * sin(angle)
++  
++  lines(x1, y1)
++  lines(x2, y2)
++  
++  x &amp;lt;- rep(0,6)
++  y &amp;lt;- rep(0,6)
++  
++  for (i in 1:nrow(score)) {
++   for (j in 0:5) {
++    lines(c(0, x2[j * 10 + 1]), c(0, y2[j * 10 + 1]))
++    x[j + 1] &amp;lt;- 2 * score[i, j + 1]/ 10 * cos(angle[j * 10 + 1])
++    y[j + 1] &amp;lt;- 2 * score[i, j + 1]/ 10 * sin(angle[j * 10 + 1])
++   }
++   points(x, y, pch = 18, col = i + 1)
++   lines(x, y, col = i + 1, lty = i)
++   lines(c(x[1], x[6]), c(y[1], y[6]), col = i + 1, lty = i)
++  }
++  text(x2[1] + 0.3, y2[1], labels[1])
++  text(x2[11] + 0.2, y2[11] + 0.2, labels[2])
++  text(x2[21] - 0.2, y2[21] + 0.2, labels[3])
++  text(x2[31] - 0.4, y2[31], labels[4])
++  text(x2[41] - 0.2, y2[41]- 0.2, labels[5])
++  text(x2[51] + 0.2, y2[51]- 0.2, labels[6])
++  
++  title(&amp;quot;Radar Diagram for Center Performance&amp;quot;)
++  legend(&amp;quot;topright&amp;quot;, legends, lty = 1:length(legends), bty = &amp;quot;n&amp;quot;,
++         col = 2:length(legends) + 1, cex = .8)
++ }
+&amp;gt; 
+&amp;gt; labels &amp;lt;- c(&amp;#39;ASA&amp;#39;, &amp;#39;AHT&amp;#39;, &amp;#39;ACR&amp;#39;, &amp;#39;AAR&amp;#39;, &amp;#39;OCR&amp;#39;, &amp;#39;MCR&amp;#39;)
+&amp;gt; score &amp;lt;- matrix(c(4, 6, 3, 8, 7, 9, 5, 4, 8, 9, 10, 7, 5, 5, 7, 8, 6, 7), 
++                 nrow = 3, byrow = TRUE)
+&amp;gt; legends &amp;lt;- c(&amp;#39;200211&amp;#39;, &amp;#39;200212&amp;#39;, &amp;#39;200301&amp;#39;)
+&amp;gt; my.radar(score, legends, labels)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2005-04/2005-04-19-radar_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;1400&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;수식의-이해&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;수식의 이해&lt;/h3&gt;
+&lt;p&gt;이 Chart에서의 핵심은 원을 그리는 부분이라 할 수 있다. 그러면 R을 이용해서 원을 그리는 방법에 대해서 알아 보자.&lt;/p&gt;
+&lt;p&gt;방법의 핵심은 “원이 한 점에서 동일한 거리에 있는 점들의 집합이다.” 라는 것을 이용하는 것이다. 즉, 한 점(원점)에서 거리가 R(반지름)인 집합을 만들어 선으로 이으면 될 것이다. 그리고 무수히 많은 점의 좌표를 구하는 것이 아니라 단지 몇 개의 점의 좌표를 구한 후 선을 잇는 것도 핵심이다. 무수히 많은 좌표가 아니라 어느 정도 많은 좌표를 구한 다음에 선으로 잇는 방법을 택하기로 한다. 어찌보면 점들의 수는 다다익선이 아니라 어느 정도 원의 모양새가 갖추어질 정도의 수가 되겠다.&lt;/p&gt;
+&lt;p&gt;그러면 어떻게 점의 좌표를 구할 수 있을까?&lt;/p&gt;
+&lt;p&gt;직각 삼각형에서의 밑변의 길이와 높이를 구하는 공식을 고등학교 때 배운 적이 있을 것이다. 원점을 기준으로 밑변의 길가 x-축의 좌표이고, 원점을 기준으로 높이가 y-축의 좌표인 것이다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-3&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tri.gif&#34; alt=&#34;삼각함수&#34; width=&#34;30%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 1: 삼각함수
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;그리고 원의 각도는 &lt;span class=&#34;math inline&#34;&gt;\(2\times\pi\)&lt;/span&gt; 라디안이므로 &lt;span class=&#34;math inline&#34;&gt;\(2\times\pi\)&lt;/span&gt;를 n개로 나누면 n개의 꼭지점을 갖는 다각형을 만들 수 있으며, 그 점의 갯수가 일정량을 넘으면 원처럼 보이는 것이다.
+앞의 예제에서는 n을 60으로 나누었으며, 실제로 그 다각형은 우리의 눈으로 볼 경우 원으로 보여지게 된다. 물론 원으로 보일 정도가 되려면 반지름인 R이 커지면 N의 수도 그 이상으로 커져야 됨은 자명한 일이다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;원으로의-수렴&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;원으로의 수렴&lt;/h3&gt;
+&lt;p&gt;그럼 n의 크기에 따른 다각형이 원에 근접하는 것을 실험해 보자.&lt;/p&gt;
+&lt;p&gt;다음과 같은 Function을 만들었다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; circle &amp;lt;- function (n) 
++ {
++  par(pty = &amp;#39;s&amp;#39;)
++  plot(c(-2.5, 2.5), c(-2.5, 2.5), type = &amp;#39;n&amp;#39;, axes = FALSE, xlab = &amp;#39;&amp;#39;, ylab = &amp;#39;&amp;#39;)
++  
++  angle &amp;lt;- (0:n) / n * 2 * pi
++  
++  x1 &amp;lt;- cos(angle)
++  y1 &amp;lt;- sin(angle)
++  x2 &amp;lt;- 2 * cos(angle)
++  y2 &amp;lt;- 2 * sin(angle)
++  
++  lines(x1, y1)
++  lines(x2, y2)
++  title(paste(paste(paste(&amp;quot;Angle is&amp;quot;, round(2 * pi / n, digit = 1)),
++                    &amp;quot; Pi Radian\nPoint is&amp;quot;), n))
++ }
+&amp;gt;  
+&amp;gt;  
+&amp;gt; par(mfrow = c(2, 2), mar = c(1, 1, 4, 1))
+&amp;gt; circle(10)
+&amp;gt; circle(20)
+&amp;gt; circle(30)
+&amp;gt; circle(40)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2005-04/2005-04-19-radar_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;2100&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;N의 갯수가 20을 넘어서도 마치 원처럼 보인다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;radar-plot&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;RADAR Plot&lt;/h3&gt;
+&lt;p&gt;다음은 R의 창시자인 &lt;code&gt;Ross Ihaka&lt;/code&gt;의 뉴질랜드 auckland 대학에서 강의한 한 통계학 강의에서 출제된 2003년 8월 기말고사의 모범답안의 예로 RADAR Plot의 이야기를 마치기로 한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; # 빈좌표를 그린다.
+&amp;gt; plot.new()
+&amp;gt; par(mar = rep(0.1, 4))
+&amp;gt; plot.window(xlim = c(-25, 25), ylim = c(-25, 25), asp = 1)
+&amp;gt;  
+&amp;gt; # 회색의 다각형을 만든다.
+&amp;gt; temp = c(4, 4.8, 6.4, 9, 12, 15.4, 17.5, 16.9, 15, 10.4, 6.8, 4.6)
+&amp;gt; theta &amp;lt;- seq(0, length = 12, by = 2 * pi/12)
+&amp;gt; x = temp * cos(theta)
+&amp;gt; y = temp * sin(theta)
+&amp;gt; polygon(x, y, col = &amp;quot;lightgray&amp;quot;)
+&amp;gt; 
+&amp;gt; # 12개의 기준선(파선)을 그린다.
+&amp;gt; segments(0, 0, 20 * cos(theta), 20 * sin(theta), lty = &amp;quot;dotted&amp;quot;)
+&amp;gt;  
+&amp;gt; # 원을 그린다.
+&amp;gt; segments(0, 0, 20 * cos(theta), 20 * sin(theta), lty = &amp;quot;dotted&amp;quot;)
+&amp;gt; phi = seq(3, 360 - 3, length = 72) * (pi/180)
+&amp;gt; for (r in c(5, 10, 15)) lines(r * cos(phi), r * sin(phi), lty = &amp;quot;dotted&amp;quot;)
+&amp;gt; lines(20 * cos(phi), 20 * sin(phi))
+&amp;gt;  
+&amp;gt; # 12월도 Text를 출력한다.
+&amp;gt; text(24 * cos(theta), 23 * sin(theta), month.abb)
+&amp;gt;  
+&amp;gt; # 기준점수 Text를 출력한다.
+&amp;gt; labs = seq(5, 20, by = 5)
+&amp;gt; text(labs, rep(0, length(labs)), labs)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2005-04/2005-04-19-radar_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;2100&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>Spine Plot</title>
+      <link>/post/2005-04/2005-04-17-spine/</link>
+      <pubDate>Sun, 17 Apr 2005 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2005-04/2005-04-17-spine/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;일러두기&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;일러두기&lt;/h2&gt;
+&lt;p&gt;2005-04-17 네이버 블로그에 게시된 내용을 옮겨 온 글입니다. 지금의 R 환경과 다소 내용이 다를 수 있음을 밝여둡니다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;graphics-development---spine-plot&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Graphics Development - Spine Plot&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;Spine Plot&lt;/code&gt;은 &lt;code&gt;Barchart&lt;/code&gt;의 일종이라 할 수 있다. Barchart는 일변량 범주형 자료에서 Class의 돗수의 비율을 막대의 길이로 표현한 것인 반면 Spine Plot은 막대의 길이는 동일하게 하고 Class의 돗수의 비율을 막대의 폭으로 표현한 것이다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Mosaic Plot&lt;/code&gt;이 Spine Plot을 기본 아이디어로 만들어 졌다고 Mosaic Plot을 이야기할 때 언급한 적이 있었다. Spine Plot은 단지 단변량 Mosaic Plot이라고도 할 수 있다. Spine Plot은 범주들간의 비율차를 이해하는데 장점이 있다.&lt;/p&gt;
+&lt;div id=&#34;함수의-정의&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;함수의 정의&lt;/h3&gt;
+&lt;p&gt;R의 &lt;code&gt;barplot 함수&lt;/code&gt;를 이용해서 다음과 같은 &lt;code&gt;spineplot 함수&lt;/code&gt;를 만들어 보았다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;spineplot &amp;lt;- function (data, ...) {
+  temp = data
+  
+  if (is.null(ncol(data))) {
+    len = length(data)
+    for (i in 1:len)
+      temp[i] = data[i] * (max(data) / data[i])
+    wid = data
+  } else {
+    len = ncol(data)
+    for (i in 1:len)
+      temp[, i] = data[, i] * (max(apply(data, 2, sum)) / apply(data, 2, sum))[i]
+    wid = apply(data,2,sum)
+  }
+  
+  barplot(temp, width = wid, axes = FALSE, ...)
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;함수의-이용&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;함수의 이용&lt;/h3&gt;
+&lt;p&gt;그러면 Mosaic Plot에서 사용한 클래식 음악에 대한 자료와 타이타닉 자료를 이용해서 Spine Plot을 그려보면서 Barchart및 Mosaic Plot과의 차이점을 알아보자.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;                                       교육수준
+                          --------------------------------
+                               고학력             저학력
+                          --------------------------------
+                                  클래식 음악 듣기
+                나이      예   아니오            예   아니오 
+                          ---------------    --------------
+               고연령       210    190           170   730
+               저연령       194    406           110   290
+                     &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; music = c(210, 194, 170, 110, 190, 406, 730, 290)
+&amp;gt; dim(music) = c(2, 2, 2)
+&amp;gt; dimnames(music) = list(Age = c(&amp;quot;Old&amp;quot;, &amp;quot;Young&amp;quot;), 
++                        Education = c(&amp;quot;High&amp;quot;, &amp;quot;Low&amp;quot;), 
++                        Listen = c(&amp;quot;Yes&amp;quot;, &amp;quot;No&amp;quot;))
+&amp;gt; 
+&amp;gt; par(mfrow = c(2, 2))
+&amp;gt; barplot(apply(music, 1, sum), col = &amp;quot;lightblue&amp;quot;,
++         main = &amp;quot;Bar Chart&amp;quot;)
+&amp;gt; mosaicplot(apply(music, 1 , sum), col = &amp;quot;lightblue&amp;quot;, 
++            main = &amp;quot;Mosaic Plot&amp;quot;)
+&amp;gt; spineplot(apply(music, 1, sum), col = &amp;quot;lightblue&amp;quot;, 
++           main = &amp;quot;Spine Plot&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2005-04/2005-04-17-spine_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;1400&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;그림에서처럼 일변량일 경우에는 Mosaic Plot과 Spine Plot의 차이점은 없다. 단지 Barchart에서는 막대의 폭은 동일한데 길이의 차이가 있고, Spine Plot은 막대의 길이는 동일한데, 폭의 넓이가 차이가 난다.&lt;/p&gt;
+&lt;p&gt;타이타닉의 자료를 이용하여 몇 개의 Chart를 그려 보자.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; par(mfrow = c(2, 2))
+&amp;gt; barplot(apply(Titanic, c(4, 1), sum), col = c(&amp;quot;lightblue&amp;quot;, &amp;quot;mistyrose&amp;quot;),
++         main = &amp;quot;Survived over Economic status (class)&amp;quot;)
+&amp;gt; barplot(apply(Titanic, c(4, 2), sum), col = c(&amp;quot;lightblue&amp;quot;, &amp;quot;mistyrose&amp;quot;),
++         main = &amp;quot;Survived over Sex&amp;quot;)  
+&amp;gt; barplot(apply(Titanic, c(4, 3), sum), col = c(&amp;quot;lightblue&amp;quot;, &amp;quot;mistyrose&amp;quot;),
++         main = &amp;quot;Survived over Age&amp;quot;) 
+&amp;gt; barplot(apply(Titanic, 4, sum), col = c(&amp;quot;lightblue&amp;quot;, &amp;quot;mistyrose&amp;quot;),
++         main = &amp;quot;Survived&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2005-04/2005-04-17-spine_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;1400&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Barchart보다 Spine Plot이 범주들간의 비율차를 이해하기가 쉽다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; par(mfrow = c(2, 2))
+&amp;gt; spineplot(apply(Titanic, c(4, 1), sum), col = c(&amp;quot;lightblue&amp;quot;, &amp;quot;mistyrose&amp;quot;),
++           main = &amp;quot;Survived over Economic status (class)&amp;quot;)
+&amp;gt; spineplot(apply(Titanic, c(4, 2), sum), col = c(&amp;quot;lightblue&amp;quot;, &amp;quot;mistyrose&amp;quot;),
++           main = &amp;quot;Survived over Sex&amp;quot;)
+&amp;gt; spineplot(apply(Titanic, c(4, 3), sum), col = c(&amp;quot;lightblue&amp;quot;, &amp;quot;mistyrose&amp;quot;),
++           main=&amp;quot;Survived over Age&amp;quot;)  
+&amp;gt; spineplot(apply(Titanic, 4, sum), col = c(&amp;quot;lightblue&amp;quot;, &amp;quot;mistyrose&amp;quot;),
++           main = &amp;quot;Survived&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2005-04/2005-04-17-spine_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;1400&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;마지막으로 타이타닉의 승무원과 승객의 생존 비율을 두 가지의 Chart로 그려서 비교해 보았다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; temp = c(apply(Titanic[dimnames(Titanic)[[1]] != &amp;quot;Crew&amp;quot;, , , ], 2:4, sum),
++                     Titanic[dimnames(Titanic)[[1]] == &amp;quot;Crew&amp;quot;, , , ])
+&amp;gt; dim(temp) = c(2, 2, 2, 2)
+&amp;gt; dimnames(temp) = list(Sex = c(&amp;quot;Male&amp;quot;, &amp;quot;Female&amp;quot;),
++                       Age = c(&amp;quot;Child&amp;quot;, &amp;quot;Adult&amp;quot;),
++                       Survived = c(&amp;quot;No&amp;quot;, &amp;quot;Yes&amp;quot;),
++                       Class = c(&amp;quot;Passenger&amp;quot;, &amp;quot;Crew&amp;quot;))
+&amp;gt; par(mfrow = c(1, 2))
+&amp;gt; barplot(apply(temp, 3:4, sum), col = c(&amp;quot;lightblue&amp;quot;, &amp;quot;mistyrose&amp;quot;),
++         main = &amp;quot;Bar Chart&amp;quot;,
++         legend = rownames(apply(temp, 3:4, sum)))
+&amp;gt; spineplot(apply(temp, 3:4, sum), col = c(&amp;quot;lightblue&amp;quot;, &amp;quot;mistyrose&amp;quot;),
++           main = &amp;quot;Spine Plot&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2005-04/2005-04-17-spine_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;1400&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

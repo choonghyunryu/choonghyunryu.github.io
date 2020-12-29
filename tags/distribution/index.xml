@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>distribution on Dataholic</title>
+    <link>/tags/distribution/</link>
+    <description>Recent content in distribution on Dataholic</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 03 Jan 2016 00:00:00 +0000</lastBuildDate><atom:link href="/tags/distribution/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>분포에 대해서</title>
+      <link>/post/2016-01/2016-01-03-distribution/</link>
+      <pubDate>Sun, 03 Jan 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2016-01/2016-01-03-distribution/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;자료의 분포를 설명하는 통계량에 자료의 중심을 설명하는 대표치와 자료의 퍼짐을 설명하는 산포도(분산)가 있다. 대표치로는 평균, 중위수, 최빈수 등이 있고, 퍼진 정도를 표현하는 분산, 분산의 제곱근인 표준편차 등이 있다. 또한 자료가 어느쪽으로 편중되었는지의 기울기를 나타내는 왜도, 대표치 부근에 자료가 밀집한 정도를 나타내는 첨도 등이 있다.&lt;/p&gt;
+&lt;p&gt;이번에는 왜도를 중심으로 이야기를 해 본다. 자료의 대칭성을 설명하는 왜도가 0이면 분포가 좌우 대칭을 이루고 음수이면 왼쪽으로 치우친 분포를, 양수이면 오른쪽으로 치우친 분포를 이룬다.
+첨도는 3이면 정규분포 곡선과 유사하며, 3보다 크면 정규분포 곡선보다 정점이 높고 뾰족한 분포며 3보다 작으면 정규분포보다 정점이 낮고 퍼진 모양의 분포다.&lt;/p&gt;
+&lt;p&gt;왜도가 1이면 중위수, 평균(산술평균), 최빈수가 같은 값을 가지며 자료가 왼쪽으로 치우친 분포라면 왜도는 음수이며 최빈수 &amp;lt; 중위수 &amp;lt; 평균의 관계가 자료가 오른쪽으로 치우친 분포라면 왜도는 양수이며 평균 &amp;lt; 중위수 &amp;lt; 최빈수의 관계가 성립함을 배운적이 있다. 그러면 이를 보여줄 데이터를 만들고 그림으로 그려보면서 왜도의 값에 따른 평균, 중위수, 최빈수의 관계를 이해해 보자.&lt;/p&gt;
+&lt;div id=&#34;최빈수-왜도-첨도를-구하는-함수&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;최빈수, 왜도, 첨도를 구하는 함수&lt;/h1&gt;
+&lt;p&gt;다음처럼 최빈수, 왜도, 첨도를 구하는 함수를 만들어 보았다. 물론 이들 통계량을 구하는 패키지가 있지만, 그 내용을 이해하는 차원에서 구현해 보았다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 최빈수를 구하는 함수
+get.mode &amp;lt;- function(x) {
+  tbl &amp;lt;- table(x)
+  as.numeric(names(tbl[which(tbl == max(tbl))]))
+}
+
+# 왜도를 구하는 함수
+get.skewness &amp;lt;- function(x) {
+  sum((x - mean(x)) ^ 3)/(length(x) - 1) / sd(x) ^ 3
+}
+
+# 첨도를 구하는 함수
+get.kurtosis&amp;lt;- function(x) {
+  sum((x - mean(x)) ^ 4)/(length(x) - 1) / sd(x) ^ 4  - 3
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;데이터-만들기&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;데이터 만들기&lt;/h1&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; #####################################
+&amp;gt; # 왜도가 0에 근사한 데이터를 생성
+&amp;gt; #####################################
+&amp;gt; set.seed(2)
+&amp;gt; # 정규난수 1000개 생성
+&amp;gt; prob &amp;lt;- dnorm(1:21, mean=11, sd=3)
+&amp;gt; x &amp;lt;- sample(1:21, 1500, replace = TRUE, prob=prob)
+&amp;gt; 
+&amp;gt; x.mean &amp;lt;- mean(x)          # 평균
+&amp;gt; x.median &amp;lt;- median(x)      # 중위수
+&amp;gt; x.mode &amp;lt;- get.mode(x)      # 최빈수
+&amp;gt; 
+&amp;gt; x.mean
+[1] 11.06333
+&amp;gt; sd(x)                      # 표준편차
+[1] 3.080311
+&amp;gt; x.median
+[1] 11
+&amp;gt; x.mode
+[1] 11
+&amp;gt; summary(x)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   2.00    9.00   11.00   11.06   13.00   21.00 
+&amp;gt; get.skewness(x)
+[1] 0.01977239
+&amp;gt; get.kurtosis(x)
+[1] -0.09515365
+&amp;gt; #####################################
+&amp;gt; # 왜도가 음수인 데이터를 생성
+&amp;gt; #####################################
+&amp;gt; set.seed(3)
+&amp;gt; y &amp;lt;- numeric(1500)   
+&amp;gt; 
+&amp;gt; for(i in 1:15) {
++   idx &amp;lt;- (i-1)*100+1
++   y[idx:(idx+99)] &amp;lt;- sample(i:20, 100, replace = TRUE)
++ }
+&amp;gt; 
+&amp;gt; y.mean &amp;lt;- mean(y)
+&amp;gt; y.median &amp;lt;- median(y)
+&amp;gt; y.mode &amp;lt;- get.mode(y)
+&amp;gt; 
+&amp;gt; y.mean
+[1] 13.94733
+&amp;gt; sd(y)
+[1] 4.537505
+&amp;gt; y.median
+[1] 15
+&amp;gt; y.mode
+[1] 16 20
+&amp;gt; summary(y)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   1.00   11.00   15.00   13.95   18.00   20.00 
+&amp;gt; get.skewness(y)
+[1] -0.6336066
+&amp;gt; get.kurtosis(y)
+[1] -0.4125684
+&amp;gt; #####################################
+&amp;gt; # 왜도가 양수인 데이터를 생성
+&amp;gt; #####################################
+&amp;gt; set.seed(5)
+&amp;gt; z &amp;lt;- numeric(1500)
+&amp;gt; 
+&amp;gt; for(i in 6:20) {
++   idx &amp;lt;- (i-6)*100+1
++   z[idx:(idx+99)] &amp;lt;- sample(1:i, 100, replace = TRUE)
++ }
+&amp;gt; 
+&amp;gt; z.mean &amp;lt;- mean(z)
+&amp;gt; z.median &amp;lt;- median(z)
+&amp;gt; z.mode &amp;lt;- get.mode(z)
+&amp;gt; 
+&amp;gt; z.mean
+[1] 6.989333
+&amp;gt; sd(z)
+[1] 4.419605
+&amp;gt; z.median
+[1] 6
+&amp;gt; z.mode
+[1] 5
+&amp;gt; summary(z)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  1.000   3.000   6.000   6.989  10.000  20.000 
+&amp;gt; get.skewness(z)
+[1] 0.6470598
+&amp;gt; get.kurtosis(z)
+[1] -0.2881661&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;분포의-시각화&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;분포의 시각화&lt;/h1&gt;
+&lt;p&gt;세 분포를 시각화하면 다음과 같은 그래프를 얻을 수 있다.
+왼쪽의 그림들이 분포의 그림이고, 오른쪽은 정규분포에 근사하는지를 검증하기 위한 Q-Q plot이다.&lt;/p&gt;
+&lt;p&gt;첫번째 그림은 정규분포에 근사하고, 두번째 그림은 오른쪽으로 치우친 분포(skewed to the left)고, 세번째 그림은 왼쪽으로 치우친 분포(skewed to the right)의 그래프임을 알 수 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; par(mfrow = c(3, 2))
+&amp;gt; plot(density(x), main = &amp;quot;Like Normal&amp;quot;)
+&amp;gt; abline(v = x.mean, col = &amp;quot;red&amp;quot;, lty = 1)
+&amp;gt; abline(v = x.median, col = &amp;quot;blue&amp;quot;, lty = 2)
+&amp;gt; abline(v = x.mode, col = &amp;quot;black&amp;quot;, lty = 3)
+&amp;gt; qqnorm(x)
+&amp;gt; qqline(x)
+&amp;gt;  
+&amp;gt; plot(density(y), main = &amp;quot;Skewed Right&amp;quot;)
+&amp;gt; abline(v = y.mean, col = &amp;quot;red&amp;quot;, lty = 1)
+&amp;gt; abline(v = y.median, col = &amp;quot;blue&amp;quot;, lty = 2)
+&amp;gt; abline(v = y.mode, col = &amp;quot;black&amp;quot;, lty = 3)
+&amp;gt; legend(&amp;quot;topleft&amp;quot;, legend = c(&amp;quot;mean&amp;quot;, &amp;quot;median&amp;quot;, &amp;quot;mode&amp;quot;), 
++        col=c(&amp;quot;red&amp;quot;, &amp;quot;blue&amp;quot;, &amp;quot;black&amp;quot;), lty = 1:3)
+&amp;gt; qqnorm(y)
+&amp;gt; qqline(y)
+&amp;gt;  
+&amp;gt; plot(density(z), main = &amp;quot;Skewed Left&amp;quot;)
+&amp;gt; abline(v = z.mean, col = &amp;quot;red&amp;quot;, lty = 1)
+&amp;gt; abline(v = z.median, col = &amp;quot;blue&amp;quot;, lty = 2)
+&amp;gt; abline(v = z.mode, col = &amp;quot;black&amp;quot;, lty = 3)
+&amp;gt; legend(&amp;quot;topright&amp;quot;, legend = c(&amp;quot;mean&amp;quot;, &amp;quot;median&amp;quot;, &amp;quot;mode&amp;quot;), 
++        col=c(&amp;quot;red&amp;quot;, &amp;quot;blue&amp;quot;, &amp;quot;black&amp;quot;), lty = 1:3)
+&amp;gt; qqnorm(z)
+&amp;gt; qqline(z)&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-2&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;/post/2016-01/2016-01-03-distribution_files/figure-html/unnamed-chunk-2-1.png&#34; alt=&#34;distribution plot&#34; width=&#34;672&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 1: distribution plot
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>이항분포의 포아송분포 근사</title>
+      <link>/post/2005-07/2005-07-17-poss/</link>
+      <pubDate>Sun, 17 Jul 2005 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2005-07/2005-07-17-poss/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;일러두기&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;일러두기&lt;/h2&gt;
+&lt;p&gt;2005-07-17 네이버 블로그에 게시된 내용을 옮겨 온 글입니다. 지금의 R 환경과 다소 내용이 다를 수 있음을 밝여둡니다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;이항분포의-포아송분포-근사&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;이항분포의 포아송분포 근사&lt;/h2&gt;
+&lt;p&gt;이항분포 B(n,p)에서 평균인 np값은 고정하고 n값이 충분히 커지면 이 분포는 평균 m이 np인 포아송분포에 근사하게 된다.
+이것을 그래프로 그려 포아송분포로 근사하는 것을 추적해 보았다.
+np=5이고 n=10, 20, 50, 100인 이항분포를 한 좌표에 그려 보았다.
+그리고 평균이 5인 포아송 분포도 같이 그려 보았다.&lt;/p&gt;
+&lt;div id=&#34;r-script&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;R Script&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; mean &amp;lt;- 5
+&amp;gt; 
+&amp;gt; par(family = &amp;quot;NanumSquare&amp;quot;)
+&amp;gt; plot(dbinom(0:15, 10, mean / 10), type = &amp;quot;l&amp;quot;,
++      main = &amp;quot;이항분포의 포아송분포 근사; B(n,p), np=5&amp;quot;, 
++      xlab = &amp;quot;X&amp;quot;, ylab = &amp;quot;Probability&amp;quot;)
+&amp;gt; 
+&amp;gt; lines(dbinom(0:15, 20, mean / 20), lty = 2, col = 2)
+&amp;gt; lines(dbinom(0:15, 50, mean / 50), lty = 3, col = 3)
+&amp;gt; lines(dbinom(0:15, 100, mean / 100), lty = 4, col = 4)
+&amp;gt; lines(dpois(0:15, mean), lty = 5, col = 5)
+&amp;gt; 
+&amp;gt; legend(10.5, 0.2, legend = c(&amp;quot;Bin(10,0.5)&amp;quot;,&amp;quot;Bin(20,0.25)&amp;quot;,&amp;quot;Bin(50,0.1)&amp;quot;,
++                              &amp;quot;Bin(100,0.05)&amp;quot;,&amp;quot;Pos(5)&amp;quot;), 
++        lty = 1:5, col = 1:5)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2005-07/2005-07-17-poss_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;1400&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; round(dpois(0:15, 5) - dbinom(0:15, 10, mean / 10), 5)
+ [1]  0.00576  0.02392  0.04028  0.02319 -0.02961 -0.07063 -0.05886 -0.01274
+ [9]  0.02133  0.02650  0.01716  0.00824  0.00343  0.00132  0.00047  0.00016
+&amp;gt; round(dpois(0:15, 5) - dbinom(0:15, 20, mean / 20), 5)
+ [1]  0.00357  0.01255  0.01728  0.00648 -0.01422 -0.02686 -0.02239 -0.00796
+ [9]  0.00439  0.00920  0.00821  0.00524  0.00268  0.00117  0.00045  0.00015
+&amp;gt; round(dpois(0:15, 5) - dbinom(0:15, 50, mean / 50), 5)
+ [1]  0.00158  0.00506  0.00628  0.00181 -0.00544 -0.00946 -0.00788 -0.00318
+ [9]  0.00100  0.00294  0.00295  0.00211  0.00122  0.00060  0.00026  0.00010
+&amp;gt; round(dpois(0:15, 5) - dbinom(0:15, 100, mean / 100), 5)
+ [1]  0.00082  0.00253  0.00304  0.00080 -0.00268 -0.00455 -0.00379 -0.00158
+ [9]  0.00041  0.00136  0.00142  0.00104  0.00062  0.00032  0.00014  0.00006&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>이항분포의 정규분포 근사</title>
+      <link>/post/2005-07/2005-07-06-binomial/</link>
+      <pubDate>Wed, 06 Jul 2005 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2005-07/2005-07-06-binomial/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;일러두기&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;일러두기&lt;/h2&gt;
+&lt;p&gt;2005-07-06 네이버 블로그에 게시된 내용을 옮겨 온 글입니다. 지금의 R 환경과 다소 내용이 다를 수 있음을 밝여둡니다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;이항분포의-정규분포-근사&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;이항분포의 정규분포 근사&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;이항분포&lt;/code&gt; B(n,p)에서 p값에 관계없이 n값이 충분히 커지면 이 분포는 정규분포에 근사하게 된다.
+이것을 그래프로 그려 &lt;code&gt;정규분포&lt;/code&gt;로 근사하는 것을 추적해 보았다.
+p=0.2이고 n=10, 20, 30, 40, 50인 이항분포를 한 좌표에 그려 보았다.&lt;/p&gt;
+&lt;div id=&#34;r-script&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;R Script&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; par(family = &amp;quot;NanumSquare&amp;quot;)
+&amp;gt; plot(dbinom(1:20, 10, 0.2), type = &amp;quot;l&amp;quot;, 
++      main = &amp;quot;이항분포의 정규분포 근사; B(n, 0.2)&amp;quot;, 
++      xlab = &amp;quot;X&amp;quot;, ylab = &amp;quot;Probability&amp;quot;)
+&amp;gt; 
+&amp;gt; lines(dbinom(1:20, 20, 0.2), lty = 2, col = 2)
+&amp;gt; lines(dbinom(1:20, 30, 0.2), lty = 3, col = 3)
+&amp;gt; lines(dbinom(1:20, 40, 0.2), lty = 4, col = 4)
+&amp;gt; lines(dbinom(1:20, 50, 0.2), lty = 5, col = 5)
+&amp;gt; 
+&amp;gt; legend(12, 0.27, legend = c(&amp;quot;Bin(10, 0.2)&amp;quot;,&amp;quot;Bin(20, 0.2)&amp;quot;,&amp;quot;Bin(30, 0.2)&amp;quot;,
++                             &amp;quot;Bin(40, 0.2)&amp;quot;,&amp;quot;Bin(50, 0.2)&amp;quot;),
++        lty = 1:5, col = 1:5)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2005-07/2005-07-06-binomial_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;1400&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

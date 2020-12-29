@@ -1,0 +1,655 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>traffic on Dataholic</title>
+    <link>/tags/traffic/</link>
+    <description>Recent content in traffic on Dataholic</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 12 Jan 2018 09:12:23 +0000</lastBuildDate><atom:link href="/tags/traffic/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Google Trends Analysis_Case Study</title>
+      <link>/post/2018-01/2018-01-12-google_trends/</link>
+      <pubDate>Fri, 12 Jan 2018 09:12:23 +0000</pubDate>
+      
+      <guid>/post/2018-01/2018-01-12-google_trends/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/htmlwidgets/htmlwidgets.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/d3/d3.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/bubbles-binding/bubbles.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;들어가기&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;들어가기&lt;/h1&gt;
+&lt;p&gt;“Google Trends Analysis - Case Study”는 R에서 &lt;code&gt;Google Trends API&lt;/code&gt;를 이용해서 관심 검색어의 traffic과 traffic 추이를 분석하는 방법을 실 사례로 따라가면서 학습할 수 있도로 정리한 학습자료다.&lt;/p&gt;
+&lt;div id=&#34;배경&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;배경&lt;/h2&gt;
+&lt;p&gt;일반 대중들의 관심사와 관심의 트랜드를 설명할 데이터 소스로 검색 포털의 검색 통계를 하나의 대상으로 선정하였다. 그리고 그 가능성을 검증하기 위해서 Google Trends의 통계를 수집하고 표현한 방법을 정리하였고, 그 과정에서의 R 코드를 공유한다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;학습-목표&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;학습 목표&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Google Trends로부터 관심 키워드의 traffic을 수집하는 방법을 숙지한다.
+&lt;ul&gt;
+&lt;li&gt;단일 키워드와 두개 이상의 키워드로 traffic을 수집하는 방법&lt;/li&gt;
+&lt;li&gt;지역별 (geographic regions)로 traffic을 수집하는 방법
+&lt;ul&gt;
+&lt;li&gt;예) 한국, 미국&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;임의의 기간동안의 traffic을 수집하는 방법&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Google Trends에서 제공하는 통계 정보를 이해한다.
+&lt;ul&gt;
+&lt;li&gt;일자별 검색 관심도&lt;/li&gt;
+&lt;li&gt;단위 기간동안의 지역(region, 광역시도, 주)별 키워드 관심도&lt;/li&gt;
+&lt;li&gt;단위 기간동안의 도시별 키워드 관심도&lt;/li&gt;
+&lt;li&gt;단위 기간동안의 관련 주제(topics)별 키워드 관심도
+&lt;ul&gt;
+&lt;li&gt;관련 주제 Top Rank&lt;/li&gt;
+&lt;li&gt;인기 급상승 관련 주제 Top Rank&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;단위 기간동안의 관련 검색어(related queries)별 키워드 관심도
+&lt;ul&gt;
+&lt;li&gt;관련 검색어 Top Rank&lt;/li&gt;
+&lt;li&gt;인기 급상승 관련 검색어 Top Rank&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Google Trends에서 제공하는 통계 정보를 시각화하는 방법을 이해한다.
+&lt;ul&gt;
+&lt;li&gt;traffic의 추이를 표현하는 시계열 플롯&lt;/li&gt;
+&lt;li&gt;top traffic을 파악하는 버블(bubble) 플롯&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;buzz-trafics-analysis&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Buzz Trafics Analysis&lt;/h1&gt;
+&lt;p&gt;Naver, Google 등의 검색 포털에서의 검색 traffic은 그 시대의 일반 대중들의 관심사를 대변해준다. 또한 시간의 추이에 따른 traffic의 증감은 단위 기간 안에서의 관심의 트랜드를 보여 주는 주요한 정보다.&lt;/p&gt;
+&lt;div id=&#34;google-trends&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Google Trends&lt;/h2&gt;
+&lt;p&gt;Google Trends는 Google 검색 로그로부터 집계된 검색 통계정보를 제공하는 서비스로 일부 기능들은 Open API로 조회가 가능하다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-2&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/google_trends.png&#34; alt=&#34;Google Trends Logo&#34; width=&#34;70%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 1: Google Trends Logo
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;google-trends-통계정보의-활용&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Google Trends 통계정보의 활용&lt;/h1&gt;
+&lt;div id=&#34;준비하기&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;준비하기&lt;/h2&gt;
+&lt;div id=&#34;패키지-로드&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;패키지 로드&lt;/h3&gt;
+&lt;p&gt;Google Trends 정보를 수집하는 패키지는 gtrendsR 패키지다. 분석과 관련된 패키지를 로드한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; ###############################################################
+&amp;gt; ## 필요한 패키지 로드
+&amp;gt; ###############################################################
+&amp;gt; library(gtrendsR)
+&amp;gt; library(dplyr)
+&amp;gt; library(magrittr)
+&amp;gt; library(ggplot2)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;사용자-함수의-정의&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;사용자 함수의 정의&lt;/h3&gt;
+&lt;p&gt;필요한 패키지를 로드하고, 버블플롯을 그리는 함수를 정의한다. Case Study 후반부에 이 사용자 정의함수로 버블플롯을 그릴 것이므로 미리 생성해 두자.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;###############################################################
+## 사용자 정의함수 - 버블 플롯을 그리는 함수
+###############################################################
+bbplot &amp;lt;- function(label, value, textColor = &amp;quot;#333333&amp;quot;,
+                   color = RColorBrewer::brewer.pal(8, &amp;quot;Dark2&amp;quot;)) {
+  library(bubbles)
+  library(RColorBrewer)
+
+  color &amp;lt;- substr(color, 1, 7)
+  
+  n &amp;lt;- length(label)
+  n.pal &amp;lt;- length(color)
+
+  if (n &amp;gt; n.pal) {
+    color &amp;lt;- c(color, rep(color[n.pal], n - n.pal))
+  }
+
+  if (n &amp;lt; n.pal) {
+    color &amp;lt;- color[1:n]
+  }
+
+  bubbles(value, label, color = color, textColor = textColor)
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;bitcoin-거래-시세-데이터&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Bitcoin 거래 시세 데이터&lt;/h3&gt;
+&lt;p&gt;Bitcoin 거래 시세는 별도로 수집해서 CSV 파일에 담아 놓았다.
+시세를 담은 CSV 파일인 &amp;lt;a href=“../data/market-price.csv”, target = &#34;_blank&#34;&amp;gt;market-price.csv&lt;/a&gt;을 로드한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; ###############################################################
+&amp;gt; ## Bitcoin 거래 시세 정보
+&amp;gt; ###############################################################
+&amp;gt; dpath &amp;lt;- &amp;quot;data&amp;quot;
+&amp;gt; bitprice &amp;lt;- read.csv(paste(dpath, &amp;quot;market-price.csv&amp;quot;, sep = &amp;quot;/&amp;quot;), header = FALSE)
+&amp;gt; 
+&amp;gt; bitprice &amp;lt;- bitprice %&amp;gt;%
++   transmute(date = as.POSIXct(V1),
++             value = V2)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;google-trends-데이터-수집하기&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Google Trends 데이터 수집하기&lt;/h2&gt;
+&lt;p&gt;Google Trends 데이터를 수집하기 위해서는 인터넷에 접속된 온라인 환경이어야만 가능하다. 그러므로 이 절의 예제는 온라인에 접속된 인터넷 환경에서만 사용하기 바란다.&lt;/p&gt;
+&lt;div id=&#34;두-개의-키워드로-traffic-데이터-수집&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;두 개의 키워드로 traffic 데이터 수집&lt;/h3&gt;
+&lt;p&gt;다음처럼 &lt;code&gt;gtrends()&lt;/code&gt;로 “YOLO”와 “DINK”의 두 검색 키워드로 traffic을 조회한다. 이 경우는 world 기준의 traffic이다. 즉, 전세계 사람들이 Google에서 검색한 통계를 수집하게 된다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; yolo_trend &amp;lt;- gtrends(c(&amp;quot;YOLO&amp;quot;, &amp;quot;DINK&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;traffic-trend-plot&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;traffic trend plot&lt;/h4&gt;
+&lt;p&gt;수집한 traffic 데이터는 다음처럼 plot() 함수로 간단하게 시계열 그래프를 그릴 수 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; plot(yolo_trend)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01/2018-01-12-google_trends_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;시계열 그래프를 보면 y-축인 Search hits의 최대값이 100임을 알수 있다. 즉, traffic 데이터는 검색 건수가 아니라 통계 시점에서 가장 큰 규모의 traffic을 100으로 놓고 산정한 상대적인 측도이다.
+traffic 데이터의 시계열 그래프는 &lt;code&gt;ggplot2&lt;/code&gt; 패키지로 생성한다. 그래서 다음의 ggplot2 패키지의 기능을 추가하여 좀 더 팬시하게 그래프를 그릴 수도 있다. 두번 째 플롯이 범례를 아래로 이동해서 가독성을 높인 것이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; p &amp;lt;- plot(yolo_trend) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; p +
++   ggtitle(&amp;quot;Google Trend Traffics (Interest over Time)&amp;quot;) +
++   theme(plot.title = element_text(hjust = 0.5)) +
++   theme(legend.position = &amp;quot;bottom&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01/2018-01-12-google_trends_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;대한민국-traffic-데이터-수집&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;대한민국 traffic 데이터 수집&lt;/h3&gt;
+&lt;p&gt;geo 인수값을 “KR”로 지정하면 우리 나라에서 검색한 traffic 통계를 수집한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; yolo_trend2 &amp;lt;- gtrends(c(&amp;quot;YOLO&amp;quot;, &amp;quot;DINK&amp;quot;), geo = &amp;quot;KR&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;YOLO 검색 traffic은 전세계적으로 줄어드는 추세이지만, 우리나라에서는 2016년도 말부터 증가하다가 2017년도 하반기부터 줄어드틑 추세임을 알 수 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; p &amp;lt;- plot(yolo_trend2) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; p + 
++   ggtitle(&amp;quot;Google Trend Traffics (Interest over Time)&amp;quot;) +
++   theme(plot.title = element_text(hjust = 0.5)) +
++   theme(legend.position = &amp;quot;bottom&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01/2018-01-12-google_trends_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;한글-키워드-traffic-데이터-수집&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;한글 키워드 traffic 데이터 수집&lt;/h3&gt;
+&lt;p&gt;한글 키워드로 비트코인이라는 검색어의 traffic을 수집한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; bit_trend &amp;lt;- gtrends(c(&amp;quot;비트코인&amp;quot;), geo = &amp;quot;KR&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;2013년도 하반기 반짝 상승 이후로 traffic이 없다가 2017년 초부터 급증함을 알 수 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; p &amp;lt;- plot(bit_trend) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; p +
++   ggtitle(&amp;quot;Google Trend Traffics (Interest over Time)&amp;quot;) +
++   theme(plot.title = element_text(hjust = 0.5)) +
++   theme(legend.position = &amp;quot;bottom&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;../img/bit.png&#34; width=&#34;85%&#34; style=&#34;display: block; margin: auto auto auto 0;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;두-나라의-traffic-데이터-수집&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;두 나라의 traffic 데이터 수집&lt;/h3&gt;
+&lt;p&gt;비트코인 검색어의 traffic을 미국과 우리 나라를 비교하기 위해서, 영문으로 검색한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; bit_trend2 &amp;lt;- gtrends(c(&amp;quot;bitcoin&amp;quot;), geo = c(&amp;quot;KR&amp;quot;, &amp;quot;US&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;두 나라의 traffic이 유사하지만 2017년도 말의 급등세는 미국에서의 규모가 더 크다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; p &amp;lt;- plot(bit_trend2) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; p +
++   ggtitle(&amp;quot;Google Trend Traffics (Interest over Time)&amp;quot;) +
++   theme(plot.title = element_text(hjust = 0.5)) +
++   theme(legend.position = &amp;quot;bottom&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01/2018-01-12-google_trends_files/figure-html/unnamed-chunk-20-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;참고로 앞에서 수집한 CSV의 비트코인 시세 데이터인 bitprice 데이터 프레임객체를 시계열 플롯으로 출력해보자.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; head(bitprice)
+        date value
+1 2009-01-03     0
+2 2009-01-05     0
+3 2009-01-07     0
+4 2009-01-09     0
+5 2009-01-11     0
+6 2009-01-13     0
+&amp;gt; bitprice %&amp;gt;%
++   ggplot(aes_string(x = &amp;quot;date&amp;quot;, y = &amp;quot;value&amp;quot;)) +
++   geom_line() +
++   xlab(&amp;quot;Date&amp;quot;) +
++   ylab(&amp;quot;Price ($)&amp;quot;) +
++   ggtitle(&amp;quot;Bitcoin Price Trend&amp;quot;) +
++   theme_bw() +
++   theme(plot.title = element_text(hjust = 0.5)) +
++   theme(legend.title = element_blank()) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01/2018-01-12-google_trends_files/figure-html/unnamed-chunk-21-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;비트코인 매매 시세가 정확히 traffic 데이터와 유사한 패턴을 보여줌을 알 수 있다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;특정-기간의-traffic-데이터-수집&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;특정 기간의 traffic 데이터 수집&lt;/h3&gt;
+&lt;p&gt;임의의 기간동안의 검색 traffic을 수집하기 위해서는 time 인수에 다음 예제와 같은 포맷으로 시작 일자와 종료 일자를 지정할 수 있다.&lt;/p&gt;
+&lt;p&gt;2013, 2014, 2015, 2016, 2017년의 각각의 5년치 traffic을 수집한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; bit_trend_2013 &amp;lt;- gtrends(c(&amp;quot;bitcoin&amp;quot;), geo = c(&amp;quot;KR&amp;quot;, &amp;quot;US&amp;quot;),
++                           time = &amp;quot;2013-01-01 2013-12-31&amp;quot;)
+&amp;gt; 
+&amp;gt; bit_trend_2014 &amp;lt;- gtrends(c(&amp;quot;bitcoin&amp;quot;), geo = c(&amp;quot;KR&amp;quot;, &amp;quot;US&amp;quot;),
++                           time = &amp;quot;2014-01-01 2014-12-31&amp;quot;)
+&amp;gt; 
+&amp;gt; bit_trend_2015 &amp;lt;- gtrends(c(&amp;quot;bitcoin&amp;quot;), geo = c(&amp;quot;KR&amp;quot;, &amp;quot;US&amp;quot;),
++                           time = &amp;quot;2015-01-01 2015-12-31&amp;quot;)
+&amp;gt; 
+&amp;gt; bit_trend_2016 &amp;lt;- gtrends(c(&amp;quot;bitcoin&amp;quot;), geo = c(&amp;quot;KR&amp;quot;, &amp;quot;US&amp;quot;),
++                           time = &amp;quot;2016-01-01 2016-12-31&amp;quot;)
+&amp;gt; 
+&amp;gt; bit_trend_2017 &amp;lt;- gtrends(c(&amp;quot;bitcoin&amp;quot;), geo = c(&amp;quot;KR&amp;quot;, &amp;quot;US&amp;quot;),
++                           time = &amp;quot;2017-01-01 2017-12-31&amp;quot;)
+&amp;gt; 
+&amp;gt; bit_trend_2013_k &amp;lt;- gtrends(c(&amp;quot;비트코인&amp;quot;), geo = c(&amp;quot;KR&amp;quot;),
++                           time = &amp;quot;2013-01-01 2013-12-31&amp;quot;)
+&amp;gt; 
+&amp;gt; bit_trend_2014_k &amp;lt;- gtrends(c(&amp;quot;비트코인&amp;quot;), geo = c(&amp;quot;KR&amp;quot;),
++                           time = &amp;quot;2014-01-01 2014-12-31&amp;quot;)
+&amp;gt; 
+&amp;gt; bit_trend_2015_k &amp;lt;- gtrends(c(&amp;quot;비트코인&amp;quot;), geo = c(&amp;quot;KR&amp;quot;),
++                           time = &amp;quot;2015-01-01 2015-12-31&amp;quot;)
+&amp;gt; 
+&amp;gt; bit_trend_2016_k &amp;lt;- gtrends(c(&amp;quot;비트코인&amp;quot;), geo = c(&amp;quot;KR&amp;quot;),
++                           time = &amp;quot;2016-01-01 2016-12-31&amp;quot;)
+&amp;gt; 
+&amp;gt; bit_trend_2017_k &amp;lt;- gtrends(c(&amp;quot;비트코인&amp;quot;), geo = c(&amp;quot;KR&amp;quot;),
++                           time = &amp;quot;2017-01-01 2017-12-31&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;2017년도 말의 급등세가 우리 나라보다 미국이 크다는 것은 4/4분기의 중반 이후부터 두드러짐으로 알 수 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; p &amp;lt;- plot(bit_trend_2017) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; p + 
++   ggtitle(&amp;quot;Google Trend Traffics (Interest over Time)&amp;quot;) +
++   theme(plot.title = element_text(hjust = 0.5)) +
++   theme(legend.position = &amp;quot;bottom&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01/2018-01-12-google_trends_files/figure-html/unnamed-chunk-24-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;google-trends-데이터의-구조&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Google Trends 데이터의 구조&lt;/h2&gt;
+&lt;div id=&#34;gtrends-객체&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;gtrends 객체&lt;/h3&gt;
+&lt;p&gt;gtrends 패키지로 수집한 Google Trends 데이터는 gtrends 객체로 저장된다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; is(bit_trend2)
+[1] &amp;quot;gtrends&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;gtrends 객체는 다음처럼 6개의 속성 데이터를 가지고 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; names(bit_trend2)
+[1] &amp;quot;interest_over_time&amp;quot;  &amp;quot;interest_by_country&amp;quot; &amp;quot;interest_by_region&amp;quot; 
+[4] &amp;quot;interest_by_dma&amp;quot;     &amp;quot;interest_by_city&amp;quot;    &amp;quot;related_topics&amp;quot;     
+[7] &amp;quot;related_queries&amp;quot;    &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;interest_over_time&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;interest_over_time&lt;/h3&gt;
+&lt;p&gt;interest_over_time는 일자별로 traffic 정보를 담고 있는 데이터 프레임이다. 일자, 상대 traffic, 키워드, 국가, 그룹, 카테고리 정보를 담고 있다.&lt;/p&gt;
+&lt;p&gt;그룹(gprop)은 web, news, images, froogle, youtube 중에서 한가지 값을 갖는데 기본값으로 수집하면 웹검색 traffic인 web으로 지정된다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; head(bit_trend2$interest_over_time)
+        date hits keyword geo      time gprop category
+1 2015-12-27    1 bitcoin  KR today+5-y   web        0
+2 2016-01-03    1 bitcoin  KR today+5-y   web        0
+3 2016-01-10    1 bitcoin  KR today+5-y   web        0
+4 2016-01-17    1 bitcoin  KR today+5-y   web        0
+5 2016-01-24    1 bitcoin  KR today+5-y   web        0
+6 2016-01-31    2 bitcoin  KR today+5-y   web        0
+&amp;gt; tail(bit_trend2$interest_over_time)
+          date hits keyword geo      time gprop category
+517 2020-11-15   18 bitcoin  US today+5-y   web        0
+518 2020-11-22   19 bitcoin  US today+5-y   web        0
+519 2020-11-29   17 bitcoin  US today+5-y   web        0
+520 2020-12-06   13 bitcoin  US today+5-y   web        0
+521 2020-12-13   23 bitcoin  US today+5-y   web        0
+522 2020-12-20   21 bitcoin  US today+5-y   web        0&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;interest_by_region&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;interest_by_region&lt;/h3&gt;
+&lt;p&gt;interest_by_region은 검색한 사람이 거주하는 지역으로서의 광역시도(우리나라)와 주(States, 미국) 정보를 담고 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; bit_trend2$interest_by_region
+               location hits keyword geo gprop
+1                 Seoul  100 bitcoin  KR   web
+2               Daejeon   77 bitcoin  KR   web
+3               Jeju-do   74 bitcoin  KR   web
+4           Gyeonggi-do   66 bitcoin  KR   web
+5               Incheon   54 bitcoin  KR   web
+6      Gyeongsangbuk-do   53 bitcoin  KR   web
+7      Gyeongsangnam-do   49 bitcoin  KR   web
+8                 Daegu   46 bitcoin  KR   web
+9                 Busan   45 bitcoin  KR   web
+10    Chungcheongnam-do   42 bitcoin  KR   web
+11                Ulsan   40 bitcoin  KR   web
+12         Jeollanam-do   39 bitcoin  KR   web
+13         Jeollabuk-do   37 bitcoin  KR   web
+14              Gwangju   36 bitcoin  KR   web
+15    Chungcheongbuk-do   34 bitcoin  KR   web
+16           Gangwon-do   31 bitcoin  KR   web
+17               Hawaii  100 bitcoin  US   web
+18               Nevada   99 bitcoin  US   web
+19           California   96 bitcoin  US   web
+20           Washington   94 bitcoin  US   web
+21             New York   91 bitcoin  US   web
+22                 Utah   83 bitcoin  US   web
+23           New Jersey   83 bitcoin  US   web
+24             Colorado   82 bitcoin  US   web
+25              Florida   78 bitcoin  US   web
+26               Oregon   76 bitcoin  US   web
+27               Alaska   75 bitcoin  US   web
+28        Massachusetts   74 bitcoin  US   web
+29             Illinois   74 bitcoin  US   web
+30          Connecticut   74 bitcoin  US   web
+31              Arizona   72 bitcoin  US   web
+32             Maryland   68 bitcoin  US   web
+33        New Hampshire   67 bitcoin  US   web
+34         Pennsylvania   66 bitcoin  US   web
+35             Virginia   66 bitcoin  US   web
+36                Idaho   65 bitcoin  US   web
+37         Rhode Island   65 bitcoin  US   web
+38              Montana   64 bitcoin  US   web
+39            Minnesota   63 bitcoin  US   web
+40         North Dakota   62 bitcoin  US   web
+41 District of Columbia   62 bitcoin  US   web
+42             Michigan   61 bitcoin  US   web
+43                Texas   61 bitcoin  US   web
+44              Vermont   61 bitcoin  US   web
+45              Georgia   58 bitcoin  US   web
+46             Delaware   58 bitcoin  US   web
+47            Wisconsin   57 bitcoin  US   web
+48             Nebraska   55 bitcoin  US   web
+49                Maine   55 bitcoin  US   web
+50             Missouri   55 bitcoin  US   web
+51       North Carolina   54 bitcoin  US   web
+52               Kansas   54 bitcoin  US   web
+53                 Iowa   53 bitcoin  US   web
+54                 Ohio   53 bitcoin  US   web
+55           New Mexico   52 bitcoin  US   web
+56              Wyoming   51 bitcoin  US   web
+57            Tennessee   49 bitcoin  US   web
+58              Indiana   49 bitcoin  US   web
+59         South Dakota   48 bitcoin  US   web
+60            Louisiana   48 bitcoin  US   web
+61       South Carolina   47 bitcoin  US   web
+62             Oklahoma   46 bitcoin  US   web
+63              Alabama   45 bitcoin  US   web
+64             Kentucky   45 bitcoin  US   web
+65             Arkansas   45 bitcoin  US   web
+66        West Virginia   40 bitcoin  US   web
+67          Mississippi   39 bitcoin  US   web&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;interest_by_dma&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;interest_by_dma&lt;/h3&gt;
+&lt;p&gt;interest_by_dma는 DMA(Designated Market Area) 정보를 담고 있다. DMA는 시장분석 전문회사인 Nielsen이 시장 분석을 위해서 지정한 지역 분류체계로 우리나라는 없고, 미국에서만 정의되어 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; dim(bit_trend2$interest_by_dma)
+[1] 210   5
+&amp;gt; head(bit_trend2$interest_by_dma)
+                           location hits keyword geo gprop
+1 San Francisco-Oakland-San Jose CA  100 bitcoin  US   web
+2                 Seattle-Tacoma WA   86 bitcoin  US   web
+3                      Las Vegas NV   86 bitcoin  US   web
+4                       Honolulu HI   83 bitcoin  US   web
+5     West Palm Beach-Ft. Pierce FL   81 bitcoin  US   web
+6                    Los Angeles CA   79 bitcoin  US   web
+&amp;gt; tail(bit_trend2$interest_by_dma)
+                                    location hits keyword geo gprop
+205                    Hattiesburg-Laurel MS   27 bitcoin  US   web
+206                                Albany GA   27 bitcoin  US   web
+207 Harlingen-Weslaco-Brownsville-McAllen TX   26 bitcoin  US   web
+208                  Greenwood-Greenville MS   26 bitcoin  US   web
+209                              Meridian MS   26 bitcoin  US   web
+210                                Laredo TX   22 bitcoin  US   web&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;interest_by_city&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;interest_by_city&lt;/h3&gt;
+&lt;p&gt;interest_by_city는 검색한 사람이 거주하는 지역으로서의 도시 정보를 담고 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; dim(bit_trend2$interest_by_city)
+[1] 90  5
+&amp;gt; head(bit_trend2$interest_by_city)
+       location hits keyword geo gprop
+1   Seongnam-si  100 bitcoin  KR   web
+2         Seoul   73 bitcoin  KR   web
+3 Pyeongtaek-si   70 bitcoin  KR   web
+4   Hwaseong-si   65 bitcoin  KR   web
+5     Yongin-si   60 bitcoin  KR   web
+6       Daejeon   58 bitcoin  KR   web
+&amp;gt; tail(bit_trend2$interest_by_city)
+        location hits keyword geo gprop
+85        Dallas   41 bitcoin  US   web
+86  Indianapolis   NA bitcoin  US   web
+87 Oklahoma City   NA bitcoin  US   web
+88    Louisville   NA bitcoin  US   web
+89   San Antonio   35 bitcoin  US   web
+90       Memphis   NA bitcoin  US   web&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;related_topics&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;related_topics&lt;/h3&gt;
+&lt;p&gt;related_topics는 검색 키워드와 관련있는 주제(topics)에 대한 통계 정보를 담고 있다.&lt;/p&gt;
+&lt;p&gt;이 정보는 2개 이상의 지역에서는 표현되지 않아서 bit_trend로 살펴본다.&lt;/p&gt;
+&lt;p&gt;subject 변수는 상대적 traffics 정보이며, related_topics 변수는 통계의 기준을 의마한다. top은 top frequency를 의미하며, rising는 최근 급상승 관련 주제를 의미한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; head(bit_trend$related_topics)
+  subject related_topics   value geo  keyword category
+1     100            top Bitcoin  KR 비트코인        0
+2      99            top     Bit  KR 비트코인        0
+3       8            top   UPbit  KR 비트코인        0
+4       5            top    Coin  KR 비트코인        0
+5       5            top Eclipse  KR 비트코인        0
+6       4            top bithumb  KR 비트코인        0
+&amp;gt; tail(bit_trend$related_topics)
+   subject related_topics            value geo  keyword category
+17       1            top futures contract  KR 비트코인        0
+18       1            top           Korbit  KR 비트코인        0
+19       1            top             Volt  KR 비트코인        0
+20       1            top             Comb  KR 비트코인        0
+21       1         rising        Half-life  KR 비트코인        0
+22       1         rising          Binance  KR 비트코인        0&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;related_queries&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;related_queries&lt;/h3&gt;
+&lt;p&gt;related_queries는 검색 키워드와 관련있는 검색어에 대한 통계 정보를 담고 있다.&lt;/p&gt;
+&lt;p&gt;이 정보는 2개 이상의 지역에서는 표현되지 않아서 bit_trend로 살펴본다.&lt;/p&gt;
+&lt;p&gt;subject 변수는 상대적 traffics 정보이며, related_queries 변수는 통계의 기준을 의마한다. top은 top frequency를 의미하며, rising는 최근 급상승 관련 검색어를 의미한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; bit_trend$related_queries
+    subject related_queries                     value geo  keyword category
+1       100             top                 비트 코인  KR 비트코인        0
+2       100             top                      비트  KR 비트코인        0
+3        98             top                      코인  KR 비트코인        0
+4        16             top            비트 코인 시세  KR 비트코인        0
+5         8             top                   업 비트  KR 비트코인        0
+6         8             top               코인 갤러리  KR 비트코인        0
+7         8             top          비트 코인 갤러리  KR 비트코인        0
+8         4             top                      빗썸  KR 비트코인        0
+9         4             top 비트 코인 뽀 개기 rndcoin  KR 비트코인        0
+10        4             top            비트 코인 빗썸  KR 비트코인        0
+11        4             top            빗썸 비트 코인  KR 비트코인        0
+12        3             top          비트 코인 거래소  KR 비트코인        0
+13        3             top            비트 코인 가격  KR 비트코인        0
+14        3             top            비트 코인 채굴  KR 비트코인        0
+15        3             top                   코인 판  KR 비트코인        0
+16        2             top            비트 코인 전망  KR 비트코인        0
+17        2             top                   코인 원  KR 비트코인        0
+18        2             top            비트 코인 캐시  KR 비트코인        0
+19        2             top            비트 코인 거래  KR 비트코인        0
+20        2             top                 이더 리움  KR 비트코인        0
+21        2             top       비트 코인 이더 리움  KR 비트코인        0
+22        1             top            비트 코인 주가  KR 비트코인        0
+23        1             top               코인 네스트  KR 비트코인        0
+24        1             top                   bitcoin  KR 비트코인        0
+25        1             top                 가상 화폐  KR 비트코인        0
+26 Breakout          rising               코인 갤러리  KR 비트코인        0
+27 Breakout          rising          비트 코인 갤러리  KR 비트코인        0
+28 Breakout          rising                      빗썸  KR 비트코인        0
+29 Breakout          rising 비트 코인 뽀 개기 rndcoin  KR 비트코인        0
+30 Breakout          rising            비트 코인 빗썸  KR 비트코인        0
+31 Breakout          rising            빗썸 비트 코인  KR 비트코인        0
+32 Breakout          rising                   코인 판  KR 비트코인        0
+33 Breakout          rising            비트 코인 전망  KR 비트코인        0
+34 Breakout          rising            비트 코인 캐시  KR 비트코인        0
+35 Breakout          rising                 이더 리움  KR 비트코인        0
+36 Breakout          rising       비트 코인 이더 리움  KR 비트코인        0
+37 Breakout          rising            비트 코인 주가  KR 비트코인        0
+38 Breakout          rising               코인 네스트  KR 비트코인        0
+39 Breakout          rising            비트 코인 차트  KR 비트코인        0
+40 Breakout          rising            비트 코인 달러  KR 비트코인        0
+41 Breakout          rising            비트 코인 골드  KR 비트코인        0
+42 Breakout          rising              비트 코인 갤  KR 비트코인        0
+43 Breakout          rising                 비트 렉스  KR 비트코인        0
+44 Breakout          rising            비트 코인 선물  KR 비트코인        0
+45 Breakout          rising            비트 코인 리플  KR 비트코인        0
+46 Breakout          rising                 코인 레일  KR 비트코인        0
+47 Breakout          rising            비트 코인 이란  KR 비트코인        0
+48 Breakout          rising                   코인 빗  KR 비트코인        0
+49 Breakout          rising            비트 코인 볼트  KR 비트코인        0
+50 Breakout          rising                 바이 낸스  KR 비트코인        0&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;google-trends-traffic-시각화&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Google Trends traffic 시각화&lt;/h2&gt;
+&lt;div id=&#34;시계열-그래프&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;시계열 그래프&lt;/h3&gt;
+&lt;p&gt;일자별 시계열 그래프는 이미 앞에서 다루었으므로 생략한다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;top-rank-시각화&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Top Rank 시각화&lt;/h3&gt;
+&lt;p&gt;앞서 만들어 놓은 bbplot() 함수를 이용해서 시각화한다.&lt;/p&gt;
+&lt;div id=&#34;관련-주제별-traffic-현황&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;관련 주제별 traffic 현황&lt;/h4&gt;
+&lt;p&gt;관련 주제가 영문으로 출력되지만, 비트코인 검색어의 관련 주제의 규모를 버블차트로 출력해 보자.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; ##===========================================================
+&amp;gt; ## 관련 Topic별 Traffics
+&amp;gt; ##===========================================================
+&amp;gt; bit_trend$related_topics %&amp;gt;%
++   filter(related_topics == &amp;quot;top&amp;quot;) %&amp;gt;%
++   mutate(relative = as.integer(subject) + 1) %&amp;gt;%
++   mutate(label = gsub(&amp;quot; &amp;quot;, &amp;quot;&amp;quot;, value)) %&amp;gt;%
++   filter(relative &amp;gt; 0) %&amp;gt;%
++   select(label, relative) %$%
++   bbplot(label, relative)&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;htmlwidget-1&#34; style=&#34;width:864px;height:576px;&#34; class=&#34;bubbles html-widget&#34;&gt;&lt;/div&gt;
+&lt;script type=&#34;application/json&#34; data-for=&#34;htmlwidget-1&#34;&gt;{&#34;x&#34;:{&#34;value&#34;:[101,100,9,6,6,5,5,3,3,3,2,2,2,2,2,2,2,2,2,2],&#34;label&#34;:[&#34;Bitcoin&#34;,&#34;Bit&#34;,&#34;UPbit&#34;,&#34;Coin&#34;,&#34;Eclipse&#34;,&#34;bithumb&#34;,&#34;Exchange&#34;,&#34;BitcoinCash&#34;,&#34;Coinone&#34;,&#34;Chart&#34;,&#34;Ethereum&#34;,&#34;Virtualcurrency&#34;,&#34;BitcoinGold&#34;,&#34;Wallet&#34;,&#34;Bittrex&#34;,&#34;Ripple&#34;,&#34;futurescontract&#34;,&#34;Korbit&#34;,&#34;Volt&#34;,&#34;Comb&#34;],&#34;tooltip&#34;:[&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;],&#34;color&#34;:[&#34;#1B9E77&#34;,&#34;#D95F02&#34;,&#34;#7570B3&#34;,&#34;#E7298A&#34;,&#34;#66A61E&#34;,&#34;#E6AB02&#34;,&#34;#A6761D&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;],&#34;textColor&#34;:[&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;]},&#34;evals&#34;:[],&#34;jsHooks&#34;:[]}&lt;/script&gt;
+&lt;p&gt;color 인수를 사용하면 버블의 색상을 바꿀 수도 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; bit_trend$related_topics %&amp;gt;%
++   filter(related_topics == &amp;quot;top&amp;quot;) %&amp;gt;%
++   mutate(relative = as.integer(subject) + 1) %&amp;gt;%
++   mutate(label = gsub(&amp;quot; &amp;quot;, &amp;quot;&amp;quot;, value)) %&amp;gt;%
++   filter(relative &amp;gt; 0) %&amp;gt;%
++   select(label, relative) %$%
++   bbplot(label, relative, color = terrain.colors(35, alpha = NULL))&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;htmlwidget-2&#34; style=&#34;width:864px;height:576px;&#34; class=&#34;bubbles html-widget&#34;&gt;&lt;/div&gt;
+&lt;script type=&#34;application/json&#34; data-for=&#34;htmlwidget-2&#34;&gt;{&#34;x&#34;:{&#34;value&#34;:[101,100,9,6,6,5,5,3,3,3,2,2,2,2,2,2,2,2,2,2],&#34;label&#34;:[&#34;Bitcoin&#34;,&#34;Bit&#34;,&#34;UPbit&#34;,&#34;Coin&#34;,&#34;Eclipse&#34;,&#34;bithumb&#34;,&#34;Exchange&#34;,&#34;BitcoinCash&#34;,&#34;Coinone&#34;,&#34;Chart&#34;,&#34;Ethereum&#34;,&#34;Virtualcurrency&#34;,&#34;BitcoinGold&#34;,&#34;Wallet&#34;,&#34;Bittrex&#34;,&#34;Ripple&#34;,&#34;futurescontract&#34;,&#34;Korbit&#34;,&#34;Volt&#34;,&#34;Comb&#34;],&#34;tooltip&#34;:[&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;],&#34;color&#34;:[&#34;#00A600&#34;,&#34;#0BAA00&#34;,&#34;#16AE00&#34;,&#34;#21B200&#34;,&#34;#2DB600&#34;,&#34;#3ABA00&#34;,&#34;#47BE00&#34;,&#34;#55C200&#34;,&#34;#63C600&#34;,&#34;#71CA00&#34;,&#34;#80CE00&#34;,&#34;#90D200&#34;,&#34;#A0D600&#34;,&#34;#B1DA00&#34;,&#34;#C2DE00&#34;,&#34;#D3E200&#34;,&#34;#E6E600&#34;,&#34;#E6DA0D&#34;,&#34;#E7D01A&#34;,&#34;#E8C727&#34;],&#34;textColor&#34;:[&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;]},&#34;evals&#34;:[],&#34;jsHooks&#34;:[]}&lt;/script&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; bit_trend$related_topics %&amp;gt;%
++   filter(related_topics == &amp;quot;top&amp;quot;) %&amp;gt;%
++   mutate(relative = as.integer(subject) + 1) %&amp;gt;%
++   mutate(label = gsub(&amp;quot; &amp;quot;, &amp;quot;&amp;quot;, value)) %&amp;gt;%
++   filter(relative &amp;gt; 0) %&amp;gt;%
++   select(label, relative) %$%
++   bbplot(label, relative, color = rainbow(20, alpha = NULL))&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;htmlwidget-3&#34; style=&#34;width:864px;height:576px;&#34; class=&#34;bubbles html-widget&#34;&gt;&lt;/div&gt;
+&lt;script type=&#34;application/json&#34; data-for=&#34;htmlwidget-3&#34;&gt;{&#34;x&#34;:{&#34;value&#34;:[101,100,9,6,6,5,5,3,3,3,2,2,2,2,2,2,2,2,2,2],&#34;label&#34;:[&#34;Bitcoin&#34;,&#34;Bit&#34;,&#34;UPbit&#34;,&#34;Coin&#34;,&#34;Eclipse&#34;,&#34;bithumb&#34;,&#34;Exchange&#34;,&#34;BitcoinCash&#34;,&#34;Coinone&#34;,&#34;Chart&#34;,&#34;Ethereum&#34;,&#34;Virtualcurrency&#34;,&#34;BitcoinGold&#34;,&#34;Wallet&#34;,&#34;Bittrex&#34;,&#34;Ripple&#34;,&#34;futurescontract&#34;,&#34;Korbit&#34;,&#34;Volt&#34;,&#34;Comb&#34;],&#34;tooltip&#34;:[&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;],&#34;color&#34;:[&#34;#FF0000&#34;,&#34;#FF4D00&#34;,&#34;#FF9900&#34;,&#34;#FFE500&#34;,&#34;#CCFF00&#34;,&#34;#80FF00&#34;,&#34;#33FF00&#34;,&#34;#00FF19&#34;,&#34;#00FF66&#34;,&#34;#00FFB2&#34;,&#34;#00FFFF&#34;,&#34;#00B3FF&#34;,&#34;#0066FF&#34;,&#34;#001AFF&#34;,&#34;#3300FF&#34;,&#34;#7F00FF&#34;,&#34;#CC00FF&#34;,&#34;#FF00E6&#34;,&#34;#FF0099&#34;,&#34;#FF004D&#34;],&#34;textColor&#34;:[&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;]},&#34;evals&#34;:[],&#34;jsHooks&#34;:[]}&lt;/script&gt;
+&lt;/div&gt;
+&lt;div id=&#34;관련-검색어별-traffic-현황&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;관련 검색어별 traffic 현황&lt;/h4&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; ##===========================================================
+&amp;gt; ## 관련 검색어별 Traffics
+&amp;gt; ##===========================================================
+&amp;gt; bit_trend$related_queries %&amp;gt;%
++   filter(related_queries == &amp;quot;top&amp;quot;) %&amp;gt;%
++   mutate(relative = as.integer(subject) + 1) %&amp;gt;%
++   mutate(label = gsub(&amp;quot; &amp;quot;, &amp;quot;&amp;quot;, value)) %&amp;gt;%
++   filter(relative &amp;gt; 0) %&amp;gt;%
++   select(label, relative) %$%
++   bbplot(label, relative)&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;htmlwidget-4&#34; style=&#34;width:864px;height:576px;&#34; class=&#34;bubbles html-widget&#34;&gt;&lt;/div&gt;
+&lt;script type=&#34;application/json&#34; data-for=&#34;htmlwidget-4&#34;&gt;{&#34;x&#34;:{&#34;value&#34;:[101,101,99,17,9,9,9,5,5,5,5,4,4,4,4,3,3,3,3,3,3,2,2,2,2],&#34;label&#34;:[&#34;비트코인&#34;,&#34;비트&#34;,&#34;코인&#34;,&#34;비트코인시세&#34;,&#34;업비트&#34;,&#34;코인갤러리&#34;,&#34;비트코인갤러리&#34;,&#34;빗썸&#34;,&#34;비트코인뽀개기rndcoin&#34;,&#34;비트코인빗썸&#34;,&#34;빗썸비트코인&#34;,&#34;비트코인거래소&#34;,&#34;비트코인가격&#34;,&#34;비트코인채굴&#34;,&#34;코인판&#34;,&#34;비트코인전망&#34;,&#34;코인원&#34;,&#34;비트코인캐시&#34;,&#34;비트코인거래&#34;,&#34;이더리움&#34;,&#34;비트코인이더리움&#34;,&#34;비트코인주가&#34;,&#34;코인네스트&#34;,&#34;bitcoin&#34;,&#34;가상화폐&#34;],&#34;tooltip&#34;:[&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;],&#34;color&#34;:[&#34;#1B9E77&#34;,&#34;#D95F02&#34;,&#34;#7570B3&#34;,&#34;#E7298A&#34;,&#34;#66A61E&#34;,&#34;#E6AB02&#34;,&#34;#A6761D&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;],&#34;textColor&#34;:[&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;]},&#34;evals&#34;:[],&#34;jsHooks&#34;:[]}&lt;/script&gt;
+&lt;p&gt;관련 검색어별 통계를 보면 상대 traffic이 0인 건도 통계로 집계되어 있다. 그래서 시각화 함수에서 traffic이 0인 건의 포함여부를 지정할 수 있도록 gplot.queries() 함수를 만들어 보았다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; gplot.queries &amp;lt;- function(x, rm.zero = FALSE, geos = &amp;quot;KR&amp;quot;, 
++                          color = RColorBrewer::brewer.pal(8, &amp;quot;Dark2&amp;quot;)) {
++   x$related_queries %&amp;gt;%
++     filter(geo %in% geos) %&amp;gt;%
++     filter(related_queries == &amp;quot;top&amp;quot;) %&amp;gt;%
++     mutate(relative = as.integer(subject) + !rm.zero) %&amp;gt;%
++     mutate(label = gsub(&amp;quot; &amp;quot;, &amp;quot;&amp;quot;, value)) %&amp;gt;%
++     filter(relative &amp;gt; 0) %&amp;gt;%
++     select(label, relative, geo) %$%
++     bbplot(label, relative, color = color)
++ }&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;다음 예제는 traffic이 0인 건을 제거한 후 버블차트를 그리는 예제다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; gplot.queries(bit_trend, rm.zero = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;htmlwidget-5&#34; style=&#34;width:864px;height:576px;&#34; class=&#34;bubbles html-widget&#34;&gt;&lt;/div&gt;
+&lt;script type=&#34;application/json&#34; data-for=&#34;htmlwidget-5&#34;&gt;{&#34;x&#34;:{&#34;value&#34;:[100,100,98,16,8,8,8,4,4,4,4,3,3,3,3,2,2,2,2,2,2,1,1,1,1],&#34;label&#34;:[&#34;비트코인&#34;,&#34;비트&#34;,&#34;코인&#34;,&#34;비트코인시세&#34;,&#34;업비트&#34;,&#34;코인갤러리&#34;,&#34;비트코인갤러리&#34;,&#34;빗썸&#34;,&#34;비트코인뽀개기rndcoin&#34;,&#34;비트코인빗썸&#34;,&#34;빗썸비트코인&#34;,&#34;비트코인거래소&#34;,&#34;비트코인가격&#34;,&#34;비트코인채굴&#34;,&#34;코인판&#34;,&#34;비트코인전망&#34;,&#34;코인원&#34;,&#34;비트코인캐시&#34;,&#34;비트코인거래&#34;,&#34;이더리움&#34;,&#34;비트코인이더리움&#34;,&#34;비트코인주가&#34;,&#34;코인네스트&#34;,&#34;bitcoin&#34;,&#34;가상화폐&#34;],&#34;tooltip&#34;:[&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;],&#34;color&#34;:[&#34;#1B9E77&#34;,&#34;#D95F02&#34;,&#34;#7570B3&#34;,&#34;#E7298A&#34;,&#34;#66A61E&#34;,&#34;#E6AB02&#34;,&#34;#A6761D&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;],&#34;textColor&#34;:[&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;]},&#34;evals&#34;:[],&#34;jsHooks&#34;:[]}&lt;/script&gt;
+&lt;p&gt;2013년부터 2017년까지의 관련 검색어 Top 랭크를 살펴보자.&lt;/p&gt;
+&lt;div id=&#34;년도&#34; class=&#34;section level5&#34;&gt;
+&lt;h5&gt;2013년도&lt;/h5&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; gplot.queries(bit_trend_2013_k, rm.zero = TRUE,
++               color = terrain.colors(20, alpha = NULL))&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;htmlwidget-6&#34; style=&#34;width:864px;height:576px;&#34; class=&#34;bubbles html-widget&#34;&gt;&lt;/div&gt;
+&lt;script type=&#34;application/json&#34; data-for=&#34;htmlwidget-6&#34;&gt;{&#34;x&#34;:{&#34;value&#34;:[100,17,5,1],&#34;label&#34;:[&#34;비트코인&#34;,&#34;비트코인채굴&#34;,&#34;비트코인원리&#34;,&#34;비트코인거래소&#34;],&#34;tooltip&#34;:[&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;],&#34;color&#34;:[&#34;#00A600&#34;,&#34;#13AD00&#34;,&#34;#28B400&#34;,&#34;#3EBB00&#34;],&#34;textColor&#34;:[&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;]},&#34;evals&#34;:[],&#34;jsHooks&#34;:[]}&lt;/script&gt;
+&lt;/div&gt;
+&lt;div id=&#34;년도-1&#34; class=&#34;section level5&#34;&gt;
+&lt;h5&gt;2014년도&lt;/h5&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; gplot.queries(bit_trend_2014_k, rm.zero = TRUE,
++               color = terrain.colors(20, alpha = NULL))&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;htmlwidget-7&#34; style=&#34;width:864px;height:576px;&#34; class=&#34;bubbles html-widget&#34;&gt;&lt;/div&gt;
+&lt;script type=&#34;application/json&#34; data-for=&#34;htmlwidget-7&#34;&gt;{&#34;x&#34;:{&#34;value&#34;:[100,10,5,4,3],&#34;label&#34;:[&#34;비트코인&#34;,&#34;비트코인채굴&#34;,&#34;비트코인시세&#34;,&#34;비트코인거래소&#34;,&#34;비트코인채굴기&#34;],&#34;tooltip&#34;:[&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;],&#34;color&#34;:[&#34;#00A600&#34;,&#34;#13AD00&#34;,&#34;#28B400&#34;,&#34;#3EBB00&#34;,&#34;#56C200&#34;],&#34;textColor&#34;:[&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;]},&#34;evals&#34;:[],&#34;jsHooks&#34;:[]}&lt;/script&gt;
+&lt;/div&gt;
+&lt;div id=&#34;년도-2&#34; class=&#34;section level5&#34;&gt;
+&lt;h5&gt;2015년도&lt;/h5&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; if (!is.null(bit_trend_2015_k$related_queries)) {
++  gplot.queries(bit_trend_2015_k, rm.zero = TRUE,
++               color = terrain.colors(20, alpha = NULL)) 
++ }&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;htmlwidget-8&#34; style=&#34;width:864px;height:576px;&#34; class=&#34;bubbles html-widget&#34;&gt;&lt;/div&gt;
+&lt;script type=&#34;application/json&#34; data-for=&#34;htmlwidget-8&#34;&gt;{&#34;x&#34;:{&#34;value&#34;:[100,10,8],&#34;label&#34;:[&#34;비트코인&#34;,&#34;비트코인채굴&#34;,&#34;비트코인시세&#34;],&#34;tooltip&#34;:[&#34;&#34;,&#34;&#34;,&#34;&#34;],&#34;color&#34;:[&#34;#00A600&#34;,&#34;#13AD00&#34;,&#34;#28B400&#34;],&#34;textColor&#34;:[&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;]},&#34;evals&#34;:[],&#34;jsHooks&#34;:[]}&lt;/script&gt;
+&lt;/div&gt;
+&lt;div id=&#34;년도-3&#34; class=&#34;section level5&#34;&gt;
+&lt;h5&gt;2016년도&lt;/h5&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; gplot.queries(bit_trend_2016_k, rm.zero = TRUE,
++               color = terrain.colors(20, alpha = NULL))&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;htmlwidget-9&#34; style=&#34;width:864px;height:576px;&#34; class=&#34;bubbles html-widget&#34;&gt;&lt;/div&gt;
+&lt;script type=&#34;application/json&#34; data-for=&#34;htmlwidget-9&#34;&gt;{&#34;x&#34;:{&#34;value&#34;:[100,13,7,4],&#34;label&#34;:[&#34;비트코인&#34;,&#34;비트코인시세&#34;,&#34;비트코인채굴&#34;,&#34;비트코인이란&#34;],&#34;tooltip&#34;:[&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;],&#34;color&#34;:[&#34;#00A600&#34;,&#34;#13AD00&#34;,&#34;#28B400&#34;,&#34;#3EBB00&#34;],&#34;textColor&#34;:[&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;]},&#34;evals&#34;:[],&#34;jsHooks&#34;:[]}&lt;/script&gt;
+&lt;/div&gt;
+&lt;div id=&#34;년도-4&#34; class=&#34;section level5&#34;&gt;
+&lt;h5&gt;2017년도&lt;/h5&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; gplot.queries(bit_trend_2017_k, rm.zero = TRUE,
++               color = terrain.colors(20, alpha = NULL))&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;htmlwidget-10&#34; style=&#34;width:864px;height:576px;&#34; class=&#34;bubbles html-widget&#34;&gt;&lt;/div&gt;
+&lt;script type=&#34;application/json&#34; data-for=&#34;htmlwidget-10&#34;&gt;{&#34;x&#34;:{&#34;value&#34;:[100,98,16,14,8,7,6,6,6,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2],&#34;label&#34;:[&#34;비트&#34;,&#34;비트코인&#34;,&#34;비트코인시세&#34;,&#34;비트코인갤러리&#34;,&#34;업비트&#34;,&#34;비트코인빗썸&#34;,&#34;빗썸&#34;,&#34;비트코인거래소&#34;,&#34;비트코인채굴&#34;,&#34;비트코인캐시&#34;,&#34;코인원&#34;,&#34;비트코인가격&#34;,&#34;비트코인골드&#34;,&#34;코인네스트&#34;,&#34;bitcoin&#34;,&#34;코인판&#34;,&#34;비트코인이더리움&#34;,&#34;이더리움&#34;,&#34;비트코인전망&#34;,&#34;비트렉스&#34;,&#34;비트코인이란&#34;,&#34;리플&#34;,&#34;리플코인&#34;,&#34;가상화폐&#34;,&#34;비트코인하드포크&#34;],&#34;tooltip&#34;:[&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;],&#34;color&#34;:[&#34;#00A600&#34;,&#34;#13AD00&#34;,&#34;#28B400&#34;,&#34;#3EBB00&#34;,&#34;#56C200&#34;,&#34;#70C900&#34;,&#34;#8BD000&#34;,&#34;#A7D700&#34;,&#34;#C6DE00&#34;,&#34;#E6E600&#34;,&#34;#E7D217&#34;,&#34;#E8C32E&#34;,&#34;#E9B846&#34;,&#34;#EBB25E&#34;,&#34;#ECB176&#34;,&#34;#EDB48E&#34;,&#34;#EEBCA7&#34;,&#34;#F0C9C0&#34;,&#34;#F1DBD9&#34;,&#34;#F2F2F2&#34;,&#34;#F2F2F2&#34;,&#34;#F2F2F2&#34;,&#34;#F2F2F2&#34;,&#34;#F2F2F2&#34;,&#34;#F2F2F2&#34;],&#34;textColor&#34;:[&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;]},&#34;evals&#34;:[],&#34;jsHooks&#34;:[]}&lt;/script&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;광역시도별-traffic-현황&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;광역시도별 traffic 현황&lt;/h4&gt;
+&lt;p&gt;광역시도별 traffic 현황을 그리지 위해서 다음의 함수를 만들었다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; gplot.region &amp;lt;- function(x, geos = &amp;quot;KR&amp;quot;, 
++                          color = RColorBrewer::brewer.pal(8, &amp;quot;Dark2&amp;quot;)) {
++   x$interest_by_region %&amp;gt;%
++     filter(geo %in% geos) %&amp;gt;%
++     mutate(region = location) %&amp;gt;%
++     mutate(region = ifelse(region %in% c(&amp;quot;Daejeon&amp;quot;), &amp;quot;대전광역시&amp;quot;, region)) %&amp;gt;% 
++     mutate(region = ifelse(region %in% c(&amp;quot;Incheon&amp;quot;), &amp;quot;인천광역시&amp;quot;, region)) %&amp;gt;%
++     mutate(region = ifelse(region %in% c(&amp;quot;Seoul&amp;quot;), &amp;quot;서울특별시&amp;quot;, region)) %&amp;gt;%
++     mutate(region = ifelse(region %in% c(&amp;quot;Ulsan&amp;quot;), &amp;quot;울산광역시&amp;quot;, region)) %&amp;gt;%
++     mutate(region = ifelse(region %in% c(&amp;quot;Gwangju&amp;quot;), &amp;quot;광주광역시&amp;quot;, region)) %&amp;gt;%
++     mutate(region = ifelse(region %in% c(&amp;quot;Daegu&amp;quot;), &amp;quot;대구광역시&amp;quot;, region)) %&amp;gt;%
++     mutate(region = ifelse(region %in% c(&amp;quot;Busan&amp;quot;), &amp;quot;부산광역시&amp;quot;, region)) %&amp;gt;%
++     mutate(region = ifelse(region %in% c(&amp;quot;Chungcheongnam-do&amp;quot;), &amp;quot;충청남도&amp;quot;, region)) %&amp;gt;%
++     mutate(region = ifelse(region %in% c(&amp;quot;Jeollanam-do&amp;quot;), &amp;quot;전라남도&amp;quot;, region)) %&amp;gt;%
++     mutate(region = ifelse(region %in% c(&amp;quot;Chungcheongbuk-do&amp;quot;), &amp;quot;충청북도&amp;quot;, region)) %&amp;gt;%
++     mutate(region = ifelse(region %in% c(&amp;quot;Gyeongsangbuk-do&amp;quot;), &amp;quot;경상북도&amp;quot;, region)) %&amp;gt;%
++     mutate(region = ifelse(region %in% c(&amp;quot;Jeollabuk-do&amp;quot;), &amp;quot;전라북도&amp;quot;, region)) %&amp;gt;%
++     mutate(region = ifelse(region %in% c(&amp;quot;Gyeongsangnam-do&amp;quot;), &amp;quot;경상남도&amp;quot;, region)) %&amp;gt;%
++     mutate(region = ifelse(region %in% c(&amp;quot;Gangwon-do&amp;quot;), &amp;quot;강원도&amp;quot;, region)) %&amp;gt;%
++     mutate(region = ifelse(region %in% c(&amp;quot;Gyeonggi-do&amp;quot;), &amp;quot;경기도&amp;quot;, region)) %&amp;gt;%
++     mutate(region = ifelse(region %in% c(&amp;quot;Jeju-do&amp;quot;), &amp;quot;제주도&amp;quot;, region)) %&amp;gt;%    
++     select(region, hits, geo) %$%
++     bbplot(region, hits, color = color)
++ }&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;광역시도별 traffic 현황은 다음과 같다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; gplot.region(bit_trend)&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;htmlwidget-11&#34; style=&#34;width:864px;height:576px;&#34; class=&#34;bubbles html-widget&#34;&gt;&lt;/div&gt;
+&lt;script type=&#34;application/json&#34; data-for=&#34;htmlwidget-11&#34;&gt;{&#34;x&#34;:{&#34;value&#34;:[100,94,93,92,90,85,85,85,84,82,79,77,75,71,70,null],&#34;label&#34;:[&#34;대전광역시&#34;,&#34;서울특별시&#34;,&#34;광주광역시&#34;,&#34;인천광역시&#34;,&#34;울산광역시&#34;,&#34;경기도&#34;,&#34;부산광역시&#34;,&#34;대구광역시&#34;,&#34;충청북도&#34;,&#34;충청남도&#34;,&#34;전라북도&#34;,&#34;전라남도&#34;,&#34;경상북도&#34;,&#34;경상남도&#34;,&#34;강원도&#34;,&#34;제주도&#34;],&#34;tooltip&#34;:[&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;],&#34;color&#34;:[&#34;#1B9E77&#34;,&#34;#D95F02&#34;,&#34;#7570B3&#34;,&#34;#E7298A&#34;,&#34;#66A61E&#34;,&#34;#E6AB02&#34;,&#34;#A6761D&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;],&#34;textColor&#34;:[&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;]},&#34;evals&#34;:[],&#34;jsHooks&#34;:[]}&lt;/script&gt;
+&lt;p&gt;2017년도 광역시도별 traffic 현황은 다음과 같다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; gplot.region(bit_trend_2017)&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;htmlwidget-12&#34; style=&#34;width:864px;height:576px;&#34; class=&#34;bubbles html-widget&#34;&gt;&lt;/div&gt;
+&lt;script type=&#34;application/json&#34; data-for=&#34;htmlwidget-12&#34;&gt;{&#34;x&#34;:{&#34;value&#34;:[100,72,69,64,63,59,58,51,44,43,38,34,31,29,29,25],&#34;label&#34;:[&#34;서울특별시&#34;,&#34;경기도&#34;,&#34;제주도&#34;,&#34;인천광역시&#34;,&#34;대전광역시&#34;,&#34;경상북도&#34;,&#34;울산광역시&#34;,&#34;대구광역시&#34;,&#34;경상남도&#34;,&#34;부산광역시&#34;,&#34;광주광역시&#34;,&#34;충청북도&#34;,&#34;충청남도&#34;,&#34;전라북도&#34;,&#34;전라남도&#34;,&#34;강원도&#34;],&#34;tooltip&#34;:[&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;],&#34;color&#34;:[&#34;#1B9E77&#34;,&#34;#D95F02&#34;,&#34;#7570B3&#34;,&#34;#E7298A&#34;,&#34;#66A61E&#34;,&#34;#E6AB02&#34;,&#34;#A6761D&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;,&#34;#666666&#34;],&#34;textColor&#34;:[&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;]},&#34;evals&#34;:[],&#34;jsHooks&#34;:[]}&lt;/script&gt;
+&lt;p&gt;2017년도 미국의 주별 traffic 현황은 다음과 같다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; gplot.region(bit_trend_2017, geos = &amp;quot;US&amp;quot;, 
++              color = terrain.colors(60, alpha = NULL))&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;htmlwidget-13&#34; style=&#34;width:864px;height:576px;&#34; class=&#34;bubbles html-widget&#34;&gt;&lt;/div&gt;
+&lt;script type=&#34;application/json&#34; data-for=&#34;htmlwidget-13&#34;&gt;{&#34;x&#34;:{&#34;value&#34;:[100,92,91,91,84,83,78,73,72,71,71,70,67,66,64,64,63,63,62,60,59,59,58,57,56,56,54,54,54,53,53,52,52,52,51,50,49,49,48,45,45,45,44,44,43,42,41,41,41,37,31],&#34;label&#34;:[&#34;Hawaii&#34;,&#34;California&#34;,&#34;New York&#34;,&#34;Washington&#34;,&#34;Nevada&#34;,&#34;New Jersey&#34;,&#34;Utah&#34;,&#34;Illinois&#34;,&#34;Connecticut&#34;,&#34;Massachusetts&#34;,&#34;Colorado&#34;,&#34;Florida&#34;,&#34;Maryland&#34;,&#34;Alaska&#34;,&#34;New Hampshire&#34;,&#34;Arizona&#34;,&#34;Oregon&#34;,&#34;Rhode Island&#34;,&#34;Virginia&#34;,&#34;Pennsylvania&#34;,&#34;Montana&#34;,&#34;Minnesota&#34;,&#34;Michigan&#34;,&#34;Delaware&#34;,&#34;Idaho&#34;,&#34;Texas&#34;,&#34;Wisconsin&#34;,&#34;North Dakota&#34;,&#34;Vermont&#34;,&#34;District of Columbia&#34;,&#34;Georgia&#34;,&#34;North Carolina&#34;,&#34;Ohio&#34;,&#34;Nebraska&#34;,&#34;Maine&#34;,&#34;Missouri&#34;,&#34;Iowa&#34;,&#34;New Mexico&#34;,&#34;Indiana&#34;,&#34;Tennessee&#34;,&#34;South Dakota&#34;,&#34;Kansas&#34;,&#34;Oklahoma&#34;,&#34;Louisiana&#34;,&#34;Wyoming&#34;,&#34;Arkansas&#34;,&#34;Kentucky&#34;,&#34;South Carolina&#34;,&#34;Alabama&#34;,&#34;West Virginia&#34;,&#34;Mississippi&#34;],&#34;tooltip&#34;:[&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;],&#34;color&#34;:[&#34;#00A600&#34;,&#34;#06A800&#34;,&#34;#0CAA00&#34;,&#34;#12AC00&#34;,&#34;#18AF00&#34;,&#34;#1EB100&#34;,&#34;#25B300&#34;,&#34;#2CB500&#34;,&#34;#33B700&#34;,&#34;#3ABA00&#34;,&#34;#41BC00&#34;,&#34;#48BE00&#34;,&#34;#50C000&#34;,&#34;#57C200&#34;,&#34;#5FC500&#34;,&#34;#67C700&#34;,&#34;#6FC900&#34;,&#34;#77CB00&#34;,&#34;#7FCD00&#34;,&#34;#88D000&#34;,&#34;#91D200&#34;,&#34;#99D400&#34;,&#34;#A2D600&#34;,&#34;#ACD800&#34;,&#34;#B5DB00&#34;,&#34;#BEDD00&#34;,&#34;#C8DF00&#34;,&#34;#D2E100&#34;,&#34;#DBE300&#34;,&#34;#E6E600&#34;,&#34;#E6DF08&#34;,&#34;#E6D80F&#34;,&#34;#E7D217&#34;,&#34;#E7CC1F&#34;,&#34;#E8C727&#34;,&#34;#E8C32E&#34;,&#34;#E8BF36&#34;,&#34;#E9BB3E&#34;,&#34;#E9B846&#34;,&#34;#EAB64E&#34;,&#34;#EAB456&#34;,&#34;#EBB25E&#34;,&#34;#EBB166&#34;,&#34;#EBB16E&#34;,&#34;#ECB176&#34;,&#34;#ECB17E&#34;,&#34;#EDB386&#34;,&#34;#EDB48E&#34;,&#34;#EEB696&#34;,&#34;#EEB99F&#34;,&#34;#EEBCA7&#34;],&#34;textColor&#34;:[&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;,&#34;#333333&#34;]},&#34;evals&#34;:[],&#34;jsHooks&#34;:[]}&lt;/script&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

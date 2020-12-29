@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>statistics on Dataholic</title>
+    <link>/tags/statistics/</link>
+    <description>Recent content in statistics on Dataholic</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 17 Jul 2005 00:00:00 +0000</lastBuildDate><atom:link href="/tags/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>이항분포의 포아송분포 근사</title>
+      <link>/post/2005-07/2005-07-17-poss/</link>
+      <pubDate>Sun, 17 Jul 2005 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2005-07/2005-07-17-poss/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;일러두기&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;일러두기&lt;/h2&gt;
+&lt;p&gt;2005-07-17 네이버 블로그에 게시된 내용을 옮겨 온 글입니다. 지금의 R 환경과 다소 내용이 다를 수 있음을 밝여둡니다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;이항분포의-포아송분포-근사&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;이항분포의 포아송분포 근사&lt;/h2&gt;
+&lt;p&gt;이항분포 B(n,p)에서 평균인 np값은 고정하고 n값이 충분히 커지면 이 분포는 평균 m이 np인 포아송분포에 근사하게 된다.
+이것을 그래프로 그려 포아송분포로 근사하는 것을 추적해 보았다.
+np=5이고 n=10, 20, 50, 100인 이항분포를 한 좌표에 그려 보았다.
+그리고 평균이 5인 포아송 분포도 같이 그려 보았다.&lt;/p&gt;
+&lt;div id=&#34;r-script&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;R Script&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; mean &amp;lt;- 5
+&amp;gt; 
+&amp;gt; par(family = &amp;quot;NanumSquare&amp;quot;)
+&amp;gt; plot(dbinom(0:15, 10, mean / 10), type = &amp;quot;l&amp;quot;,
++      main = &amp;quot;이항분포의 포아송분포 근사; B(n,p), np=5&amp;quot;, 
++      xlab = &amp;quot;X&amp;quot;, ylab = &amp;quot;Probability&amp;quot;)
+&amp;gt; 
+&amp;gt; lines(dbinom(0:15, 20, mean / 20), lty = 2, col = 2)
+&amp;gt; lines(dbinom(0:15, 50, mean / 50), lty = 3, col = 3)
+&amp;gt; lines(dbinom(0:15, 100, mean / 100), lty = 4, col = 4)
+&amp;gt; lines(dpois(0:15, mean), lty = 5, col = 5)
+&amp;gt; 
+&amp;gt; legend(10.5, 0.2, legend = c(&amp;quot;Bin(10,0.5)&amp;quot;,&amp;quot;Bin(20,0.25)&amp;quot;,&amp;quot;Bin(50,0.1)&amp;quot;,
++                              &amp;quot;Bin(100,0.05)&amp;quot;,&amp;quot;Pos(5)&amp;quot;), 
++        lty = 1:5, col = 1:5)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2005-07/2005-07-17-poss_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;1400&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; round(dpois(0:15, 5) - dbinom(0:15, 10, mean / 10), 5)
+ [1]  0.00576  0.02392  0.04028  0.02319 -0.02961 -0.07063 -0.05886 -0.01274
+ [9]  0.02133  0.02650  0.01716  0.00824  0.00343  0.00132  0.00047  0.00016
+&amp;gt; round(dpois(0:15, 5) - dbinom(0:15, 20, mean / 20), 5)
+ [1]  0.00357  0.01255  0.01728  0.00648 -0.01422 -0.02686 -0.02239 -0.00796
+ [9]  0.00439  0.00920  0.00821  0.00524  0.00268  0.00117  0.00045  0.00015
+&amp;gt; round(dpois(0:15, 5) - dbinom(0:15, 50, mean / 50), 5)
+ [1]  0.00158  0.00506  0.00628  0.00181 -0.00544 -0.00946 -0.00788 -0.00318
+ [9]  0.00100  0.00294  0.00295  0.00211  0.00122  0.00060  0.00026  0.00010
+&amp;gt; round(dpois(0:15, 5) - dbinom(0:15, 100, mean / 100), 5)
+ [1]  0.00082  0.00253  0.00304  0.00080 -0.00268 -0.00455 -0.00379 -0.00158
+ [9]  0.00041  0.00136  0.00142  0.00104  0.00062  0.00032  0.00014  0.00006&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>이항분포의 정규분포 근사</title>
+      <link>/post/2005-07/2005-07-06-binomial/</link>
+      <pubDate>Wed, 06 Jul 2005 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2005-07/2005-07-06-binomial/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;일러두기&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;일러두기&lt;/h2&gt;
+&lt;p&gt;2005-07-06 네이버 블로그에 게시된 내용을 옮겨 온 글입니다. 지금의 R 환경과 다소 내용이 다를 수 있음을 밝여둡니다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;이항분포의-정규분포-근사&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;이항분포의 정규분포 근사&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;이항분포&lt;/code&gt; B(n,p)에서 p값에 관계없이 n값이 충분히 커지면 이 분포는 정규분포에 근사하게 된다.
+이것을 그래프로 그려 &lt;code&gt;정규분포&lt;/code&gt;로 근사하는 것을 추적해 보았다.
+p=0.2이고 n=10, 20, 30, 40, 50인 이항분포를 한 좌표에 그려 보았다.&lt;/p&gt;
+&lt;div id=&#34;r-script&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;R Script&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; par(family = &amp;quot;NanumSquare&amp;quot;)
+&amp;gt; plot(dbinom(1:20, 10, 0.2), type = &amp;quot;l&amp;quot;, 
++      main = &amp;quot;이항분포의 정규분포 근사; B(n, 0.2)&amp;quot;, 
++      xlab = &amp;quot;X&amp;quot;, ylab = &amp;quot;Probability&amp;quot;)
+&amp;gt; 
+&amp;gt; lines(dbinom(1:20, 20, 0.2), lty = 2, col = 2)
+&amp;gt; lines(dbinom(1:20, 30, 0.2), lty = 3, col = 3)
+&amp;gt; lines(dbinom(1:20, 40, 0.2), lty = 4, col = 4)
+&amp;gt; lines(dbinom(1:20, 50, 0.2), lty = 5, col = 5)
+&amp;gt; 
+&amp;gt; legend(12, 0.27, legend = c(&amp;quot;Bin(10, 0.2)&amp;quot;,&amp;quot;Bin(20, 0.2)&amp;quot;,&amp;quot;Bin(30, 0.2)&amp;quot;,
++                             &amp;quot;Bin(40, 0.2)&amp;quot;,&amp;quot;Bin(50, 0.2)&amp;quot;),
++        lty = 1:5, col = 1:5)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2005-07/2005-07-06-binomial_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;1400&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

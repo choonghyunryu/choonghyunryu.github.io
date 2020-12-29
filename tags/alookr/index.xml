@@ -1,0 +1,1523 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>alookr on Dataholic</title>
+    <link>/tags/alookr/</link>
+    <description>Recent content in alookr on Dataholic</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 27 Mar 2020 10:10:50 -0500</lastBuildDate><atom:link href="/tags/alookr/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>alookr: Binary classification modeling</title>
+      <link>/post/2020-03/2020-03-27-r-alookr.ko/</link>
+      <pubDate>Fri, 27 Mar 2020 10:10:50 -0500</pubDate>
+      
+      <guid>/post/2020-03/2020-03-27-r-alookr.ko/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;개요&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;개요&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;alookr&lt;/code&gt;은 이진분류 모델의 개발 과정에서 데이터 정제, 데이터의 traning set과 test set으로의 분리, 모델 적합, 적합된 모델의 평가 및 최적의 모델을 선정한다. 이 패키지는 &lt;code&gt;dplyr&lt;/code&gt; 패키지와 협업하여 이진분류 데이터 분석 프로세스를 유연하게 처리해 준다.&lt;/p&gt;
+&lt;p&gt;주요 기능:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;데이터를 &lt;em&gt;traning set과 test set&lt;/em&gt;으로 나눈다.&lt;/li&gt;
+&lt;li&gt;여러 대표적인 &lt;em&gt;이진분류 모델&lt;/em&gt;을 적합한다.&lt;/li&gt;
+&lt;li&gt;적합한 이진분류 &lt;em&gt;모델을 평가&lt;/em&gt;하고 &lt;em&gt;최적의 모델을 선정&lt;/em&gt;한다.&lt;/li&gt;
+&lt;li&gt;이진분류 모델의 &lt;em&gt;전 프로세스를 지원&lt;/em&gt;한다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;alookr&lt;/code&gt;이라는 이름은 데이터 분석 과정에서 &lt;code&gt;looking at the analytics process&lt;/code&gt;에서 유래하여 작명하였다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;alookr-설치&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;alookr 설치&lt;/h2&gt;
+&lt;p&gt;CRAN에 등록된, 릴리즈된 패키지는 다음과 같이 설치한다.:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;install.packages(&amp;quot;alookr&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;혹은 GitHub에 등록된 vignettes이 없는 개발버전은 다음처럼 설치한다.:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;devtools::install_github(&amp;quot;choonghyunryu/alookr&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;혹은 GitHub에 등록된 vignettes을 포함한 개발버전은 다음처럼 설치한다.:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;install.packages(c(&amp;quot;ISLR&amp;quot;))
+devtools::install_github(&amp;quot;choonghyunryu/alookr&amp;quot;, build_vignettes = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;사용-방법&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;사용 방법&lt;/h2&gt;
+&lt;p&gt;alookr에는 몇 가지 vignette 파일을 포함하고 있는데, 이 포스트는 이를 기초로 작성하였다.&lt;/p&gt;
+&lt;p&gt;제공되는 vignette는 다음과 같다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Cleansing the dataset&lt;/li&gt;
+&lt;li&gt;Splitting the dataset
+&lt;ul&gt;
+&lt;li&gt;Split the data into a training set and a test set&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Classification Modeling
+&lt;ul&gt;
+&lt;li&gt;Modeling and Evaluate, Predict&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;browseVignettes(package = &amp;quot;alookr&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;데이터-정제&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;데이터 정제&lt;/h2&gt;
+&lt;div id=&#34;예제-데이터-생성하기&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;예제 데이터 생성하기&lt;/h3&gt;
+&lt;p&gt;alookr 패키지의 기초적인 사용 방법을 설명하기 위해서 &lt;code&gt;data_exam&lt;/code&gt;라는 가상의 데이터를 생성한다. 이 데이터는 5개의 변수를 포함한다.&lt;/p&gt;
+&lt;p&gt;예제를 위한 데이터는 다음과 같은 변수를 포함한다.:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;id : character&lt;/li&gt;
+&lt;li&gt;year: character&lt;/li&gt;
+&lt;li&gt;count: numeric&lt;/li&gt;
+&lt;li&gt;alpha : character&lt;/li&gt;
+&lt;li&gt;flag : character&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 샘플 데이터 생성
+set.seed(123L)
+id &amp;lt;- sapply(1:1000, function(x)
+  paste(c(sample(letters, 5), x), collapse = &amp;quot;&amp;quot;))
+
+year &amp;lt;- &amp;quot;2018&amp;quot;
+
+set.seed(123L)
+count &amp;lt;- sample(1:10, size = 1000, replace = TRUE)
+
+set.seed(123L)
+alpha &amp;lt;- sample(letters, size = 1000, replace = TRUE)
+
+set.seed(123L)
+flag &amp;lt;- sample(c(&amp;quot;Y&amp;quot;, &amp;quot;N&amp;quot;), size = 1000, prob = c(0.1, 0.9), replace = TRUE)
+
+data_exam &amp;lt;- data.frame(id, year, count, alpha, flag, stringsAsFactors = FALSE)
+
+# 데이터의 구조
+str(data_exam)
+#&amp;gt; &amp;#39;data.frame&amp;#39;:    1000 obs. of  5 variables:
+#&amp;gt;  $ id   : chr  &amp;quot;osncj1&amp;quot; &amp;quot;rvket2&amp;quot; &amp;quot;nvesi3&amp;quot; &amp;quot;chgji4&amp;quot; ...
+#&amp;gt;  $ year : chr  &amp;quot;2018&amp;quot; &amp;quot;2018&amp;quot; &amp;quot;2018&amp;quot; &amp;quot;2018&amp;quot; ...
+#&amp;gt;  $ count: int  3 3 10 2 6 5 4 6 9 10 ...
+#&amp;gt;  $ alpha: chr  &amp;quot;o&amp;quot; &amp;quot;s&amp;quot; &amp;quot;n&amp;quot; &amp;quot;c&amp;quot; ...
+#&amp;gt;  $ flag : chr  &amp;quot;N&amp;quot; &amp;quot;N&amp;quot; &amp;quot;N&amp;quot; &amp;quot;N&amp;quot; ...
+
+# 데이터의 집계
+summary(data_exam)
+#&amp;gt;       id                year               count           alpha          
+#&amp;gt;  Length:1000        Length:1000        Min.   : 1.000   Length:1000       
+#&amp;gt;  Class :character   Class :character   1st Qu.: 3.000   Class :character  
+#&amp;gt;  Mode  :character   Mode  :character   Median : 6.000   Mode  :character  
+#&amp;gt;                                        Mean   : 5.698                     
+#&amp;gt;                                        3rd Qu.: 8.000                     
+#&amp;gt;                                        Max.   :10.000                     
+#&amp;gt;      flag          
+#&amp;gt;  Length:1000       
+#&amp;gt;  Class :character  
+#&amp;gt;  Mode  :character  
+#&amp;gt;                    
+#&amp;gt;                    
+#&amp;gt; &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;데이터-정제-1&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;데이터 정제&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;cleanse()&lt;/code&gt;는 이진분류 모델 적합을 수행하기 전에 데이터 정제를 수행한다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;cleanse()&lt;/code&gt;의 기능은 다음과 같다.:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;모든 관측치가 동일한 값을 갖는 변수의 제거&lt;/li&gt;
+&lt;li&gt;유일한 값의 비중이 높은 변수의 제거&lt;/li&gt;
+&lt;li&gt;character 변수를 factor로 변경&lt;/li&gt;
+&lt;li&gt;결측치의 비중이 높은 변수의 제거&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div id=&#34;cleanse을-이용한-데이터의-정제&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;cleanse()을 이용한 데이터의 정제&lt;/h4&gt;
+&lt;p&gt;다음 예제는 data_exam 데이터 프레임을 정제한다.:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(alookr)
+#&amp;gt; Loading required package: ggplot2
+#&amp;gt; Loading required package: randomForest
+#&amp;gt; randomForest 4.6-14
+#&amp;gt; Type rfNews() to see new features/changes/bug fixes.
+#&amp;gt; 
+#&amp;gt; Attaching package: &amp;#39;randomForest&amp;#39;
+#&amp;gt; The following object is masked from &amp;#39;package:ggplot2&amp;#39;:
+#&amp;gt; 
+#&amp;gt;     margin
+#&amp;gt; Registered S3 method overwritten by &amp;#39;quantmod&amp;#39;:
+#&amp;gt;   method            from
+#&amp;gt;   as.zoo.data.frame zoo
+
+# 데이터 정제
+newDat &amp;lt;- cleanse(data_exam)
+#&amp;gt; ── Checking unique value ─────────────────────────── unique value is one ──
+#&amp;gt; remove variables that unique value is one
+#&amp;gt; ● year
+#&amp;gt; 
+#&amp;gt; ── Checking unique rate ─────────────────────────────── high unique rate ──
+#&amp;gt; remove variables with high unique rate
+#&amp;gt; ● id = 1000(1)
+#&amp;gt; 
+#&amp;gt; ── Checking character variables ─────────────────────── categorical data ──
+#&amp;gt; converts character variables to factor
+#&amp;gt; ● alpha
+#&amp;gt; ● flag
+
+# 정제된 데이터의 구조
+str(newDat)
+#&amp;gt; &amp;#39;data.frame&amp;#39;:    1000 obs. of  3 variables:
+#&amp;gt;  $ count: int  3 3 10 2 6 5 4 6 9 10 ...
+#&amp;gt;  $ alpha: Factor w/ 26 levels &amp;quot;a&amp;quot;,&amp;quot;b&amp;quot;,&amp;quot;c&amp;quot;,&amp;quot;d&amp;quot;,..: 15 19 14 3 10 18 22 11 5 20 ...
+#&amp;gt;  $ flag : Factor w/ 2 levels &amp;quot;N&amp;quot;,&amp;quot;Y&amp;quot;: 1 1 1 1 2 1 1 1 1 1 ...&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;remove variables whose unique value is one&lt;/code&gt; : year 변수는 오직 “2018”라는 하나의 값만 가지고 있다.. 이런 변수는 모형적합에 필요치 않다. 그래서 제거된다.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;remove variables with high unique rate&lt;/code&gt; :
+범주형 변수에서 수준(levle)의 개수가 너무 많으면, 분류모델의 변수로 적당하지 않다. 이 경우에는 식별자(identifier)일 가능성이 높다. 그래서 범주형이나 문자열 변수에서 &lt;strong&gt;유일값의 비율&lt;/strong&gt;로 정의된, &lt;strong&gt;수준의 개수/관측치의 개수&lt;/strong&gt;가 큰 변수를 제거한다.
+&lt;ul&gt;
+&lt;li&gt;레벨의 개수가 1000인 변수 id의 유일값의 비율은 1이다. 그래서 이 변수는 제거 대상이다.&lt;/li&gt;
+&lt;li&gt;변수 alpha의 유일값의 비율은 0.026이며, 이 변수로 제거된다.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;converts character variables to factor&lt;/code&gt; : character 변수인 변수 flag는 factor로 변경된다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;다음 예제처럼 &lt;code&gt;유일값의 비율&lt;/code&gt;의 임계치를 변경하여, 범주형 변수의 제거를 조정할 수 있다.:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 데이터 정제
+newDat &amp;lt;- cleanse(data_exam, uniq_thres = 0.03)
+#&amp;gt; ── Checking unique value ─────────────────────────── unique value is one ──
+#&amp;gt; remove variables that unique value is one
+#&amp;gt; ● year
+#&amp;gt; 
+#&amp;gt; ── Checking unique rate ─────────────────────────────── high unique rate ──
+#&amp;gt; remove variables with high unique rate
+#&amp;gt; ● id = 1000(1)
+#&amp;gt; 
+#&amp;gt; ── Checking character variables ─────────────────────── categorical data ──
+#&amp;gt; converts character variables to factor
+#&amp;gt; ● alpha
+#&amp;gt; ● flag
+
+# 정제된 데이터의 구조
+str(newDat)
+#&amp;gt; &amp;#39;data.frame&amp;#39;:    1000 obs. of  3 variables:
+#&amp;gt;  $ count: int  3 3 10 2 6 5 4 6 9 10 ...
+#&amp;gt;  $ alpha: Factor w/ 26 levels &amp;quot;a&amp;quot;,&amp;quot;b&amp;quot;,&amp;quot;c&amp;quot;,&amp;quot;d&amp;quot;,..: 15 19 14 3 10 18 22 11 5 20 ...
+#&amp;gt;  $ flag : Factor w/ 2 levels &amp;quot;N&amp;quot;,&amp;quot;Y&amp;quot;: 1 1 1 1 2 1 1 1 1 1 ...&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;변수 alpha가 제거되지 않았다.&lt;/p&gt;
+&lt;p&gt;데이터 정제에 유일값의 비율을 적용하지 않으려면, 다음처럼 uniq 인수값을 FALSE로 지정하면 된다.:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 데이터 정제
+newDat &amp;lt;- cleanse(data_exam, uniq = FALSE)
+#&amp;gt; ── Checking character variables ─────────────────────── categorical data ──
+#&amp;gt; converts character variables to factor
+#&amp;gt; ● id
+#&amp;gt; ● year
+#&amp;gt; ● alpha
+#&amp;gt; ● flag
+
+# 정제된 데이터의 구조
+str(newDat)
+#&amp;gt; &amp;#39;data.frame&amp;#39;:    1000 obs. of  5 variables:
+#&amp;gt;  $ id   : Factor w/ 1000 levels &amp;quot;ablnc282&amp;quot;,&amp;quot;abqym54&amp;quot;,..: 594 715 558 94 727 270 499 882 930 515 ...
+#&amp;gt;  $ year : Factor w/ 1 level &amp;quot;2018&amp;quot;: 1 1 1 1 1 1 1 1 1 1 ...
+#&amp;gt;  $ count: int  3 3 10 2 6 5 4 6 9 10 ...
+#&amp;gt;  $ alpha: Factor w/ 26 levels &amp;quot;a&amp;quot;,&amp;quot;b&amp;quot;,&amp;quot;c&amp;quot;,&amp;quot;d&amp;quot;,..: 15 19 14 3 10 18 22 11 5 20 ...
+#&amp;gt;  $ flag : Factor w/ 2 levels &amp;quot;N&amp;quot;,&amp;quot;Y&amp;quot;: 1 1 1 1 2 1 1 1 1 1 ...&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;character 변수를 factor로 변경하지 않으려면, 다음처럼 char 인수값을 FALSE로 지정한다.:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 데이터 정제
+newDat &amp;lt;- cleanse(data_exam, char = FALSE)
+#&amp;gt; ── Checking unique value ─────────────────────────── unique value is one ──
+#&amp;gt; remove variables that unique value is one
+#&amp;gt; ● year
+#&amp;gt; 
+#&amp;gt; ── Checking unique rate ─────────────────────────────── high unique rate ──
+#&amp;gt; remove variables with high unique rate
+#&amp;gt; ● id = 1000(1)
+
+# 정제된 데이터의 구조
+str(newDat)
+#&amp;gt; &amp;#39;data.frame&amp;#39;:    1000 obs. of  3 variables:
+#&amp;gt;  $ count: int  3 3 10 2 6 5 4 6 9 10 ...
+#&amp;gt;  $ alpha: chr  &amp;quot;o&amp;quot; &amp;quot;s&amp;quot; &amp;quot;n&amp;quot; &amp;quot;c&amp;quot; ...
+#&amp;gt;  $ flag : chr  &amp;quot;N&amp;quot; &amp;quot;N&amp;quot; &amp;quot;N&amp;quot; &amp;quot;N&amp;quot; ...&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;결측치가 포함된 변수를 제거하려면, missing 인수값을 FALSE로 지정한다. 다음 예제는 결측치가 포함된 flag 변수를 제거한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;data_exam$flag[1] &amp;lt;- NA 
+
+# 데이터 정제
+newDat &amp;lt;- cleanse(data_exam, missing = TRUE)
+#&amp;gt; ── Checking missing value ────────────────────────────────── included NA ──
+#&amp;gt; remove variables whose included NA
+#&amp;gt; ● flag
+#&amp;gt; 
+#&amp;gt; ── Checking unique value ─────────────────────────── unique value is one ──
+#&amp;gt; remove variables that unique value is one
+#&amp;gt; ● year
+#&amp;gt; 
+#&amp;gt; ── Checking unique rate ─────────────────────────────── high unique rate ──
+#&amp;gt; remove variables with high unique rate
+#&amp;gt; ● id = 1000(1)
+#&amp;gt; 
+#&amp;gt; ── Checking character variables ─────────────────────── categorical data ──
+#&amp;gt; converts character variables to factor
+#&amp;gt; ● alpha
+
+# 정제된 데이터의 구조
+str(newDat)
+#&amp;gt; &amp;#39;data.frame&amp;#39;:    1000 obs. of  2 variables:
+#&amp;gt;  $ count: int  3 3 10 2 6 5 4 6 9 10 ...
+#&amp;gt;  $ alpha: Factor w/ 26 levels &amp;quot;a&amp;quot;,&amp;quot;b&amp;quot;,&amp;quot;c&amp;quot;,&amp;quot;d&amp;quot;,..: 15 19 14 3 10 18 22 11 5 20 ...&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;상관관계가-높은-변수의-진단-및-제거&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;상관관계가 높은 변수의 진단 및 제거&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;선형모형(linear model)&lt;/code&gt;에서 독립변수간에 강한 상관관계(correlation)가 있으면, &lt;code&gt;다중공선성(multicollinearity)&lt;/code&gt;이 발생한다. 따라서 상관관계가 존재하는 변수쌍에서 하나의 변수를 제거하는 것이 좋다.&lt;/p&gt;
+&lt;p&gt;선형모형이 아니더라도 상관관계가 큰 변수쌍에서 하나의 변수를 제거하면, 모델 적합과정에서 연산 오버헤드를 줄일 수도 있다. 그리고 모델을 해석하는 것도 쉬워진다.&lt;/p&gt;
+&lt;div id=&#34;treatment_corr을-이용한-데이터-정제&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;treatment_corr()을 이용한 데이터 정제&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;treatment_corr()&lt;/code&gt; 은 상관관계가 높은 변수의 쌍을 진단하거나 제거한다.
+&lt;code&gt;treatment_corr()&lt;/code&gt; 은 수치형 변수에 대해서는 &lt;code&gt;피어슨(pearson)의 상관계수&lt;/code&gt;를 범주형 변수에 대해서는 &lt;code&gt;스피어만(spearman)의 상관계수&lt;/code&gt;를 계산한다.&lt;/p&gt;
+&lt;p&gt;다음 예제는 상관관계가 높은 변수를 진단하고, 제거한다.:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 수치형 변수
+x1 &amp;lt;- 1:100
+set.seed(12L)
+x2 &amp;lt;- sample(1:3, size = 100, replace = TRUE) * x1 + rnorm(1)
+set.seed(1234L)
+x3 &amp;lt;- sample(1:2, size = 100, replace = TRUE) * x1 + rnorm(1)
+
+# 범주형 변수
+x4 &amp;lt;- factor(rep(letters[1:20], time = 5))
+set.seed(100L)
+x5 &amp;lt;- factor(rep(letters[1:20 + sample(1:6, size = 20, replace = TRUE)], time = 5))
+set.seed(200L)
+x6 &amp;lt;- factor(rep(letters[1:20 + sample(1:3, size = 20, replace = TRUE)], time = 5))
+set.seed(300L)
+x7 &amp;lt;- factor(sample(letters[1:5], size = 100, replace = TRUE))
+
+exam &amp;lt;- data.frame(x1, x2, x3, x4, x5, x6, x7)
+str(exam)
+#&amp;gt; &amp;#39;data.frame&amp;#39;:    100 obs. of  7 variables:
+#&amp;gt;  $ x1: int  1 2 3 4 5 6 7 8 9 10 ...
+#&amp;gt;  $ x2: num  2.55 4.55 9.55 12.55 10.55 ...
+#&amp;gt;  $ x3: num  0.194 2.194 4.194 6.194 3.194 ...
+#&amp;gt;  $ x4: Factor w/ 20 levels &amp;quot;a&amp;quot;,&amp;quot;b&amp;quot;,&amp;quot;c&amp;quot;,&amp;quot;d&amp;quot;,..: 1 2 3 4 5 6 7 8 9 10 ...
+#&amp;gt;  $ x5: Factor w/ 13 levels &amp;quot;c&amp;quot;,&amp;quot;e&amp;quot;,&amp;quot;f&amp;quot;,&amp;quot;g&amp;quot;,..: 1 5 3 2 4 7 6 8 9 8 ...
+#&amp;gt;  $ x6: Factor w/ 15 levels &amp;quot;c&amp;quot;,&amp;quot;d&amp;quot;,&amp;quot;f&amp;quot;,&amp;quot;g&amp;quot;,..: 1 2 3 4 3 5 6 7 8 9 ...
+#&amp;gt;  $ x7: Factor w/ 5 levels &amp;quot;a&amp;quot;,&amp;quot;b&amp;quot;,&amp;quot;c&amp;quot;,&amp;quot;d&amp;quot;,..: 2 2 1 4 5 1 4 3 1 5 ...
+
+head(exam)
+#&amp;gt;   x1        x2         x3 x4 x5 x6 x7
+#&amp;gt; 1  1  2.554297  0.1939687  a  c  c  b
+#&amp;gt; 2  2  4.554297  2.1939687  b  h  d  b
+#&amp;gt; 3  3  9.554297  4.1939687  c  f  f  a
+#&amp;gt; 4  4 12.554297  6.1939687  d  e  g  d
+#&amp;gt; 5  5 10.554297  3.1939687  e  g  f  e
+#&amp;gt; 6  6  6.554297 10.1939687  f  l  h  a
+
+# default case
+exam_01 &amp;lt;- treatment_corr(exam)
+#&amp;gt; * remove variables whose strong correlation (pearson &amp;gt;= 0.8)
+#&amp;gt;  - remove x1 : with x3 (0.825)
+#&amp;gt; * remove variables whose strong correlation (spearman &amp;gt;= 0.8)
+#&amp;gt;  - remove x4 : with x5 (0.9649)
+#&amp;gt;  - remove x4 : with x6 (0.9928)
+#&amp;gt;  - remove x5 : with x6 (0.9485)
+head(exam_01)
+#&amp;gt;          x2         x3 x6 x7
+#&amp;gt; 1  2.554297  0.1939687  c  b
+#&amp;gt; 2  4.554297  2.1939687  d  b
+#&amp;gt; 3  9.554297  4.1939687  f  a
+#&amp;gt; 4 12.554297  6.1939687  g  d
+#&amp;gt; 5 10.554297  3.1939687  f  e
+#&amp;gt; 6  6.554297 10.1939687  h  a
+
+# not removing variables
+treatment_corr(exam, treat = FALSE)
+#&amp;gt; * remove variables whose strong correlation (pearson &amp;gt;= 0.8)
+#&amp;gt;  - remove x1 : with x3 (0.825)
+#&amp;gt; * remove variables whose strong correlation (spearman &amp;gt;= 0.8)
+#&amp;gt;  - remove x4 : with x5 (0.9649)
+#&amp;gt;  - remove x4 : with x6 (0.9928)
+#&amp;gt;  - remove x5 : with x6 (0.9485)
+
+# Set a threshold to detecting variables when correlation greater then 0.9
+treatment_corr(exam, corr_thres = 0.9, treat = FALSE)
+#&amp;gt; * remove variables whose strong correlation (spearman &amp;gt;= 0.9)
+#&amp;gt;  - remove x4 : with x5 (0.9649)
+#&amp;gt;  - remove x4 : with x6 (0.9928)
+#&amp;gt;  - remove x5 : with x6 (0.9485)
+
+# verbose FALSE 모드
+exam_02 &amp;lt;- treatment_corr(exam, verbose = FALSE)
+head(exam_02)
+#&amp;gt;          x2         x3 x6 x7
+#&amp;gt; 1  2.554297  0.1939687  c  b
+#&amp;gt; 2  4.554297  2.1939687  d  b
+#&amp;gt; 3  9.554297  4.1939687  f  a
+#&amp;gt; 4 12.554297  6.1939687  g  d
+#&amp;gt; 5 10.554297  3.1939687  f  e
+#&amp;gt; 6  6.554297 10.1939687  h  a&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;remove variables whose strong correlation&lt;/code&gt; : 상관관계가 높은 변수 x1, x4, x5가 제거된다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;training-set과-test-set-데이터-분할&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;training set과 test set 데이터 분할&lt;/h2&gt;
+&lt;div id=&#34;data-신용카드-연체-데이터&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Data: 신용카드 연체 데이터&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;ISLR&lt;/code&gt; 패키지의 &lt;code&gt;Default&lt;/code&gt; 1천명의 고객에 대한 정보를 포함하고 있는 시뮬레이션된 데이터다. 이 데이터는 어떤 고객이 신용카드의 부채를 상환하지 못하는지를 예측하는 목적의 데이터다.&lt;/p&gt;
+&lt;p&gt;이 데이터 프레임은 1천개의 관측치와 다음의 4개 변수를 포함한다.:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;default : factor. 채무불이행 여부를 나낸다. “Y”는 불이행(연체), “N”은 이행을 의미한다.&lt;/li&gt;
+&lt;li&gt;student: factor. 고객이 학생인지의 여부다. Y“는 학생,”N&#34;은 학생이 아니다.&lt;/li&gt;
+&lt;li&gt;balance: numeric. 고객의 월별 결제 후 신용카드 계자에 남아 있는 평균 잔액&lt;/li&gt;
+&lt;li&gt;income : numeric. 고객의 소득&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 신용카드 연체 데이터
+head(ISLR::Default)
+#&amp;gt;   default student   balance    income
+#&amp;gt; 1      No      No  729.5265 44361.625
+#&amp;gt; 2      No     Yes  817.1804 12106.135
+#&amp;gt; 3      No      No 1073.5492 31767.139
+#&amp;gt; 4      No      No  529.2506 35704.494
+#&amp;gt; 5      No      No  785.6559 38463.496
+#&amp;gt; 6      No     Yes  919.5885  7491.559
+
+# 데이터 구조
+str(ISLR::Default)
+#&amp;gt; &amp;#39;data.frame&amp;#39;:    10000 obs. of  4 variables:
+#&amp;gt;  $ default: Factor w/ 2 levels &amp;quot;No&amp;quot;,&amp;quot;Yes&amp;quot;: 1 1 1 1 1 1 1 1 1 1 ...
+#&amp;gt;  $ student: Factor w/ 2 levels &amp;quot;No&amp;quot;,&amp;quot;Yes&amp;quot;: 1 2 1 1 1 2 1 2 1 1 ...
+#&amp;gt;  $ balance: num  730 817 1074 529 786 ...
+#&amp;gt;  $ income : num  44362 12106 31767 35704 38463 ...
+
+# 데이터 집계
+summary(ISLR::Default)
+#&amp;gt;  default    student       balance           income     
+#&amp;gt;  No :9667   No :7056   Min.   :   0.0   Min.   :  772  
+#&amp;gt;  Yes: 333   Yes:2944   1st Qu.: 481.7   1st Qu.:21340  
+#&amp;gt;                        Median : 823.6   Median :34553  
+#&amp;gt;                        Mean   : 835.4   Mean   :33517  
+#&amp;gt;                        3rd Qu.:1166.3   3rd Qu.:43808  
+#&amp;gt;                        Max.   :2654.3   Max.   :73554&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;데이터-분할&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;데이터 분할&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;split_by()&lt;/code&gt;는 &lt;code&gt;data.frame&lt;/code&gt;이나 &lt;code&gt;tbl_df&lt;/code&gt; 객체를 분할하여 &lt;code&gt;training set&lt;/code&gt;과 &lt;code&gt;test set&lt;/code&gt;로 나눈다.&lt;/p&gt;
+&lt;div id=&#34;split_by을-이용한-데이터-분할&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;split_by()을 이용한 데이터 분할&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;split_by()&lt;/code&gt;는 &lt;code&gt;split_df&lt;/code&gt; 클래스 객체를 반환하는데, 여기에는 &lt;code&gt;training set&lt;/code&gt;과 &lt;code&gt;test set&lt;/code&gt;를 분리하기 위한 분할 정보 및 기준이 포함된다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(alookr)
+library(dplyr)
+#&amp;gt; 
+#&amp;gt; Attaching package: &amp;#39;dplyr&amp;#39;
+#&amp;gt; The following object is masked from &amp;#39;package:randomForest&amp;#39;:
+#&amp;gt; 
+#&amp;gt;     combine
+#&amp;gt; The following objects are masked from &amp;#39;package:stats&amp;#39;:
+#&amp;gt; 
+#&amp;gt;     filter, lag
+#&amp;gt; The following objects are masked from &amp;#39;package:base&amp;#39;:
+#&amp;gt; 
+#&amp;gt;     intersect, setdiff, setequal, union
+
+# 데이터의 분할
+sb &amp;lt;- ISLR::Default %&amp;gt;%
+  split_by(default, seed = 6534)
+
+sb
+#&amp;gt; # A tibble: 10,000 x 5
+#&amp;gt; # Groups:   split_flag [2]
+#&amp;gt;    default student balance income split_flag
+#&amp;gt;    &amp;lt;fct&amp;gt;   &amp;lt;fct&amp;gt;     &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt;     
+#&amp;gt;  1 No      No         730. 44362. train     
+#&amp;gt;  2 No      Yes        817. 12106. train     
+#&amp;gt;  3 No      No        1074. 31767. train     
+#&amp;gt;  4 No      No         529. 35704. train     
+#&amp;gt;  5 No      No         786. 38463. test      
+#&amp;gt;  6 No      Yes        920.  7492. train     
+#&amp;gt;  7 No      No         826. 24905. test      
+#&amp;gt;  8 No      Yes        809. 17600. train     
+#&amp;gt;  9 No      No        1161. 37469. train     
+#&amp;gt; 10 No      No           0  29275. train     
+#&amp;gt; # … with 9,990 more rows&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;split_df&lt;/code&gt; 클래스의 주요한 &lt;code&gt;속성(attributes)&lt;/code&gt;은 다음과 같다.:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;split_seed&lt;/code&gt; : integer. 데이터 분할에 사용된 random seed&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;target&lt;/code&gt; : character. target 변수의 이름&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;binary&lt;/code&gt; : logical. target 변수의 binary class 여부&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;minority&lt;/code&gt; : character. &lt;code&gt;minority class&lt;/code&gt; 이름(수준, level)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;majority&lt;/code&gt; : character. &lt;code&gt;majority class&lt;/code&gt; 이름(수준, level)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;minority_rate&lt;/code&gt; : numeric. &lt;code&gt;minority class&lt;/code&gt; 비율&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;majority_rate&lt;/code&gt; : numeric. &lt;code&gt;majority class&lt;/code&gt; 비율&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 모든 속성의 이름
+attr_names &amp;lt;- names(attributes(sb))
+attr_names
+#&amp;gt;  [1] &amp;quot;names&amp;quot;         &amp;quot;row.names&amp;quot;     &amp;quot;groups&amp;quot;        &amp;quot;class&amp;quot;        
+#&amp;gt;  [5] &amp;quot;split_seed&amp;quot;    &amp;quot;target&amp;quot;        &amp;quot;binary&amp;quot;        &amp;quot;minority&amp;quot;     
+#&amp;gt;  [9] &amp;quot;majority&amp;quot;      &amp;quot;minority_rate&amp;quot; &amp;quot;majority_rate&amp;quot;
+
+sb_attr &amp;lt;- attributes(sb)
+
+# 세 번째 속성인 row.names는 그 길이가 매우 길기 때문에 출력에서 제외한다.
+sb_attr[!attr_names %in% &amp;quot;row.names&amp;quot;]
+#&amp;gt; $names
+#&amp;gt; [1] &amp;quot;default&amp;quot;    &amp;quot;student&amp;quot;    &amp;quot;balance&amp;quot;    &amp;quot;income&amp;quot;     &amp;quot;split_flag&amp;quot;
+#&amp;gt; 
+#&amp;gt; $groups
+#&amp;gt; # A tibble: 2 x 2
+#&amp;gt;   split_flag       .rows
+#&amp;gt; * &amp;lt;chr&amp;gt;      &amp;lt;list&amp;lt;int&amp;gt;&amp;gt;
+#&amp;gt; 1 test           [3,000]
+#&amp;gt; 2 train          [7,000]
+#&amp;gt; 
+#&amp;gt; $class
+#&amp;gt; [1] &amp;quot;split_df&amp;quot;   &amp;quot;grouped_df&amp;quot; &amp;quot;tbl_df&amp;quot;     &amp;quot;tbl&amp;quot;        &amp;quot;data.frame&amp;quot;
+#&amp;gt; 
+#&amp;gt; $split_seed
+#&amp;gt; [1] 6534
+#&amp;gt; 
+#&amp;gt; $target
+#&amp;gt;   default 
+#&amp;gt; &amp;quot;default&amp;quot; 
+#&amp;gt; 
+#&amp;gt; $binary
+#&amp;gt; [1] TRUE
+#&amp;gt; 
+#&amp;gt; $minority
+#&amp;gt; [1] &amp;quot;Yes&amp;quot;
+#&amp;gt; 
+#&amp;gt; $majority
+#&amp;gt; [1] &amp;quot;No&amp;quot;
+#&amp;gt; 
+#&amp;gt; $minority_rate
+#&amp;gt;    Yes 
+#&amp;gt; 0.0333 
+#&amp;gt; 
+#&amp;gt; $majority_rate
+#&amp;gt;     No 
+#&amp;gt; 0.9667&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;summary()&lt;/code&gt;는 &lt;code&gt;split_by()&lt;/code&gt;에 의해서 분할된 두 데이터를 개괄적으로 집계한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(sb)
+#&amp;gt; ** Split train/test set information **
+#&amp;gt;  + random seed        :  6534 
+#&amp;gt;  + split data            
+#&amp;gt;     - train set count :  7000 
+#&amp;gt;     - test set count  :  3000 
+#&amp;gt;  + target variable    :  default 
+#&amp;gt;     - minority class  :  Yes (0.033300)
+#&amp;gt;     - majority class  :  No (0.966700)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;데이터셋의-비교&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;데이터셋의 비교&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;training set&lt;/code&gt;과 &lt;code&gt;test set&lt;/code&gt;은 비슷해야 한다. 두 데이터가 유사하지 않으면, 예측모델의 성능이 저하될 수 있다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;alookr&lt;/code&gt;은 &lt;code&gt;training set&lt;/code&gt;과 &lt;code&gt;test set&lt;/code&gt;의 유사성을 비교하는 기능을 제공한다.&lt;/p&gt;
+&lt;p&gt;만약 두 데이터 세트가 유사하지 않으면, 원 데이터에서 &lt;code&gt;training set&lt;/code&gt;과 &lt;code&gt;test set&lt;/code&gt;을 다시 분할해야 한다.&lt;/p&gt;
+&lt;div id=&#34;compare_target_category를-이용한-범주형-변수의-비교&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;compare_target_category()를 이용한 범주형 변수의 비교&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;split_df&lt;/code&gt; 클래스에 포함된&lt;code&gt;training set&lt;/code&gt;과 &lt;code&gt;test set&lt;/code&gt; 정보에 근거해서 두 데이터 셋에서의 범주형 변수를 비교한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sb %&amp;gt;%
+  compare_target_category()
+#&amp;gt; # A tibble: 4 x 5
+#&amp;gt;   variable level train  test abs_diff
+#&amp;gt;   &amp;lt;chr&amp;gt;    &amp;lt;fct&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt;
+#&amp;gt; 1 default  No    96.7  96.7   0.00476
+#&amp;gt; 2 default  Yes    3.33  3.33  0.00476
+#&amp;gt; 3 student  No    70.0  71.8   1.77   
+#&amp;gt; 4 student  Yes   30.0  28.2   1.77
+
+# character형 변수도 포함한다. 그러나, 예제에서는 character형 변수가 없기 때문에 결과는 동일하다.
+sb %&amp;gt;%
+  compare_target_category(add_character = TRUE)
+#&amp;gt; # A tibble: 4 x 5
+#&amp;gt;   variable level train  test abs_diff
+#&amp;gt;   &amp;lt;chr&amp;gt;    &amp;lt;fct&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt;
+#&amp;gt; 1 default  No    96.7  96.7   0.00476
+#&amp;gt; 2 default  Yes    3.33  3.33  0.00476
+#&amp;gt; 3 student  No    70.0  71.8   1.77   
+#&amp;gt; 4 student  Yes   30.0  28.2   1.77
+
+# 주변합(marginal)을 출력한다.
+sb %&amp;gt;%
+  compare_target_category(margin = TRUE)
+#&amp;gt; # A tibble: 6 x 5
+#&amp;gt;   variable level    train   test abs_diff
+#&amp;gt;   &amp;lt;chr&amp;gt;    &amp;lt;fct&amp;gt;    &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt;
+#&amp;gt; 1 default  No       96.7   96.7   0.00476
+#&amp;gt; 2 default  Yes       3.33   3.33  0.00476
+#&amp;gt; 3 default  &amp;lt;Total&amp;gt; 100    100     0.00952
+#&amp;gt; 4 student  No       70.0   71.8   1.77   
+#&amp;gt; 5 student  Yes      30.0   28.2   1.77   
+#&amp;gt; 6 student  &amp;lt;Total&amp;gt; 100    100     3.54
+
+# student 변수만 비교한다.
+sb %&amp;gt;%
+  compare_target_category(student)
+#&amp;gt; # A tibble: 2 x 5
+#&amp;gt;   variable level train  test abs_diff
+#&amp;gt;   &amp;lt;chr&amp;gt;    &amp;lt;fct&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt;
+#&amp;gt; 1 student  No     70.0  71.8     1.77
+#&amp;gt; 2 student  Yes    30.0  28.2     1.77
+
+sb %&amp;gt;%
+  compare_target_category(student, margin = TRUE)
+#&amp;gt; # A tibble: 3 x 5
+#&amp;gt;   variable level   train  test abs_diff
+#&amp;gt;   &amp;lt;chr&amp;gt;    &amp;lt;fct&amp;gt;   &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt;
+#&amp;gt; 1 student  No       70.0  71.8     1.77
+#&amp;gt; 2 student  Yes      30.0  28.2     1.77
+#&amp;gt; 3 student  &amp;lt;Total&amp;gt; 100   100       3.54&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;compare_target_category()&lt;/code&gt;는 &lt;code&gt;tbl_df&lt;/code&gt; 객체를 반환하는데 다음과 같은 변수를 포함한다.:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;variable&lt;/code&gt; : character. 범주형 변수의 이름&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;level&lt;/code&gt; : factor. 범주형 변수의 수준&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;train&lt;/code&gt; : numeric. training set에서의 해당 수준의 상대 돗수&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;test&lt;/code&gt; : numeric. test set에서의 해당 수준의 상대 돗수&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;abs_diff&lt;/code&gt; : numeric. 두 상대 돗수 차의 절대치&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;compare_target_numeric를-이용한-수치형-변수의-비교&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;compare_target_numeric()를 이용한 수치형 변수의 비교&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;split_df&lt;/code&gt; 클래스에 포함된&lt;code&gt;training set&lt;/code&gt;과 &lt;code&gt;test set&lt;/code&gt; 정보에 근거해서 두 데이터 셋에서의 수치형 변수를 비교한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sb %&amp;gt;%
+  compare_target_numeric()
+#&amp;gt; # A tibble: 2 x 7
+#&amp;gt;   variable train_mean test_mean train_sd test_sd train_z test_z
+#&amp;gt;   &amp;lt;chr&amp;gt;         &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt;
+#&amp;gt; 1 balance        836.      834.     487.    477.    1.72   1.75
+#&amp;gt; 2 income       33446.    33684.   13437.  13101.    2.49   2.57
+
+# balance 변수만 비교한다.
+sb %&amp;gt;%
+  compare_target_numeric(balance)
+#&amp;gt; # A tibble: 1 x 7
+#&amp;gt;   variable train_mean test_mean train_sd test_sd train_z test_z
+#&amp;gt;   &amp;lt;chr&amp;gt;         &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt;
+#&amp;gt; 1 balance        836.      834.     487.    477.    1.72   1.75&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;compare_target_numeric()&lt;/code&gt;는 tbl_df 객체를 반환하는데 다음과 같은 변수를 포함한다.:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;variable&lt;/code&gt; : character. 수치형 변수의 이름&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;train_mean&lt;/code&gt; : numeric. training set에서의 산술평균&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;test_mean&lt;/code&gt; : numeric. test set에서의 산술평균&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;train_sd&lt;/code&gt; : numeric. training set에서의 표준편차&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;test_sd&lt;/code&gt; : numeric. test set에서의 표준편차&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;train_z&lt;/code&gt; : numeric. training set에서의 산술평균/표준편차&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;test_z&lt;/code&gt; : numeric. test set에서의 산술평균/표준편차n&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;compare_plot를-이용한-시각화-비교&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;compare_plot()를 이용한 시각화 비교&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;split_df&lt;/code&gt; 클래스에 포함된 training set과 test set을 비교할 수 있는 플롯을 시각화한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# income 변수만 비교 시각화 출력
+sb %&amp;gt;%
+  compare_plot(&amp;quot;income&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-03/2020-03-27-r-alookr.ko_files/figure-html/split_data7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 모든 변수의 비교 플롯 출력
+sb %&amp;gt;%
+  compare_plot()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-03/2020-03-27-r-alookr.ko_files/figure-html/split_data7_2-1.png&#34; width=&#34;672&#34; /&gt;&lt;img src=&#34;/post/2020-03/2020-03-27-r-alookr.ko_files/figure-html/split_data7_2-2.png&#34; width=&#34;672&#34; /&gt;&lt;img src=&#34;/post/2020-03/2020-03-27-r-alookr.ko_files/figure-html/split_data7_2-3.png&#34; width=&#34;672&#34; /&gt;&lt;img src=&#34;/post/2020-03/2020-03-27-r-alookr.ko_files/figure-html/split_data7_2-4.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;compare_diag를-이용한-training-set과-test-set의-진단&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;compare_diag()를 이용한 training set과 test set의 진단&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;split_df&lt;/code&gt; 클래스에 포함된 training set과 test set 간의 유사성을 진단한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;defaults &amp;lt;- ISLR::Default
+defaults$id &amp;lt;- seq(NROW(defaults))
+
+set.seed(1)
+defaults[sample(seq(NROW(defaults)), 3), &amp;quot;student&amp;quot;] &amp;lt;- NA
+set.seed(2)
+defaults[sample(seq(NROW(defaults)), 10), &amp;quot;balance&amp;quot;] &amp;lt;- NA
+
+sb_2 &amp;lt;- defaults %&amp;gt;%
+  split_by(default)
+
+sb_2 %&amp;gt;%
+  compare_diag()
+#&amp;gt; * Detected diagnose missing value
+#&amp;gt;  - student
+#&amp;gt;  - balance
+#&amp;gt;  - balance
+#&amp;gt; 
+#&amp;gt; * Detected diagnose missing levels
+#&amp;gt;  - student
+#&amp;gt; $missing_value
+#&amp;gt; # A tibble: 3 x 4
+#&amp;gt;   variables train_misscount train_missrate test_missrate
+#&amp;gt;   &amp;lt;chr&amp;gt;               &amp;lt;int&amp;gt;          &amp;lt;dbl&amp;gt;         &amp;lt;dbl&amp;gt;
+#&amp;gt; 1 student                 3         0.0429       NA     
+#&amp;gt; 2 balance                 8         0.114        NA     
+#&amp;gt; 3 balance                 2        NA             0.0667
+#&amp;gt; 
+#&amp;gt; $single_value
+#&amp;gt; # A tibble: 0 x 3
+#&amp;gt; # … with 3 variables: variables &amp;lt;chr&amp;gt;, train_uniq &amp;lt;lgl&amp;gt;, test_uniq &amp;lt;lgl&amp;gt;
+#&amp;gt; 
+#&amp;gt; $uniq_rate
+#&amp;gt; # A tibble: 0 x 5
+#&amp;gt; # … with 5 variables: variables &amp;lt;chr&amp;gt;, train_uniqcount &amp;lt;int&amp;gt;,
+#&amp;gt; #   train_uniqrate &amp;lt;dbl&amp;gt;, test_uniqcount &amp;lt;int&amp;gt;, test_uniqrate &amp;lt;dbl&amp;gt;
+#&amp;gt; 
+#&amp;gt; $missing_level
+#&amp;gt; # A tibble: 1 x 4
+#&amp;gt;   variables n_levels train_missing_nlevel test_missing_nlevel
+#&amp;gt;   &amp;lt;chr&amp;gt;        &amp;lt;int&amp;gt;                &amp;lt;int&amp;gt;               &amp;lt;int&amp;gt;
+#&amp;gt; 1 student          3                    0                   1
+
+sb_2 %&amp;gt;%
+  compare_diag(add_character = TRUE)
+#&amp;gt; * Detected diagnose missing value
+#&amp;gt;  - student
+#&amp;gt;  - balance
+#&amp;gt;  - balance
+#&amp;gt; 
+#&amp;gt; * Detected diagnose missing levels
+#&amp;gt;  - student
+#&amp;gt; $missing_value
+#&amp;gt; # A tibble: 3 x 4
+#&amp;gt;   variables train_misscount train_missrate test_missrate
+#&amp;gt;   &amp;lt;chr&amp;gt;               &amp;lt;int&amp;gt;          &amp;lt;dbl&amp;gt;         &amp;lt;dbl&amp;gt;
+#&amp;gt; 1 student                 3         0.0429       NA     
+#&amp;gt; 2 balance                 8         0.114        NA     
+#&amp;gt; 3 balance                 2        NA             0.0667
+#&amp;gt; 
+#&amp;gt; $single_value
+#&amp;gt; # A tibble: 0 x 3
+#&amp;gt; # … with 3 variables: variables &amp;lt;chr&amp;gt;, train_uniq &amp;lt;lgl&amp;gt;, test_uniq &amp;lt;lgl&amp;gt;
+#&amp;gt; 
+#&amp;gt; $uniq_rate
+#&amp;gt; # A tibble: 0 x 5
+#&amp;gt; # … with 5 variables: variables &amp;lt;chr&amp;gt;, train_uniqcount &amp;lt;int&amp;gt;,
+#&amp;gt; #   train_uniqrate &amp;lt;dbl&amp;gt;, test_uniqcount &amp;lt;int&amp;gt;, test_uniqrate &amp;lt;dbl&amp;gt;
+#&amp;gt; 
+#&amp;gt; $missing_level
+#&amp;gt; # A tibble: 1 x 4
+#&amp;gt;   variables n_levels train_missing_nlevel test_missing_nlevel
+#&amp;gt;   &amp;lt;chr&amp;gt;        &amp;lt;int&amp;gt;                &amp;lt;int&amp;gt;               &amp;lt;int&amp;gt;
+#&amp;gt; 1 student          3                    0                   1
+
+sb_2 %&amp;gt;%
+  compare_diag(uniq_thres = 0.0005)
+#&amp;gt; * Detected diagnose missing value
+#&amp;gt;  - student
+#&amp;gt;  - balance
+#&amp;gt;  - balance
+#&amp;gt; 
+#&amp;gt; * Detected diagnose many unique value
+#&amp;gt;  - default
+#&amp;gt;  - student
+#&amp;gt; 
+#&amp;gt; * Detected diagnose missing levels
+#&amp;gt;  - student
+#&amp;gt; $missing_value
+#&amp;gt; # A tibble: 3 x 4
+#&amp;gt;   variables train_misscount train_missrate test_missrate
+#&amp;gt;   &amp;lt;chr&amp;gt;               &amp;lt;int&amp;gt;          &amp;lt;dbl&amp;gt;         &amp;lt;dbl&amp;gt;
+#&amp;gt; 1 student                 3         0.0429       NA     
+#&amp;gt; 2 balance                 8         0.114        NA     
+#&amp;gt; 3 balance                 2        NA             0.0667
+#&amp;gt; 
+#&amp;gt; $single_value
+#&amp;gt; # A tibble: 0 x 3
+#&amp;gt; # … with 3 variables: variables &amp;lt;chr&amp;gt;, train_uniq &amp;lt;lgl&amp;gt;, test_uniq &amp;lt;lgl&amp;gt;
+#&amp;gt; 
+#&amp;gt; $uniq_rate
+#&amp;gt; # A tibble: 2 x 5
+#&amp;gt;   variables train_uniqcount train_uniqrate test_uniqcount test_uniqrate
+#&amp;gt;   &amp;lt;chr&amp;gt;               &amp;lt;int&amp;gt;          &amp;lt;dbl&amp;gt;          &amp;lt;int&amp;gt;         &amp;lt;dbl&amp;gt;
+#&amp;gt; 1 default                NA             NA              2      0.000667
+#&amp;gt; 2 student                NA             NA              2      0.000667
+#&amp;gt; 
+#&amp;gt; $missing_level
+#&amp;gt; # A tibble: 1 x 4
+#&amp;gt;   variables n_levels train_missing_nlevel test_missing_nlevel
+#&amp;gt;   &amp;lt;chr&amp;gt;        &amp;lt;int&amp;gt;                &amp;lt;int&amp;gt;               &amp;lt;int&amp;gt;
+#&amp;gt; 1 student          3                    0                   1&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;training-set과-test-set의-추출&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;training set과 test set의 추출&lt;/h3&gt;
+&lt;p&gt;training set과 test set를 비교하여 두 데이터 세트가 유사하다고 판단되면 &lt;code&gt;split_df&lt;/code&gt; 객체에서 데이터를 추출한다.&lt;/p&gt;
+&lt;div id=&#34;extract_set을-이용한-training-set과-test-set-데이터-추출&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;extract_set()을 이용한 training set과 test set 데이터 추출&lt;/h4&gt;
+&lt;p&gt;다음은 &lt;code&gt;extract_set()&lt;/code&gt; 함수로 &lt;code&gt;split_df&lt;/code&gt; 객체에서 &lt;code&gt;training set&lt;/code&gt;과 &lt;code&gt;test set&lt;/code&gt;을 추출한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;train &amp;lt;- sb %&amp;gt;%
+  extract_set(set = &amp;quot;train&amp;quot;)
+
+test &amp;lt;- sb %&amp;gt;%
+  extract_set(set = &amp;quot;test&amp;quot;)
+
+dim(train)
+#&amp;gt; [1] 7000    4
+
+dim(test)
+#&amp;gt; [1] 3000    4&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;sampling_target을-이용한-모델-적합용-데이터-추출&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;sampling_target()을 이용한 모델 적합용 데이터 추출&lt;/h4&gt;
+&lt;p&gt;이진분류 모형의 &lt;code&gt;target 변수(variable, class)&lt;/code&gt;에서 &lt;code&gt;majority class&lt;/code&gt;와 &lt;code&gt;minority class&lt;/code&gt;의 비율이 비슷하지 않은, 특히 &lt;code&gt;minority class&lt;/code&gt;의 비율이 매우 작은 &lt;code&gt;target class&lt;/code&gt;를 &lt;code&gt;불균형 class(imbalanced class)&lt;/code&gt;라고 한다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;target 변수&lt;/code&gt;가 &lt;code&gt;불균형 class&lt;/code&gt;인 경우 대다수 클래스인 &lt;code&gt;majority class&lt;/code&gt;의 특성이 모델에 적극적으로 반영된다. 이 경우에는 적합된 모델이 &lt;code&gt;minority class&lt;/code&gt;를 대부분을 &lt;code&gt;majority class&lt;/code&gt;로 예측하는 오류가 발생함을 의미한다. 따라서 &lt;code&gt;training set&lt;/code&gt;을 균형잡힌 클래스로 만들어야합니다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;sampling_target()&lt;/code&gt;은 &lt;code&gt;split_df&lt;/code&gt;의 &lt;code&gt;training set&lt;/code&gt;에서 샘플링을 수행하여 &lt;code&gt;불균형 class&lt;/code&gt; 문제를 해결한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# under-sampling with random seed
+under &amp;lt;- sb %&amp;gt;%
+  sampling_target(seed = 1234L)
+
+under %&amp;gt;%
+  count(default)
+#&amp;gt; # A tibble: 2 x 2
+#&amp;gt;   default     n
+#&amp;gt;   &amp;lt;fct&amp;gt;   &amp;lt;int&amp;gt;
+#&amp;gt; 1 No        233
+#&amp;gt; 2 Yes       233
+
+# under-sampling with random seed, and minority class frequency is 40%
+under40 &amp;lt;- sb %&amp;gt;%
+  sampling_target(seed = 1234L, perc = 40)
+
+under40 %&amp;gt;%
+  count(default)
+#&amp;gt; # A tibble: 2 x 2
+#&amp;gt;   default     n
+#&amp;gt;   &amp;lt;fct&amp;gt;   &amp;lt;int&amp;gt;
+#&amp;gt; 1 No        349
+#&amp;gt; 2 Yes       233
+
+# over-sampling with random seed
+over &amp;lt;- sb %&amp;gt;%
+  sampling_target(method = &amp;quot;ubOver&amp;quot;, seed = 1234L)
+
+over %&amp;gt;%
+  count(default)
+#&amp;gt; # A tibble: 2 x 2
+#&amp;gt;   default     n
+#&amp;gt;   &amp;lt;fct&amp;gt;   &amp;lt;int&amp;gt;
+#&amp;gt; 1 No       6767
+#&amp;gt; 2 Yes      6767
+
+# over-sampling with random seed, and k = 10
+over10 &amp;lt;- sb %&amp;gt;%
+  sampling_target(method = &amp;quot;ubOver&amp;quot;, seed = 1234L, k = 10)
+
+over10 %&amp;gt;%
+  count(default)
+#&amp;gt; # A tibble: 2 x 2
+#&amp;gt;   default     n
+#&amp;gt;   &amp;lt;fct&amp;gt;   &amp;lt;int&amp;gt;
+#&amp;gt; 1 No       6767
+#&amp;gt; 2 Yes      2330
+
+# SMOTE with random seed
+smote &amp;lt;- sb %&amp;gt;%
+  sampling_target(method = &amp;quot;ubSMOTE&amp;quot;, seed = 1234L)
+
+smote %&amp;gt;%
+  count(default)
+#&amp;gt; # A tibble: 2 x 2
+#&amp;gt;   default     n
+#&amp;gt;   &amp;lt;fct&amp;gt;   &amp;lt;int&amp;gt;
+#&amp;gt; 1 No        932
+#&amp;gt; 2 Yes       699
+
+# SMOTE with random seed, and perc.under = 250
+smote250 &amp;lt;- sb %&amp;gt;%
+  sampling_target(method = &amp;quot;ubSMOTE&amp;quot;, seed = 1234L, perc.under = 250)
+
+smote250 %&amp;gt;%
+  count(default)
+#&amp;gt; # A tibble: 2 x 2
+#&amp;gt;   default     n
+#&amp;gt;   &amp;lt;fct&amp;gt;   &amp;lt;int&amp;gt;
+#&amp;gt; 1 No       1165
+#&amp;gt; 2 Yes       699&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;sampling_target()&lt;/code&gt;에서 &lt;code&gt;method&lt;/code&gt; 인수는 샘플링 방법을 지정한다. “ubUnder”는 &lt;code&gt;under sampling&lt;/code&gt;을, “ubOver”는 &lt;code&gt;over sampling&lt;/code&gt;, “ubSMOTE”는 &lt;code&gt;SMOTE(Synthetic Minority Over-sampling TEchnique)&lt;/code&gt;을 수행한다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;모델-적합-평가-및-예측modeling-and-evaluate-predict&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;모델 적합, 평가 및 예측(Modeling and Evaluate, Predict)&lt;/h2&gt;
+&lt;div id=&#34;data-wisconsin-breast-cancer-데이터&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Data: Wisconsin Breast Cancer 데이터&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;mlbench&lt;/code&gt; 패키지의 &lt;code&gt;BreastCancer&lt;/code&gt;는 유방암 데이터다. 이 데이터는 여러 종류의 양성 또는 악성 종양을 식별하는 목적으로 만들어졌다.&lt;/p&gt;
+&lt;p&gt;이 데이터 프레임은 699개 관측치에, 다음과 같은 11개의 변수(하나는 문자형 변수, 9개는 순서형 또는 범주형, 1 개의 &lt;code&gt;target 변수&lt;/code&gt;)로 구성되었다.:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Id&lt;/code&gt; : character. Sample code 번호&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Cl.thickness&lt;/code&gt; : ordered factor. 종양 덩어리의 두께&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Cell.size&lt;/code&gt; : ordered factor. 세포 크기의 균일성&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Cell.shape&lt;/code&gt; : ordered factor. 세포 모양의 균일성&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Marg.adhesion&lt;/code&gt; : ordered factor. 부분적 유착정도&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Epith.c.size&lt;/code&gt; : ordered factor. 단일 상피세포의 크기&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Bare.nuclei&lt;/code&gt; : factor. 노출된 핵들&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Bl.cromatin&lt;/code&gt; : factor. 자극성이 적은 염색질(크로마틴)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Normal.nucleoli&lt;/code&gt; : factor. 일반적인 소핵들&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Mitoses&lt;/code&gt; : factor. Mitoses (유사분열)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Class&lt;/code&gt; : factor. target 변수. benign(양성) malignant(악성)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(mlbench)
+data(BreastCancer)
+
+# class of each variables
+sapply(BreastCancer, function(x) class(x)[1])
+#&amp;gt;              Id    Cl.thickness       Cell.size      Cell.shape   Marg.adhesion 
+#&amp;gt;     &amp;quot;character&amp;quot;       &amp;quot;ordered&amp;quot;       &amp;quot;ordered&amp;quot;       &amp;quot;ordered&amp;quot;       &amp;quot;ordered&amp;quot; 
+#&amp;gt;    Epith.c.size     Bare.nuclei     Bl.cromatin Normal.nucleoli         Mitoses 
+#&amp;gt;       &amp;quot;ordered&amp;quot;        &amp;quot;factor&amp;quot;        &amp;quot;factor&amp;quot;        &amp;quot;factor&amp;quot;        &amp;quot;factor&amp;quot; 
+#&amp;gt;           Class 
+#&amp;gt;        &amp;quot;factor&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;데이터-전처리&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;데이터 전처리&lt;/h3&gt;
+&lt;p&gt;다음과 같은 전처리를 수행한다.:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;결측치가 포함된 변수를 찾아내고, 대체(imputate)한다.&lt;/li&gt;
+&lt;li&gt;데이터를 training set과 test set으로 나눈다.&lt;/li&gt;
+&lt;li&gt;불균형 클래스 문제를 해결하기 위해서, training set에서 샘플링을 수행한다.&lt;/li&gt;
+&lt;li&gt;분류 모델을 수행하기 위해서 데이터를 정제한다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div id=&#34;dlookrimputate_na를-이용한-결측치-처리&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;dlookr::imputate_na()를 이용한 결측치 처리&lt;/h4&gt;
+&lt;p&gt;결측치가 포함된 변수를 찾아서, &lt;code&gt;dlookr 패키지&lt;/code&gt;의 &lt;code&gt;imputate_na()&lt;/code&gt;를 사용하여 누락된 값을 대체한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(dlookr)
+library(dplyr)
+
+# 결측치를 포함한 변수
+diagnose(BreastCancer) %&amp;gt;%
+  filter(missing_count &amp;gt; 0)
+#&amp;gt; # A tibble: 1 x 6
+#&amp;gt;   variables   types  missing_count missing_percent unique_count unique_rate
+#&amp;gt;   &amp;lt;chr&amp;gt;       &amp;lt;chr&amp;gt;          &amp;lt;int&amp;gt;           &amp;lt;dbl&amp;gt;        &amp;lt;int&amp;gt;       &amp;lt;dbl&amp;gt;
+#&amp;gt; 1 Bare.nuclei factor            16            2.29           11      0.0157
+
+# 결측치의 대체 수행
+breastCancer &amp;lt;- BreastCancer %&amp;gt;%
+  mutate(Bare.nuclei = imputate_na(BreastCancer, Bare.nuclei, Class,
+                         method = &amp;quot;mice&amp;quot;, no_attrs = TRUE, print_flag = FALSE))&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;데이터-분할-1&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;데이터 분할&lt;/h3&gt;
+&lt;div id=&#34;split_by을-이용한-training-set과-test-set의-분할&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;split_by()을 이용한 training set과 test set의 분할&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;alookr 패키지&lt;/code&gt;의 &lt;code&gt;split_by()&lt;/code&gt;는 원시 데이터에서 training set과 test set을 분할한다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;split_by()&lt;/code&gt;의 &lt;code&gt;ratio&lt;/code&gt; 인수는 training set의 비율을 지정하며, &lt;code&gt;split_df&lt;/code&gt; 클래스 객체를 생성한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(alookr)
+
+# 기본 인수로 training set과 test set로 분할
+sb &amp;lt;- breastCancer %&amp;gt;%
+  split_by(target = Class)
+
+# 클래스 이름을 조회
+class(sb)
+#&amp;gt; [1] &amp;quot;split_df&amp;quot;   &amp;quot;grouped_df&amp;quot; &amp;quot;tbl_df&amp;quot;     &amp;quot;tbl&amp;quot;        &amp;quot;data.frame&amp;quot;
+
+# ratio = 0.6로 training set과 test set을 분할
+tmp &amp;lt;- breastCancer %&amp;gt;%
+  split_by(Class, ratio = 0.6)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;summary()&lt;/code&gt;는 &lt;code&gt;split_df 객체&lt;/code&gt;에 대한 다음과 같은 유용한 정보를 표시한다.:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;random seed&lt;/code&gt; : random seed는 내부적으로 데이터를 분리하는 데 사용되는 random seed다.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;split data&lt;/code&gt; : 분할 데이터의 정보
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;training set count&lt;/code&gt; : training set 수&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;test set count&lt;/code&gt; : test set 수&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;target variable&lt;/code&gt; : target 변수 이름
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;minority class&lt;/code&gt; : minority class의 이름과 비율&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;majority class&lt;/code&gt; : majority class의 이름과 비율&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 집계 정보
+summary(sb)
+#&amp;gt; ** Split train/test set information **
+#&amp;gt;  + random seed        :  20036 
+#&amp;gt;  + split data            
+#&amp;gt;     - train set count :  489 
+#&amp;gt;     - test set count  :  210 
+#&amp;gt;  + target variable    :  Class 
+#&amp;gt;     - minority class  :  malignant (0.344778)
+#&amp;gt;     - majority class  :  benign (0.655222)
+
+# 집계 정
+summary(tmp)
+#&amp;gt; ** Split train/test set information **
+#&amp;gt;  + random seed        :  35656 
+#&amp;gt;  + split data            
+#&amp;gt;     - train set count :  419 
+#&amp;gt;     - test set count  :  280 
+#&amp;gt;  + target variable    :  Class 
+#&amp;gt;     - minority class  :  malignant (0.344778)
+#&amp;gt;     - majority class  :  benign (0.655222)&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;training-set에서-누락된-수준level-확인&#34; class=&#34;section level5&#34;&gt;
+&lt;h5&gt;training set에서 누락된 수준(level) 확인&lt;/h5&gt;
+&lt;p&gt;범주형 변수의 경우 training set와 test set가 분리되면서, 특정 수준이 training set에서 누락될 수 있다.&lt;/p&gt;
+&lt;p&gt;이 경우 모형을 적합할(fitting) 때는 문제가 없지만, 작성한 모형으로 예측할 때 오류가 발생한다. 따라서 누락된 수준을 방지하기 위해 전처리가 수행된다.&lt;/p&gt;
+&lt;p&gt;다음 예제에서는 다행히도 training set에서 누락된 수준을 포함하는 범주형 변수가 없다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 결측 레벨이 포함된 training set의 범주형 변수 목록
+nolevel_in_train &amp;lt;- sb %&amp;gt;%
+  compare_target_category() %&amp;gt;% 
+  filter(train == 0) %&amp;gt;% 
+  select(variable) %&amp;gt;% 
+  unique() %&amp;gt;% 
+  pull
+
+nolevel_in_train
+#&amp;gt; character(0)
+
+# training set의 범주형 변수 중 결측 수준이 포함된 경우, 재 분할
+while (length(nolevel_in_train) &amp;gt; 0) {
+  sb &amp;lt;- breastCancer %&amp;gt;%
+    split_by(Class)
+
+  nolevel_in_train &amp;lt;- sb %&amp;gt;%
+    compare_category() %&amp;gt;% 
+    filter(train == 0) %&amp;gt;% 
+    select(variable) %&amp;gt;% 
+    unique() %&amp;gt;% 
+    pull
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;sampling_target를-이용한-불균형-클래스-핸들링&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;sampling_target()를 이용한 불균형 클래스 핸들링&lt;/h3&gt;
+&lt;div id=&#34;불균형-클래스-데이터의-문제&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;불균형 클래스 데이터의 문제&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;불균형 클래스&lt;/code&gt;(수준) 데이터는 target 변수의 도수(frequency)에서 한 수준의 도수가 상대적으로 매우 작다는 것을 의미한다. 그러나 대다수의 분류 모델의 &lt;code&gt;positive class&lt;/code&gt; 비율은 상대적으로 작습니다. 예를 들어 스팸 예측 모델에서 관심있는 스팸 메일(positive class)의 비율은 스팸이 아닌 메일에 비해 매우 작다.&lt;/p&gt;
+&lt;p&gt;불균형 클래스 데이터는 기계 학습 분류에서 일반적으로 발생하는 문제다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;table()&lt;/code&gt; 및 &lt;code&gt;prop.table()&lt;/code&gt;은 불균형 클래스 데이터를 진단하는 데 유용한 함수다. 그러나 &lt;code&gt;alookr 패키지&lt;/code&gt;의 &lt;code&gt;summary()&lt;/code&gt;는 더 간단하며, 좀 더 자세한 정보를 제공한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# training set 돗수분포표 - 불균형 클래스 데이터
+table(sb$Class)
+#&amp;gt; 
+#&amp;gt;    benign malignant 
+#&amp;gt;       458       241
+
+# training set 상대돗수분포표 - 불균형 클래스 데이터
+prop.table(table(sb$Class))
+#&amp;gt; 
+#&amp;gt;    benign malignant 
+#&amp;gt; 0.6552217 0.3447783
+
+# 집계 - 불균형 클래스 데이터
+summary(sb)
+#&amp;gt; ** Split train/test set information **
+#&amp;gt;  + random seed        :  20036 
+#&amp;gt;  + split data            
+#&amp;gt;     - train set count :  489 
+#&amp;gt;     - test set count  :  210 
+#&amp;gt;  + target variable    :  Class 
+#&amp;gt;     - minority class  :  malignant (0.344778)
+#&amp;gt;     - majority class  :  benign (0.655222)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;불균형-클래스-데이터-핸들링&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;불균형 클래스 데이터 핸들링&lt;/h4&gt;
+&lt;p&gt;대부분의 기계 학습 알고리즘은 각 클래스의 샘플 수가 거의 같을 때 가장 잘 작동된다. 또한 대부분의 알고리즘은 정확도를 최대화( maximize accuracy)하고 오류를 줄이도록 설계되었다. 따라서 우리는 반드시 불균형 클래스 문제를 처리해한다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;sampling_target()&lt;/code&gt;는 샘플링을 수행하여 불균형 클래스 데이터 문제를 해결한다.&lt;/p&gt;
+&lt;div id=&#34;resampling---minority-class의-오버-샘플링&#34; class=&#34;section level5&#34;&gt;
+&lt;h5&gt;Resampling - minority class의 오버 샘플링&lt;/h5&gt;
+&lt;p&gt;&lt;code&gt;오버 샘플링(over sampling)&lt;/code&gt;은 &lt;code&gt;minority class&lt;/code&gt;의 사본을 더 추가하는 방법으로 수행한다.&lt;/p&gt;
+&lt;p&gt;오버 샘플링은 &lt;code&gt;sampling_target()&lt;/code&gt; 함수의 &lt;code&gt;method&lt;/code&gt; 인수값을 “ubOver”로 지정하여 수행한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 오버 샘플링
+train_over &amp;lt;- sb %&amp;gt;%
+  sampling_target(method = &amp;quot;ubOver&amp;quot;)
+
+# 돗수분포표
+table(train_over$Class)
+#&amp;gt; 
+#&amp;gt;    benign malignant 
+#&amp;gt;       325       325&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;resampling---majority-class의-언더-샘플링&#34; class=&#34;section level5&#34;&gt;
+&lt;h5&gt;Resampling - majority class의 언더 샘플링&lt;/h5&gt;
+&lt;p&gt;&lt;code&gt;언더 샘플링(under sampling)&lt;/code&gt;은 &lt;code&gt;majority class&lt;/code&gt;의 관측치의 일부를 제거하는 방법으로 수행한다.&lt;/p&gt;
+&lt;p&gt;언더 샘플링은 &lt;code&gt;sampling_target()&lt;/code&gt; 함수의 &lt;code&gt;method&lt;/code&gt; 인수값을 “ubUnder”로 지정하여 수행한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 언더 샘플링
+train_under &amp;lt;- sb %&amp;gt;%
+  sampling_target(method = &amp;quot;ubUnder&amp;quot;)
+
+# 돗수분포표
+table(train_under$Class)
+#&amp;gt; 
+#&amp;gt;    benign malignant 
+#&amp;gt;       164       164&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;generate-synthetic-samples---smote&#34; class=&#34;section level5&#34;&gt;
+&lt;h5&gt;Generate synthetic samples - SMOTE&lt;/h5&gt;
+&lt;p&gt;&lt;code&gt;SMOTE(Synthetic Minority Oversampling Technique)&lt;/code&gt;는 &lt;code&gt;최근접 이웃 알고리즘(nearest neighbors algorithm)&lt;/code&gt;을 사용하여 새로운 데이터를 합성하여 생생한다.&lt;/p&gt;
+&lt;p&gt;SMOTE 샘플링은 &lt;code&gt;sampling_target()&lt;/code&gt; 함수의 &lt;code&gt;method&lt;/code&gt; 인수값을 “ubSMOTE”로 지정하여 수행한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# SMOTE 샘플링
+train_smote &amp;lt;- sb %&amp;gt;%
+  sampling_target(seed = 1234L, method = &amp;quot;ubSMOTE&amp;quot;)
+
+# 돗수분포표
+table(train_smote$Class)
+#&amp;gt; 
+#&amp;gt;    benign malignant 
+#&amp;gt;       656       492&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;cleanse를-이용하여-분류-모델을-위한-데이터-정제&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;cleanse()를 이용하여 분류 모델을 위한 데이터 정제&lt;/h3&gt;
+&lt;p&gt;cleanse()는 분류 모델링을 위한 데이터를 정제한다.&lt;/p&gt;
+&lt;p&gt;이 함수는 분류 모델을 적합할 때 유용하며, 다음의 기능을 수행한다.:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;오직 유일한 하나의 값을 갖는 변수를 제거한다.&lt;/li&gt;
+&lt;li&gt;문자형 또는 범주형 변수에 대해서, 관측치 수와 비교하여 고유값의 수가 많은 변수를 제거한다.
+&lt;ul&gt;
+&lt;li&gt;이 경우는 대개 식별자 또는 식별자와 유사한 변수들이다.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;그리고 character 변수를 factor 변수로 변환한다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;이 예제에서 &lt;code&gt;cleanse()&lt;/code&gt;는 고유값 비율이 높은 변수 ID를 제거했다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# training set의 정제
+train &amp;lt;- train_smote %&amp;gt;%
+  cleanse
+#&amp;gt; ── Checking unique value ─────────────────────────── unique value is one ──
+#&amp;gt; No variables that unique value is one.
+#&amp;gt; 
+#&amp;gt; ── Checking unique rate ─────────────────────────────── high unique rate ──
+#&amp;gt; remove variables with high unique rate
+#&amp;gt; ● Id = 421(0.366724738675958)
+#&amp;gt; 
+#&amp;gt; ── Checking character variables ─────────────────────── categorical data ──
+#&amp;gt; No character variables.&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;extract_set을-이용하여-모델-평가를-위한-test-set-추출&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;extract_set()을 이용하여 모델 평가를 위한 test set 추출&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# test set 추출
+test &amp;lt;- sb %&amp;gt;%
+  extract_set(set = &amp;quot;test&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;run_models을-이용한-이진분류-모델-수행&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;run_models()을 이용한 이진분류 모델 수행&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;run_models()&lt;/code&gt;는 &lt;code&gt;split_by()&lt;/code&gt;로 작성된 &lt;code&gt;split_df&lt;/code&gt; 객체를 사용하여 잘 알려진, 대표적인 &lt;code&gt;이진분류(binary classification)&lt;/code&gt; 모델링을 수행한다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;run_models()&lt;/code&gt;는 모델을 적합할 때, 병렬처리로 수행된다. 다만, MS-Windows 운영체제와 RStudio 환경에서는 지원하지 않는다.&lt;/p&gt;
+&lt;p&gt;현재 지원하는 알고리즘은 다음과 같다.:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;logistic&lt;/code&gt; : 로지스틱 회귀(logistic regression), &lt;code&gt;stats&lt;/code&gt; 패키지의 &lt;code&gt;glm()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;rpart&lt;/code&gt; : Recursive Partitioning Trees, &lt;code&gt;rpart&lt;/code&gt; 패키지의 &lt;code&gt;rpart()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ctree&lt;/code&gt; : Conditional Inference Trees, &lt;code&gt;party&lt;/code&gt; 패키지의 &lt;code&gt;ctree()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;randomForest&lt;/code&gt; :Classification with Random Forest, &lt;code&gt;randomForest&lt;/code&gt; 패키지의 &lt;code&gt;randomForest()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ranger&lt;/code&gt; : A Fast Implementation of Random Forests, &lt;code&gt;ranger&lt;/code&gt; 패키지의 &lt;code&gt;ranger()&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;run_models()&lt;/code&gt;은 &lt;code&gt;model_df&lt;/code&gt; 클래스를 반환하며, &lt;code&gt;model_df&lt;/code&gt; 클래스 다음의 변수를 포함한다.:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;step&lt;/code&gt; : character. 이진분류 모델의 프로세스에서 진행한 해당 단계
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;run_models()&lt;/code&gt;로 생성 된 객체의 경우 변수는 “1.Fitted”라는 값을 갖는다.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;model_id&lt;/code&gt; : model 식별자&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;target&lt;/code&gt; : target 변수의 이름&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;positive&lt;/code&gt; : target variable의 positive class&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;fitted_model&lt;/code&gt; : list. model_id 알고리즘으로 적합된 모델 객체&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;result &amp;lt;- train %&amp;gt;% 
+  run_models(target = &amp;quot;Class&amp;quot;, positive = &amp;quot;malignant&amp;quot;)
+
+result
+#&amp;gt; # A tibble: 5 x 7
+#&amp;gt;   step     model_id     target is_factor positive  negative fitted_model
+#&amp;gt;   &amp;lt;chr&amp;gt;    &amp;lt;chr&amp;gt;        &amp;lt;chr&amp;gt;  &amp;lt;lgl&amp;gt;     &amp;lt;chr&amp;gt;     &amp;lt;chr&amp;gt;    &amp;lt;list&amp;gt;      
+#&amp;gt; 1 1.Fitted logistic     Class  TRUE      malignant benign   &amp;lt;glm&amp;gt;       
+#&amp;gt; 2 1.Fitted rpart        Class  TRUE      malignant benign   &amp;lt;rpart&amp;gt;     
+#&amp;gt; 3 1.Fitted ctree        Class  TRUE      malignant benign   &amp;lt;BinaryTr&amp;gt;  
+#&amp;gt; 4 1.Fitted randomForest Class  TRUE      malignant benign   &amp;lt;rndmFrs.&amp;gt;  
+#&amp;gt; 5 1.Fitted ranger       Class  TRUE      malignant benign   &amp;lt;ranger&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;모델의-평가&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;모델의 평가&lt;/h3&gt;
+&lt;p&gt;적합된 모델의 예측 성능을 평가한다.&lt;/p&gt;
+&lt;div id=&#34;run_predict을-이용하여-적합한-모델로-test-set-target-변수-예측&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;run_predict()을 이용하여 적합한 모델로 test set target 변수 예측&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;run_predict()&lt;/code&gt;는 run_models()에 의해서 적합된 모델로 &lt;code&gt;model_df&lt;/code&gt; 클래스 개체에 포함된 test set의 target 변수를 예측한다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;run_predict()&lt;/code&gt;는 모델로 예측할 때, 병렬처리로 수행된다. 다만, MS-Windows 운영체제와 RStudio 환경에서는 지원하지 않는다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;model_df&lt;/code&gt; 클래스 객체에는 다음 변수가 포함된다.:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;step&lt;/code&gt; : character. 이진분류 모델의 프로세스에서 진행한 해당 단계
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;run_predict()&lt;/code&gt;로 생성 된 객체의 경우 변수는 “2.Predicted”라는 값을 갖는다.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;model_id&lt;/code&gt; : model 식별자&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;target&lt;/code&gt; : target 변수의 이름&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;positive&lt;/code&gt; : target variable의 positive class&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;fitted_model&lt;/code&gt; : list. model_id 알고리즘으로 적합된 모델 객체&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;predicted&lt;/code&gt; : 각 모델별 예측 결과&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pred &amp;lt;- result %&amp;gt;%
+  run_predict(test)
+
+pred
+#&amp;gt; # A tibble: 5 x 8
+#&amp;gt;   step     model_id   target is_factor positive  negative fitted_model predicted
+#&amp;gt;   &amp;lt;chr&amp;gt;    &amp;lt;chr&amp;gt;      &amp;lt;chr&amp;gt;  &amp;lt;lgl&amp;gt;     &amp;lt;chr&amp;gt;     &amp;lt;chr&amp;gt;    &amp;lt;list&amp;gt;       &amp;lt;list&amp;gt;   
+#&amp;gt; 1 2.Predi… logistic   Class  TRUE      malignant benign   &amp;lt;glm&amp;gt;        &amp;lt;fct [21…
+#&amp;gt; 2 2.Predi… rpart      Class  TRUE      malignant benign   &amp;lt;rpart&amp;gt;      &amp;lt;fct [21…
+#&amp;gt; 3 2.Predi… ctree      Class  TRUE      malignant benign   &amp;lt;BinaryTr&amp;gt;   &amp;lt;fct [21…
+#&amp;gt; 4 2.Predi… randomFor… Class  TRUE      malignant benign   &amp;lt;rndmFrs.&amp;gt;   &amp;lt;fct [21…
+#&amp;gt; 5 2.Predi… ranger     Class  TRUE      malignant benign   &amp;lt;ranger&amp;gt;     &amp;lt;fct [21…&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;run_performance을-이용한-성능평가-지표의-계산&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;run_performance()을 이용한 성능평가 지표의 계산&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;run_performance()&lt;/code&gt;는 run_predict()에 의해 예측된 model_df 클래스 결과로 상능평가 지표를 계산한다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;run_performance()&lt;/code&gt;는 성능평가 지표를 계산할 때, 병렬처리로 수행된다. 다만, MS-Windows 운영체제와 RStudio 환경에서는 지원하지 않는다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;model_df&lt;/code&gt; 클래스 객체에는 다음 변수가 포함된다.:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;step&lt;/code&gt; : character. 이진분류 모델의 프로세스에서 진행한 해당 단계
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;run_performance()&lt;/code&gt;로 생성 된 객체의 경우 변수는 “3.Performanced”라는 값을 갖는다.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;model_id&lt;/code&gt; : model 식별자&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;target&lt;/code&gt; : target 변수의 이름&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;positive&lt;/code&gt; : target variable의 positive class&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;fitted_model&lt;/code&gt; : list. model_id 알고리즘으로 적합된 모델 객체&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;predicted&lt;/code&gt; : 각 모델별 예측 결과. Each value has a predict_class class object.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;performance&lt;/code&gt; : list. 개별 모델별로 평가 지표(mertic)을 계산한다. 모델별로 성능 지표의 수치벡터를 갖는다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Calculate performace metrics.
+perf &amp;lt;- run_performance(pred)
+
+perf
+#&amp;gt; # A tibble: 5 x 7
+#&amp;gt;   step          model_id     target positive fitted_model predicted  performance
+#&amp;gt;   &amp;lt;chr&amp;gt;         &amp;lt;chr&amp;gt;        &amp;lt;chr&amp;gt;  &amp;lt;chr&amp;gt;    &amp;lt;list&amp;gt;       &amp;lt;list&amp;gt;     &amp;lt;list&amp;gt;     
+#&amp;gt; 1 3.Performanc… logistic     Class  maligna… &amp;lt;glm&amp;gt;        &amp;lt;fct [210… &amp;lt;dbl [15]&amp;gt; 
+#&amp;gt; 2 3.Performanc… rpart        Class  maligna… &amp;lt;rpart&amp;gt;      &amp;lt;fct [210… &amp;lt;dbl [15]&amp;gt; 
+#&amp;gt; 3 3.Performanc… ctree        Class  maligna… &amp;lt;BinaryTr&amp;gt;   &amp;lt;fct [210… &amp;lt;dbl [15]&amp;gt; 
+#&amp;gt; 4 3.Performanc… randomForest Class  maligna… &amp;lt;rndmFrs.&amp;gt;   &amp;lt;fct [210… &amp;lt;dbl [15]&amp;gt; 
+#&amp;gt; 5 3.Performanc… ranger       Class  maligna… &amp;lt;ranger&amp;gt;     &amp;lt;fct [210… &amp;lt;dbl [15]&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;performance&lt;/code&gt; 변수는 다음과 같은 15개의 성능 지표를 표함한 &lt;code&gt;list&lt;/code&gt; 개체다.:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;ZeroOneLoss&lt;/code&gt; : Normalized Zero-One Loss(Classification Error Loss).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Accuracy&lt;/code&gt; : Accuracy.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Precision&lt;/code&gt; : Precision.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Recall&lt;/code&gt; : Recall.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Sensitivity&lt;/code&gt; : Sensitivity.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Specificity&lt;/code&gt; : Specificity.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;F1_Score&lt;/code&gt; : F1 Score.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Fbeta_Score&lt;/code&gt; : F-Beta Score.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;LogLoss&lt;/code&gt; : Log loss / Cross-Entropy Loss.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;AUC&lt;/code&gt; : Area Under the Receiver Operating Characteristic Curve (ROC AUC).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Gini&lt;/code&gt; : Gini Coefficient.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;PRAUC&lt;/code&gt; : Area Under the Precision-Recall Curve (PR AUC).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;LiftAUC&lt;/code&gt; : Area Under the Lift Chart.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;GainAUC&lt;/code&gt; : Area Under the Gain Chart.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;KS_Stat&lt;/code&gt; : Kolmogorov-Smirnov Statistic.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Performance by analytics models
+performance &amp;lt;- perf$performance
+names(performance) &amp;lt;- perf$model_id
+performance
+#&amp;gt; $logistic
+#&amp;gt; ZeroOneLoss    Accuracy   Precision      Recall Sensitivity Specificity 
+#&amp;gt;  0.06190476  0.93809524  0.93243243  0.89610390  0.89610390  0.96240602 
+#&amp;gt;    F1_Score Fbeta_Score     LogLoss         AUC        Gini       PRAUC 
+#&amp;gt;  0.91390728  0.91390728  2.07488551  0.93403964  0.91778147  0.08136132 
+#&amp;gt;     LiftAUC     GainAUC     KS_Stat 
+#&amp;gt;  1.14304752  0.77489177 85.85099111 
+#&amp;gt; 
+#&amp;gt; $rpart
+#&amp;gt; ZeroOneLoss    Accuracy   Precision      Recall Sensitivity Specificity 
+#&amp;gt;  0.05238095  0.94761905  0.90243902  0.96103896  0.96103896  0.93984962 
+#&amp;gt;    F1_Score Fbeta_Score     LogLoss         AUC        Gini       PRAUC 
+#&amp;gt;  0.93081761  0.93081761  0.19404963  0.96504248  0.94961430  0.32770025 
+#&amp;gt;     LiftAUC     GainAUC     KS_Stat 
+#&amp;gt;  1.39884675  0.79452690 90.08885851 
+#&amp;gt; 
+#&amp;gt; $ctree
+#&amp;gt; ZeroOneLoss    Accuracy   Precision      Recall Sensitivity Specificity 
+#&amp;gt;  0.05238095  0.94761905  0.93421053  0.92207792  0.92207792  0.96240602 
+#&amp;gt;    F1_Score Fbeta_Score     LogLoss         AUC        Gini       PRAUC 
+#&amp;gt;  0.92810458  0.92810458  0.47693536  0.96875305  0.93555317  0.82253158 
+#&amp;gt;     LiftAUC     GainAUC     KS_Stat 
+#&amp;gt;  1.90158453  0.79687693 88.44839371 
+#&amp;gt; 
+#&amp;gt; $randomForest
+#&amp;gt; ZeroOneLoss    Accuracy   Precision      Recall Sensitivity Specificity 
+#&amp;gt;  0.03333333  0.96666667  0.93750000  0.97402597  0.97402597  0.96240602 
+#&amp;gt;    F1_Score Fbeta_Score     LogLoss         AUC        Gini       PRAUC 
+#&amp;gt;  0.95541401  0.95541401  0.11831543  0.98823357  0.97676008  0.80602556 
+#&amp;gt;     LiftAUC     GainAUC     KS_Stat 
+#&amp;gt;  1.85671196  0.80921459 96.24060150 
+#&amp;gt; 
+#&amp;gt; $ranger
+#&amp;gt; ZeroOneLoss    Accuracy   Precision      Recall Sensitivity Specificity 
+#&amp;gt;  0.02857143  0.97142857  0.94936709  0.97402597  0.97402597  0.96992481 
+#&amp;gt;    F1_Score Fbeta_Score     LogLoss         AUC        Gini       PRAUC 
+#&amp;gt;  0.96153846  0.96153846  0.09857156  0.99238356  0.98476711  0.90689548 
+#&amp;gt;     LiftAUC     GainAUC     KS_Stat 
+#&amp;gt;  1.93956818  0.81184292 96.24060150&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;list 객체를 다음처럼 깔끔한 형식으로 변경하면 결과를 한눈에 쉽게 볼 수 있다.:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 성능 평가지표 정보를 행렬로 변경하여 출력
+sapply(performance, &amp;quot;c&amp;quot;)
+#&amp;gt;                logistic       rpart       ctree randomForest      ranger
+#&amp;gt; ZeroOneLoss  0.06190476  0.05238095  0.05238095   0.03333333  0.02857143
+#&amp;gt; Accuracy     0.93809524  0.94761905  0.94761905   0.96666667  0.97142857
+#&amp;gt; Precision    0.93243243  0.90243902  0.93421053   0.93750000  0.94936709
+#&amp;gt; Recall       0.89610390  0.96103896  0.92207792   0.97402597  0.97402597
+#&amp;gt; Sensitivity  0.89610390  0.96103896  0.92207792   0.97402597  0.97402597
+#&amp;gt; Specificity  0.96240602  0.93984962  0.96240602   0.96240602  0.96992481
+#&amp;gt; F1_Score     0.91390728  0.93081761  0.92810458   0.95541401  0.96153846
+#&amp;gt; Fbeta_Score  0.91390728  0.93081761  0.92810458   0.95541401  0.96153846
+#&amp;gt; LogLoss      2.07488551  0.19404963  0.47693536   0.11831543  0.09857156
+#&amp;gt; AUC          0.93403964  0.96504248  0.96875305   0.98823357  0.99238356
+#&amp;gt; Gini         0.91778147  0.94961430  0.93555317   0.97676008  0.98476711
+#&amp;gt; PRAUC        0.08136132  0.32770025  0.82253158   0.80602556  0.90689548
+#&amp;gt; LiftAUC      1.14304752  1.39884675  1.90158453   1.85671196  1.93956818
+#&amp;gt; GainAUC      0.77489177  0.79452690  0.79687693   0.80921459  0.81184292
+#&amp;gt; KS_Stat     85.85099111 90.08885851 88.44839371  96.24060150 96.24060150&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;compare_performance()&lt;/code&gt;는 list 객체(모델 성능 비교 결과)를 반환하며, list 객체는 다음과 같은 성분(component)가 포함되어 있다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;recommend_model&lt;/code&gt; : character. 적합된 다양한 모델 중에서 가장 권장되는 모델의 이름&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;top_count&lt;/code&gt; : numeric. 모델별 최고 성능 지표의 수&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mean_rank&lt;/code&gt; : numeric. 모델별 개별 성능 지표 순위의 평균&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;top_metric&lt;/code&gt; : list. 모델별 개별 성능 메트릭에서 최상의 성능을 제공하는 성능 메트릭의 이름&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;이 예제에서 &lt;code&gt;compare_performance()&lt;/code&gt;는 “ranger”모델을 권장한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 개별 모델별 성능 평가지표의 비교
+comp_perf &amp;lt;- compare_performance(pred)
+
+comp_perf
+#&amp;gt; $recommend_model
+#&amp;gt; [1] &amp;quot;ranger&amp;quot;
+#&amp;gt; 
+#&amp;gt; $top_metric_count
+#&amp;gt;     logistic        rpart        ctree randomForest       ranger 
+#&amp;gt;            0            0            0            2           13 
+#&amp;gt; 
+#&amp;gt; $mean_rank
+#&amp;gt;     logistic        rpart        ctree randomForest       ranger 
+#&amp;gt;     4.769231     3.692308     3.307692     2.153846     1.076923 
+#&amp;gt; 
+#&amp;gt; $top_metric
+#&amp;gt; $top_metric$logistic
+#&amp;gt; NULL
+#&amp;gt; 
+#&amp;gt; $top_metric$rpart
+#&amp;gt; NULL
+#&amp;gt; 
+#&amp;gt; $top_metric$ctree
+#&amp;gt; NULL
+#&amp;gt; 
+#&amp;gt; $top_metric$randomForest
+#&amp;gt; [1] &amp;quot;Recall&amp;quot;  &amp;quot;KS_Stat&amp;quot;
+#&amp;gt; 
+#&amp;gt; $top_metric$ranger
+#&amp;gt;  [1] &amp;quot;ZeroOneLoss&amp;quot; &amp;quot;Accuracy&amp;quot;    &amp;quot;Precision&amp;quot;   &amp;quot;Recall&amp;quot;      &amp;quot;Specificity&amp;quot;
+#&amp;gt;  [6] &amp;quot;F1_Score&amp;quot;    &amp;quot;LogLoss&amp;quot;     &amp;quot;AUC&amp;quot;         &amp;quot;Gini&amp;quot;        &amp;quot;PRAUC&amp;quot;      
+#&amp;gt; [11] &amp;quot;LiftAUC&amp;quot;     &amp;quot;GainAUC&amp;quot;     &amp;quot;KS_Stat&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;plot_performance이용한-roc-곡선의-시각화&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;plot_performance()이용한 ROC 곡선의 시각화&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;compare_performance()&lt;/code&gt;은 &lt;code&gt;ROC 곡선&lt;/code&gt;을 그린다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# ROC 곡선의 시각화
+plot_performance(pred)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-03/2020-03-27-r-alookr.ko_files/figure-html/model18-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;div id=&#34;cut-off-튜닝&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;cut-off 튜닝&lt;/h4&gt;
+&lt;p&gt;일반적으로 예측 확률이 0.5보다 클 경우에는 &lt;code&gt;positive class&lt;/code&gt;로 예측한다. 즉, cut-off로 0.5를 사용하는 것이다. 이것은 대부분의 모델 알고리즘에서 적용된다. 그러나 경우에 따라서 cut-off의 값을 변경하여, 성능을 튜닝할 수도 있다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;plot_cutoff()&lt;/code&gt;는 cut-off의 값을 선정할 수 있는 플롯을 시각화하며, cut-off 값도 반환한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pred_best &amp;lt;- pred %&amp;gt;% 
+  filter(model_id == comp_perf$recommend_model) %&amp;gt;% 
+  select(predicted) %&amp;gt;% 
+  pull %&amp;gt;% 
+  .[[1]] %&amp;gt;% 
+  attr(&amp;quot;pred_prob&amp;quot;)
+
+cutoff &amp;lt;- plot_cutoff(pred_best, test$Class, &amp;quot;malignant&amp;quot;, type = &amp;quot;mcc&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-03/2020-03-27-r-alookr.ko_files/figure-html/model19-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;
+cutoff
+#&amp;gt; [1] 0.45
+
+cutoff2 &amp;lt;- plot_cutoff(pred_best, test$Class, &amp;quot;malignant&amp;quot;, type = &amp;quot;density&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-03/2020-03-27-r-alookr.ko_files/figure-html/model19-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;
+cutoff2
+#&amp;gt; [1] 0.8904
+
+cutoff3 &amp;lt;- plot_cutoff(pred_best, test$Class, &amp;quot;malignant&amp;quot;, type = &amp;quot;prob&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-03/2020-03-27-r-alookr.ko_files/figure-html/model19-3.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;
+cutoff3
+#&amp;gt; [1] 0.45&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;performance_metric을-이용한-예측과-조정된-컷오프-예측의-성능-비교&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;performance_metric()을 이용한 예측과 조정된 컷오프 예측의 성능 비교&lt;/h4&gt;
+&lt;p&gt;원래 예측 성능과 조정된 컷오프 예측의 성능을 비교한다. 최상의 성능을 나타낸 모델 comp_perf$recommend_model과 컷오프를 변경한 모델을 비교해 보자.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;comp_perf$recommend_model
+#&amp;gt; [1] &amp;quot;ranger&amp;quot;
+
+# 예측 확률의 추출
+idx &amp;lt;- which(pred$model_id == comp_perf$recommend_model)
+pred_prob &amp;lt;- attr(pred$predicted[[idx]], &amp;quot;pred_prob&amp;quot;)
+
+# 혹은, dplyr을 이용한 예측 확률의 추출
+pred_prob &amp;lt;- pred %&amp;gt;% 
+  filter(model_id == comp_perf$recommend_model) %&amp;gt;% 
+  select(predicted) %&amp;gt;% 
+  pull %&amp;gt;% 
+  &amp;quot;[[&amp;quot;(1) %&amp;gt;% 
+  attr(&amp;quot;pred_prob&amp;quot;)
+
+# 예측된 확률값
+pred_prob  
+#&amp;gt;   [1] 8.884447e-01 1.933405e-01 8.739496e-05 0.000000e+00 9.987778e-01
+#&amp;gt;   [6] 0.000000e+00 9.771659e-01 0.000000e+00 6.094206e-01 0.000000e+00
+#&amp;gt;  [11] 8.994016e-01 9.975587e-01 0.000000e+00 9.880000e-01 9.842579e-01
+#&amp;gt;  [16] 7.018579e-01 6.651095e-01 9.981000e-01 5.733770e-01 6.812992e-01
+#&amp;gt;  [21] 9.590754e-01 0.000000e+00 9.560524e-01 9.487484e-01 9.609056e-01
+#&amp;gt;  [26] 0.000000e+00 0.000000e+00 0.000000e+00 9.876278e-01 9.791254e-01
+#&amp;gt;  [31] 5.714286e-04 9.569357e-01 1.682802e-01 2.524603e-02 1.000000e+00
+#&amp;gt;  [36] 9.143706e-01 9.269627e-01 0.000000e+00 0.000000e+00 0.000000e+00
+#&amp;gt;  [41] 0.000000e+00 0.000000e+00 9.912611e-01 2.161387e-02 0.000000e+00
+#&amp;gt;  [46] 0.000000e+00 5.847656e-02 0.000000e+00 2.347739e-01 0.000000e+00
+#&amp;gt;  [51] 9.960643e-01 9.936627e-01 9.825214e-01 9.988056e-01 9.977778e-01
+#&amp;gt;  [56] 0.000000e+00 0.000000e+00 0.000000e+00 9.678722e-01 0.000000e+00
+#&amp;gt;  [61] 0.000000e+00 9.729802e-01 9.924563e-01 9.958556e-01 8.739496e-05
+#&amp;gt;  [66] 9.463008e-01 9.596698e-01 9.463063e-01 2.315159e-02 9.989500e-01
+#&amp;gt;  [71] 0.000000e+00 0.000000e+00 1.000000e+00 0.000000e+00 9.775302e-01
+#&amp;gt;  [76] 0.000000e+00 0.000000e+00 9.602087e-01 1.000000e+00 1.000000e+00
+#&amp;gt;  [81] 8.882944e-01 9.718349e-01 0.000000e+00 8.882944e-01 0.000000e+00
+#&amp;gt;  [86] 0.000000e+00 0.000000e+00 9.910556e-01 9.539151e-01 0.000000e+00
+#&amp;gt;  [91] 9.106548e-01 2.357051e-02 9.948484e-01 9.217754e-01 0.000000e+00
+#&amp;gt;  [96] 8.739496e-05 9.494595e-01 8.759524e-01 8.796310e-01 0.000000e+00
+#&amp;gt; [101] 0.000000e+00 9.730762e-01 3.513810e-02 9.367278e-01 0.000000e+00
+#&amp;gt; [106] 0.000000e+00 0.000000e+00 0.000000e+00 3.000000e-03 9.332000e-01
+#&amp;gt; [111] 9.946222e-01 0.000000e+00 9.995556e-01 1.166667e-02 2.497389e-01
+#&amp;gt; [116] 0.000000e+00 9.606857e-01 1.828452e-01 0.000000e+00 3.000000e-03
+#&amp;gt; [121] 0.000000e+00 0.000000e+00 7.380952e-03 0.000000e+00 9.810921e-01
+#&amp;gt; [126] 9.974500e-01 4.480476e-02 1.419619e-01 9.995000e-01 0.000000e+00
+#&amp;gt; [131] 0.000000e+00 0.000000e+00 9.215056e-01 2.224960e-01 0.000000e+00
+#&amp;gt; [136] 2.368746e-01 1.071429e-03 4.992571e-01 9.947444e-01 2.389958e-02
+#&amp;gt; [141] 0.000000e+00 9.454698e-01 7.528665e-03 0.000000e+00 9.970333e-01
+#&amp;gt; [146] 7.154613e-02 8.288190e-01 4.512230e-01 1.000000e+00 4.846643e-01
+#&amp;gt; [151] 0.000000e+00 0.000000e+00 0.000000e+00 3.622222e-03 0.000000e+00
+#&amp;gt; [156] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00
+#&amp;gt; [161] 8.739496e-05 9.918738e-01 8.838683e-01 0.000000e+00 8.739496e-05
+#&amp;gt; [166] 0.000000e+00 9.471770e-01 0.000000e+00 4.256424e-01 2.690651e-01
+#&amp;gt; [171] 0.000000e+00 5.396337e-02 9.159651e-01 9.902500e-01 9.943429e-01
+#&amp;gt; [176] 0.000000e+00 9.833143e-01 0.000000e+00 0.000000e+00 0.000000e+00
+#&amp;gt; [181] 1.000000e+00 9.856516e-01 0.000000e+00 2.222222e-04 0.000000e+00
+#&amp;gt; [186] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00
+#&amp;gt; [191] 0.000000e+00 1.549603e-02 0.000000e+00 0.000000e+00 0.000000e+00
+#&amp;gt; [196] 9.921802e-01 0.000000e+00 1.116667e-03 0.000000e+00 0.000000e+00
+#&amp;gt; [201] 0.000000e+00 0.000000e+00 0.000000e+00 3.863810e-02 0.000000e+00
+#&amp;gt; [206] 0.000000e+00 0.000000e+00 0.000000e+00 2.410071e-01 9.938667e-01
+
+# Accuracy 비교
+performance_metric(pred_prob, test$Class, &amp;quot;malignant&amp;quot;, &amp;quot;Accuracy&amp;quot;)
+#&amp;gt; [1] 0.9714286
+
+performance_metric(pred_prob, test$Class, &amp;quot;malignant&amp;quot;, &amp;quot;Accuracy&amp;quot;,
+                   cutoff = cutoff)
+#&amp;gt; [1] 0.9761905
+
+# Confusion Matrix 비교
+performance_metric(pred_prob, test$Class, &amp;quot;malignant&amp;quot;, &amp;quot;ConfusionMatrix&amp;quot;)
+#&amp;gt;            actual
+#&amp;gt; predict     benign malignant
+#&amp;gt;   benign       129         2
+#&amp;gt;   malignant      4        75
+
+performance_metric(pred_prob, test$Class, &amp;quot;malignant&amp;quot;, &amp;quot;ConfusionMatrix&amp;quot;, 
+                   cutoff = cutoff)
+#&amp;gt;            actual
+#&amp;gt; predict     benign malignant
+#&amp;gt;   benign       128         0
+#&amp;gt;   malignant      5        77
+
+# F1 Score 비교
+performance_metric(pred_prob, test$Class, &amp;quot;malignant&amp;quot;, &amp;quot;F1_Score&amp;quot;)
+#&amp;gt; [1] 0.9615385
+
+performance_metric(pred_prob, test$Class,  &amp;quot;malignant&amp;quot;, &amp;quot;F1_Score&amp;quot;, 
+                   cutoff = cutoff)
+#&amp;gt; [1] 0.9685535
+
+performance_metric(pred_prob, test$Class,  &amp;quot;malignant&amp;quot;, &amp;quot;F1_Score&amp;quot;, 
+                   cutoff = cutoff2)
+#&amp;gt; [1] 0.9027778&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;조정된 컷오프(cut-off)의 성능이 양호하면, 컷오프를 적용하여 &lt;code&gt;positives class&lt;/code&gt;를 예측한다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;예측&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;예측&lt;/h3&gt;
+&lt;p&gt;여러 모델에서 최상의 모델을 선택한 경우, 해당 모델로 예측을 수행한다.&lt;/p&gt;
+&lt;div id=&#34;예측을-위한-데이터-생성&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;예측을 위한 데이터 생성&lt;/h4&gt;
+&lt;p&gt;이전 샘플링 예제에서 사용된 데이터 세트에서 100개의 샘플을 추출하여 예측할 데이터를 생성한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;data_pred &amp;lt;- train_under %&amp;gt;% 
+  cleanse 
+#&amp;gt; ── Checking unique value ─────────────────────────── unique value is one ──
+#&amp;gt; No variables that unique value is one.
+#&amp;gt; 
+#&amp;gt; ── Checking unique rate ─────────────────────────────── high unique rate ──
+#&amp;gt; remove variables with high unique rate
+#&amp;gt; ● Id = 315(0.960365853658537)
+#&amp;gt; 
+#&amp;gt; ── Checking character variables ─────────────────────── categorical data ──
+#&amp;gt; No character variables.
+
+set.seed(1234L)
+data_pred &amp;lt;- data_pred %&amp;gt;% 
+  nrow %&amp;gt;% 
+  seq %&amp;gt;% 
+  sample(size = 50) %&amp;gt;% 
+  data_pred[., ]&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;alookr과-dplyr를-이용한-예측&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;alookr과 dplyr를 이용한 예측&lt;/h4&gt;
+&lt;p&gt;다음과 같이 &lt;code&gt;alookr&lt;/code&gt;과 &lt;code&gt;dplyr&lt;/code&gt; 패키지를 사용하여 예측한다. 마지막 &lt;code&gt;factor()&lt;/code&gt; 함수는 불필요한 정보를 제거한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pred_actual &amp;lt;- pred %&amp;gt;%
+  filter(model_id == comp_perf$recommend_model) %&amp;gt;% 
+  run_predict(data_pred) %&amp;gt;% 
+  select(predicted) %&amp;gt;% 
+  pull %&amp;gt;% 
+  &amp;quot;[[&amp;quot;(1) %&amp;gt;% 
+  factor()
+#&amp;gt; Warning: [ONE-TIME WARNING] Forked processing (&amp;#39;multicore&amp;#39;) is disabled
+#&amp;gt; in future (&amp;gt;= 1.13.0) when running R from RStudio, because it is
+#&amp;gt; considered unstable. Because of this, plan(&amp;quot;multicore&amp;quot;) will fall
+#&amp;gt; back to plan(&amp;quot;sequential&amp;quot;), and plan(&amp;quot;multiprocess&amp;quot;) will fall back to
+#&amp;gt; plan(&amp;quot;multisession&amp;quot;) - not plan(&amp;quot;multicore&amp;quot;) as in the past. For more details,
+#&amp;gt; how to control forked processing or not, and how to silence this warning in
+#&amp;gt; future R sessions, see ?future::supportsMulticore
+
+pred_actual
+#&amp;gt;  [1] malignant malignant malignant benign    malignant benign    malignant
+#&amp;gt;  [8] malignant malignant malignant malignant benign    benign    malignant
+#&amp;gt; [15] malignant benign    malignant malignant benign    malignant benign   
+#&amp;gt; [22] malignant malignant malignant benign    malignant malignant benign   
+#&amp;gt; [29] malignant benign    benign    benign    malignant malignant malignant
+#&amp;gt; [36] benign    benign    malignant malignant benign    malignant benign   
+#&amp;gt; [43] benign    malignant benign    malignant benign    malignant malignant
+#&amp;gt; [50] malignant
+#&amp;gt; Levels: benign malignant&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;컷오프로 예측하려면 다음과 같이 &lt;code&gt;run_predict()&lt;/code&gt; 함수에 컷오프 &lt;code&gt;cutoff&lt;/code&gt; 인수를 지정한다.:&lt;/p&gt;
+&lt;p&gt;이 예제에서는 컷오프(cut-off) 사용 결과와 사용하지 않는 결과 간에 차이가 없다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pred_actual2 &amp;lt;- pred %&amp;gt;%
+  filter(model_id == comp_perf$recommend_model) %&amp;gt;% 
+  run_predict(data_pred, cutoff) %&amp;gt;% 
+  select(predicted) %&amp;gt;% 
+  pull %&amp;gt;% 
+  &amp;quot;[[&amp;quot;(1) %&amp;gt;% 
+  factor()
+
+pred_actual2
+#&amp;gt;  [1] malignant malignant malignant benign    malignant benign    malignant
+#&amp;gt;  [8] malignant malignant malignant malignant benign    benign    malignant
+#&amp;gt; [15] malignant benign    malignant malignant benign    malignant benign   
+#&amp;gt; [22] malignant malignant malignant benign    malignant malignant benign   
+#&amp;gt; [29] malignant benign    benign    benign    malignant malignant malignant
+#&amp;gt; [36] benign    benign    malignant malignant benign    malignant benign   
+#&amp;gt; [43] benign    malignant benign    malignant benign    malignant malignant
+#&amp;gt; [50] malignant
+#&amp;gt; Levels: benign malignant
+
+sum(pred_actual != pred_actual2)
+#&amp;gt; [1] 0&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>
