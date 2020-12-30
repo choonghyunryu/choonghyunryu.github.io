@@ -229,7 +229,7 @@ function (x, y)
     y &lt;- as.vector(y)
     unique(y[match(as.vector(x), y, 0L)])
 }
-&lt;bytecode: 0x7fb07b967bc8&gt;
+&lt;bytecode: 0x7f97ac85cbc8&gt;
 &lt;environment: namespace:base&gt;</code></pre>
 </div>
 <div id="차집합-x---y" class="section level3">
@@ -254,7 +254,7 @@ function (x, y)
         x[match(x, y, 0L) == 0L]
     else x)
 }
-&lt;bytecode: 0x7fb0bc595558&gt;
+&lt;bytecode: 0x7f97dcb6b958&gt;
 &lt;environment: namespace:base&gt;</code></pre>
 </div>
 <div id="원소의-집합-포함관계-a-x-a-y" class="section level3">
@@ -289,7 +289,7 @@ function (x, y)
 <pre class="r"><code>&gt; is.element
 function (el, set) 
 match(el, set, 0L) &gt; 0L
-&lt;bytecode: 0x7fb0bc34d620&gt;
+&lt;bytecode: 0x7f97cce39e20&gt;
 &lt;environment: namespace:base&gt;</code></pre>
 </div>
 <div id="집합의-포함관계-z-x-z-y" class="section level3">
@@ -362,7 +362,7 @@ function (x, y)
     y &lt;- as.vector(y)
     !(anyNA(match(x, y)) || anyNA(match(y, x)))
 }
-&lt;bytecode: 0x7fb07d5befe8&gt;
+&lt;bytecode: 0x7f97aca32be8&gt;
 &lt;environment: namespace:base&gt;</code></pre>
 <p>이 함수를 수식으로 표현하자면 다음과 같다.</p>
 <blockquote>

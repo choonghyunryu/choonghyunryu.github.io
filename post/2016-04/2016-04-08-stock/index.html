@@ -316,12 +316,12 @@
 6 2015-08-28  095570 7660 7840 7090  7140  956575 6986.431
 &gt; tail(KOSPI_STOCKS)
            date symbols  Open  High   Low Close Volume Adjusted
-7159 2020-12-18  006840 24900 25100 24600 25050  58704    25050
-7160 2020-12-21  006840 24950 25050 24400 24950  49917    24950
-7161 2020-12-22  006840 24550 24750 24300 24550  41056    24550
-7162 2020-12-23  006840 24550 24700 23300 23600  90361    23600
-7163 2020-12-24  006840 23600 25350 23550 25200 112401    25200
-7164 2020-12-28  006840 25300 25300 24750 24750   6280    24750</code></pre>
+7162 2020-12-21  006840 24950 25050 24400 24950  49917    24950
+7163 2020-12-22  006840 24550 24750 24300 24550  41056    24550
+7164 2020-12-23  006840 24550 24700 23300 23600  90361    23600
+7165 2020-12-24  006840 23600 25350 23550 25200 112401    25200
+7166 2020-12-28  006840 25300 25950 24700 24900 195401    24900
+7167 2020-12-29  006840 25050 25250 24700 25100 123822    25100</code></pre>
 </div>
 <div id="관심종목-거래정보-가져오기" class="section level3">
 <h3>관심종목 거래정보 가져오기</h3>
@@ -447,45 +447,45 @@ Figure 3: 삼성생명 candle sticks chart
 &gt; dim(AMEX)
 [1] 303  17
 &gt; dim(NASDAQ)
-[1] 3939   17
+[1] 3942   17
 &gt; dim(NYSE)
-[1] 3286   17
+[1] 3282   17
 &gt; head(NYSE)
       Symbol
-6218       A
-6219      AA
-6220    AAIC
-6221 AAIC-PB
-6222 AAIC-PC
-6223     AAN
+6227       A
+6228      AA
+6229    AAIC
+6230 AAIC-PB
+6231 AAIC-PC
+6232     AAN
                                                                                                                Name
-6218                                                                        Agilent Technologies, Inc. Common Stock
-6219                                                                                Alcoa Corporation Common Stock 
-6220                                                                  Arlington Asset Investment Corp Class A (new)
-6221                                                                         Arlington Asset Investment Corp 7.00% 
-6222 Arlington Asset Investment Corp 8.250% Seies C Fixed-to-Floating Rate Cumulative Redeemable Preferred Stock   
-6223                                                                    Aarons Holdings Company, Inc. Common Stock 
+6227                                                                        Agilent Technologies, Inc. Common Stock
+6228                                                                                Alcoa Corporation Common Stock 
+6229                                                                  Arlington Asset Investment Corp Class A (new)
+6230                                                                         Arlington Asset Investment Corp 7.00% 
+6231 Arlington Asset Investment Corp 8.250% Seies C Fixed-to-Floating Rate Cumulative Redeemable Preferred Stock   
+6232                                                                    Aarons Holdings Company, Inc. Common Stock 
      LastSale MarketCap IPOyear Sector Industry Exchange Test.Issue
-6218       NA        NA      NA     NA       NA     NYSE      FALSE
-6219       NA        NA      NA     NA       NA     NYSE      FALSE
-6220       NA        NA      NA     NA       NA     NYSE      FALSE
-6221       NA        NA      NA     NA       NA     NYSE      FALSE
-6222       NA        NA      NA     NA       NA     NYSE      FALSE
-6223       NA        NA      NA     NA       NA     NYSE      FALSE
+6227       NA        NA      NA     NA       NA     NYSE      FALSE
+6228       NA        NA      NA     NA       NA     NYSE      FALSE
+6229       NA        NA      NA     NA       NA     NYSE      FALSE
+6230       NA        NA      NA     NA       NA     NYSE      FALSE
+6231       NA        NA      NA     NA       NA     NYSE      FALSE
+6232       NA        NA      NA     NA       NA     NYSE      FALSE
      Round.Lot.Size   ETF Market.Category Financial.Status Next.Shares
-6218            100 FALSE            &lt;NA&gt;             &lt;NA&gt;          NA
-6219            100 FALSE            &lt;NA&gt;             &lt;NA&gt;          NA
-6220            100 FALSE            &lt;NA&gt;             &lt;NA&gt;          NA
-6221            100 FALSE            &lt;NA&gt;             &lt;NA&gt;          NA
-6222            100 FALSE            &lt;NA&gt;             &lt;NA&gt;          NA
-6223            100 FALSE            &lt;NA&gt;             &lt;NA&gt;          NA
+6227            100 FALSE            &lt;NA&gt;             &lt;NA&gt;          NA
+6228            100 FALSE            &lt;NA&gt;             &lt;NA&gt;          NA
+6229            100 FALSE            &lt;NA&gt;             &lt;NA&gt;          NA
+6230            100 FALSE            &lt;NA&gt;             &lt;NA&gt;          NA
+6231            100 FALSE            &lt;NA&gt;             &lt;NA&gt;          NA
+6232            100 FALSE            &lt;NA&gt;             &lt;NA&gt;          NA
      ACT.Symbol CQS.Symbol NASDAQ.Symbol
-6218          A          A             A
-6219         AA         AA            AA
-6220       AAIC       AAIC          AAIC
-6221     AAIC$B     AAICpB        AAIC-B
-6222     AAIC$C     AAICpC        AAIC-C
-6223        AAN        AAN           AAN</code></pre>
+6227          A          A             A
+6228         AA         AA            AA
+6229       AAIC       AAIC          AAIC
+6230     AAIC$B     AAICpB        AAIC-B
+6231     AAIC$C     AAICpC        AAIC-C
+6232        AAN        AAN           AAN</code></pre>
 </div>
 <div id="관심종목-거래정보-가져오기-1" class="section level3">
 <h3>관심종목 거래정보 가져오기</h3>
@@ -494,13 +494,13 @@ Figure 3: 삼성생명 candle sticks chart
 <p>애플의 종목코드는 <code>AAPL</code>이다. 이 종목의 거래정보를 Yahoo로부터 가져오자.</p>
 <pre class="r"><code>&gt; NASDAQ[grep(&quot;Apple&quot;, NASDAQ$Name), ]
      Symbol                      Name LastSale MarketCap IPOyear Sector
-2287   AAPL Apple Inc. - Common Stock       NA        NA      NA     NA
+2293   AAPL Apple Inc. - Common Stock       NA        NA      NA     NA
      Industry Exchange Test.Issue Round.Lot.Size   ETF
-2287       NA   NASDAQ      FALSE            100 FALSE
+2293       NA   NASDAQ      FALSE            100 FALSE
                    Market.Category Financial.Status Next.Shares ACT.Symbol
-2287 NASDAQ Global Select MarketSM Normal (Default)          NA       &lt;NA&gt;
+2293 NASDAQ Global Select MarketSM Normal (Default)          NA       &lt;NA&gt;
      CQS.Symbol NASDAQ.Symbol
-2287       &lt;NA&gt;          AAPL
+2293       &lt;NA&gt;          AAPL
 &gt; symbols &lt;- NASDAQ[grep(&quot;Apple&quot;, NASDAQ$Name), &quot;Symbol&quot;]
 &gt; 
 &gt; apple &lt;- getSymbols(symbols, from = &#39;1990-01-01&#39;, to = &#39;2016-03-31&#39;,

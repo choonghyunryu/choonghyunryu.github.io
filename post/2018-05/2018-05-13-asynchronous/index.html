@@ -230,7 +230,7 @@ Figure 1: Synchronous vs Asynchronous in R
 <p>R은 기본적으로 동기화 매커니즘을 가지고 있으므로 5초 가량 getValue() 함수가 수행된 후에 x의 값 3.141593가 출력된다.</p>
 <pre class="r"><code>&gt; system.time(x &lt;- getValue(pi))
    user  system elapsed 
-  0.000   0.000  15.002 </code></pre>
+  0.000   0.000  15.003 </code></pre>
 <pre class="r"><code>&gt; x
 [1] 3.141593</code></pre>
 </div>
@@ -250,7 +250,7 @@ how to control forked processing or not, and how to silence this warning in
 future R sessions, see ?future::supportsMulticore
 &gt; system.time(x &lt;- future(getValue(pi)))
    user  system elapsed 
-  0.011   0.001   0.013 </code></pre>
+  0.012   0.000   0.014 </code></pre>
 <p>future() 함수가 반환한 x 객체는 MulticoreFuture class 객체다.</p>
 <pre class="r"><code>&gt; is(x)
 [1] &quot;MultisessionFuture&quot;
@@ -272,7 +272,7 @@ Resolved: FALSE
 Value: &lt;not collected&gt;
 Conditions captured: &lt;none&gt;
 Early signaling: FALSE
-Owner process: 70241ff0-3240-9f8e-e245-6178971fff37
+Owner process: ebca26bb-9f21-5b1d-b3e3-ed53356719b1
 Class: &#39;MultisessionFuture&#39;, &#39;ClusterFuture&#39;, &#39;MultiprocessFuture&#39;, &#39;Future&#39;, &#39;environment&#39;</code></pre>
 <p>실제 계산된 값을 사용하기 위해서는 value() 함수로 MulticoreFuture 객체를 원래 반환값의 객체로 변환해 주어야 한다.</p>
 <p>즉, <strong>future() 함수로 던지고, value() 함수로 받아야 한다.</strong></p>
@@ -285,7 +285,7 @@ function (...)  .Primitive(&quot;c&quot;)</code></pre>
 <p>expr의 종료여부는 resolved() 함수를 이용하여 확인한다. 만약 future() 함수가 반환한 MulticoreFuture 객체 f를 생성할 때 수행한 expr이 백그라운드에서 종료하면 TRUE를 반환하고, 아직도 백그라운드에서 수행중이면 FALSE를 반환한다. 그러므로 resolved() 함수로 expr의 종료 여부를 확인 후 value()함수를 사용한다.</p>
 <pre class="r"><code>&gt; system.time(x &lt;- future(getValue(pi)))
    user  system elapsed 
-  0.007   0.000   0.008 
+  0.006   0.000   0.007 
 &gt; resolved(x)
 [1] FALSE
 &gt; Sys.sleep(6)
@@ -297,7 +297,7 @@ function (...)  .Primitive(&quot;c&quot;)</code></pre>
 <p>암시적(Implicit)으로 호출하는 방법은 v %&lt;-% { expr }처럼 %&lt;-% 연산자를 사용하는 방법이다. 앞에서 다룬 future() 함수로 던지고, value() 함수로 받는 방법을 암시적인 호출로 변경하면 다음과 같다.</p>
 <pre class="r"><code>&gt; system.time(x %&lt;-% getValue(pi))
    user  system elapsed 
-  0.008   0.000   0.010 </code></pre>
+  0.009   0.000   0.009 </code></pre>
 <p>%&lt;-% 연산자를 이용한 암시적인 호출의 결과는 MulticoreFuture 객체가 아닌 expr의 수행 결과의 객체다.</p>
 <pre class="r"><code>&gt; is(x)
 [1] &quot;numeric&quot; &quot;vector&quot; 
@@ -315,23 +315,23 @@ function (...)  .Primitive(&quot;c&quot;)</code></pre>
   return(pid)
 }</code></pre>
 <pre class="r"><code>&gt; Sys.getpid()
-[1] 64668
+[1] 40891
 &gt; system.time(pid &lt;- getValue2())
 Resolving ...
    user  system elapsed 
   0.000   0.000   5.002 
 &gt; pid
-[1] 64668</code></pre>
+[1] 40891</code></pre>
 <p>%&lt;-% 연산자 expr가 백그라운드에서 수행되기 때문에, 호출된 getValue2() 함수의 cat() 함수의 결과가 출력되지 않는다. 왜냐하면 cat() 함수는 포그라운드(Foreground) 콘솔에 문자열을 출력하는 함수이기 때문이다.
 또한 %&lt;-% 연산자가 호출되지 이전의 프로세스 아이디와 expr이 수행되는 환경의 프로세스 아이디가 다름을 알 수 있다.</p>
 <pre class="r"><code>&gt; Sys.getpid()
-[1] 64668
+[1] 40891
 &gt; system.time(pid %&lt;-% getValue2())
    user  system elapsed 
   0.008   0.000   0.009 
 &gt; pid
 Resolving ...
-[1] 64798</code></pre>
+[1] 41004</code></pre>
 </div>
 <div id="plan" class="section level3">
 <h3>Plan</h3>
@@ -355,7 +355,7 @@ Resolving ...
 &gt; 
 &gt; system.time(x &lt;- future(getValue(pi)))
    user  system elapsed 
-  0.009   0.000  15.011 
+  0.009   0.001  15.013 
 &gt; is(x)
 [1] &quot;SequentialFuture&quot;
 &gt; value(x)

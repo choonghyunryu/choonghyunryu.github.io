@@ -2461,7 +2461,7 @@ Figure 1: Synchronous vs Asynchronous in R
 &lt;p&gt;R은 기본적으로 동기화 매커니즘을 가지고 있으므로 5초 가량 getValue() 함수가 수행된 후에 x의 값 3.141593가 출력된다.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; system.time(x &amp;lt;- getValue(pi))
    user  system elapsed 
-  0.000   0.000  15.002 &lt;/code&gt;&lt;/pre&gt;
+  0.000   0.000  15.003 &lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; x
 [1] 3.141593&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
@@ -2481,7 +2481,7 @@ how to control forked processing or not, and how to silence this warning in
 future R sessions, see ?future::supportsMulticore
 &amp;gt; system.time(x &amp;lt;- future(getValue(pi)))
    user  system elapsed 
-  0.011   0.001   0.013 &lt;/code&gt;&lt;/pre&gt;
+  0.012   0.000   0.014 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;future() 함수가 반환한 x 객체는 MulticoreFuture class 객체다.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; is(x)
 [1] &amp;quot;MultisessionFuture&amp;quot;
@@ -2503,7 +2503,7 @@ Resolved: FALSE
 Value: &amp;lt;not collected&amp;gt;
 Conditions captured: &amp;lt;none&amp;gt;
 Early signaling: FALSE
-Owner process: 70241ff0-3240-9f8e-e245-6178971fff37
+Owner process: ebca26bb-9f21-5b1d-b3e3-ed53356719b1
 Class: &amp;#39;MultisessionFuture&amp;#39;, &amp;#39;ClusterFuture&amp;#39;, &amp;#39;MultiprocessFuture&amp;#39;, &amp;#39;Future&amp;#39;, &amp;#39;environment&amp;#39;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;실제 계산된 값을 사용하기 위해서는 value() 함수로 MulticoreFuture 객체를 원래 반환값의 객체로 변환해 주어야 한다.&lt;/p&gt;
 &lt;p&gt;즉, &lt;strong&gt;future() 함수로 던지고, value() 함수로 받아야 한다.&lt;/strong&gt;&lt;/p&gt;
@@ -2516,7 +2516,7 @@ function (...)  .Primitive(&amp;quot;c&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;expr의 종료여부는 resolved() 함수를 이용하여 확인한다. 만약 future() 함수가 반환한 MulticoreFuture 객체 f를 생성할 때 수행한 expr이 백그라운드에서 종료하면 TRUE를 반환하고, 아직도 백그라운드에서 수행중이면 FALSE를 반환한다. 그러므로 resolved() 함수로 expr의 종료 여부를 확인 후 value()함수를 사용한다.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; system.time(x &amp;lt;- future(getValue(pi)))
    user  system elapsed 
-  0.007   0.000   0.008 
+  0.006   0.000   0.007 
 &amp;gt; resolved(x)
 [1] FALSE
 &amp;gt; Sys.sleep(6)
@@ -2528,7 +2528,7 @@ function (...)  .Primitive(&amp;quot;c&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;암시적(Implicit)으로 호출하는 방법은 v %&amp;lt;-% { expr }처럼 %&amp;lt;-% 연산자를 사용하는 방법이다. 앞에서 다룬 future() 함수로 던지고, value() 함수로 받는 방법을 암시적인 호출로 변경하면 다음과 같다.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; system.time(x %&amp;lt;-% getValue(pi))
    user  system elapsed 
-  0.008   0.000   0.010 &lt;/code&gt;&lt;/pre&gt;
+  0.009   0.000   0.009 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;%&amp;lt;-% 연산자를 이용한 암시적인 호출의 결과는 MulticoreFuture 객체가 아닌 expr의 수행 결과의 객체다.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; is(x)
 [1] &amp;quot;numeric&amp;quot; &amp;quot;vector&amp;quot; 
@@ -2546,23 +2546,23 @@ function (...)  .Primitive(&amp;quot;c&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
   return(pid)
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; Sys.getpid()
-[1] 64668
+[1] 40891
 &amp;gt; system.time(pid &amp;lt;- getValue2())
 Resolving ...
    user  system elapsed 
   0.000   0.000   5.002 
 &amp;gt; pid
-[1] 64668&lt;/code&gt;&lt;/pre&gt;
+[1] 40891&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;%&amp;lt;-% 연산자 expr가 백그라운드에서 수행되기 때문에, 호출된 getValue2() 함수의 cat() 함수의 결과가 출력되지 않는다. 왜냐하면 cat() 함수는 포그라운드(Foreground) 콘솔에 문자열을 출력하는 함수이기 때문이다.
 또한 %&amp;lt;-% 연산자가 호출되지 이전의 프로세스 아이디와 expr이 수행되는 환경의 프로세스 아이디가 다름을 알 수 있다.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; Sys.getpid()
-[1] 64668
+[1] 40891
 &amp;gt; system.time(pid %&amp;lt;-% getValue2())
    user  system elapsed 
   0.008   0.000   0.009 
 &amp;gt; pid
 Resolving ...
-[1] 64798&lt;/code&gt;&lt;/pre&gt;
+[1] 41004&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;plan&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Plan&lt;/h3&gt;
@@ -2586,7 +2586,7 @@ Resolving ...
 &amp;gt; 
 &amp;gt; system.time(x &amp;lt;- future(getValue(pi)))
    user  system elapsed 
-  0.009   0.000  15.011 
+  0.009   0.001  15.013 
 &amp;gt; is(x)
 [1] &amp;quot;SequentialFuture&amp;quot;
 &amp;gt; value(x)
@@ -8107,12 +8107,12 @@ Balanced Accuracy           0.9753        0.9607        0.9764&lt;/code&gt;&lt;/
 6 2015-08-28  095570 7660 7840 7090  7140  956575 6986.431
 &amp;gt; tail(KOSPI_STOCKS)
            date symbols  Open  High   Low Close Volume Adjusted
-7159 2020-12-18  006840 24900 25100 24600 25050  58704    25050
-7160 2020-12-21  006840 24950 25050 24400 24950  49917    24950
-7161 2020-12-22  006840 24550 24750 24300 24550  41056    24550
-7162 2020-12-23  006840 24550 24700 23300 23600  90361    23600
-7163 2020-12-24  006840 23600 25350 23550 25200 112401    25200
-7164 2020-12-28  006840 25300 25300 24750 24750   6280    24750&lt;/code&gt;&lt;/pre&gt;
+7162 2020-12-21  006840 24950 25050 24400 24950  49917    24950
+7163 2020-12-22  006840 24550 24750 24300 24550  41056    24550
+7164 2020-12-23  006840 24550 24700 23300 23600  90361    23600
+7165 2020-12-24  006840 23600 25350 23550 25200 112401    25200
+7166 2020-12-28  006840 25300 25950 24700 24900 195401    24900
+7167 2020-12-29  006840 25050 25250 24700 25100 123822    25100&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;관심종목-거래정보-가져오기&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;관심종목 거래정보 가져오기&lt;/h3&gt;
@@ -8238,45 +8238,45 @@ Figure 3: 삼성생명 candle sticks chart
 &amp;gt; dim(AMEX)
 [1] 303  17
 &amp;gt; dim(NASDAQ)
-[1] 3939   17
+[1] 3942   17
 &amp;gt; dim(NYSE)
-[1] 3286   17
+[1] 3282   17
 &amp;gt; head(NYSE)
       Symbol
-6218       A
-6219      AA
-6220    AAIC
-6221 AAIC-PB
-6222 AAIC-PC
-6223     AAN
+6227       A
+6228      AA
+6229    AAIC
+6230 AAIC-PB
+6231 AAIC-PC
+6232     AAN
                                                                                                                Name
-6218                                                                        Agilent Technologies, Inc. Common Stock
-6219                                                                                Alcoa Corporation Common Stock 
-6220                                                                  Arlington Asset Investment Corp Class A (new)
-6221                                                                         Arlington Asset Investment Corp 7.00% 
-6222 Arlington Asset Investment Corp 8.250% Seies C Fixed-to-Floating Rate Cumulative Redeemable Preferred Stock   
-6223                                                                    Aarons Holdings Company, Inc. Common Stock 
+6227                                                                        Agilent Technologies, Inc. Common Stock
+6228                                                                                Alcoa Corporation Common Stock 
+6229                                                                  Arlington Asset Investment Corp Class A (new)
+6230                                                                         Arlington Asset Investment Corp 7.00% 
+6231 Arlington Asset Investment Corp 8.250% Seies C Fixed-to-Floating Rate Cumulative Redeemable Preferred Stock   
+6232                                                                    Aarons Holdings Company, Inc. Common Stock 
      LastSale MarketCap IPOyear Sector Industry Exchange Test.Issue
-6218       NA        NA      NA     NA       NA     NYSE      FALSE
-6219       NA        NA      NA     NA       NA     NYSE      FALSE
-6220       NA        NA      NA     NA       NA     NYSE      FALSE
-6221       NA        NA      NA     NA       NA     NYSE      FALSE
-6222       NA        NA      NA     NA       NA     NYSE      FALSE
-6223       NA        NA      NA     NA       NA     NYSE      FALSE
+6227       NA        NA      NA     NA       NA     NYSE      FALSE
+6228       NA        NA      NA     NA       NA     NYSE      FALSE
+6229       NA        NA      NA     NA       NA     NYSE      FALSE
+6230       NA        NA      NA     NA       NA     NYSE      FALSE
+6231       NA        NA      NA     NA       NA     NYSE      FALSE
+6232       NA        NA      NA     NA       NA     NYSE      FALSE
      Round.Lot.Size   ETF Market.Category Financial.Status Next.Shares
-6218            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
-6219            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
-6220            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
-6221            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
-6222            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
-6223            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
+6227            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
+6228            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
+6229            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
+6230            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
+6231            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
+6232            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
      ACT.Symbol CQS.Symbol NASDAQ.Symbol
-6218          A          A             A
-6219         AA         AA            AA
-6220       AAIC       AAIC          AAIC
-6221     AAIC$B     AAICpB        AAIC-B
-6222     AAIC$C     AAICpC        AAIC-C
-6223        AAN        AAN           AAN&lt;/code&gt;&lt;/pre&gt;
+6227          A          A             A
+6228         AA         AA            AA
+6229       AAIC       AAIC          AAIC
+6230     AAIC$B     AAICpB        AAIC-B
+6231     AAIC$C     AAICpC        AAIC-C
+6232        AAN        AAN           AAN&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;관심종목-거래정보-가져오기-1&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;관심종목 거래정보 가져오기&lt;/h3&gt;
@@ -8285,13 +8285,13 @@ Figure 3: 삼성생명 candle sticks chart
 &lt;p&gt;애플의 종목코드는 &lt;code&gt;AAPL&lt;/code&gt;이다. 이 종목의 거래정보를 Yahoo로부터 가져오자.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; NASDAQ[grep(&amp;quot;Apple&amp;quot;, NASDAQ$Name), ]
      Symbol                      Name LastSale MarketCap IPOyear Sector
-2287   AAPL Apple Inc. - Common Stock       NA        NA      NA     NA
+2293   AAPL Apple Inc. - Common Stock       NA        NA      NA     NA
      Industry Exchange Test.Issue Round.Lot.Size   ETF
-2287       NA   NASDAQ      FALSE            100 FALSE
+2293       NA   NASDAQ      FALSE            100 FALSE
                    Market.Category Financial.Status Next.Shares ACT.Symbol
-2287 NASDAQ Global Select MarketSM Normal (Default)          NA       &amp;lt;NA&amp;gt;
+2293 NASDAQ Global Select MarketSM Normal (Default)          NA       &amp;lt;NA&amp;gt;
      CQS.Symbol NASDAQ.Symbol
-2287       &amp;lt;NA&amp;gt;          AAPL
+2293       &amp;lt;NA&amp;gt;          AAPL
 &amp;gt; symbols &amp;lt;- NASDAQ[grep(&amp;quot;Apple&amp;quot;, NASDAQ$Name), &amp;quot;Symbol&amp;quot;]
 &amp;gt; 
 &amp;gt; apple &amp;lt;- getSymbols(symbols, from = &amp;#39;1990-01-01&amp;#39;, to = &amp;#39;2016-03-31&amp;#39;,
@@ -8874,7 +8874,7 @@ function (x, y)
     y &amp;lt;- as.vector(y)
     unique(y[match(as.vector(x), y, 0L)])
 }
-&amp;lt;bytecode: 0x7fb07b967bc8&amp;gt;
+&amp;lt;bytecode: 0x7f97ac85cbc8&amp;gt;
 &amp;lt;environment: namespace:base&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;차집합-x---y&#34; class=&#34;section level3&#34;&gt;
@@ -8899,7 +8899,7 @@ function (x, y)
         x[match(x, y, 0L) == 0L]
     else x)
 }
-&amp;lt;bytecode: 0x7fb0bc595558&amp;gt;
+&amp;lt;bytecode: 0x7f97dcb6b958&amp;gt;
 &amp;lt;environment: namespace:base&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;원소의-집합-포함관계-a-x-a-y&#34; class=&#34;section level3&#34;&gt;
@@ -8934,7 +8934,7 @@ function (x, y)
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; is.element
 function (el, set) 
 match(el, set, 0L) &amp;gt; 0L
-&amp;lt;bytecode: 0x7fb0bc34d620&amp;gt;
+&amp;lt;bytecode: 0x7f97cce39e20&amp;gt;
 &amp;lt;environment: namespace:base&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;집합의-포함관계-z-x-z-y&#34; class=&#34;section level3&#34;&gt;
@@ -9007,7 +9007,7 @@ function (x, y)
     y &amp;lt;- as.vector(y)
     !(anyNA(match(x, y)) || anyNA(match(y, x)))
 }
-&amp;lt;bytecode: 0x7fb07d5befe8&amp;gt;
+&amp;lt;bytecode: 0x7f97aca32be8&amp;gt;
 &amp;lt;environment: namespace:base&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;이 함수를 수식으로 표현하자면 다음과 같다.&lt;/p&gt;
 &lt;blockquote&gt;

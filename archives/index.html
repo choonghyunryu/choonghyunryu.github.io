@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en" data-figures="" class="page">
   <head>
-<title>grid package로 그림 그리기 | Dataholic</title>
+<title>Dataholic</title>
 <meta charset="utf-8">
 <meta name="generator" content="Hugo 0.79.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -14,19 +14,16 @@
   gtag('js', new Date());
   gtag('config', 'UA-118779401-1');
 </script>
-  
 <meta property="og:locale" content="en" />
 
 <meta property="og:type" content="article">
-<meta name="description" content="오클랜드 대학교의 Paul Murrell은 grid라는 이름의 그래픽 라이브러리(package)를 개발했다. 이 라이브러리가 바로 lattice와 ggplot2 package의 토대가 된다.
-grid package를 이용해여 멋진 풍경을 그려보자. ‘R로도 그림을 그릴 수 있겠구나’ …">
+<meta name="description" content="">
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="">
-<meta name="twitter:title" content="grid package로 그림 그리기" />
-<meta property="og:url" content="/post/2016-01/2016-01-02-grid_picture/" />
-<meta property="og:title" content="grid package로 그림 그리기" />
-<meta property="og:description" content="오클랜드 대학교의 Paul Murrell은 grid라는 이름의 그래픽 라이브러리(package)를 개발했다. 이 라이브러리가 바로 lattice와 ggplot2 package의 토대가 된다.
-grid package를 이용해여 멋진 풍경을 그려보자. ‘R로도 그림을 그릴 수 있겠구나’ …" />
+<meta name="twitter:title" content="" />
+<meta property="og:url" content="/archives/" />
+<meta property="og:title" content="" />
+<meta property="og:description" content="" />
 <meta property="og:image" content="/" />
 <link rel="apple-touch-icon" sizes="180x180" href='/icons/apple-touch-icon.png'>
 <link rel="icon" type="image/png" sizes="32x32" href='/icons/favicon-32x32.png'>
@@ -35,7 +32,7 @@ grid package를 이용해여 멋진 풍경을 그려보자. ‘R로도 그림을
 <meta name="msapplication-TileColor" content="#002538">
 <meta name="theme-color" content="#002538">
 
-<link rel="canonical" href="/post/2016-01/2016-01-02-grid_picture/">
+<link rel="canonical" href="/archives/">
 
     
 
@@ -140,28 +137,24 @@ grid package를 이용해여 멋진 풍경을 그려보자. ‘R로도 그림을
   
 <div class="grid-inverse wrap content">
   <article class="post_content">
-    <h1 class="post_title">grid package로 그림 그리기</h1><div class="post_meta">
+    <h1 class="post_title"></h1><div class="post_meta">
   
     <svg class="icon">
   <use xlink:href="#calendar"></use>
 </svg>
     <span class="post_date">
-      2016-01-02</span>
-      <a href='/tags/grid' class="post_tag button button_translucent">grid
-      </a>
-      <a href='/tags/pictures' class="post_tag button button_translucent">pictures
-      </a>
+      2019-05-28</span>
 </div>
 
     
   <div class="post_share">
     Share on:
-    <a href="https://twitter.com/intent/tweet?text=grid%20package%eb%a1%9c%20%ea%b7%b8%eb%a6%bc%20%ea%b7%b8%eb%a6%ac%ea%b8%b0&url=%2fpost%2f2016-01%2f2016-01-02-grid_picture%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+    <a href="https://twitter.com/intent/tweet?text=&url=%2farchives%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
       <svg class="icon">
   <use xlink:href="#twitter"></use>
 </svg>
     </a>
-    <a href="https://www.facebook.com/sharer.php?u=%2fpost%2f2016-01%2f2016-01-02-grid_picture%2f&t=grid%20package%eb%a1%9c%20%ea%b7%b8%eb%a6%bc%20%ea%b7%b8%eb%a6%ac%ea%b8%b0" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+    <a href="https://www.facebook.com/sharer.php?u=%2farchives%2f&t=" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
       <svg class="icon">
   <use xlink:href="#facebook"></use>
 </svg>
@@ -171,7 +164,7 @@ grid package를 이용해여 멋진 풍경을 그려보자. ‘R로도 그림을
   <use xlink:href="#linkedin"></use>
 </svg>
     </a>
-    <a href="/post/2016-01/2016-01-02-grid_picture/" title="Copy Link" class="link link_yank">
+    <a href="/archives/" title="Copy Link" class="link link_yank">
       <svg class="icon">
   <use xlink:href="#copy"></use>
 </svg>
@@ -180,27 +173,6 @@ grid package를 이용해여 멋진 풍경을 그려보자. ‘R로도 그림을
 
     
     
-<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
-<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
-<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
-
-
-<p>오클랜드 대학교의 Paul Murrell은 <code>grid</code>라는 이름의 그래픽 라이브러리(package)를 개발했다. 이 라이브러리가 바로 <code>lattice</code>와 <code>ggplot2</code> package의 토대가 된다.</p>
-<p><code>grid</code> package를 이용해여 멋진 풍경을 그려보자. <strong>‘R로도 그림을 그릴 수 있겠구나’</strong>하는 흥미차원의 시도다.</p>
-<p>먼저 야경을 그려보고, 한 낮의 풍경을 그려보겠다. 동심으로 돌아가 하얀 스케치북에 그레파스를 이용해서 산도 그리고, 달고 그리고, 별과 해도 그려보자. 밤의 그림은 Paul Murrell가 그렸고, 필자가 Paul Murrell의 스케치북과 그레파스를 빌려서 모사해보겠다. 해가 중천에 걸린 여름 산은 녹음이 우거져 있다.</p>
-<div id="r로-그린-밤-하늘의-풍경" class="section level3">
-<h3>R로 그린 밤 하늘의 풍경</h3>
-<p>아마 Paul Murrell는 검은색과 회색 크레파스가 다 떨어졌을 것이고, 필자는 하늘색 크레파스가 다 달아 없어졌다. Paul Murrell이 그린 밤 하늘의 풍경이다.</p>
-<p><img src="/post/2016-01/2016-01-02-grid_picture_files/figure-html/unnamed-chunk-2-1.png" width="75%" /></p>
-</div>
-<div id="r로-그린-대낮의-풍경" class="section level3">
-<h3>R로 그린 대낮의 풍경</h3>
-<p>이번에는 낮의 풍경을 그려보자. 파란 하늘에 노란 태양이 떠 있는 그림이다.
-Paul Murrell 그림을 응용해서 그려 보았다. 산을 그리는 로직은 Paul Murrell 그린 밤하늘을 것에 색상만 바꾸었다.</p>
-<p><img src="/post/2016-01/2016-01-02-grid_picture_files/figure-html/unnamed-chunk-3-1.png" width="75%" /></p>
-<p>구름 한 점 없는 맑은 날이다. 소풍가기 딱 좋은 날인 것 같다.</p>
-</div>
-
     
       
     

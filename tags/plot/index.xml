@@ -282,7 +282,7 @@ function (distinct = FALSE)
         c[!duplicated(t(col2rgb(c)))]
     else c
 }
-&amp;lt;bytecode: 0x7f94ec5478c8&amp;gt;
+&amp;lt;bytecode: 0x7fab72d4b0c8&amp;gt;
 &amp;lt;environment: namespace:grDevices&amp;gt;
 &amp;gt; colours
 function (distinct = FALSE) 
@@ -292,7 +292,7 @@ function (distinct = FALSE)
         c[!duplicated(t(col2rgb(c)))]
     else c
 }
-&amp;lt;bytecode: 0x7f94ec5b3820&amp;gt;
+&amp;lt;bytecode: 0x7fab72db8820&amp;gt;
 &amp;lt;environment: namespace:grDevices&amp;gt;
 &amp;gt; length(colors())
 [1] 657
