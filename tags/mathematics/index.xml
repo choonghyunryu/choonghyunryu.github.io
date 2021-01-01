@@ -80,6 +80,161 @@ Figure 5: terrain.colors 팔레트
     </item>
     
     <item>
+      <title>tridokus</title>
+      <link>/gallery/2019-04/tridokus/</link>
+      <pubDate>Sat, 13 Apr 2019 09:59:12 +0800</pubDate>
+      
+      <guid>/gallery/2019-04/tridokus/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;tridokus&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;tridokus&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;스도쿠(sudokus)&lt;/code&gt;라는 보드 게임이 있다. 9 &lt;span class=&#34;math inline&#34;&gt;\(\times\)&lt;/span&gt; 9 칸에서 진행되는 숫자 퍼즐 게임이다.&lt;/p&gt;
+&lt;p&gt;스도쿠를 구성하는 셀(cell)은 총 81셀, 3 &lt;span class=&#34;math inline&#34;&gt;\(\times\)&lt;/span&gt; 3셀 9개로 세분화되며, 지켜야 할 룰은 다음과 같다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;각각의 가로줄(row)과 세로줄(column)에 1~9가 중복 없이 하나씩 들어간다.&lt;/li&gt;
+&lt;li&gt;3 &lt;span class=&#34;math inline&#34;&gt;\(\times\)&lt;/span&gt; 3칸(box) 안에는 1~9가 중복 없이 하나씩 들어간다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;스도쿠에서 각 셀에 할당된 숫자에 색상을 적용하면 제법 보기 좋은 그림이 그려진다. 그리고 각 셀에 중복으로 숫자를 할당하면 더 멋진 그림을 그릴 수 있다. 각 셀에 세개의 숫자를 할당한 &lt;code&gt;트라이도쿠스(tridokus)&lt;/code&gt;를 중심으로 스도쿠의 그림에 빠져 보자.&lt;/p&gt;
+&lt;p&gt;R을 이용해서 몇 개의 작품을 만들어 본다.&lt;/p&gt;
+&lt;div id=&#34;n-sudokus&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;n-sudokus&lt;/h3&gt;
+&lt;p&gt;하나의 셀 안에 3, 5, 7, 9개의 색상을 할당한 3-sudokus, 5-sudokus, 7-sudokus, 9-sudokus의 플롯을 차례로 그려 본다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-1&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_1930_3.png&#34; alt=&#34;3-sudokus&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 1: 3-sudokus
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-2&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_1930_5.png&#34; alt=&#34;5-sudokus&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 2: 5-sudokus
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-3&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_1930_7.png&#34; alt=&#34;7-sudokus&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 3: 7-sudokus
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-4&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_1930_9.png&#34; alt=&#34;9-sudokus&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 4: 9-sudokus
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;colourlovers-palettes로-그린-3-sudokus&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;colourlovers Palettes로 그린 3-sudokus&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;colourlovers 패키지&lt;/code&gt;의 팔레트를 이용해서 몇 개의 플롯을 그려본다. &lt;code&gt;113451&lt;/code&gt;, &lt;code&gt;292482&lt;/code&gt;, &lt;code&gt;482774&lt;/code&gt;, &lt;code&gt;694737&lt;/code&gt;, &lt;code&gt;953498&lt;/code&gt;번 팔레트의 색상으로 출력해 본다. 앞서 그린 n-sudokus들은 &lt;code&gt;1930&lt;/code&gt;번 팔레트 색상이다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-5&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_113451.png&#34; alt=&#34;113451 팔레트&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 5: 113451 팔레트
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-6&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_292482.png&#34; alt=&#34;292482 팔레트&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 6: 292482 팔레트
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-7&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_482774.png&#34; alt=&#34;482774 팔레트&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 7: 482774 팔레트
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-8&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_694737.png&#34; alt=&#34;694737 팔레트&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 8: 694737 팔레트
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-9&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_953498.png&#34; alt=&#34;953498 팔레트&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 9: 953498 팔레트
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;colorbrewer-palettes로-그린-3-sudokus&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;ColorBrewer Palettes로 그린 3-sudokus&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;ColorBrewer 패키지&lt;/code&gt;의 팔레트를 이용해서 몇 개의 플롯을 그려본다. &lt;code&gt;Accent&lt;/code&gt;, &lt;code&gt;Blues&lt;/code&gt;, &lt;code&gt;BrBG&lt;/code&gt; 팔레트의 색상으로 출력해 본다. 앞서 그린 n-sudokus들은 1930번 팔레트 색상이다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-10&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_Accent.png&#34; alt=&#34;Accent 팔레트&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 10: Accent 팔레트
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-11&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_Blue.png&#34; alt=&#34;Blues 팔레트&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 11: Blues 팔레트
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-12&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_BrBG.png&#34; alt=&#34;BrBG 팔레트&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 12: BrBG 팔레트
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;grdevices-palettes로-그린-3-sudokus&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;grDevices Palettes로 그린 3-sudokus&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;grDevices 패키지&lt;/code&gt;에서 지원하는 대표적인 팔레트에 &lt;code&gt;rainbow&lt;/code&gt;, &lt;code&gt;heat.colors&lt;/code&gt;, &lt;code&gt;terrain.colors&lt;/code&gt;, &lt;code&gt;topo.colors&lt;/code&gt;, &lt;code&gt;cm.colors&lt;/code&gt; 팔레트가 있다. 이 중에서 &lt;code&gt;cm.colors&lt;/code&gt; 팔레트와 &lt;code&gt;gray&lt;/code&gt; 팔레트로 n-sudokus를 그려 본다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-13&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_cm.png&#34; alt=&#34;cm.colors 팔레트&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 13: cm.colors 팔레트
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-14&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_gray.png&#34; alt=&#34;gray 팔레트&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 14: gray 팔레트
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;복합-n-sudokus&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;복합 n-sudokus&lt;/h3&gt;
+&lt;p&gt;1~9-sudokus을 랜덤하게 그려서 3 &lt;span class=&#34;math inline&#34;&gt;\(\times\)&lt;/span&gt; 3 n-sudokus로 구성된 그림을 그려 본다. colourlovers의 &lt;code&gt;292482&lt;/code&gt;번 팔레트와 몇 가지의 팔레트를 랜덤하게 섞어 그려 보았다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-15&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_292482_mat.png&#34; alt=&#34;292482 팔레트로 그린 복합 n-sudokus&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 15: 292482 팔레트로 그린 복합 n-sudokus
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-16&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_292482_mat2.png&#34; alt=&#34;몇 개의 팔레트로 그린 복합 n-sudokus&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 16: 몇 개의 팔레트로 그린 복합 n-sudokus
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;참고-리소스&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;참고 리소스&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;아티클 : &lt;a href=&#34;https://fronkonstin.com/2018/06/01/coloring-sudokus/&#34; target=&#34;_blank&#34;&gt;https://fronkonstin.com/2018/06/01/coloring-sudokus/&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;소스 : &lt;a href=&#34;https://github.com/aschinchon/sudokus-colored&#34; target=&#34;_blank&#34;&gt;https://github.com/aschinchon/sudokus-colored&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
       <title>원에 대하여</title>
       <link>/post/2016-01/2016-01-02-circle/</link>
       <pubDate>Sat, 02 Jan 2016 00:00:00 +0000</pubDate>

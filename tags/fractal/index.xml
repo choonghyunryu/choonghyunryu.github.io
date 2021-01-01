@@ -6,5 +6,99 @@
     <description>Recent content in Fractal on Dataholic</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Thu, 04 Apr 2019 21:58:12 +0800</lastBuildDate><atom:link href="/tags/fractal/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>망델브로 세트</title>
+      <link>/gallery/2019-04/mandelbrot/</link>
+      <pubDate>Thu, 04 Apr 2019 21:58:12 +0800</pubDate>
+      
+      <guid>/gallery/2019-04/mandelbrot/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;망델브로-세트&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;망델브로 세트&lt;/h2&gt;
+&lt;p&gt;고교 시절에 일본의 과학 잡지인 &lt;code&gt;Newton&lt;/code&gt;을 번역해서 만든 &lt;code&gt;월간과학&lt;/code&gt;이라는 잡지를 열독한 적이 있다. 그 잡지에서 본 망델브로 세트라는 Fractal 이미지에 매료되었었다. 마치 미술 작품처럼 아름다운 색채의 기하학적 무늬는 아직도 잊지 못하고 있다.&lt;/p&gt;
+&lt;p&gt;R을 이용해서 몇 개의 작품을 만들어 본다.&lt;/p&gt;
+&lt;div id=&#34;rec--0.833-imc-0.2055&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Re(c) = -0.833, Im(c) = 0.2055&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Coordinates of the center: Re(c) = -0.833, Im(c) = 0.2055&lt;/li&gt;
+&lt;li&gt;Color palette: Vaccine&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/gallery/2019-04/mandelbrot_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;70%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;rec--0.833222-imc-0.20690&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Re(c) = -0.833222, Im(c) = 0.20690&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Coordinates of the center: Re(c) = -0.833222, Im(c) = 0.206907&lt;/li&gt;
+&lt;li&gt;Color palette: Spectral&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/gallery/2019-04/mandelbrot_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;70%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;rec--0.7436499-imc-0.131882&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Re(c) = -0.7436499, Im(c) = 0.131882&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Coordinates of the center: Re(c) = -0.7436499, Im(c) = 0.131882&lt;/li&gt;
+&lt;li&gt;Color palette: Heat&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/gallery/2019-04/mandelbrot_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;70%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;rec--0.550-imc-0.480&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Re(c) = -0.550, Im(c) = 0.480&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Coordinates of the center: Re(c) = -0.550, Im(c) = 0.480&lt;/li&gt;
+&lt;li&gt;Color palette: Lava&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/gallery/2019-04/mandelbrot_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;70%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;rec--0.675-imc-0.032&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Re(c) = -0.675, Im(c) = 0.032&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Coordinates of the center: Re(c) = -0.675, Im(c) = 0.032&lt;/li&gt;
+&lt;li&gt;Color palette: Greyscale&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/gallery/2019-04/mandelbrot_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;70%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;rec-0.339-imc-0.573&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Re(c) = 0.339, Im(c) = 0.573&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Coordinates of the center: Re(c) = 0.339, Im(c) = 0.573&lt;/li&gt;
+&lt;li&gt;Color palette: Ice&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/gallery/2019-04/mandelbrot_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;70%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;rec--0.743030-imc-0.126433&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Re(c) = -0.743030, Im(c) = 0.126433&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Coordinates of the center: Re(c) = -0.743030, Im(c) = 0.126433&lt;/li&gt;
+&lt;li&gt;Color palette: Spectral&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/gallery/2019-04/mandelbrot_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;70%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;rec--0.3615-imc--0.634125&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Re(c) = -0.3615, Im(c) = -0.634125&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Coordinates of the center: Re(c) = -0.3615, Im(c) = -0.634125&lt;/li&gt;
+&lt;li&gt;Color palette: BlueOrange&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/gallery/2019-04/mandelbrot_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;70%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;참고-리소스&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;참고 리소스&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;응용 소스 코드 : &lt;a href=&#34;https://github.com/blmoore/mandelbrot&#34; target=&#34;_blank&#34;&gt;https://github.com/blmoore/mandelbrot&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
   </channel>
 </rss>

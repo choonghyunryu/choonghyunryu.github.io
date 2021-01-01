@@ -6,5 +6,556 @@
     <description>Recent content in Galleries on Dataholic</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Thu, 31 Dec 2020 21:02:12 +0800</lastBuildDate><atom:link href="/gallery/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>겸제 정선의 울산바위</title>
+      <link>/gallery/2020-12/woolsan/</link>
+      <pubDate>Thu, 31 Dec 2020 21:02:12 +0800</pubDate>
+      
+      <guid>/gallery/2020-12/woolsan/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;겸제-정선과-진경-산수화&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;겸제 정선과 진경 산수화&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;고등학교 역사 시간에 조선시대 산수화가인 &lt;code&gt;겸제 정선&lt;/code&gt;의 &lt;code&gt;진경산수화(眞景山水畵)&lt;/code&gt;에 대해서 배운 적이 있다. 요즘은 인터넷 검색을 통해서 쉽게 겸제의 작품을 감상할 수 있지만 그 시절은 유면 화가의 작품을 교과서가 아닌 곳에서 쉽게 접할 수 없었다. 나는 아직도 그 시절 교과서에 실린 &lt;code&gt;인왕제색도&lt;/code&gt;의 감동은 아직도 잊지 못한다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;code&gt;CNN(Convolutional Neural Networks)&lt;/code&gt;을 이용한 &lt;code&gt;neural style transfer&lt;/code&gt; 기법으로 겸제의 인왕제색도풍으로 내 카메라 앵글에 잡혔던 울산바위를 수묵화로 바꿔보았다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;울산바위-수묵화&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;울산바위 수묵화&lt;/h2&gt;
+&lt;div id=&#34;울산바위-1&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;울산바위 1&lt;/h3&gt;
+&lt;p&gt;2018년도 봄에 와이프와 울산바위 등반 전, 바로 아래서 울산바위를 바라보다 앵글에 담은 사진이다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/woolsan1_raw.png&#34; width=&#34;65%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;겸재의 붓 터치로 화선지에는 이런 그림이 그려졌을 것이다. 이 날은 구름이 많은 날씨였다. 한국의 수묵화는 여백의 미가 있는지라, 주 대상이 아닌 구름을 여백으로 승화시키지 못했다. 학습을 잘못해서 구름이 봉우리 느낌으로 덧칠해져 있다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/woolsan1.png&#34; width=&#34;65%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;울산바위-2&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;울산바위 2&lt;/h3&gt;
+&lt;p&gt;등반 후 정상부근의 봉우리를 담은 사진이다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/woolsan2_raw.png&#34; width=&#34;50%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;겸재의 붓 터치로 화선지에는 이런 그림이 그려졌을 것이다. 이 그림 역시 구름이 봉우리 느낌으로 덧칠해져 있다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/woolsan2.png&#34; width=&#34;50%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;울산바위-3&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;울산바위 3&lt;/h3&gt;
+&lt;p&gt;울산바위 등반 전, 흔들바위 못 미쳐서 바라본 울산바위를 앵글에 담은 사진이다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/woolsan3_raw.png&#34; width=&#34;65%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;겸재의 붓 터치로 화선지에는 이런 그림이 그려졌을 것이다. 이 그림 역시 구름이 봉우리 느낌으로 덧칠해져 있다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/woolsan3.png&#34; width=&#34;65%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;울산바위-4&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;울산바위 4&lt;/h3&gt;
+&lt;p&gt;2016년도 봄에 작은 아들과 흔들바위에서 울산바위를 바라보며 앵글에 담았다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/woolsan4_raw.png&#34; width=&#34;50%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;겸재의 붓 터치로 화선지에는 이런 그림이 그려졌을 것이다. 앵글에 담긴 풍경에 하늘 여백이 거의 없어 그나마 제대로 각색되어 그려졌다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/woolsan4.png&#34; width=&#34;50%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>tridokus</title>
+      <link>/gallery/2019-04/tridokus/</link>
+      <pubDate>Sat, 13 Apr 2019 09:59:12 +0800</pubDate>
+      
+      <guid>/gallery/2019-04/tridokus/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;tridokus&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;tridokus&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;스도쿠(sudokus)&lt;/code&gt;라는 보드 게임이 있다. 9 &lt;span class=&#34;math inline&#34;&gt;\(\times\)&lt;/span&gt; 9 칸에서 진행되는 숫자 퍼즐 게임이다.&lt;/p&gt;
+&lt;p&gt;스도쿠를 구성하는 셀(cell)은 총 81셀, 3 &lt;span class=&#34;math inline&#34;&gt;\(\times\)&lt;/span&gt; 3셀 9개로 세분화되며, 지켜야 할 룰은 다음과 같다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;각각의 가로줄(row)과 세로줄(column)에 1~9가 중복 없이 하나씩 들어간다.&lt;/li&gt;
+&lt;li&gt;3 &lt;span class=&#34;math inline&#34;&gt;\(\times\)&lt;/span&gt; 3칸(box) 안에는 1~9가 중복 없이 하나씩 들어간다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;스도쿠에서 각 셀에 할당된 숫자에 색상을 적용하면 제법 보기 좋은 그림이 그려진다. 그리고 각 셀에 중복으로 숫자를 할당하면 더 멋진 그림을 그릴 수 있다. 각 셀에 세개의 숫자를 할당한 &lt;code&gt;트라이도쿠스(tridokus)&lt;/code&gt;를 중심으로 스도쿠의 그림에 빠져 보자.&lt;/p&gt;
+&lt;p&gt;R을 이용해서 몇 개의 작품을 만들어 본다.&lt;/p&gt;
+&lt;div id=&#34;n-sudokus&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;n-sudokus&lt;/h3&gt;
+&lt;p&gt;하나의 셀 안에 3, 5, 7, 9개의 색상을 할당한 3-sudokus, 5-sudokus, 7-sudokus, 9-sudokus의 플롯을 차례로 그려 본다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-1&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_1930_3.png&#34; alt=&#34;3-sudokus&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 1: 3-sudokus
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-2&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_1930_5.png&#34; alt=&#34;5-sudokus&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 2: 5-sudokus
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-3&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_1930_7.png&#34; alt=&#34;7-sudokus&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 3: 7-sudokus
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-4&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_1930_9.png&#34; alt=&#34;9-sudokus&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 4: 9-sudokus
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;colourlovers-palettes로-그린-3-sudokus&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;colourlovers Palettes로 그린 3-sudokus&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;colourlovers 패키지&lt;/code&gt;의 팔레트를 이용해서 몇 개의 플롯을 그려본다. &lt;code&gt;113451&lt;/code&gt;, &lt;code&gt;292482&lt;/code&gt;, &lt;code&gt;482774&lt;/code&gt;, &lt;code&gt;694737&lt;/code&gt;, &lt;code&gt;953498&lt;/code&gt;번 팔레트의 색상으로 출력해 본다. 앞서 그린 n-sudokus들은 &lt;code&gt;1930&lt;/code&gt;번 팔레트 색상이다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-5&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_113451.png&#34; alt=&#34;113451 팔레트&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 5: 113451 팔레트
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-6&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_292482.png&#34; alt=&#34;292482 팔레트&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 6: 292482 팔레트
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-7&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_482774.png&#34; alt=&#34;482774 팔레트&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 7: 482774 팔레트
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-8&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_694737.png&#34; alt=&#34;694737 팔레트&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 8: 694737 팔레트
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-9&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_953498.png&#34; alt=&#34;953498 팔레트&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 9: 953498 팔레트
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;colorbrewer-palettes로-그린-3-sudokus&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;ColorBrewer Palettes로 그린 3-sudokus&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;ColorBrewer 패키지&lt;/code&gt;의 팔레트를 이용해서 몇 개의 플롯을 그려본다. &lt;code&gt;Accent&lt;/code&gt;, &lt;code&gt;Blues&lt;/code&gt;, &lt;code&gt;BrBG&lt;/code&gt; 팔레트의 색상으로 출력해 본다. 앞서 그린 n-sudokus들은 1930번 팔레트 색상이다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-10&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_Accent.png&#34; alt=&#34;Accent 팔레트&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 10: Accent 팔레트
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-11&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_Blue.png&#34; alt=&#34;Blues 팔레트&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 11: Blues 팔레트
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-12&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_BrBG.png&#34; alt=&#34;BrBG 팔레트&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 12: BrBG 팔레트
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;grdevices-palettes로-그린-3-sudokus&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;grDevices Palettes로 그린 3-sudokus&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;grDevices 패키지&lt;/code&gt;에서 지원하는 대표적인 팔레트에 &lt;code&gt;rainbow&lt;/code&gt;, &lt;code&gt;heat.colors&lt;/code&gt;, &lt;code&gt;terrain.colors&lt;/code&gt;, &lt;code&gt;topo.colors&lt;/code&gt;, &lt;code&gt;cm.colors&lt;/code&gt; 팔레트가 있다. 이 중에서 &lt;code&gt;cm.colors&lt;/code&gt; 팔레트와 &lt;code&gt;gray&lt;/code&gt; 팔레트로 n-sudokus를 그려 본다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-13&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_cm.png&#34; alt=&#34;cm.colors 팔레트&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 13: cm.colors 팔레트
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-14&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_gray.png&#34; alt=&#34;gray 팔레트&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 14: gray 팔레트
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;복합-n-sudokus&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;복합 n-sudokus&lt;/h3&gt;
+&lt;p&gt;1~9-sudokus을 랜덤하게 그려서 3 &lt;span class=&#34;math inline&#34;&gt;\(\times\)&lt;/span&gt; 3 n-sudokus로 구성된 그림을 그려 본다. colourlovers의 &lt;code&gt;292482&lt;/code&gt;번 팔레트와 몇 가지의 팔레트를 랜덤하게 섞어 그려 보았다.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-15&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_292482_mat.png&#34; alt=&#34;292482 팔레트로 그린 복합 n-sudokus&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 15: 292482 팔레트로 그린 복합 n-sudokus
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-16&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../img/tridoku_292482_mat2.png&#34; alt=&#34;몇 개의 팔레트로 그린 복합 n-sudokus&#34; width=&#34;60%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 16: 몇 개의 팔레트로 그린 복합 n-sudokus
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;참고-리소스&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;참고 리소스&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;아티클 : &lt;a href=&#34;https://fronkonstin.com/2018/06/01/coloring-sudokus/&#34; target=&#34;_blank&#34;&gt;https://fronkonstin.com/2018/06/01/coloring-sudokus/&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;소스 : &lt;a href=&#34;https://github.com/aschinchon/sudokus-colored&#34; target=&#34;_blank&#34;&gt;https://github.com/aschinchon/sudokus-colored&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>neural style transfer</title>
+      <link>/gallery/2019-04/neural_style_transfer/</link>
+      <pubDate>Tue, 09 Apr 2019 23:38:12 +0800</pubDate>
+      
+      <guid>/gallery/2019-04/neural_style_transfer/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;neural-style-transfer&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;neural style transfer&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;Neural Network&lt;/code&gt; 알고리즘으로 사진이나 그림을 변형시키는 기법에 대한 &lt;code&gt;A Neural Algorithm of Artistic Style&lt;/code&gt;이라는 논문이 히트친 적이 있다. 고호의 화풍으로 사진의 변형하여 예술적인 이미지를 만들어내는 것이다.&lt;/p&gt;
+&lt;p&gt;R을 이용해서 몇 개의 작품을 만들어 본다.&lt;/p&gt;
+&lt;div id=&#34;고흐의-기법을-이용한-시각화&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;고흐의 기법을 이용한 시각화&lt;/h3&gt;
+&lt;p&gt;나의 집 베란다에서는 북한산을 조망할 수 있다. 언제인지는 모르지만 사진으로 남긴 북한산의 모습을 고흐의 화풍으로 변형해 보았다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/mauntain.png&#34; width=&#34;65%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;본가 화단에 심어 놓은 붉은색의 튤립을 고흐는 어떻게 해석하였을까?&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/tulip.png&#34; width=&#34;65%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;피카소의-기법을-이용한-시각화&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;피카소의 기법을 이용한 시각화&lt;/h3&gt;
+&lt;p&gt;피카소의 그림은 언제나 난해하다. 아파트의 모습이 희미하게 나타난다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/mauntain2.png&#34; width=&#34;65%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;피카소의 튤립도 난해하다. 몇 군에에서 몇 개의 꽃망울을 발견할 수 있다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/tulip4.png&#34; width=&#34;65%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;뭉크의-기법을-이용한-시각화&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;뭉크의 기법을 이용한 시각화&lt;/h3&gt;
+&lt;p&gt;뭉크의 화풍으로는 북한산에 노을이 진 것 같다. 뭉크의 절규를 모티브로 하였다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/mauntain3.png&#34; width=&#34;65%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;뭉크의 튤립은 제법 붉은 기운이 많이 보인다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/tulip3.png&#34; width=&#34;65%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;가쓰시카-호쿠사이의-기법을-이용한-시각화&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;가쓰시카 호쿠사이의 기법을 이용한 시각화&lt;/h3&gt;
+&lt;p&gt;가쓰시카 호쿠사이의 화풍으로는 북한산에 노을이 진 것 같다. 가쓰시카 호쿠사이의 가나가와 해변의 높은 파도 아래를 모티브로 하였다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/mauntain4.png&#34; width=&#34;65%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;가쓰시카 호쿠사이의 튤립 사이에 파도의 포말이 느껴진다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/tulip2.png&#34; width=&#34;65%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;참고-리소스&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;참고 리소스&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;소스 : &lt;a href=&#34;https://github.com/rstudio/keras/blob/master/vignettes/examples/neural_style_transfer.R&#34; target=&#34;_blank&#34;&gt;https://github.com/rstudio/keras/blob/master/vignettes/examples/neural_style_transfer.R&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>망델브로 세트</title>
+      <link>/gallery/2019-04/mandelbrot/</link>
+      <pubDate>Thu, 04 Apr 2019 21:58:12 +0800</pubDate>
+      
+      <guid>/gallery/2019-04/mandelbrot/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;망델브로-세트&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;망델브로 세트&lt;/h2&gt;
+&lt;p&gt;고교 시절에 일본의 과학 잡지인 &lt;code&gt;Newton&lt;/code&gt;을 번역해서 만든 &lt;code&gt;월간과학&lt;/code&gt;이라는 잡지를 열독한 적이 있다. 그 잡지에서 본 망델브로 세트라는 Fractal 이미지에 매료되었었다. 마치 미술 작품처럼 아름다운 색채의 기하학적 무늬는 아직도 잊지 못하고 있다.&lt;/p&gt;
+&lt;p&gt;R을 이용해서 몇 개의 작품을 만들어 본다.&lt;/p&gt;
+&lt;div id=&#34;rec--0.833-imc-0.2055&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Re(c) = -0.833, Im(c) = 0.2055&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Coordinates of the center: Re(c) = -0.833, Im(c) = 0.2055&lt;/li&gt;
+&lt;li&gt;Color palette: Vaccine&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/gallery/2019-04/mandelbrot_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;70%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;rec--0.833222-imc-0.20690&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Re(c) = -0.833222, Im(c) = 0.20690&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Coordinates of the center: Re(c) = -0.833222, Im(c) = 0.206907&lt;/li&gt;
+&lt;li&gt;Color palette: Spectral&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/gallery/2019-04/mandelbrot_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;70%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;rec--0.7436499-imc-0.131882&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Re(c) = -0.7436499, Im(c) = 0.131882&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Coordinates of the center: Re(c) = -0.7436499, Im(c) = 0.131882&lt;/li&gt;
+&lt;li&gt;Color palette: Heat&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/gallery/2019-04/mandelbrot_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;70%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;rec--0.550-imc-0.480&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Re(c) = -0.550, Im(c) = 0.480&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Coordinates of the center: Re(c) = -0.550, Im(c) = 0.480&lt;/li&gt;
+&lt;li&gt;Color palette: Lava&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/gallery/2019-04/mandelbrot_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;70%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;rec--0.675-imc-0.032&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Re(c) = -0.675, Im(c) = 0.032&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Coordinates of the center: Re(c) = -0.675, Im(c) = 0.032&lt;/li&gt;
+&lt;li&gt;Color palette: Greyscale&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/gallery/2019-04/mandelbrot_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;70%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;rec-0.339-imc-0.573&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Re(c) = 0.339, Im(c) = 0.573&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Coordinates of the center: Re(c) = 0.339, Im(c) = 0.573&lt;/li&gt;
+&lt;li&gt;Color palette: Ice&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/gallery/2019-04/mandelbrot_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;70%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;rec--0.743030-imc-0.126433&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Re(c) = -0.743030, Im(c) = 0.126433&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Coordinates of the center: Re(c) = -0.743030, Im(c) = 0.126433&lt;/li&gt;
+&lt;li&gt;Color palette: Spectral&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/gallery/2019-04/mandelbrot_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;70%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;rec--0.3615-imc--0.634125&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Re(c) = -0.3615, Im(c) = -0.634125&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Coordinates of the center: Re(c) = -0.3615, Im(c) = -0.634125&lt;/li&gt;
+&lt;li&gt;Color palette: BlueOrange&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/gallery/2019-04/mandelbrot_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;70%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;참고-리소스&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;참고 리소스&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;응용 소스 코드 : &lt;a href=&#34;https://github.com/blmoore/mandelbrot&#34; target=&#34;_blank&#34;&gt;https://github.com/blmoore/mandelbrot&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>고향집 풍경, 텃밭과 담장 밑의 숨소리</title>
+      <link>/gallery/2018-09/hongchun/</link>
+      <pubDate>Sun, 23 Sep 2018 21:58:12 +0800</pubDate>
+      
+      <guid>/gallery/2018-09/hongchun/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;고향집의-식물들&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;고향집의 식물들&lt;/h2&gt;
+&lt;p&gt;강원도 홍천의 본가는 변두리 시골 마을에 있다.
+아무 생각없이 아침 마실길에 카메라에 식물들을 담아 보았다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;수줍은-식물의-모습들&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;수줍은 식물의 모습들&lt;/h2&gt;
+&lt;p&gt;몇 개의 사진을 공유해 본다.&lt;/p&gt;
+&lt;div id=&#34;무궁화&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;무궁화&lt;/h3&gt;
+&lt;p&gt;흰색의 무궁화가 나랏꽃이라 한다. 강원도 홍천이 무궁화 고장이라지만, 내 어릴적에도 동네에는 몇 그루 없었던 기억이 난다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/IMG_1147.jpg&#34; width=&#34;50%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;김장배추&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;김장배추&lt;/h3&gt;
+&lt;p&gt;아직은 축위가 오지 않은 초가을이라 포기가 작고, 묶어주지 않아 포기들이 넓게 벌어져 있다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/IMG_1148.jpg&#34; width=&#34;50%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;들깨&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;들깨&lt;/h3&gt;
+&lt;p&gt;열매는 열었으나, 익지 않은 들깨. 깻잎 향이 콧등을 스치는 것 같다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/IMG_1149.jpg&#34; width=&#34;50%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;대파&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;대파&lt;/h3&gt;
+&lt;p&gt;김장을 준비하는 텃밭에는 대파 한 고랑이 든실하게 자라 있었다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/IMG_1150.jpg&#34; width=&#34;50%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;가지&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;가지&lt;/h3&gt;
+&lt;p&gt;어릴적에는 가지는 심지는 않았다. 딱히 가지로 만든 반찬을 먹고 자란 기억도 없다. 앞마당에 연결된 텃밭에 가지가 몇 개 열려 있었다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/IMG_1154.jpg&#34; width=&#34;50%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;호박&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;호박&lt;/h3&gt;
+&lt;p&gt;철이 지나서 호박은 열리지 않았거, 때늦은 꽃망울이 귀여워서 앵글에 담아 보았다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/IMG_1155.jpg&#34; width=&#34;50%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;더덕&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;더덕&lt;/h3&gt;
+&lt;p&gt;호롱같은 더덕꽃. 더덕 덩굴 말아올린 기둥 가까이서 꽃망울을 터뜨렸다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/IMG_1161.jpg&#34; width=&#34;50%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;대추&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;대추&lt;/h3&gt;
+&lt;p&gt;어릴적 집 울타리 안에 맛난 과실나무가 별로 없었다. 그래도 언제나 가을에 열매를 안겨주었던 대추나무는 친근한 과실수였다. 해가 지나면서 죽고, 나고 또 다른 나무 그루로 반가히 맞아주는 대추나무에 열매가 제법 열려 있었다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/IMG_1153.jpg&#34; width=&#34;50%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;채송화&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;채송화&lt;/h3&gt;
+&lt;p&gt;역시 철지난 채송화가 수줍제 꽃망을을 터뜨리고 있었다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/IMG_1158.jpg&#34; width=&#34;50%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;나팔꽃&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;나팔꽃&lt;/h3&gt;
+&lt;p&gt;보라색 나팔꽃, 당장을 기어올라 꽃망울을 수줍게 내밀고 있다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/IMG_1159.jpg&#34; width=&#34;50%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;낑깡&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;낑깡&lt;/h3&gt;
+&lt;p&gt;십여년 전에 어머니가 분양받아온 낑깡이 홍천에서도 자라고 있었다. 방에 들여 놓은 화분을 마당에 내놓았는데, 지나가는 길에 앵글에 잡히고 말았다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/IMG_1160.jpg&#34; width=&#34;50%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;그외의-친구들&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;그외의 친구들&lt;/h3&gt;
+&lt;p&gt;이리 저리 거닐다 몇몇 친구를 앵글에 담았다.&lt;/p&gt;
+&lt;p&gt;철지난 다알리아 꽃이 피었다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/IMG_1151.jpg&#34; width=&#34;50%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;이름 모를 하얀 꽃을 담고,
+&lt;img src=&#34;../img/IMG_1152.jpg&#34; width=&#34;50%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;이름 모를 관엽식물도 눈에 들어 온다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/IMG_1156.jpg&#34; width=&#34;50%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>grid package로 그림 그리기</title>
+      <link>/gallery/2016-01/2016-01-02-grid_picture/</link>
+      <pubDate>Sat, 02 Jan 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/gallery/2016-01/2016-01-02-grid_picture/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;오클랜드 대학교의 Paul Murrell은 &lt;code&gt;grid&lt;/code&gt;라는 이름의 그래픽 라이브러리(package)를 개발했다. 이 라이브러리가 바로 &lt;code&gt;lattice&lt;/code&gt;와 &lt;code&gt;ggplot2&lt;/code&gt; package의 토대가 된다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;grid&lt;/code&gt; package를 이용해여 멋진 풍경을 그려보자. &lt;strong&gt;‘R로도 그림을 그릴 수 있겠구나’&lt;/strong&gt;하는 흥미차원의 시도다.&lt;/p&gt;
+&lt;p&gt;먼저 야경을 그려보고, 한 낮의 풍경을 그려보겠다. 동심으로 돌아가 하얀 스케치북에 그레파스를 이용해서 산도 그리고, 달고 그리고, 별과 해도 그려보자. 밤의 그림은 Paul Murrell가 그렸고, 필자가 Paul Murrell의 스케치북과 그레파스를 빌려서 모사해보겠다. 해가 중천에 걸린 여름 산은 녹음이 우거져 있다.&lt;/p&gt;
+&lt;div id=&#34;r로-그린-밤-하늘의-풍경&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;R로 그린 밤 하늘의 풍경&lt;/h3&gt;
+&lt;p&gt;아마 Paul Murrell는 검은색과 회색 크레파스가 다 떨어졌을 것이고, 필자는 하늘색 크레파스가 다 달아 없어졌다. Paul Murrell이 그린 밤 하늘의 풍경이다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/gallery/2016-01/2016-01-02-grid_picture_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;75%&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;r로-그린-대낮의-풍경&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;R로 그린 대낮의 풍경&lt;/h3&gt;
+&lt;p&gt;이번에는 낮의 풍경을 그려보자. 파란 하늘에 노란 태양이 떠 있는 그림이다.
+Paul Murrell 그림을 응용해서 그려 보았다. 산을 그리는 로직은 Paul Murrell 그린 밤하늘을 것에 색상만 바꾸었다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/gallery/2016-01/2016-01-02-grid_picture_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;75%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;구름 한 점 없는 맑은 날이다. 소풍가기 딱 좋은 날인 것 같다.&lt;/p&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>메이다이닝, 시크릿 가든</title>
+      <link>/gallery/2014-10/secret/</link>
+      <pubDate>Fri, 24 Oct 2014 21:58:12 +0800</pubDate>
+      
+      <guid>/gallery/2014-10/secret/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;메이-다이닝&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;메이 다이닝&lt;/h2&gt;
+&lt;p&gt;도봉구에 있는 메이다이닝이라는 레스토랑에 두어 번 다녀왔다.
+음식보다는 &lt;code&gt;시크릿가든&lt;/code&gt;이라는 야외 정원이 아름다운 곳이다.
+반송과 바오밥 나무, 그리고 가을에 방문하면 잘 익은 몇 개의 모과도 얻어올 수 있는 곳이다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;시크릿-가든&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;시크릿 가든&lt;/h2&gt;
+&lt;p&gt;몇 개의 사진을 공유해 본다.&lt;/p&gt;
+&lt;div id=&#34;반송&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;반송&lt;/h3&gt;
+&lt;p&gt;멀리서 바라본 시크릿 가든. 멀리 도봉산도 보인다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/IMG_1159.jpeg&#34; width=&#34;65%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;반송-1&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;반송&lt;/h3&gt;
+&lt;p&gt;시크릿 가든에는 반송이 유명하다. 마치 반원 모양처럼 생겼다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/IMG_1180.jpeg&#34; width=&#34;65%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;소나무-군락&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;소나무 군락&lt;/h3&gt;
+&lt;p&gt;소나무가 제법 아름답다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/IMG_1191.jpeg&#34; width=&#34;65%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/IMG_1181.jpeg&#34; width=&#34;65%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;바오밥나무&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;바오밥나무&lt;/h3&gt;
+&lt;p&gt;바오밥나무도 볼 수 있다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/IMG_1173.jpeg&#34; width=&#34;65%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;모과나무&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;모과나무&lt;/h3&gt;
+&lt;p&gt;모과나무도 볼 수 있다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/IMG_1176.jpeg&#34; width=&#34;65%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;근처의-산등성&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;근처의 산등성&lt;/h3&gt;
+&lt;p&gt;근처의 산등성으로 산책을 하다가, 이름 모를 나무의 군락을 보다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/IMG_1190.jpeg&#34; width=&#34;65%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
   </channel>
 </rss>
