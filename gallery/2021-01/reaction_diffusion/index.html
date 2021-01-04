@@ -195,9 +195,19 @@
 <p>Gray-Scott 알고리즘의 방정식은 다음과 같다.</p>
 <p><span class="math inline">\(\frac{\partial u}{\partial t} = d_u \triangledown^2 u + uv^2 + F(1 - u)\)</span></p>
 <p><span class="math inline">\(\frac{\partial v}{\partial t} = d_v \triangledown^2 v + uv^2 - (F + k)v\)</span></p>
-<p>위 방정식을 이용해서 Gray-Scott 모델은 2 차원 그리드에서 두 물질 A와 B의 진화를 시뮬레이션합니다.</p>
-<p><span class="math inline">\(A&#39; = A + (D_A \triangledown^2 A - AB^2 + F(1 - A)) \vartriangle t\)</span></p>
-<p><span class="math inline">\(B&#39; = B + (D_B \triangledown^2 B + AB^2 + (k + F)B) \vartriangle t\)</span></p>
+<p>위 방정식을 이용해서 Gray-Scott 모델은 2 차원 그리드에서 두 물질 A와 B의 진화를 시뮬레이션한다.</p>
+<p><span class="math inline">\(A&#39; = A + (D_A \triangledown^2 A - AB^2 + F(1 - A)) \vartriangle{t}\)</span></p>
+<p><span class="math inline">\(B&#39; = B + (D_B \triangledown^2 B + AB^2 + (k + F)B) \vartriangle{t}\)</span></p>
+<ul>
+<li>A, B : matrix</li>
+<li><span class="math inline">\(A&#39;, B&#39;\)</span> : matrix <span class="math inline">\(\vartriangle{t}\)</span> 경과 후의 A, B</li>
+<li><span class="math inline">\(D_A\)</span> : Feed rate. feed 속도의 상수</li>
+<li><span class="math inline">\(D_B\)</span> : Kill rate. kill 속도의 상수. D_A의 값이 D_B의 값보다 커야 한다.</li>
+<li><span class="math inline">\(\triangledown^2\)</span> : Laplacion. 다음의 행렬을 이용한다.
+<ul>
+<li><span class="math inline">\(Laplacion = \begin{bmatrix} 0.05 &amp; 0.2 &amp; 0.05 \\ 0.2 &amp; -1 &amp; 0.2 \\ 0.05 &amp; 2 &amp; 0.05 \end{bmatrix}\)</span></li>
+</ul></li>
+</ul>
 </div>
 <div id="반응-확산-이미지" class="section level2">
 <h2>반응 확산 이미지</h2>
@@ -206,7 +216,7 @@
 <ul>
 <li>Parameters
 <ul>
-<li>pixel : 400 <span class="math inline">\(\times\)</span> 400</li>
+<li>A, B의 차원 : 400 <span class="math inline">\(\times\)</span> 400</li>
 <li>A : all cell is 1.</li>
 <li>B : random (0: 99%, 1: 1%)</li>
 <li><span class="math inline">\(D_A\)</span> : 1</li>
@@ -224,7 +234,7 @@
 <ul>
 <li>Parameters
 <ul>
-<li>pixel : 400 <span class="math inline">\(\times\)</span> 400</li>
+<li>A, B의 차원 : 400 <span class="math inline">\(\times\)</span> 400</li>
 <li>A : all cell is 1.</li>
 <li>B : random (0: 99%, 1: 1%)</li>
 <li><span class="math inline">\(D_A\)</span> : 1</li>
@@ -242,7 +252,7 @@
 <ul>
 <li>Parameters
 <ul>
-<li>pixel : 400 <span class="math inline">\(\times\)</span> 400</li>
+<li>A, B의 차원 : 400 <span class="math inline">\(\times\)</span> 400</li>
 <li>A : all cell is 1.</li>
 <li>B : random (0: 99%, 1: 1%)</li>
 <li><span class="math inline">\(D_A\)</span> : 1</li>
@@ -260,7 +270,7 @@
 <ul>
 <li>Parameters
 <ul>
-<li>pixel : 640 <span class="math inline">\(\times\)</span> 640</li>
+<li>A, B의 차원 : 640 <span class="math inline">\(\times\)</span> 640</li>
 <li>A : all cell is 1.</li>
 <li>B : all cell is 0, but center 16 cell is 1.</li>
 <li><span class="math inline">\(D_A\)</span> : 1</li>
@@ -273,6 +283,21 @@
 </ul>
 <p><img src="../img/RD_A1_B0.5_F0.037_K0.06_P640_I5000.png" width="65%" style="display: block; margin: auto;" /></p>
 </div>
+</div>
+<div id="참고-리소스" class="section level2">
+<h2>참고 리소스</h2>
+<ul>
+<li>아티클 :
+<ul>
+<li><a href="https://www.karlsims.com/rd.html" target="_blank">https://www.karlsims.com/rd.html</a></li>
+<li><a href="http://mrob.com/pub/comp/xmorphia/index.html" target="_blank">http://mrob.com/pub/comp/xmorphia/index.html</a><br />
+</li>
+</ul></li>
+<li>소스 :
+<ul>
+<li><a href="https://github.com/aschinchon/reaction-diffusion" target="_blank">https://github.com/aschinchon/reaction-diffusion</a></li>
+</ul></li>
+</ul>
 </div>
 
     

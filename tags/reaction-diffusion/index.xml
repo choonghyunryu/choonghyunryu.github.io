@@ -31,9 +31,19 @@
 &lt;p&gt;Gray-Scott 알고리즘의 방정식은 다음과 같다.&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(\frac{\partial u}{\partial t} = d_u \triangledown^2 u + uv^2 + F(1 - u)\)&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(\frac{\partial v}{\partial t} = d_v \triangledown^2 v + uv^2 - (F + k)v\)&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;위 방정식을 이용해서 Gray-Scott 모델은 2 차원 그리드에서 두 물질 A와 B의 진화를 시뮬레이션합니다.&lt;/p&gt;
-&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(A&amp;#39; = A + (D_A \triangledown^2 A - AB^2 + F(1 - A)) \vartriangle t\)&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(B&amp;#39; = B + (D_B \triangledown^2 B + AB^2 + (k + F)B) \vartriangle t\)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;위 방정식을 이용해서 Gray-Scott 모델은 2 차원 그리드에서 두 물질 A와 B의 진화를 시뮬레이션한다.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(A&amp;#39; = A + (D_A \triangledown^2 A - AB^2 + F(1 - A)) \vartriangle{t}\)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(B&amp;#39; = B + (D_B \triangledown^2 B + AB^2 + (k + F)B) \vartriangle{t}\)&lt;/span&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A, B : matrix&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(A&amp;#39;, B&amp;#39;\)&lt;/span&gt; : matrix &lt;span class=&#34;math inline&#34;&gt;\(\vartriangle{t}\)&lt;/span&gt; 경과 후의 A, B&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(D_A\)&lt;/span&gt; : Feed rate. feed 속도의 상수&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(D_B\)&lt;/span&gt; : Kill rate. kill 속도의 상수. D_A의 값이 D_B의 값보다 커야 한다.&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(\triangledown^2\)&lt;/span&gt; : Laplacion. 다음의 행렬을 이용한다.
+&lt;ul&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(Laplacion = \begin{bmatrix} 0.05 &amp;amp; 0.2 &amp;amp; 0.05 \\ 0.2 &amp;amp; -1 &amp;amp; 0.2 \\ 0.05 &amp;amp; 2 &amp;amp; 0.05 \end{bmatrix}\)&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;/div&gt;
 &lt;div id=&#34;반응-확산-이미지&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;반응 확산 이미지&lt;/h2&gt;
@@ -42,7 +52,7 @@
 &lt;ul&gt;
 &lt;li&gt;Parameters
 &lt;ul&gt;
-&lt;li&gt;pixel : 400 &lt;span class=&#34;math inline&#34;&gt;\(\times\)&lt;/span&gt; 400&lt;/li&gt;
+&lt;li&gt;A, B의 차원 : 400 &lt;span class=&#34;math inline&#34;&gt;\(\times\)&lt;/span&gt; 400&lt;/li&gt;
 &lt;li&gt;A : all cell is 1.&lt;/li&gt;
 &lt;li&gt;B : random (0: 99%, 1: 1%)&lt;/li&gt;
 &lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(D_A\)&lt;/span&gt; : 1&lt;/li&gt;
@@ -60,7 +70,7 @@
 &lt;ul&gt;
 &lt;li&gt;Parameters
 &lt;ul&gt;
-&lt;li&gt;pixel : 400 &lt;span class=&#34;math inline&#34;&gt;\(\times\)&lt;/span&gt; 400&lt;/li&gt;
+&lt;li&gt;A, B의 차원 : 400 &lt;span class=&#34;math inline&#34;&gt;\(\times\)&lt;/span&gt; 400&lt;/li&gt;
 &lt;li&gt;A : all cell is 1.&lt;/li&gt;
 &lt;li&gt;B : random (0: 99%, 1: 1%)&lt;/li&gt;
 &lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(D_A\)&lt;/span&gt; : 1&lt;/li&gt;
@@ -78,7 +88,7 @@
 &lt;ul&gt;
 &lt;li&gt;Parameters
 &lt;ul&gt;
-&lt;li&gt;pixel : 400 &lt;span class=&#34;math inline&#34;&gt;\(\times\)&lt;/span&gt; 400&lt;/li&gt;
+&lt;li&gt;A, B의 차원 : 400 &lt;span class=&#34;math inline&#34;&gt;\(\times\)&lt;/span&gt; 400&lt;/li&gt;
 &lt;li&gt;A : all cell is 1.&lt;/li&gt;
 &lt;li&gt;B : random (0: 99%, 1: 1%)&lt;/li&gt;
 &lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(D_A\)&lt;/span&gt; : 1&lt;/li&gt;
@@ -96,7 +106,7 @@
 &lt;ul&gt;
 &lt;li&gt;Parameters
 &lt;ul&gt;
-&lt;li&gt;pixel : 640 &lt;span class=&#34;math inline&#34;&gt;\(\times\)&lt;/span&gt; 640&lt;/li&gt;
+&lt;li&gt;A, B의 차원 : 640 &lt;span class=&#34;math inline&#34;&gt;\(\times\)&lt;/span&gt; 640&lt;/li&gt;
 &lt;li&gt;A : all cell is 1.&lt;/li&gt;
 &lt;li&gt;B : all cell is 0, but center 16 cell is 1.&lt;/li&gt;
 &lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(D_A\)&lt;/span&gt; : 1&lt;/li&gt;
@@ -109,6 +119,21 @@
 &lt;/ul&gt;
 &lt;p&gt;&lt;img src=&#34;../img/RD_A1_B0.5_F0.037_K0.06_P640_I5000.png&#34; width=&#34;65%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;참고-리소스&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;참고 리소스&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;아티클 :
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.karlsims.com/rd.html&#34; target=&#34;_blank&#34;&gt;https://www.karlsims.com/rd.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://mrob.com/pub/comp/xmorphia/index.html&#34; target=&#34;_blank&#34;&gt;http://mrob.com/pub/comp/xmorphia/index.html&lt;/a&gt;&lt;br /&gt;
+&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;소스 :
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/aschinchon/reaction-diffusion&#34; target=&#34;_blank&#34;&gt;https://github.com/aschinchon/reaction-diffusion&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;/div&gt;
 
         
