@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>RMeCab on Dataholic</title>
+    <link>/tags/rmecab/</link>
+    <description>Recent content in RMeCab on Dataholic</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 05 Jan 2021 17:09:12 +0800</lastBuildDate><atom:link href="/tags/rmecab/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mecab으로 한글 띄어쓰기 검사기 만들기</title>
+      <link>/post/2021-01/morpheme/</link>
+      <pubDate>Tue, 05 Jan 2021 17:09:12 +0800</pubDate>
+      
+      <guid>/post/2021-01/morpheme/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;다룰-이야기&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;다룰 이야기&lt;/h2&gt;
+&lt;p&gt;한글 띄어쓰기는 정말 어려운 작업이다. 한글은 영어처럼 독립된 단어 기반의 언어가 아니라 조사, 접두어, 접미어 등이 결합되어 구현되기 때문에 정확한 띄어쓰기 구사를 장담하기 어렵다. 그래서 여러 맞춤법 검사 엔진이 개발되어 배포되거나, 포탈 등의 채널에서 서비스로 제공되고 있다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;오늘은 포털 등의 전문적인 띄어쓰기 검사 엔진보다는 못하지만, 제법 쓸만한 띄어쓰기 검사기의 프로토타입을 소개한다. 텍스트 분석을 위해서, 다들 형태소 분석기 하나 정도는 애용하고 있을 것이다. 개인적으로는 Mecab 형태소 분석기를 애용하고 있는데, 이를 이용해서 띄어쓰기 검사를 수행하는 R 함수를 정의하고자 한다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div id=&#34;mecab&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Mecab&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;Mecab&lt;/code&gt; 형태소 분석기는 일본에서 만든 오픈소스 형태소 분석기다. 검색 엔진에 사용하기 위해서 만들어졌으며, 특정 언어에 국한되지 않고 범용적으로 설계되었기 때문에 한글을 지원하는 &lt;code&gt;은전한닢&lt;/code&gt;이라는 오픈소스 프로젝트로 한글화되어 사용되고 있다.&lt;/p&gt;
+&lt;p&gt;이 형태소 분석기는 형태소 분석의 속도도 빠르고 성능도 나쁘지 않다. 무엇보다도 R에서도 Mecab의 사용을 지원하는 &lt;code&gt;RMeCab&lt;/code&gt; 패키지(이 패키지도 일본에서 개발되었음)가 일찌감치 공개되었기 때문에 Mecab 형태소 분석기를 사용하고 있는 것이다. 즉, Mecab &amp;lt;- 은전한닢 &amp;lt;- RMeCab의 구조로 형태소 분석을 수행하고 있다.&lt;/p&gt;
+&lt;p&gt;과거에는 Mecab이 MS-Windows를 지원하지 않았는데, 최근에는 MS-Windows에서도 Mecab을 사용할 수 있는 방법이 인터넷에 공유되고 있으니, MS-Windows 환경의 사용자도 Mecab 형태소 분석기 사용을 고려해보는 것을 추천한다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;한글-띄어쓰기-검사기-만들기&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;한글 띄어쓰기 검사기 만들기&lt;/h2&gt;
+&lt;div id=&#34;사용자-정의함수-만들기&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;사용자 정의함수 만들기&lt;/h3&gt;
+&lt;p&gt;다음처럼 간단하게 한글 띄어쓰기 검사기를 만들 수 있다. 너무 간단해서 의아하게 생각할 수도 있겠다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;getSpacing &amp;lt;- function(x) {
+  mor &amp;lt;- unlist(RMeCab::RMeCabC(x))
+
+  ## 조사/어미/접미사/마침표,물음표,느낌표,컴마
+  idx &amp;lt;- grep(&amp;quot;^J|^E|^XS|SF|SE|NNBC|SC|VCP&amp;quot;, names(mor))
+
+  for (i in rev(idx)) {
+    mor[i-1] &amp;lt;- paste(mor[i-1], mor[i], sep = &amp;quot;&amp;quot;)
+  }
+
+  mor &amp;lt;- mor[-idx]
+
+  paste(mor, collapse = &amp;quot; &amp;quot;)
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;개념은 간단하다. RMeCab은 검색엔진에서의 활용을 목적으로 만들어졌기 때문에, 한글 형태소 품사(Part Of Speech, POS) 태그에서&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;다른 형태소 분석이 보다 품사를 좀더 세밀하게 분해하는 특징이 있다.&lt;/li&gt;
+&lt;li&gt;원문을 분해할 때, 특정 품사의 음절을 자음과 모음을 분리하지 않는다.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;띄어쓰기가 전혀 없는, 한 어절로 만든 문장에서 잘 작동한다.&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;그래서 나누어진 토큰을 공백으로 묶어줄 때 조사, 어미, 문장 기호(마침표, 물음표, 느낌표 등)은 공백을 주지 않고 앞의 토큰에 붙여주면 된다.&lt;/p&gt;
+&lt;p&gt;물론 프로토타이핑으로 예외 처리 로직이 없기 때문에 100% 정확하지는 않지만 기대 이상의 성능을 보여준다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;테스트-데이터&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;테스트 데이터&lt;/h3&gt;
+&lt;p&gt;띄어쓰기 검사기로 조회해서, 네이버의 맞춤법 검사기에 띄어쓰기 검사도 포함되었음을 소개하는 포스트를 읽었다. 그 포스트의 본문 중 다음과 같은 일부 문장을 테스트 데이터로 가져왔다.&lt;/p&gt;
+&lt;p&gt;출처 : &lt;a href=&#34;https://overthink.tistory.com/314&#34; class=&#34;uri&#34;&gt;https://overthink.tistory.com/314&lt;/a&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;우리는 평소 타이핑을 하게 될 일이 굉장히 많이 있습니다.
+취준생분들이라면 자소서를 작성하실 때의 경우가 있죠.
+또한 블로그를 작성하시거나 업무상의 연락으로 메일을 작성할 때가 있습니다.
+이럴 때에 맞춤법 또는 띄어쓰기가 굉장히 신경이 쓰이곤 합니다.
+네이버에서는 간단하게 띄어쓰기를 검사할 수 있는 방법이 있습니다.&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;이 문장을 네이버 맞춤법 검사에 넣어보니 띄어쓰기가 올바르게 되어 있음을 알 수 있다. 다만 &lt;code&gt;취준생분들이라면&lt;/code&gt;이 표준어가 아님을 알려준다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/naver_01.png&#34; width=&#34;60%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;phrase &amp;lt;- &amp;quot;우리는 평소 타이핑을 하게 될 일이 굉장히 많이 있습니다.
+취준생분들이라면 자소서를 작성하실 때의 경우가 있죠.
+또한 블로그를 작성하시거나 업무상의 연락으로 메일을 작성할 때가 있습니다.
+이럴 때에 맞춤법 또는 띄어쓰기가 굉장히 신경이 쓰이곤 합니다.
+네이버에서는 간단하게 띄어쓰기를 검사할 수 있는 방법이 있습니다.&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Mecab의 품사 태깅 결과는 다음과 같다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;unlist(RMeCab::RMeCabC(phrase))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##         NP         JX        NNG        NNG        JKO         VV         EC 
+##     &amp;quot;우리&amp;quot;       &amp;quot;는&amp;quot;     &amp;quot;평소&amp;quot;   &amp;quot;타이핑&amp;quot;       &amp;quot;을&amp;quot;       &amp;quot;하&amp;quot;       &amp;quot;게&amp;quot; 
+##     VV+ETM        NNG        JKS        MAG        MAG         VA         EF 
+##       &amp;quot;될&amp;quot;       &amp;quot;일&amp;quot;       &amp;quot;이&amp;quot;   &amp;quot;굉장히&amp;quot;     &amp;quot;많이&amp;quot;       &amp;quot;있&amp;quot;   &amp;quot;습니다&amp;quot; 
+##         SF        NNG        XSN        XSN        VCP         EC        NNG 
+##        &amp;quot;.&amp;quot;   &amp;quot;취준생&amp;quot;       &amp;quot;분&amp;quot;       &amp;quot;들&amp;quot;       &amp;quot;이&amp;quot;     &amp;quot;라면&amp;quot;   &amp;quot;자소서&amp;quot; 
+##        JKO        NNG        XSV     EP+ETM        NNG        JKG        NNG 
+##       &amp;quot;를&amp;quot;     &amp;quot;작성&amp;quot;       &amp;quot;하&amp;quot;       &amp;quot;실&amp;quot;       &amp;quot;때&amp;quot;       &amp;quot;의&amp;quot;     &amp;quot;경우&amp;quot; 
+##        JKS         VA         EF         SF        MAJ        NNG        JKO 
+##       &amp;quot;가&amp;quot;       &amp;quot;있&amp;quot;       &amp;quot;죠&amp;quot;        &amp;quot;.&amp;quot;     &amp;quot;또한&amp;quot;   &amp;quot;블로그&amp;quot;       &amp;quot;를&amp;quot; 
+##        NNG        XSV         EP         EC        NNG        XSN        JKG 
+##     &amp;quot;작성&amp;quot;       &amp;quot;하&amp;quot;       &amp;quot;시&amp;quot;     &amp;quot;거나&amp;quot;     &amp;quot;업무&amp;quot;       &amp;quot;상&amp;quot;       &amp;quot;의&amp;quot; 
+##        NNG        JKB        NNG        JKO        NNG    XSV+ETM        NNG 
+##     &amp;quot;연락&amp;quot;     &amp;quot;으로&amp;quot;     &amp;quot;메일&amp;quot;       &amp;quot;을&amp;quot;     &amp;quot;작성&amp;quot;       &amp;quot;할&amp;quot;       &amp;quot;때&amp;quot; 
+##        JKS         VA         EF         SF     VA+ETM        NNG        JKB 
+##       &amp;quot;가&amp;quot;       &amp;quot;있&amp;quot;   &amp;quot;습니다&amp;quot;        &amp;quot;.&amp;quot;     &amp;quot;이럴&amp;quot;       &amp;quot;때&amp;quot;       &amp;quot;에&amp;quot; 
+##        NNG        MAJ        NNG        JKS        MAG        NNG        JKS 
+##   &amp;quot;맞춤법&amp;quot;     &amp;quot;또는&amp;quot; &amp;quot;띄어쓰기&amp;quot;       &amp;quot;가&amp;quot;   &amp;quot;굉장히&amp;quot;     &amp;quot;신경&amp;quot;       &amp;quot;이&amp;quot; 
+##         VV         EC      VX+EF         SF        NNP        JKB         JX 
+##     &amp;quot;쓰이&amp;quot;       &amp;quot;곤&amp;quot;   &amp;quot;합니다&amp;quot;        &amp;quot;.&amp;quot;   &amp;quot;네이버&amp;quot;     &amp;quot;에서&amp;quot;       &amp;quot;는&amp;quot; 
+##         XR        XSA         EC        NNG        JKO        NNG    XSV+ETM 
+##     &amp;quot;간단&amp;quot;       &amp;quot;하&amp;quot;       &amp;quot;게&amp;quot; &amp;quot;띄어쓰기&amp;quot;       &amp;quot;를&amp;quot;     &amp;quot;검사&amp;quot;       &amp;quot;할&amp;quot; 
+##        NNB         VV        ETM        NNG        JKS         VA         EF 
+##       &amp;quot;수&amp;quot;       &amp;quot;있&amp;quot;       &amp;quot;는&amp;quot;     &amp;quot;방법&amp;quot;       &amp;quot;이&amp;quot;       &amp;quot;있&amp;quot;   &amp;quot;습니다&amp;quot; 
+##         SF 
+##        &amp;quot;.&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;한글-띄어쓰기-검사기-성능-검사&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;한글 띄어쓰기 검사기 성능 검사&lt;/h3&gt;
+&lt;p&gt;그리고 앞에서 정의한 한글 띄어쓰기 검사기 결과는 다음과 같다. 네이버 맞춤법 검사기와 동일한 결과다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;getSpacing(phrase)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;우리는 평소 타이핑을 하게 될 일이 굉장히 많이 있습니다. 취준생분들이라면 자소서를 작성하실 때의 경우가 있죠. 또한 블로그를 작성하시거나 업무상의 연락으로 메일을 작성할 때가 있습니다. 이럴 때에 맞춤법 또는 띄어쓰기가 굉장히 신경이 쓰이곤 합니다. 네이버에서는 간단하게 띄어쓰기를 검사할 수 있는 방법이 있습니다.&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;이번에는 극단적인 사례를 만들어서 실험해 본다. 원 문장의 모든 공백을 없애서 한 어절로 만들었다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;phrase &amp;lt;- &amp;quot;우리는평소타이핑을하게될일이굉장히많이있습니다.취준생분들이라면자소서를작성하실때의경우가있죠.또한블로그를작성하시거나업무상의연락으로메일을작성할때가있습니다.이럴때에맞춤법또는띄어쓰기가굉장히신경이쓰이곤합니다.네이버에서는간단하게띄어쓰기를검사할수있는방법이있습니다.&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;네이버의 경우에는 띄어쓰기가 전혀 안된 하나의 어절에서도 어느 정도 띄어쓰기를 분리하지만, 이 사례에서는 전혀 작동하지 못했다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/naver_02.png&#34; width=&#34;60%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;그러나 한글 띄어쓰기 검사기인 getSpacing()는 정확하게 띄어쓰기를 수행해 준다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;getSpacing(phrase)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;우리는 평소 타이핑을 하게 될 일이 굉장히 많이 있습니다. 취준생분들이라면 자소서를 작성하실 때의 경우가 있죠. 또한 블로그를 작성하시거나 업무상의 연락으로 메일을 작성할 때가 있습니다. 이럴 때에 맞춤법 또는 띄어쓰기가 굉장히 신경이 쓰이곤 합니다. 네이버에서는 간단하게 띄어쓰기를 검사할 수 있는 방법이 있습니다.&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Mecab의 가장 유용한 장점은 이처럼 띄어쓰기가 전혀 안된 하나의 어절에서도 잘 작동한다는 점이다. 그래서 STT(Speech to Text)처럼 띄어쓰기가 취약한 텍스트 데이터를 띄어쓰기가 전혀 안된 하나의 어절로 변환한 후 형태소 분석을 수행하여 성과를 낸 경험도 있다.&lt;/p&gt;
+&lt;p&gt;그러나 중요한 점은, STT 데이터처럼 극단적이지 않을 경우에는, 띄어쓰기가 안된 문장보다는 정확하지 않더라도 어느 정도 띄어쓰기가 된 문장의 결과가 성능이 좀 더 높게 나온다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/naver_03.png&#34; width=&#34;60%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;“무궁화 꽃이 피었습니다.” 사례에서는 띄어쓰기가 안된 문장인 “무궁화꽃이피었습니다.”에서 &lt;code&gt;무궁화 꽃이&lt;/code&gt;를 분리하지 못했다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;getSpacing(&amp;quot;무궁화 꽃이 피었습니다. 무궁화꽃이피었습니다.&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;무궁화 꽃이 피었습니다. 무궁화꽃이 피었습니다.&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;to-do&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;TO-DO&lt;/h2&gt;
+&lt;p&gt;유용하지만, 베타버전인 네이버 맞춤법 검사기는 500 음절의 문장만 지원한다. 또한 네이버 맞춤법(띄어쓰기) 검사기의 대체재를 쉽게 구할 수도 있다. 그러나 연구 목적이나 분석 목적으로 애플리케이션에서의 사용자 입력이 아닌, R의 분석 코드 안에서 띄어쓰기 검사기가 필요한 경우가 있을 것이다. 그래서 몇 개의 예외처리 기능을 추가한 R 패키지를 만들어 보려 한다.&lt;/p&gt;
+&lt;p&gt;python의 KoNLPy는 Macab을 포함해서 여러 공개된 형태소 분석기를 지원하고 있으니, KoNLPy을 이용한 python 한글 띄어쓰기 검사기를 만들어볼까 한다.&lt;/p&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

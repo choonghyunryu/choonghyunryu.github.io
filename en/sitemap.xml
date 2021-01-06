@@ -4,7 +4,7 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2021-01-03T22:55:12+08:00</lastmod>
+    <lastmod>2021-01-05T17:09:12+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="kr"
@@ -19,7 +19,7 @@
   
   <url>
     <loc>/categories/</loc>
-    <lastmod>2021-01-03T22:55:12+08:00</lastmod>
+    <lastmod>2021-01-05T17:09:12+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="kr"
@@ -29,6 +29,51 @@
                 rel="alternate"
                 hreflang="en"
                 href="/categories/"
+                />
+  </url>
+  
+  <url>
+    <loc>/tags/mecab/</loc>
+    <lastmod>2021-01-05T17:09:12+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/2021-01/morpheme/</loc>
+    <lastmod>2021-01-05T17:09:12+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/morpheme/</loc>
+    <lastmod>2021-01-05T17:09:12+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/nlp/</loc>
+    <lastmod>2021-01-05T17:09:12+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/r-analytics/</loc>
+    <lastmod>2021-01-05T17:09:12+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/rmecab/</loc>
+    <lastmod>2021-01-05T17:09:12+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2021-01-05T17:09:12+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="kr"
+                href="/kr/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="/tags/"
                 />
   </url>
   
@@ -74,21 +119,6 @@
                 rel="alternate"
                 hreflang="en"
                 href="/series/"
-                />
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
-    <lastmod>2021-01-03T22:55:12+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="kr"
-                href="/kr/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="/tags/"
                 />
   </url>
   
@@ -144,11 +174,6 @@
   
   <url>
     <loc>/tags/binary-classification/</loc>
-    <lastmod>2020-03-27T10:10:50-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/r-analytics/</loc>
     <lastmod>2020-03-27T10:10:50-05:00</lastmod>
   </url>
   
@@ -319,11 +344,6 @@
   
   <url>
     <loc>/tags/lasso/</loc>
-    <lastmod>2019-12-31T08:10:12+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/nlp/</loc>
     <lastmod>2019-12-31T08:10:12+08:00</lastmod>
   </url>
   
