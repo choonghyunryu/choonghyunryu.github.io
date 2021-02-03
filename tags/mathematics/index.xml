@@ -16,8 +16,6 @@
         
           
 &lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;complex-function&#34; class=&#34;section level2&#34;&gt;
@@ -89,8 +87,6 @@ Figure 5: terrain.colors 팔레트
         
           
 &lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;tridokus&#34; class=&#34;section level2&#34;&gt;
@@ -244,8 +240,6 @@ Figure 16: 몇 개의 팔레트로 그린 복합 n-sudokus
         
           
 &lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;이론적-배경&#34; class=&#34;section level2&#34;&gt;
@@ -353,8 +347,6 @@ Figure 16: 몇 개의 팔레트로 그린 복합 n-sudokus
         
           
 &lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;일러두기&#34; class=&#34;section level3&#34;&gt;
@@ -401,7 +393,7 @@ function (x, y)
     y &amp;lt;- as.vector(y)
     unique(y[match(as.vector(x), y, 0L)])
 }
-&amp;lt;bytecode: 0x7f97ac85cbc8&amp;gt;
+&amp;lt;bytecode: 0x7f957bbb70a8&amp;gt;
 &amp;lt;environment: namespace:base&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;차집합-x---y&#34; class=&#34;section level3&#34;&gt;
@@ -426,7 +418,7 @@ function (x, y)
         x[match(x, y, 0L) == 0L]
     else x)
 }
-&amp;lt;bytecode: 0x7f97dcb6b958&amp;gt;
+&amp;lt;bytecode: 0x7f957a3e3868&amp;gt;
 &amp;lt;environment: namespace:base&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;원소의-집합-포함관계-a-x-a-y&#34; class=&#34;section level3&#34;&gt;
@@ -461,7 +453,7 @@ function (x, y)
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; is.element
 function (el, set) 
 match(el, set, 0L) &amp;gt; 0L
-&amp;lt;bytecode: 0x7f97cce39e20&amp;gt;
+&amp;lt;bytecode: 0x7f956a7db3e8&amp;gt;
 &amp;lt;environment: namespace:base&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;집합의-포함관계-z-x-z-y&#34; class=&#34;section level3&#34;&gt;
@@ -534,7 +526,7 @@ function (x, y)
     y &amp;lt;- as.vector(y)
     !(anyNA(match(x, y)) || anyNA(match(y, x)))
 }
-&amp;lt;bytecode: 0x7f97aca32be8&amp;gt;
+&amp;lt;bytecode: 0x7f956bc98ce0&amp;gt;
 &amp;lt;environment: namespace:base&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;이 함수를 수식으로 표현하자면 다음과 같다.&lt;/p&gt;
 &lt;blockquote&gt;

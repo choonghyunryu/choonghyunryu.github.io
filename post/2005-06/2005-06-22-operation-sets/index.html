@@ -181,8 +181,6 @@
     
     
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
-<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
-<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
 
 
 <div id="일러두기" class="section level3">
@@ -229,7 +227,7 @@ function (x, y)
     y &lt;- as.vector(y)
     unique(y[match(as.vector(x), y, 0L)])
 }
-&lt;bytecode: 0x7f97ac85cbc8&gt;
+&lt;bytecode: 0x7f957bbb70a8&gt;
 &lt;environment: namespace:base&gt;</code></pre>
 </div>
 <div id="차집합-x---y" class="section level3">
@@ -254,7 +252,7 @@ function (x, y)
         x[match(x, y, 0L) == 0L]
     else x)
 }
-&lt;bytecode: 0x7f97dcb6b958&gt;
+&lt;bytecode: 0x7f957a3e3868&gt;
 &lt;environment: namespace:base&gt;</code></pre>
 </div>
 <div id="원소의-집합-포함관계-a-x-a-y" class="section level3">
@@ -289,7 +287,7 @@ function (x, y)
 <pre class="r"><code>&gt; is.element
 function (el, set) 
 match(el, set, 0L) &gt; 0L
-&lt;bytecode: 0x7f97cce39e20&gt;
+&lt;bytecode: 0x7f956a7db3e8&gt;
 &lt;environment: namespace:base&gt;</code></pre>
 </div>
 <div id="집합의-포함관계-z-x-z-y" class="section level3">
@@ -362,7 +360,7 @@ function (x, y)
     y &lt;- as.vector(y)
     !(anyNA(match(x, y)) || anyNA(match(y, x)))
 }
-&lt;bytecode: 0x7f97aca32be8&gt;
+&lt;bytecode: 0x7f956bc98ce0&gt;
 &lt;environment: namespace:base&gt;</code></pre>
 <p>이 함수를 수식으로 표현하자면 다음과 같다.</p>
 <blockquote>
@@ -399,6 +397,9 @@ object length
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
       <li>
+        <a href="/post/2021-01/rfonts/" class="nav-link">추가 폰트 사용하기</a>
+      </li>
+      <li>
         <a href="/post/2021-01/morpheme/" class="nav-link">Mecab으로 한글 띄어쓰기 검사기 만들기</a>
       </li>
       <li>
@@ -409,9 +410,6 @@ object length
       </li>
       <li>
         <a href="/post/2020-07/ggplot2_exam/" class="nav-link">몇 개의 ggplot tips</a>
-      </li>
-      <li>
-        <a href="/post/2020-03/2020-03-27-r-alookr.ko/" class="nav-link">alookr: Binary classification modeling</a>
       </li>
     </ul>
     <div>
@@ -434,7 +432,7 @@ object length
         
         <a href='/categories/visualization/' class="post_tag button button_translucent">
           VISUALIZATION
-          <span class="button_tally">7</span>
+          <span class="button_tally">8</span>
         </a>
         
         <a href='/categories/tidyverse/' class="post_tag button button_translucent">
@@ -464,14 +462,14 @@ object length
     <div>
       <h2 class="mt-4 taxonomy" id="tags-section">Tags</h2>
       <nav class="tags_nav">
-        <a href='/tags/plot/' class="post_tag button button_translucent">
-          PLOT
+        <a href='/tags/dlookr/' class="post_tag button button_translucent">
+          DLOOKR
           <span class="button_tally">6</span>
         </a>
         
-        <a href='/tags/dlookr/' class="post_tag button button_translucent">
-          DLOOKR
-          <span class="button_tally">5</span>
+        <a href='/tags/plot/' class="post_tag button button_translucent">
+          PLOT
+          <span class="button_tally">6</span>
         </a>
         
         <a href='/tags/graphics/' class="post_tag button button_translucent">
@@ -496,6 +494,11 @@ object length
         
         <a href='/tags/eda/' class="post_tag button button_translucent">
           EDA
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/ggplot2/' class="post_tag button button_translucent">
+          GGPLOT2
           <span class="button_tally">3</span>
         </a>
         
@@ -526,11 +529,6 @@ object length
         
         <a href='/tags/deep-learning/' class="post_tag button button_translucent">
           DEEP-LEARNING
-          <span class="button_tally">2</span>
-        </a>
-        
-        <a href='/tags/development/' class="post_tag button button_translucent">
-          DEVELOPMENT
           <span class="button_tally">2</span>
         </a>
         
@@ -592,7 +590,7 @@ object length
             </a>
             
             
-            <a href='/tags/dlookr/' class=" post_tag button button_translucent" data-position=5>DLOOKR<span class="button_tally">5</span>
+            <a href='/tags/dlookr/' class=" post_tag button button_translucent" data-position=6>DLOOKR<span class="button_tally">6</span>
             </a>
             
             
@@ -612,11 +610,19 @@ object length
             </a>
             
             
+            <a href='/tags/extrafont/' class=" post_tag button button_translucent" data-position=1>EXTRAFONT<span class="button_tally">1</span>
+            </a>
+            
+            
             <a href='/tags/factor/' class=" post_tag button button_translucent" data-position=1>FACTOR<span class="button_tally">1</span>
             </a>
             
             
             <a href='/tags/finance/' class=" post_tag button button_translucent" data-position=2>FINANCE<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/fonts/' class=" post_tag button button_translucent" data-position=1>FONTS<span class="button_tally">1</span>
             </a>
             
             
@@ -640,7 +646,7 @@ object length
             </a>
             
             
-            <a href='/tags/ggplot2/' class=" post_tag button button_translucent" data-position=2>GGPLOT2<span class="button_tally">2</span>
+            <a href='/tags/ggplot2/' class=" post_tag button button_translucent" data-position=3>GGPLOT2<span class="button_tally">3</span>
             </a>
             
             

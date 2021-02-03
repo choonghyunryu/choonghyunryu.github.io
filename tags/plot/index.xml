@@ -16,8 +16,6 @@
         
           
 &lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;일러두기&#34; class=&#34;section level2&#34;&gt;
@@ -77,8 +75,6 @@ np=5이고 n=10, 20, 50, 100인 이항분포를 한 좌표에 그려 보았다.
         
           
 &lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;일러두기&#34; class=&#34;section level2&#34;&gt;
@@ -123,8 +119,6 @@ p=0.2이고 n=10, 20, 30, 40, 50인 이항분포를 한 좌표에 그려 보았�
         
           
 &lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;일러두기&#34; class=&#34;section level2&#34;&gt;
@@ -257,8 +251,6 @@ p=0.2이고 n=10, 20, 30, 40, 50인 이항분포를 한 좌표에 그려 보았�
         
           
 &lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;일러두기&#34; class=&#34;section level2&#34;&gt;
@@ -282,7 +274,7 @@ function (distinct = FALSE)
         c[!duplicated(t(col2rgb(c)))]
     else c
 }
-&amp;lt;bytecode: 0x7fab72d4b0c8&amp;gt;
+&amp;lt;bytecode: 0x7f8a3f73a4e0&amp;gt;
 &amp;lt;environment: namespace:grDevices&amp;gt;
 &amp;gt; colours
 function (distinct = FALSE) 
@@ -292,7 +284,7 @@ function (distinct = FALSE)
         c[!duplicated(t(col2rgb(c)))]
     else c
 }
-&amp;lt;bytecode: 0x7fab72db8820&amp;gt;
+&amp;lt;bytecode: 0x7f8a3f7c2550&amp;gt;
 &amp;lt;environment: namespace:grDevices&amp;gt;
 &amp;gt; length(colors())
 [1] 657
@@ -389,8 +381,6 @@ cm.colors(n)&lt;/p&gt;
         
           
 &lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;일러두기&#34; class=&#34;section level2&#34;&gt;
@@ -557,8 +547,6 @@ Figure 1: 삼각함수
         
           
 &lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;일러두기&#34; class=&#34;section level2&#34;&gt;

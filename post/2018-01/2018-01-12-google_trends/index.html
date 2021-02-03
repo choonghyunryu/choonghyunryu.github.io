@@ -185,8 +185,6 @@
     
     
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
-<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
-<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
 <script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
 <script src="/rmarkdown-libs/d3/d3.js"></script>
 <script src="/rmarkdown-libs/bubbles-binding/bubbles.js"></script>
@@ -679,9 +677,10 @@ traffic 데이터의 시계열 그래프는 <code>ggplot2</code> 패키지로 �
 +   mutate(label = gsub(&quot; &quot;, &quot;&quot;, value)) %&gt;%
 +   filter(relative &gt; 0) %&gt;%
 +   select(label, relative) %$%
-+   bbplot(label, relative)</code></pre>
-<div id="htmlwidget-1" style="width:864px;height:576px;" class="bubbles html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1">{"x":{"value":[101,100,9,6,6,5,5,3,3,3,2,2,2,2,2,2,2,2,2,2],"label":["Bitcoin","Bit","UPbit","Coin","Eclipse","bithumb","Exchange","BitcoinCash","Coinone","Chart","Ethereum","Virtualcurrency","BitcoinGold","Wallet","Bittrex","Ripple","futurescontract","Korbit","Volt","Comb"],"tooltip":["","","","","","","","","","","","","","","","","","","",""],"color":["#1B9E77","#D95F02","#7570B3","#E7298A","#66A61E","#E6AB02","#A6761D","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666"],"textColor":["#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
++   bbplot(label, relative)
+{=html}
+&lt;div id=&quot;htmlwidget-d4bcd1cbb2c831e62613&quot; style=&quot;width:864px;height:576px;&quot; class=&quot;bubbles html-widget&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;application/json&quot; data-for=&quot;htmlwidget-d4bcd1cbb2c831e62613&quot;&gt;{&quot;x&quot;:{&quot;value&quot;:[101,100,9,6,6,5,5,3,3,3,2,2,2,2,2,2,2,2,2,2],&quot;label&quot;:[&quot;Bitcoin&quot;,&quot;Bit&quot;,&quot;UPbit&quot;,&quot;Coin&quot;,&quot;Eclipse&quot;,&quot;bithumb&quot;,&quot;Exchange&quot;,&quot;BitcoinCash&quot;,&quot;Coinone&quot;,&quot;Chart&quot;,&quot;Ethereum&quot;,&quot;Virtualcurrency&quot;,&quot;BitcoinGold&quot;,&quot;Wallet&quot;,&quot;Bittrex&quot;,&quot;Ripple&quot;,&quot;futurescontract&quot;,&quot;Korbit&quot;,&quot;Volt&quot;,&quot;Comb&quot;],&quot;tooltip&quot;:[&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;],&quot;color&quot;:[&quot;#1B9E77&quot;,&quot;#D95F02&quot;,&quot;#7570B3&quot;,&quot;#E7298A&quot;,&quot;#66A61E&quot;,&quot;#E6AB02&quot;,&quot;#A6761D&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;],&quot;textColor&quot;:[&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;]},&quot;evals&quot;:[],&quot;jsHooks&quot;:[]}&lt;/script&gt;</code></pre>
 <p>color 인수를 사용하면 버블의 색상을 바꿀 수도 있다.</p>
 <pre class="r"><code>&gt; bit_trend$related_topics %&gt;%
 +   filter(related_topics == &quot;top&quot;) %&gt;%
@@ -689,18 +688,20 @@ traffic 데이터의 시계열 그래프는 <code>ggplot2</code> 패키지로 �
 +   mutate(label = gsub(&quot; &quot;, &quot;&quot;, value)) %&gt;%
 +   filter(relative &gt; 0) %&gt;%
 +   select(label, relative) %$%
-+   bbplot(label, relative, color = terrain.colors(35, alpha = NULL))</code></pre>
-<div id="htmlwidget-2" style="width:864px;height:576px;" class="bubbles html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2">{"x":{"value":[101,100,9,6,6,5,5,3,3,3,2,2,2,2,2,2,2,2,2,2],"label":["Bitcoin","Bit","UPbit","Coin","Eclipse","bithumb","Exchange","BitcoinCash","Coinone","Chart","Ethereum","Virtualcurrency","BitcoinGold","Wallet","Bittrex","Ripple","futurescontract","Korbit","Volt","Comb"],"tooltip":["","","","","","","","","","","","","","","","","","","",""],"color":["#00A600","#0BAA00","#16AE00","#21B200","#2DB600","#3ABA00","#47BE00","#55C200","#63C600","#71CA00","#80CE00","#90D200","#A0D600","#B1DA00","#C2DE00","#D3E200","#E6E600","#E6DA0D","#E7D01A","#E8C727"],"textColor":["#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
++   bbplot(label, relative, color = terrain.colors(35, alpha = NULL))
+{=html}
+&lt;div id=&quot;htmlwidget-ec3094913a16a392f728&quot; style=&quot;width:864px;height:576px;&quot; class=&quot;bubbles html-widget&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;application/json&quot; data-for=&quot;htmlwidget-ec3094913a16a392f728&quot;&gt;{&quot;x&quot;:{&quot;value&quot;:[101,100,9,6,6,5,5,3,3,3,2,2,2,2,2,2,2,2,2,2],&quot;label&quot;:[&quot;Bitcoin&quot;,&quot;Bit&quot;,&quot;UPbit&quot;,&quot;Coin&quot;,&quot;Eclipse&quot;,&quot;bithumb&quot;,&quot;Exchange&quot;,&quot;BitcoinCash&quot;,&quot;Coinone&quot;,&quot;Chart&quot;,&quot;Ethereum&quot;,&quot;Virtualcurrency&quot;,&quot;BitcoinGold&quot;,&quot;Wallet&quot;,&quot;Bittrex&quot;,&quot;Ripple&quot;,&quot;futurescontract&quot;,&quot;Korbit&quot;,&quot;Volt&quot;,&quot;Comb&quot;],&quot;tooltip&quot;:[&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;],&quot;color&quot;:[&quot;#00A600&quot;,&quot;#0BAA00&quot;,&quot;#16AE00&quot;,&quot;#21B200&quot;,&quot;#2DB600&quot;,&quot;#3ABA00&quot;,&quot;#47BE00&quot;,&quot;#55C200&quot;,&quot;#63C600&quot;,&quot;#71CA00&quot;,&quot;#80CE00&quot;,&quot;#90D200&quot;,&quot;#A0D600&quot;,&quot;#B1DA00&quot;,&quot;#C2DE00&quot;,&quot;#D3E200&quot;,&quot;#E6E600&quot;,&quot;#E6DA0D&quot;,&quot;#E7D01A&quot;,&quot;#E8C727&quot;],&quot;textColor&quot;:[&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;]},&quot;evals&quot;:[],&quot;jsHooks&quot;:[]}&lt;/script&gt;</code></pre>
 <pre class="r"><code>&gt; bit_trend$related_topics %&gt;%
 +   filter(related_topics == &quot;top&quot;) %&gt;%
 +   mutate(relative = as.integer(subject) + 1) %&gt;%
 +   mutate(label = gsub(&quot; &quot;, &quot;&quot;, value)) %&gt;%
 +   filter(relative &gt; 0) %&gt;%
 +   select(label, relative) %$%
-+   bbplot(label, relative, color = rainbow(20, alpha = NULL))</code></pre>
-<div id="htmlwidget-3" style="width:864px;height:576px;" class="bubbles html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3">{"x":{"value":[101,100,9,6,6,5,5,3,3,3,2,2,2,2,2,2,2,2,2,2],"label":["Bitcoin","Bit","UPbit","Coin","Eclipse","bithumb","Exchange","BitcoinCash","Coinone","Chart","Ethereum","Virtualcurrency","BitcoinGold","Wallet","Bittrex","Ripple","futurescontract","Korbit","Volt","Comb"],"tooltip":["","","","","","","","","","","","","","","","","","","",""],"color":["#FF0000","#FF4D00","#FF9900","#FFE500","#CCFF00","#80FF00","#33FF00","#00FF19","#00FF66","#00FFB2","#00FFFF","#00B3FF","#0066FF","#001AFF","#3300FF","#7F00FF","#CC00FF","#FF00E6","#FF0099","#FF004D"],"textColor":["#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
++   bbplot(label, relative, color = rainbow(20, alpha = NULL))
+{=html}
+&lt;div id=&quot;htmlwidget-611b8b857f3d8484e36a&quot; style=&quot;width:864px;height:576px;&quot; class=&quot;bubbles html-widget&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;application/json&quot; data-for=&quot;htmlwidget-611b8b857f3d8484e36a&quot;&gt;{&quot;x&quot;:{&quot;value&quot;:[101,100,9,6,6,5,5,3,3,3,2,2,2,2,2,2,2,2,2,2],&quot;label&quot;:[&quot;Bitcoin&quot;,&quot;Bit&quot;,&quot;UPbit&quot;,&quot;Coin&quot;,&quot;Eclipse&quot;,&quot;bithumb&quot;,&quot;Exchange&quot;,&quot;BitcoinCash&quot;,&quot;Coinone&quot;,&quot;Chart&quot;,&quot;Ethereum&quot;,&quot;Virtualcurrency&quot;,&quot;BitcoinGold&quot;,&quot;Wallet&quot;,&quot;Bittrex&quot;,&quot;Ripple&quot;,&quot;futurescontract&quot;,&quot;Korbit&quot;,&quot;Volt&quot;,&quot;Comb&quot;],&quot;tooltip&quot;:[&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;],&quot;color&quot;:[&quot;#FF0000&quot;,&quot;#FF4D00&quot;,&quot;#FF9900&quot;,&quot;#FFE500&quot;,&quot;#CCFF00&quot;,&quot;#80FF00&quot;,&quot;#33FF00&quot;,&quot;#00FF19&quot;,&quot;#00FF66&quot;,&quot;#00FFB2&quot;,&quot;#00FFFF&quot;,&quot;#00B3FF&quot;,&quot;#0066FF&quot;,&quot;#001AFF&quot;,&quot;#3300FF&quot;,&quot;#7F00FF&quot;,&quot;#CC00FF&quot;,&quot;#FF00E6&quot;,&quot;#FF0099&quot;,&quot;#FF004D&quot;],&quot;textColor&quot;:[&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;]},&quot;evals&quot;:[],&quot;jsHooks&quot;:[]}&lt;/script&gt;</code></pre>
 </div>
 <div id="관련-검색어별-traffic-현황" class="section level4">
 <h4>관련 검색어별 traffic 현황</h4>
@@ -713,9 +714,10 @@ traffic 데이터의 시계열 그래프는 <code>ggplot2</code> 패키지로 �
 +   mutate(label = gsub(&quot; &quot;, &quot;&quot;, value)) %&gt;%
 +   filter(relative &gt; 0) %&gt;%
 +   select(label, relative) %$%
-+   bbplot(label, relative)</code></pre>
-<div id="htmlwidget-4" style="width:864px;height:576px;" class="bubbles html-widget"></div>
-<script type="application/json" data-for="htmlwidget-4">{"x":{"value":[101,101,99,17,9,9,9,5,5,5,5,4,4,4,4,3,3,3,3,3,3,2,2,2,2],"label":["비트코인","비트","코인","비트코인시세","업비트","코인갤러리","비트코인갤러리","빗썸","비트코인뽀개기rndcoin","비트코인빗썸","빗썸비트코인","비트코인거래소","비트코인가격","비트코인채굴","코인판","비트코인전망","코인원","비트코인캐시","비트코인거래","이더리움","비트코인이더리움","비트코인주가","코인네스트","bitcoin","가상화폐"],"tooltip":["","","","","","","","","","","","","","","","","","","","","","","","",""],"color":["#1B9E77","#D95F02","#7570B3","#E7298A","#66A61E","#E6AB02","#A6761D","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666"],"textColor":["#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
++   bbplot(label, relative)
+{=html}
+&lt;div id=&quot;htmlwidget-b8b37ccbe6fced6e1656&quot; style=&quot;width:864px;height:576px;&quot; class=&quot;bubbles html-widget&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;application/json&quot; data-for=&quot;htmlwidget-b8b37ccbe6fced6e1656&quot;&gt;{&quot;x&quot;:{&quot;value&quot;:[101,101,99,17,9,9,9,5,5,5,5,4,4,4,4,3,3,3,3,3,3,2,2,2,2],&quot;label&quot;:[&quot;비트코인&quot;,&quot;비트&quot;,&quot;코인&quot;,&quot;비트코인시세&quot;,&quot;업비트&quot;,&quot;코인갤러리&quot;,&quot;비트코인갤러리&quot;,&quot;빗썸&quot;,&quot;비트코인뽀개기rndcoin&quot;,&quot;비트코인빗썸&quot;,&quot;빗썸비트코인&quot;,&quot;비트코인거래소&quot;,&quot;비트코인가격&quot;,&quot;비트코인채굴&quot;,&quot;코인판&quot;,&quot;비트코인전망&quot;,&quot;코인원&quot;,&quot;비트코인캐시&quot;,&quot;비트코인거래&quot;,&quot;이더리움&quot;,&quot;비트코인이더리움&quot;,&quot;비트코인주가&quot;,&quot;코인네스트&quot;,&quot;bitcoin&quot;,&quot;가상화폐&quot;],&quot;tooltip&quot;:[&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;],&quot;color&quot;:[&quot;#1B9E77&quot;,&quot;#D95F02&quot;,&quot;#7570B3&quot;,&quot;#E7298A&quot;,&quot;#66A61E&quot;,&quot;#E6AB02&quot;,&quot;#A6761D&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;],&quot;textColor&quot;:[&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;]},&quot;evals&quot;:[],&quot;jsHooks&quot;:[]}&lt;/script&gt;</code></pre>
 <p>관련 검색어별 통계를 보면 상대 traffic이 0인 건도 통계로 집계되어 있다. 그래서 시각화 함수에서 traffic이 0인 건의 포함여부를 지정할 수 있도록 gplot.queries() 함수를 만들어 보았다.</p>
 <pre class="r"><code>&gt; gplot.queries &lt;- function(x, rm.zero = FALSE, geos = &quot;KR&quot;, 
 +                          color = RColorBrewer::brewer.pal(8, &quot;Dark2&quot;)) {
@@ -729,46 +731,52 @@ traffic 데이터의 시계열 그래프는 <code>ggplot2</code> 패키지로 �
 +     bbplot(label, relative, color = color)
 + }</code></pre>
 <p>다음 예제는 traffic이 0인 건을 제거한 후 버블차트를 그리는 예제다.</p>
-<pre class="r"><code>&gt; gplot.queries(bit_trend, rm.zero = TRUE)</code></pre>
-<div id="htmlwidget-5" style="width:864px;height:576px;" class="bubbles html-widget"></div>
-<script type="application/json" data-for="htmlwidget-5">{"x":{"value":[100,100,98,16,8,8,8,4,4,4,4,3,3,3,3,2,2,2,2,2,2,1,1,1,1],"label":["비트코인","비트","코인","비트코인시세","업비트","코인갤러리","비트코인갤러리","빗썸","비트코인뽀개기rndcoin","비트코인빗썸","빗썸비트코인","비트코인거래소","비트코인가격","비트코인채굴","코인판","비트코인전망","코인원","비트코인캐시","비트코인거래","이더리움","비트코인이더리움","비트코인주가","코인네스트","bitcoin","가상화폐"],"tooltip":["","","","","","","","","","","","","","","","","","","","","","","","",""],"color":["#1B9E77","#D95F02","#7570B3","#E7298A","#66A61E","#E6AB02","#A6761D","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666"],"textColor":["#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>&gt; gplot.queries(bit_trend, rm.zero = TRUE)
+{=html}
+&lt;div id=&quot;htmlwidget-3f8f050f315be6fc717c&quot; style=&quot;width:864px;height:576px;&quot; class=&quot;bubbles html-widget&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;application/json&quot; data-for=&quot;htmlwidget-3f8f050f315be6fc717c&quot;&gt;{&quot;x&quot;:{&quot;value&quot;:[100,100,98,16,8,8,8,4,4,4,4,3,3,3,3,2,2,2,2,2,2,1,1,1,1],&quot;label&quot;:[&quot;비트코인&quot;,&quot;비트&quot;,&quot;코인&quot;,&quot;비트코인시세&quot;,&quot;업비트&quot;,&quot;코인갤러리&quot;,&quot;비트코인갤러리&quot;,&quot;빗썸&quot;,&quot;비트코인뽀개기rndcoin&quot;,&quot;비트코인빗썸&quot;,&quot;빗썸비트코인&quot;,&quot;비트코인거래소&quot;,&quot;비트코인가격&quot;,&quot;비트코인채굴&quot;,&quot;코인판&quot;,&quot;비트코인전망&quot;,&quot;코인원&quot;,&quot;비트코인캐시&quot;,&quot;비트코인거래&quot;,&quot;이더리움&quot;,&quot;비트코인이더리움&quot;,&quot;비트코인주가&quot;,&quot;코인네스트&quot;,&quot;bitcoin&quot;,&quot;가상화폐&quot;],&quot;tooltip&quot;:[&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;],&quot;color&quot;:[&quot;#1B9E77&quot;,&quot;#D95F02&quot;,&quot;#7570B3&quot;,&quot;#E7298A&quot;,&quot;#66A61E&quot;,&quot;#E6AB02&quot;,&quot;#A6761D&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;],&quot;textColor&quot;:[&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;]},&quot;evals&quot;:[],&quot;jsHooks&quot;:[]}&lt;/script&gt;</code></pre>
 <p>2013년부터 2017년까지의 관련 검색어 Top 랭크를 살펴보자.</p>
 <div id="년도" class="section level5">
 <h5>2013년도</h5>
 <pre class="r"><code>&gt; gplot.queries(bit_trend_2013_k, rm.zero = TRUE,
-+               color = terrain.colors(20, alpha = NULL))</code></pre>
-<div id="htmlwidget-6" style="width:864px;height:576px;" class="bubbles html-widget"></div>
-<script type="application/json" data-for="htmlwidget-6">{"x":{"value":[100,17,5,1],"label":["비트코인","비트코인채굴","비트코인원리","비트코인거래소"],"tooltip":["","","",""],"color":["#00A600","#13AD00","#28B400","#3EBB00"],"textColor":["#333333","#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
++               color = terrain.colors(20, alpha = NULL))
+{=html}
+&lt;div id=&quot;htmlwidget-e78c1c6bd29b8ba2f926&quot; style=&quot;width:864px;height:576px;&quot; class=&quot;bubbles html-widget&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;application/json&quot; data-for=&quot;htmlwidget-e78c1c6bd29b8ba2f926&quot;&gt;{&quot;x&quot;:{&quot;value&quot;:[100,17,5,1],&quot;label&quot;:[&quot;비트코인&quot;,&quot;비트코인채굴&quot;,&quot;비트코인원리&quot;,&quot;비트코인거래소&quot;],&quot;tooltip&quot;:[&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;],&quot;color&quot;:[&quot;#00A600&quot;,&quot;#13AD00&quot;,&quot;#28B400&quot;,&quot;#3EBB00&quot;],&quot;textColor&quot;:[&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;]},&quot;evals&quot;:[],&quot;jsHooks&quot;:[]}&lt;/script&gt;</code></pre>
 </div>
 <div id="년도-1" class="section level5">
 <h5>2014년도</h5>
 <pre class="r"><code>&gt; gplot.queries(bit_trend_2014_k, rm.zero = TRUE,
-+               color = terrain.colors(20, alpha = NULL))</code></pre>
-<div id="htmlwidget-7" style="width:864px;height:576px;" class="bubbles html-widget"></div>
-<script type="application/json" data-for="htmlwidget-7">{"x":{"value":[100,10,5,4,3],"label":["비트코인","비트코인채굴","비트코인시세","비트코인거래소","비트코인채굴기"],"tooltip":["","","","",""],"color":["#00A600","#13AD00","#28B400","#3EBB00","#56C200"],"textColor":["#333333","#333333","#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
++               color = terrain.colors(20, alpha = NULL))
+{=html}
+&lt;div id=&quot;htmlwidget-f898a0c8cf249227af1e&quot; style=&quot;width:864px;height:576px;&quot; class=&quot;bubbles html-widget&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;application/json&quot; data-for=&quot;htmlwidget-f898a0c8cf249227af1e&quot;&gt;{&quot;x&quot;:{&quot;value&quot;:[100,10,5,4,3],&quot;label&quot;:[&quot;비트코인&quot;,&quot;비트코인채굴&quot;,&quot;비트코인시세&quot;,&quot;비트코인거래소&quot;,&quot;비트코인채굴기&quot;],&quot;tooltip&quot;:[&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;],&quot;color&quot;:[&quot;#00A600&quot;,&quot;#13AD00&quot;,&quot;#28B400&quot;,&quot;#3EBB00&quot;,&quot;#56C200&quot;],&quot;textColor&quot;:[&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;]},&quot;evals&quot;:[],&quot;jsHooks&quot;:[]}&lt;/script&gt;</code></pre>
 </div>
 <div id="년도-2" class="section level5">
 <h5>2015년도</h5>
 <pre class="r"><code>&gt; if (!is.null(bit_trend_2015_k$related_queries)) {
 +  gplot.queries(bit_trend_2015_k, rm.zero = TRUE,
 +               color = terrain.colors(20, alpha = NULL)) 
-+ }</code></pre>
-<div id="htmlwidget-8" style="width:864px;height:576px;" class="bubbles html-widget"></div>
-<script type="application/json" data-for="htmlwidget-8">{"x":{"value":[100,10,8],"label":["비트코인","비트코인채굴","비트코인시세"],"tooltip":["","",""],"color":["#00A600","#13AD00","#28B400"],"textColor":["#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
++ }
+{=html}
+&lt;div id=&quot;htmlwidget-f1f7e6a45dbdba4c50b0&quot; style=&quot;width:864px;height:576px;&quot; class=&quot;bubbles html-widget&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;application/json&quot; data-for=&quot;htmlwidget-f1f7e6a45dbdba4c50b0&quot;&gt;{&quot;x&quot;:{&quot;value&quot;:[100,10,8],&quot;label&quot;:[&quot;비트코인&quot;,&quot;비트코인채굴&quot;,&quot;비트코인시세&quot;],&quot;tooltip&quot;:[&quot;&quot;,&quot;&quot;,&quot;&quot;],&quot;color&quot;:[&quot;#00A600&quot;,&quot;#13AD00&quot;,&quot;#28B400&quot;],&quot;textColor&quot;:[&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;]},&quot;evals&quot;:[],&quot;jsHooks&quot;:[]}&lt;/script&gt;</code></pre>
 </div>
 <div id="년도-3" class="section level5">
 <h5>2016년도</h5>
 <pre class="r"><code>&gt; gplot.queries(bit_trend_2016_k, rm.zero = TRUE,
-+               color = terrain.colors(20, alpha = NULL))</code></pre>
-<div id="htmlwidget-9" style="width:864px;height:576px;" class="bubbles html-widget"></div>
-<script type="application/json" data-for="htmlwidget-9">{"x":{"value":[100,13,7,4],"label":["비트코인","비트코인시세","비트코인채굴","비트코인이란"],"tooltip":["","","",""],"color":["#00A600","#13AD00","#28B400","#3EBB00"],"textColor":["#333333","#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
++               color = terrain.colors(20, alpha = NULL))
+{=html}
+&lt;div id=&quot;htmlwidget-49840db1e4bd53a47dc7&quot; style=&quot;width:864px;height:576px;&quot; class=&quot;bubbles html-widget&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;application/json&quot; data-for=&quot;htmlwidget-49840db1e4bd53a47dc7&quot;&gt;{&quot;x&quot;:{&quot;value&quot;:[100,13,7,4],&quot;label&quot;:[&quot;비트코인&quot;,&quot;비트코인시세&quot;,&quot;비트코인채굴&quot;,&quot;비트코인이란&quot;],&quot;tooltip&quot;:[&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;],&quot;color&quot;:[&quot;#00A600&quot;,&quot;#13AD00&quot;,&quot;#28B400&quot;,&quot;#3EBB00&quot;],&quot;textColor&quot;:[&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;]},&quot;evals&quot;:[],&quot;jsHooks&quot;:[]}&lt;/script&gt;</code></pre>
 </div>
 <div id="년도-4" class="section level5">
 <h5>2017년도</h5>
 <pre class="r"><code>&gt; gplot.queries(bit_trend_2017_k, rm.zero = TRUE,
-+               color = terrain.colors(20, alpha = NULL))</code></pre>
-<div id="htmlwidget-10" style="width:864px;height:576px;" class="bubbles html-widget"></div>
-<script type="application/json" data-for="htmlwidget-10">{"x":{"value":[100,98,16,14,8,7,6,6,6,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2],"label":["비트","비트코인","비트코인시세","비트코인갤러리","업비트","비트코인빗썸","빗썸","비트코인거래소","비트코인채굴","비트코인캐시","코인원","비트코인가격","비트코인골드","코인네스트","bitcoin","코인판","비트코인이더리움","이더리움","비트코인전망","비트렉스","비트코인이란","리플","리플코인","가상화폐","비트코인하드포크"],"tooltip":["","","","","","","","","","","","","","","","","","","","","","","","",""],"color":["#00A600","#13AD00","#28B400","#3EBB00","#56C200","#70C900","#8BD000","#A7D700","#C6DE00","#E6E600","#E7D217","#E8C32E","#E9B846","#EBB25E","#ECB176","#EDB48E","#EEBCA7","#F0C9C0","#F1DBD9","#F2F2F2","#F2F2F2","#F2F2F2","#F2F2F2","#F2F2F2","#F2F2F2"],"textColor":["#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
++               color = terrain.colors(20, alpha = NULL))
+{=html}
+&lt;div id=&quot;htmlwidget-d57bba2c10d09c9efb53&quot; style=&quot;width:864px;height:576px;&quot; class=&quot;bubbles html-widget&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;application/json&quot; data-for=&quot;htmlwidget-d57bba2c10d09c9efb53&quot;&gt;{&quot;x&quot;:{&quot;value&quot;:[100,98,16,14,8,7,6,6,6,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2],&quot;label&quot;:[&quot;비트&quot;,&quot;비트코인&quot;,&quot;비트코인시세&quot;,&quot;비트코인갤러리&quot;,&quot;업비트&quot;,&quot;비트코인빗썸&quot;,&quot;빗썸&quot;,&quot;비트코인거래소&quot;,&quot;비트코인채굴&quot;,&quot;비트코인캐시&quot;,&quot;코인원&quot;,&quot;비트코인가격&quot;,&quot;비트코인골드&quot;,&quot;코인네스트&quot;,&quot;bitcoin&quot;,&quot;코인판&quot;,&quot;비트코인이더리움&quot;,&quot;이더리움&quot;,&quot;비트코인전망&quot;,&quot;비트렉스&quot;,&quot;비트코인이란&quot;,&quot;리플&quot;,&quot;리플코인&quot;,&quot;가상화폐&quot;,&quot;비트코인하드포크&quot;],&quot;tooltip&quot;:[&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;],&quot;color&quot;:[&quot;#00A600&quot;,&quot;#13AD00&quot;,&quot;#28B400&quot;,&quot;#3EBB00&quot;,&quot;#56C200&quot;,&quot;#70C900&quot;,&quot;#8BD000&quot;,&quot;#A7D700&quot;,&quot;#C6DE00&quot;,&quot;#E6E600&quot;,&quot;#E7D217&quot;,&quot;#E8C32E&quot;,&quot;#E9B846&quot;,&quot;#EBB25E&quot;,&quot;#ECB176&quot;,&quot;#EDB48E&quot;,&quot;#EEBCA7&quot;,&quot;#F0C9C0&quot;,&quot;#F1DBD9&quot;,&quot;#F2F2F2&quot;,&quot;#F2F2F2&quot;,&quot;#F2F2F2&quot;,&quot;#F2F2F2&quot;,&quot;#F2F2F2&quot;,&quot;#F2F2F2&quot;],&quot;textColor&quot;:[&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;]},&quot;evals&quot;:[],&quot;jsHooks&quot;:[]}&lt;/script&gt;</code></pre>
 </div>
 </div>
 <div id="광역시도별-traffic-현황" class="section level4">
@@ -799,18 +807,21 @@ traffic 데이터의 시계열 그래프는 <code>ggplot2</code> 패키지로 �
 +     bbplot(region, hits, color = color)
 + }</code></pre>
 <p>광역시도별 traffic 현황은 다음과 같다.</p>
-<pre class="r"><code>&gt; gplot.region(bit_trend)</code></pre>
-<div id="htmlwidget-11" style="width:864px;height:576px;" class="bubbles html-widget"></div>
-<script type="application/json" data-for="htmlwidget-11">{"x":{"value":[100,94,93,92,90,85,85,85,84,82,79,77,75,71,70,null],"label":["대전광역시","서울특별시","광주광역시","인천광역시","울산광역시","경기도","부산광역시","대구광역시","충청북도","충청남도","전라북도","전라남도","경상북도","경상남도","강원도","제주도"],"tooltip":["","","","","","","","","","","","","","","",""],"color":["#1B9E77","#D95F02","#7570B3","#E7298A","#66A61E","#E6AB02","#A6761D","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666"],"textColor":["#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>&gt; gplot.region(bit_trend)
+{=html}
+&lt;div id=&quot;htmlwidget-fab62b1ab06cf9566eeb&quot; style=&quot;width:864px;height:576px;&quot; class=&quot;bubbles html-widget&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;application/json&quot; data-for=&quot;htmlwidget-fab62b1ab06cf9566eeb&quot;&gt;{&quot;x&quot;:{&quot;value&quot;:[100,94,93,92,90,85,85,85,84,82,79,77,75,71,70,null],&quot;label&quot;:[&quot;대전광역시&quot;,&quot;서울특별시&quot;,&quot;광주광역시&quot;,&quot;인천광역시&quot;,&quot;울산광역시&quot;,&quot;경기도&quot;,&quot;부산광역시&quot;,&quot;대구광역시&quot;,&quot;충청북도&quot;,&quot;충청남도&quot;,&quot;전라북도&quot;,&quot;전라남도&quot;,&quot;경상북도&quot;,&quot;경상남도&quot;,&quot;강원도&quot;,&quot;제주도&quot;],&quot;tooltip&quot;:[&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;],&quot;color&quot;:[&quot;#1B9E77&quot;,&quot;#D95F02&quot;,&quot;#7570B3&quot;,&quot;#E7298A&quot;,&quot;#66A61E&quot;,&quot;#E6AB02&quot;,&quot;#A6761D&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;],&quot;textColor&quot;:[&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;]},&quot;evals&quot;:[],&quot;jsHooks&quot;:[]}&lt;/script&gt;</code></pre>
 <p>2017년도 광역시도별 traffic 현황은 다음과 같다.</p>
-<pre class="r"><code>&gt; gplot.region(bit_trend_2017)</code></pre>
-<div id="htmlwidget-12" style="width:864px;height:576px;" class="bubbles html-widget"></div>
-<script type="application/json" data-for="htmlwidget-12">{"x":{"value":[100,72,69,64,63,59,58,51,44,43,38,34,31,29,29,25],"label":["서울특별시","경기도","제주도","인천광역시","대전광역시","경상북도","울산광역시","대구광역시","경상남도","부산광역시","광주광역시","충청북도","충청남도","전라북도","전라남도","강원도"],"tooltip":["","","","","","","","","","","","","","","",""],"color":["#1B9E77","#D95F02","#7570B3","#E7298A","#66A61E","#E6AB02","#A6761D","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666","#666666"],"textColor":["#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>&gt; gplot.region(bit_trend_2017)
+{=html}
+&lt;div id=&quot;htmlwidget-a8f6c36a5e99911dd071&quot; style=&quot;width:864px;height:576px;&quot; class=&quot;bubbles html-widget&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;application/json&quot; data-for=&quot;htmlwidget-a8f6c36a5e99911dd071&quot;&gt;{&quot;x&quot;:{&quot;value&quot;:[100,72,69,64,63,59,58,51,44,43,38,34,31,29,29,25],&quot;label&quot;:[&quot;서울특별시&quot;,&quot;경기도&quot;,&quot;제주도&quot;,&quot;인천광역시&quot;,&quot;대전광역시&quot;,&quot;경상북도&quot;,&quot;울산광역시&quot;,&quot;대구광역시&quot;,&quot;경상남도&quot;,&quot;부산광역시&quot;,&quot;광주광역시&quot;,&quot;충청북도&quot;,&quot;충청남도&quot;,&quot;전라북도&quot;,&quot;전라남도&quot;,&quot;강원도&quot;],&quot;tooltip&quot;:[&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;],&quot;color&quot;:[&quot;#1B9E77&quot;,&quot;#D95F02&quot;,&quot;#7570B3&quot;,&quot;#E7298A&quot;,&quot;#66A61E&quot;,&quot;#E6AB02&quot;,&quot;#A6761D&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;,&quot;#666666&quot;],&quot;textColor&quot;:[&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;]},&quot;evals&quot;:[],&quot;jsHooks&quot;:[]}&lt;/script&gt;</code></pre>
 <p>2017년도 미국의 주별 traffic 현황은 다음과 같다.</p>
 <pre class="r"><code>&gt; gplot.region(bit_trend_2017, geos = &quot;US&quot;, 
-+              color = terrain.colors(60, alpha = NULL))</code></pre>
-<div id="htmlwidget-13" style="width:864px;height:576px;" class="bubbles html-widget"></div>
-<script type="application/json" data-for="htmlwidget-13">{"x":{"value":[100,92,91,91,84,83,78,73,72,71,71,70,67,66,64,64,63,63,62,60,59,59,58,57,56,56,54,54,54,53,53,52,52,52,51,50,49,49,48,45,45,45,44,44,43,42,41,41,41,37,31],"label":["Hawaii","California","New York","Washington","Nevada","New Jersey","Utah","Illinois","Connecticut","Massachusetts","Colorado","Florida","Maryland","Alaska","New Hampshire","Arizona","Oregon","Rhode Island","Virginia","Pennsylvania","Montana","Minnesota","Michigan","Delaware","Idaho","Texas","Wisconsin","North Dakota","Vermont","District of Columbia","Georgia","North Carolina","Ohio","Nebraska","Maine","Missouri","Iowa","New Mexico","Indiana","Tennessee","South Dakota","Kansas","Oklahoma","Louisiana","Wyoming","Arkansas","Kentucky","South Carolina","Alabama","West Virginia","Mississippi"],"tooltip":["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""],"color":["#00A600","#06A800","#0CAA00","#12AC00","#18AF00","#1EB100","#25B300","#2CB500","#33B700","#3ABA00","#41BC00","#48BE00","#50C000","#57C200","#5FC500","#67C700","#6FC900","#77CB00","#7FCD00","#88D000","#91D200","#99D400","#A2D600","#ACD800","#B5DB00","#BEDD00","#C8DF00","#D2E100","#DBE300","#E6E600","#E6DF08","#E6D80F","#E7D217","#E7CC1F","#E8C727","#E8C32E","#E8BF36","#E9BB3E","#E9B846","#EAB64E","#EAB456","#EBB25E","#EBB166","#EBB16E","#ECB176","#ECB17E","#EDB386","#EDB48E","#EEB696","#EEB99F","#EEBCA7"],"textColor":["#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333","#333333"]},"evals":[],"jsHooks":[]}</script>
++              color = terrain.colors(60, alpha = NULL))
+{=html}
+&lt;div id=&quot;htmlwidget-efd48c702246aca2b9be&quot; style=&quot;width:864px;height:576px;&quot; class=&quot;bubbles html-widget&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;application/json&quot; data-for=&quot;htmlwidget-efd48c702246aca2b9be&quot;&gt;{&quot;x&quot;:{&quot;value&quot;:[100,92,91,91,84,83,78,73,72,71,71,70,67,66,64,64,63,63,62,60,59,59,58,57,56,56,54,54,54,53,53,52,52,52,51,50,49,49,48,45,45,45,44,44,43,42,41,41,41,37,31],&quot;label&quot;:[&quot;Hawaii&quot;,&quot;California&quot;,&quot;New York&quot;,&quot;Washington&quot;,&quot;Nevada&quot;,&quot;New Jersey&quot;,&quot;Utah&quot;,&quot;Illinois&quot;,&quot;Connecticut&quot;,&quot;Massachusetts&quot;,&quot;Colorado&quot;,&quot;Florida&quot;,&quot;Maryland&quot;,&quot;Alaska&quot;,&quot;New Hampshire&quot;,&quot;Arizona&quot;,&quot;Oregon&quot;,&quot;Rhode Island&quot;,&quot;Virginia&quot;,&quot;Pennsylvania&quot;,&quot;Montana&quot;,&quot;Minnesota&quot;,&quot;Michigan&quot;,&quot;Delaware&quot;,&quot;Idaho&quot;,&quot;Texas&quot;,&quot;Wisconsin&quot;,&quot;North Dakota&quot;,&quot;Vermont&quot;,&quot;District of Columbia&quot;,&quot;Georgia&quot;,&quot;North Carolina&quot;,&quot;Ohio&quot;,&quot;Nebraska&quot;,&quot;Maine&quot;,&quot;Missouri&quot;,&quot;Iowa&quot;,&quot;New Mexico&quot;,&quot;Indiana&quot;,&quot;Tennessee&quot;,&quot;South Dakota&quot;,&quot;Kansas&quot;,&quot;Oklahoma&quot;,&quot;Louisiana&quot;,&quot;Wyoming&quot;,&quot;Arkansas&quot;,&quot;Kentucky&quot;,&quot;South Carolina&quot;,&quot;Alabama&quot;,&quot;West Virginia&quot;,&quot;Mississippi&quot;],&quot;tooltip&quot;:[&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;],&quot;color&quot;:[&quot;#00A600&quot;,&quot;#06A800&quot;,&quot;#0CAA00&quot;,&quot;#12AC00&quot;,&quot;#18AF00&quot;,&quot;#1EB100&quot;,&quot;#25B300&quot;,&quot;#2CB500&quot;,&quot;#33B700&quot;,&quot;#3ABA00&quot;,&quot;#41BC00&quot;,&quot;#48BE00&quot;,&quot;#50C000&quot;,&quot;#57C200&quot;,&quot;#5FC500&quot;,&quot;#67C700&quot;,&quot;#6FC900&quot;,&quot;#77CB00&quot;,&quot;#7FCD00&quot;,&quot;#88D000&quot;,&quot;#91D200&quot;,&quot;#99D400&quot;,&quot;#A2D600&quot;,&quot;#ACD800&quot;,&quot;#B5DB00&quot;,&quot;#BEDD00&quot;,&quot;#C8DF00&quot;,&quot;#D2E100&quot;,&quot;#DBE300&quot;,&quot;#E6E600&quot;,&quot;#E6DF08&quot;,&quot;#E6D80F&quot;,&quot;#E7D217&quot;,&quot;#E7CC1F&quot;,&quot;#E8C727&quot;,&quot;#E8C32E&quot;,&quot;#E8BF36&quot;,&quot;#E9BB3E&quot;,&quot;#E9B846&quot;,&quot;#EAB64E&quot;,&quot;#EAB456&quot;,&quot;#EBB25E&quot;,&quot;#EBB166&quot;,&quot;#EBB16E&quot;,&quot;#ECB176&quot;,&quot;#ECB17E&quot;,&quot;#EDB386&quot;,&quot;#EDB48E&quot;,&quot;#EEB696&quot;,&quot;#EEB99F&quot;,&quot;#EEBCA7&quot;],&quot;textColor&quot;:[&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;,&quot;#333333&quot;]},&quot;evals&quot;:[],&quot;jsHooks&quot;:[]}&lt;/script&gt;</code></pre>
 </div>
 </div>
 </div>
@@ -831,6 +842,9 @@ traffic 데이터의 시계열 그래프는 <code>ggplot2</code> 패키지로 �
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
       <li>
+        <a href="/post/2021-01/rfonts/" class="nav-link">추가 폰트 사용하기</a>
+      </li>
+      <li>
         <a href="/post/2021-01/morpheme/" class="nav-link">Mecab으로 한글 띄어쓰기 검사기 만들기</a>
       </li>
       <li>
@@ -841,9 +855,6 @@ traffic 데이터의 시계열 그래프는 <code>ggplot2</code> 패키지로 �
       </li>
       <li>
         <a href="/post/2020-07/ggplot2_exam/" class="nav-link">몇 개의 ggplot tips</a>
-      </li>
-      <li>
-        <a href="/post/2020-03/2020-03-27-r-alookr.ko/" class="nav-link">alookr: Binary classification modeling</a>
       </li>
     </ul>
     <div>
@@ -866,7 +877,7 @@ traffic 데이터의 시계열 그래프는 <code>ggplot2</code> 패키지로 �
         
         <a href='/categories/visualization/' class="post_tag button button_translucent">
           VISUALIZATION
-          <span class="button_tally">7</span>
+          <span class="button_tally">8</span>
         </a>
         
         <a href='/categories/tidyverse/' class="post_tag button button_translucent">
@@ -896,14 +907,14 @@ traffic 데이터의 시계열 그래프는 <code>ggplot2</code> 패키지로 �
     <div>
       <h2 class="mt-4 taxonomy" id="tags-section">Tags</h2>
       <nav class="tags_nav">
-        <a href='/tags/plot/' class="post_tag button button_translucent">
-          PLOT
+        <a href='/tags/dlookr/' class="post_tag button button_translucent">
+          DLOOKR
           <span class="button_tally">6</span>
         </a>
         
-        <a href='/tags/dlookr/' class="post_tag button button_translucent">
-          DLOOKR
-          <span class="button_tally">5</span>
+        <a href='/tags/plot/' class="post_tag button button_translucent">
+          PLOT
+          <span class="button_tally">6</span>
         </a>
         
         <a href='/tags/graphics/' class="post_tag button button_translucent">
@@ -928,6 +939,11 @@ traffic 데이터의 시계열 그래프는 <code>ggplot2</code> 패키지로 �
         
         <a href='/tags/eda/' class="post_tag button button_translucent">
           EDA
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/ggplot2/' class="post_tag button button_translucent">
+          GGPLOT2
           <span class="button_tally">3</span>
         </a>
         
@@ -958,11 +974,6 @@ traffic 데이터의 시계열 그래프는 <code>ggplot2</code> 패키지로 �
         
         <a href='/tags/deep-learning/' class="post_tag button button_translucent">
           DEEP-LEARNING
-          <span class="button_tally">2</span>
-        </a>
-        
-        <a href='/tags/development/' class="post_tag button button_translucent">
-          DEVELOPMENT
           <span class="button_tally">2</span>
         </a>
         
@@ -1024,7 +1035,7 @@ traffic 데이터의 시계열 그래프는 <code>ggplot2</code> 패키지로 �
             </a>
             
             
-            <a href='/tags/dlookr/' class=" post_tag button button_translucent" data-position=5>DLOOKR<span class="button_tally">5</span>
+            <a href='/tags/dlookr/' class=" post_tag button button_translucent" data-position=6>DLOOKR<span class="button_tally">6</span>
             </a>
             
             
@@ -1044,11 +1055,19 @@ traffic 데이터의 시계열 그래프는 <code>ggplot2</code> 패키지로 �
             </a>
             
             
+            <a href='/tags/extrafont/' class=" post_tag button button_translucent" data-position=1>EXTRAFONT<span class="button_tally">1</span>
+            </a>
+            
+            
             <a href='/tags/factor/' class=" post_tag button button_translucent" data-position=1>FACTOR<span class="button_tally">1</span>
             </a>
             
             
             <a href='/tags/finance/' class=" post_tag button button_translucent" data-position=2>FINANCE<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/fonts/' class=" post_tag button button_translucent" data-position=1>FONTS<span class="button_tally">1</span>
             </a>
             
             
@@ -1072,7 +1091,7 @@ traffic 데이터의 시계열 그래프는 <code>ggplot2</code> 패키지로 �
             </a>
             
             
-            <a href='/tags/ggplot2/' class=" post_tag button button_translucent" data-position=2>GGPLOT2<span class="button_tally">2</span>
+            <a href='/tags/ggplot2/' class=" post_tag button button_translucent" data-position=3>GGPLOT2<span class="button_tally">3</span>
             </a>
             
             

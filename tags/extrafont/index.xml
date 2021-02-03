@@ -1,0 +1,661 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>extrafont on Dataholic</title>
+    <link>/tags/extrafont/</link>
+    <description>Recent content in extrafont on Dataholic</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 27 Jan 2021 10:09:12 +0800</lastBuildDate><atom:link href="/tags/extrafont/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>추가 폰트 사용하기</title>
+      <link>/post/2021-01/rfonts/</link>
+      <pubDate>Wed, 27 Jan 2021 10:09:12 +0800</pubDate>
+      
+      <guid>/post/2021-01/rfonts/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;다룰-이야기&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;다룰 이야기&lt;/h2&gt;
+&lt;p&gt;R로 그린 플롯에서 우리는 기하학적인 요소로 데이터의 현황을 이해한다. 그런데 라벨이나 제목, 범례, 축의 구간 단위에 표현하는 텍스트도 데이터를 이해하는 데 중요한 역할을 한다. 플롯의 텍스트는 폰트로 그리는데, R에서의 폰트와 폰트를 시각화하는 매커니즘을 다룬다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;R로 데이터를 시각화하는 것은 참 쉽다. 영어를 사용하는 문화권의 분석가에 한해서다. 한글을 표현하고 싶거나, 한글이 포함된 플롯을 파일로 출력하는 것은 생각보다 쉽지 않다. 기본 폰트가 아닌 확장 폰트를 사용하는 것도 쉬운 작업은 아니다. 기본 환경 그대로 편하게 그릴 것이냐? 기본 환경을 확장해서 어렵게 그릴 것이냐?는 여러분의 수고가 확장된 플롯에서 얻는 효용보다 작을 때 고민하게 바란다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div id=&#34;dlookr&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;dlookr&lt;/h2&gt;
+&lt;p&gt;나는 데이터 시각화에서 한글을 사용하지 않는다. 데이터 분석에서의 데코레이션은 사치이기 때문이다. 그러나 플롯을 분석가가 아닌 일반 대중에서 설명하기 위함이나 단행본을 집필할 경우에는 예외적이지만 그래서 한글의 사용을 제한적으로 사용한다.&lt;/p&gt;
+&lt;p&gt;내가 개발한 dlook 패키지는 데이터의 진단과 EDA에 대한 전문 패키지라서 데이터의 시각화를 위한 여러 함수를 제공한다. 그러나 한글 지원에 인색하다. 국내 로컬용 패키지가 아닌 글로벌용 패키지인지라 한글에 대한 지원은 세 개의 레포트 출력 함수에 국한되어 있다.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;“보기 좋은 떡이 먹기도 좋다.”&lt;/strong&gt;라는 속담이 갑자기 생각난 것은 아니지만, 이제 dlookr 패키지로 생성한 플롯을 분석가가 아닌 일반 대중을 위한 플롯으로 확장할 때가 온 것 같다는 생각이 스쳤다. 그래서 기존 플롯을 ggplot2 패키지를 이용한 플롯으로 변경함과 동시에 출판을 염두에 둔 심미적인 요소를 가미하였다. 그리고 0.4.0 버전의 마이너 릴리즈로 배포하였다.&lt;/p&gt;
+&lt;div id=&#34;dlookr-0.3.x-vs-0.4.0&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;dlookr 0.3.X vs 0.4.0&lt;/h3&gt;
+&lt;p&gt;dlookr 패키지의 0.3.14 버전과 0.4.0 버전의 몇 가지 시각화의 사례를 비교한다.&lt;/p&gt;
+&lt;div id=&#34;optimal-binning&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;optimal binning&lt;/h4&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(dlookr)
+
+# Generate data for the example
+carseats &amp;lt;- ISLR::Carseats
+carseats[sample(seq(NROW(carseats)), 20), &amp;quot;Income&amp;quot;] &amp;lt;- NA
+carseats[sample(seq(NROW(carseats)), 5), &amp;quot;Urban&amp;quot;] &amp;lt;- NA
+
+# optimal binning using name
+bin &amp;lt;- binning_by(carseats, US, Advertising)
+bin&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## binned type: optimal
+## number of bins: 3
+## x
+## [-1,0]  (0,6] (6,29] 
+##    144     69    187&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# summary optimal_bins class
+summary(bin)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## ── Binning Table ──────────────────────── Several Metrics ──
+##      Bin CntRec CntPos CntNeg RatePos RateNeg    Odds      WoE      IV     JSD
+## 1 [-1,0]    144     19    125 0.07364 0.88028  0.1520 -2.48101 2.00128 0.20093
+## 2  (0,6]     69     54     15 0.20930 0.10563  3.6000  0.68380 0.07089 0.00869
+## 3 (6,29]    187    185      2 0.71705 0.01408 92.5000  3.93008 2.76272 0.21861
+## 4  Total    400    258    142 1.00000 1.00000  1.8169       NA 4.83489 0.42823
+##       AUC
+## 1 0.03241
+## 2 0.01883
+## 3 0.00903
+## 4 0.06028
+## 
+## ── General Metrics ─────────────────────────────────────────
+## ● Gini index                       :  -0.87944
+## ● IV (Jeffrey)                     :  4.83489
+## ● JS (Jensen-Shannon) Divergence   :  0.42823
+## ● Kolmogorov-Smirnov Statistics    :  0.80664
+## ● HHI (Herfindahl-Hirschman Index) :  0.37791
+## ● HHI (normalized)                 :  0.06687
+## ● Cramer&amp;#39;s V                       :  0.81863
+## 
+## ── Significance Tests ──────────────────── Chisquare Test ──
+##    Bin A  Bin B statistics      p_value
+## 1 [-1,0]  (0,6]   87.67064 7.731349e-21
+## 2  (0,6] (6,29]   34.73349 3.780706e-09&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;optimal binning 클래스 bin을 시각화 한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# visualize all information for optimal_bins class
+plot(bin)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;기존 0.3.14 버전에서는 다음과 같이 시각화된다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/binning_by.png&#34; width=&#34;65%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;그러나 0.4.0 버전에서는 좀 더 깨끗하게 출력된다. 왼쪽 아래의 barchart도 &lt;code&gt;Bad Rate&lt;/code&gt;에서 &lt;code&gt;Percentage of Positive&lt;/code&gt;로 마이너하게 바꿨다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-01/rfonts_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;이상치-분석&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;이상치 분석&lt;/h4&gt;
+&lt;p&gt;내친 김에 하나 더 비교해 보자.&lt;/p&gt;
+&lt;p&gt;다음 예제에서는 이상치 비율이 5% 이상인 수치변수를 찾은 다음 이상치의 평균을 전체 평균으로 나눈 결과를 내림차순으로 반환한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(nycflights13)
+library(dplyr)
+
+diagnose_outlier(flights) %&amp;gt;% 
+  filter(outliers_ratio &amp;gt; 5) %&amp;gt;% 
+  mutate(rate = outliers_mean / with_mean) %&amp;gt;% 
+  arrange(desc(rate)) %&amp;gt;% 
+  select(-outliers_cnt)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 2 x 6
+##   variables outliers_ratio outliers_mean with_mean without_mean  rate
+##   &amp;lt;chr&amp;gt;              &amp;lt;dbl&amp;gt;         &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;        &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;
+## 1 arr_delay           8.28         121.       6.90       -3.69  17.5 
+## 2 dep_delay          12.8           93.1     12.6         0.444  7.37&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;그리고 그중 하나를 시각화한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;flights %&amp;gt;%
+  plot_outlier(arr_delay)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;기존 0.3.14 버전에서는 다음과 같이 시각화된다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/plot_outlier.png&#34; width=&#34;65%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;그러나 0.4.0 버전에서는 좀 더 깨끗하게 출력된다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-01/rfonts_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;어떤가? 기존 플롯보다 많이 깔끔해졌다. 어떤 것이 달라졌는가?&lt;/p&gt;
+&lt;p&gt;내가 노안이 깊어진 것은 인정한다. 그래서 폰트의 크기를 키운 것은 아니다. 기하학의 도형 시각화 못지 않게 텍스트의 역할이 좀 더 커진 것이다. 상대적으로 기하학의 도형 시각화 공간이 줄어든 것은 사실이다.&lt;/p&gt;
+&lt;p&gt;또 어떤 것이 달라졌는가?
+폰트 패밀리(font family)를 &lt;code&gt;Arial Narrow&lt;/code&gt;로 변경했다. 글자 크리가 커진 반면 &lt;code&gt;Arial Narrow&lt;/code&gt; 폰트로 출력되는 텍스트의 폭을 좀더 줄이면서, 텍스트도 좀 더 이쁘게 출력했다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;r의-폰트-체계&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;R의 폰트 체계&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;Arial Narrow&lt;/code&gt; 폰트로 시각화하는 것은 기존의 R 그래픽 환경을 수정해 주어야 한다. 이 작업은 R의 폰트 체계를 이해해야 한다.&lt;/p&gt;
+&lt;div id=&#34;r의-기본-폰트&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;R의 기본 폰트&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;세리프(serif)는 타이포그래피에서 글자의 획 일부 끝이 돌출된 모양을 의미한다. 그리고 세리프가 있는 글자체를 세리프체, 없는 글자체를 산세리프체(sans-serif)라 한다. &lt;code&gt;sans&lt;/code&gt;는 없음을 뜻하는 프랑스어의 접두어다. 세리프체는 명조체, 산세리프체는 고딕체(돋움체)를 연상하면 이해하기 쉽다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;R의 폰트 중에서 “sans”, “serif”, “mono”는 시스템(Windows, Linix, macOS) 독립적이라, 공통적으로 사용할 수 있다. 그 중 &lt;code&gt;산세리프체&lt;/code&gt;인 “sans”가 기본 폰트다. “serif”는 &lt;code&gt;세리프체&lt;/code&gt;이며, “mono”는 &lt;code&gt;모노스페이스(monospace)&lt;/code&gt;체다. 이 폰트체는 모든 공백문자를 포함한 모든 글자/문자의 너비가 같다. 즉, 알파벳 i와 G의 너비가 같은 고정폭 폰트체다.&lt;/p&gt;
+&lt;p&gt;엄밀하게 말하자면, “sans”, “serif”, “mono”는 폰트가 아니라 폰트 유형을 의미한다. &lt;code&gt;고딕&lt;/code&gt;, &lt;code&gt;명조&lt;/code&gt;, &lt;code&gt;고정폭&lt;/code&gt; 폰트며, 크로스플랫폼(cross-platform) 하에서 운용하기 위해 추상화 해 놓은 폰트 이름이다. 실제로는 운영체제(operating system)에서 추상화한 폰트 이름에 매핑된 실제 폰트가 사용된다. 그러므로 시각화에 표현되는 텍스트의 모양은 운영체제와 사용자의 환경에 따라 다를 수 있다.&lt;/p&gt;
+&lt;p&gt;다음의 명령을 MS Windows, Linix, macOS 환경에서 수행해 보았다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(1:8, 1:8, type = &amp;quot;n&amp;quot;, bty = &amp;quot;n&amp;quot;, xaxt = &amp;quot;n&amp;quot;, yaxt = &amp;quot;n&amp;quot;, 
+     xlab = &amp;quot;&amp;quot;, ylab = &amp;quot;&amp;quot;, pty = &amp;quot;s&amp;quot;, mar = c(0, 0, 0, 0))
+text(2, 7, &amp;quot;Font Test : English, sans&amp;quot;, adj = 0, cex = 2,  family = &amp;quot;sans&amp;quot;)
+text(2, 6, &amp;quot;Font Test : English, serif&amp;quot;, adj = 0, cex = 2, family = &amp;quot;serif&amp;quot;)
+text(2, 5, &amp;quot;Font Test : English, mono&amp;quot;, adj = 0, cex = 2, family = &amp;quot;mono&amp;quot;)
+text(2, 4, &amp;quot;폰트 테스트 : 한글, sans&amp;quot;, adj = 0, cex = 2, family = &amp;quot;sans&amp;quot;)
+text(2, 3, &amp;quot;폰트 테스트 : 한글, serif&amp;quot;, adj = 0, cex = 2, family = &amp;quot;serif&amp;quot;)
+text(2, 2, &amp;quot;폰트 테스트 : 한글, mono&amp;quot;, adj = 0, cex = 2, family = &amp;quot;mono&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;MS Windows에서는 다음과 같은 결과를 얻는다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/default_windows.png&#34; width=&#34;65%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;결과를 보면, 한글의 경우에는 “sans”, “serif”, “mono”가 같은 폰트로 보인다. 버전에 따라 차이가 있지만, 최근에 사용되는 버전의 MS Windows에서는 영문 폰트로 지정한 한글의 경우 &lt;code&gt;맑은 고딕&lt;/code&gt;이 기본으로 설정되어 출력된다.&lt;/p&gt;
+&lt;p&gt;MS Windows에서만 지원하는 windowsFonts() 함수로 R에서 사용할 수 있는 기본 폰트를 조회했다. “sans”는 &lt;code&gt;Arial&lt;/code&gt;, “serif”는 &lt;code&gt;Times New Roman&lt;/code&gt;, “mono”는 &lt;code&gt;Courier New&lt;/code&gt; 폰트로 매핑되어 있음을 알 수 있다. 그러므로 넷째 줄에 출력된 한글 폰트 테스트는 “sans”에 해당하는 &lt;code&gt;Arial&lt;/code&gt; 폰트를 사용하는데, &lt;code&gt;Arial&lt;/code&gt; 폰트는 영문 폰트라 한글 글리프(Glyph)가 정의되어 있지 않다. 그러므로 &lt;code&gt;맑은 고딕&lt;/code&gt; 폰트의 글리프를 가져다 출력하는 것이다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;글리프(Glyph)는 폰트에서 글자나 문자 한 자 한 자의 모양을 정의한 자형(字形)을 의미한다. 즉, 시각적인 문자의 표현이다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; windowsFonts()
+$serif
+[1] &amp;quot;TT Times New Roman&amp;quot;
+
+$sans
+[1] &amp;quot;TT Arial&amp;quot;
+
+$mono
+[1] &amp;quot;TT Courier New&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Linux에서는 다음과 같은 결과를 얻는다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/default_linux.png&#34; width=&#34;65%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;얼핏 보아도 세리프와 산세리프의 모양이 다른 것을 알 수 있다. 나의 CentOS Linux 도커 환경에서, X11Fonts() 함수로 R에서 사용할 수 있는 기본 폰트를 조회했다. “sans”는 &lt;code&gt;helvetica&lt;/code&gt;, “serif”는 &lt;code&gt;times&lt;/code&gt;, “mono”는 &lt;code&gt;courier&lt;/code&gt; 폰트로 매핑되어 있음을 알 수 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; X11Fonts()
+$serif
+[1] &amp;quot;-*-times-%s-%s-*-*-%d-*-*-*-*-*-*-*&amp;quot;
+
+$sans
+[1] &amp;quot;-*-helvetica-%s-%s-*-*-%d-*-*-*-*-*-*-*&amp;quot;
+
+$mono
+[1] &amp;quot;-*-courier-%s-%s-*-*-%d-*-*-*-*-*-*-*&amp;quot;
+
+$Times
+[1] &amp;quot;-adobe-times-%s-%s-*-*-%d-*-*-*-*-*-*-*&amp;quot;
+
+$Helvetica
+[1] &amp;quot;-adobe-helvetica-%s-%s-*-*-%d-*-*-*-*-*-*-*&amp;quot;
+
+$CyrTimes
+[1] &amp;quot;-cronyx-times-%s-%s-*-*-%d-*-*-*-*-*-*-*&amp;quot;
+
+$CyrHelvetica
+[1] &amp;quot;-cronyx-helvetica-%s-%s-*-*-%d-*-*-*-*-*-*-*&amp;quot;
+
+$Arial
+[1] &amp;quot;-monotype-arial-%s-%s-*-*-%d-*-*-*-*-*-*-*&amp;quot;
+
+$Mincho
+[1] &amp;quot;-*-mincho-%s-%s-*-*-%d-*-*-*-*-*-*-*&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;“sans”, “serif”, “mono”별로 어떤 한글 폰트가 매핑되어 있는지 살펴본다.&lt;/p&gt;
+&lt;p&gt;/etc/fonts/conf.d 디렉토리의 40-nonlatin.conf, 65-nonlatin.conf 파일에는 라틴계열이 언어가 아닌 비영어권의 폰트 설정이 정의되어 있다. 65-nonlatin.conf 파일을 열어 “sans”, “serif”, “mono”별로 매핑된 한글 폰트 목록을 조회해 보았다. “serif”는 &lt;code&gt;NanumMyeongjo&lt;/code&gt;, &lt;code&gt;UnBatang&lt;/code&gt;, &lt;code&gt;Baekmuk Batang&lt;/code&gt;, 즉, &lt;code&gt;나눔명조&lt;/code&gt;, &lt;code&gt;은바탕&lt;/code&gt;, &lt;code&gt;백묵바탕&lt;/code&gt; 순으로 매핑되어 있다. 그러므로 &lt;code&gt;나눔명조&lt;/code&gt; 폰트가 출력된 것이다. “sans”는 &lt;code&gt;NanumGothic&lt;/code&gt;, &lt;code&gt;UnDotum&lt;/code&gt;, &lt;code&gt;Baekmuk Gulim&lt;/code&gt;, 즉, &lt;code&gt;나눔고딕&lt;/code&gt;, &lt;code&gt;은돋움&lt;/code&gt;, &lt;code&gt;백묵돋움&lt;/code&gt;, &lt;code&gt;백묵굴림&lt;/code&gt; 순으로 매핑되어 있다. 그러므로 &lt;code&gt;나눔고딕&lt;/code&gt; 폰트가 출력된 것이다. 마찬가지로 “mono”는 &lt;code&gt;나눔고딕코딩&lt;/code&gt; 폰트가 출력되었다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;[root@9ead55835a3e conf.d]# pwd
+/etc/fonts/conf.d
+[root@9ead55835a3e conf.d]# grep &amp;quot;serif\|mono\|ko&amp;quot; 65-nonlatin.conf
+        &amp;lt;family&amp;gt;serif&amp;lt;/family&amp;gt;
+            &amp;lt;family&amp;gt;NanumMyeongjo&amp;lt;/family&amp;gt; &amp;lt;!-- hangul (ko) --&amp;gt;
+            &amp;lt;family&amp;gt;UnBatang&amp;lt;/family&amp;gt; &amp;lt;!-- hangul (ko) --&amp;gt;
+            &amp;lt;family&amp;gt;Baekmuk Batang&amp;lt;/family&amp;gt; &amp;lt;!-- hangul (ko) --&amp;gt;
+        &amp;lt;family&amp;gt;sans-serif&amp;lt;/family&amp;gt;
+            &amp;lt;family&amp;gt;NanumGothic&amp;lt;/family&amp;gt; &amp;lt;!-- hangul (ko) --&amp;gt;
+            &amp;lt;family&amp;gt;UnDotum&amp;lt;/family&amp;gt; &amp;lt;!-- hangul (ko) --&amp;gt;
+            &amp;lt;family&amp;gt;Baekmuk Dotum&amp;lt;/family&amp;gt; &amp;lt;!-- hangul (ko) --&amp;gt;
+            &amp;lt;family&amp;gt;Baekmuk Gulim&amp;lt;/family&amp;gt; &amp;lt;!-- hangul (ko) --&amp;gt;
+        &amp;lt;family&amp;gt;monospace&amp;lt;/family&amp;gt;
+            &amp;lt;family&amp;gt;NanumGothicCoding&amp;lt;/family&amp;gt; &amp;lt;!-- hangul (ko) --&amp;gt;
+            &amp;lt;family&amp;gt;NanumGothic&amp;lt;/family&amp;gt; &amp;lt;!-- hangul (ko) --&amp;gt;
+            &amp;lt;family&amp;gt;UnDotum&amp;lt;/family&amp;gt; &amp;lt;!-- hangul (ko) --&amp;gt;
+            &amp;lt;family&amp;gt;Baekmuk Dotum&amp;lt;/family&amp;gt; &amp;lt;!-- hangul (ko) --&amp;gt;
+            &amp;lt;family&amp;gt;Baekmuk Gulim&amp;lt;/family&amp;gt; &amp;lt;!-- hangul (ko) --&amp;gt;
+[root@9ead55835a3e conf.d]#     &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;macOS에서는 다음과 같은 결과를 얻는다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/default_mac.png&#34; width=&#34;65%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;다른 운영체제와 달리 macOS에서는 한글이 출력되지 않았다. 이것이 다른 운영체제와 다른 macOS 운영체제에서의 R의 특징이다.&lt;/strong&gt; 그러나 quartzFonts() 함수로 영문의 경우에는 “sans”는 &lt;code&gt;Helvetica&lt;/code&gt;, “serif”는 &lt;code&gt;Times-Roman&lt;/code&gt;, “mono”는 &lt;code&gt;Courier&lt;/code&gt; 폰트로 매핑되어 있음을 알 수 있다.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;주) 이 글은 일부 Linux와 MS Windows 환경에서 실행한 결과를 포함하지만, 전체적으로는 macOS 운영체제에서 테스트되고 기술하였음을 미리 알려 둔다. 그러나 다른 운영체제에서도 어렵지 않게 수행할 수 있을 것이다.&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; quartzFonts()
+$serif
+[1] &amp;quot;Times-Roman&amp;quot;      &amp;quot;Times-Bold&amp;quot;       &amp;quot;Times-Italic&amp;quot;     &amp;quot;Times-BoldItalic&amp;quot;
+
+$sans
+[1] &amp;quot;Helvetica&amp;quot;             &amp;quot;Helvetica-Bold&amp;quot;        &amp;quot;Helvetica-Oblique&amp;quot;     &amp;quot;Helvetica-BoldOblique&amp;quot;
+
+$mono
+[1] &amp;quot;Courier&amp;quot;             &amp;quot;Courier-Bold&amp;quot;        &amp;quot;Courier-Oblique&amp;quot;     &amp;quot;Courier-BoldOblique&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;macOS에서는 한글 기본 폰트를 설정하기 위해서는 다음처럼 quartzFont(), quartzFonts() 함수를 사용한다. 물론 다른 운영체제에서도 가능하다. 다만, MS Windows에서는 windowsFont(), windowsFonts() 함수를, Linux에서는 X11Font(), X11Fonts() 함수를 이용하면 된다.&lt;/p&gt;
+&lt;p&gt;다음 예제는 “sans”, “serif”, “mono”별로 &lt;code&gt;애플고딕&lt;/code&gt;, &lt;code&gt;애플명조&lt;/code&gt;, &lt;code&gt;나눔고딕코딩&lt;/code&gt; 폰트를 매핑한다. 그런데 이번에는 영문 폰트가 기존의 것과 다르다. 그 이유는 한글 폰트는 영문 글리프도 정의했기 때문이다. 영문 글리프의 개수는 한글에 비에 매우 적기 때문에, 대부분의 한글 폰트는 영문 글리프도 함께 정의한다. 그 이유는 한글과 영문을 혼용할 때 좀더 잘 어울리도록 영문 글리프를 새로이 정의하기 때문이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;quartzFonts(sans = quartzFont(rep(&amp;quot;AppleGothic&amp;quot;, 4)),
+            serif = quartzFont(rep(&amp;quot;AppleMyungjo&amp;quot;, 4)),
+            mono = quartzFont(c(&amp;quot;D2Coding&amp;quot;, &amp;quot;D2CodingBold&amp;quot;, &amp;quot;D2Coding&amp;quot;, &amp;quot;D2CodingBold&amp;quot;)))
+
+plot(1:8, 1:8, type = &amp;quot;n&amp;quot;, bty = &amp;quot;n&amp;quot;, xaxt = &amp;quot;n&amp;quot;, yaxt = &amp;quot;n&amp;quot;, 
+     xlab = &amp;quot;&amp;quot;, ylab = &amp;quot;&amp;quot;, pty = &amp;quot;s&amp;quot;, mar = c(0, 0, 0, 0))
+text(2, 7, &amp;quot;Font Test : English, sans&amp;quot;, adj = 0, cex = 2,  family = &amp;quot;sans&amp;quot;)
+text(2, 6, &amp;quot;Font Test : English, serif&amp;quot;, adj = 0, cex = 2, family = &amp;quot;serif&amp;quot;)
+text(2, 5, &amp;quot;Font Test : English, mono&amp;quot;, adj = 0, cex = 2, family = &amp;quot;mono&amp;quot;)
+text(2, 4, &amp;quot;폰트 테스트 : 한글, sans&amp;quot;, adj = 0, cex = 2, family = &amp;quot;sans&amp;quot;)
+text(2, 3, &amp;quot;폰트 테스트 : 한글, serif&amp;quot;, adj = 0, cex = 2, family = &amp;quot;serif&amp;quot;)
+text(2, 2, &amp;quot;폰트 테스트 : 한글, mono&amp;quot;, adj = 0, cex = 2, family = &amp;quot;mono&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;폰트의 매핑을 변경하고 출력한 결과를 보니, 한글이 정상적으로 출력되었다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/default_mac_2.png&#34; width=&#34;65%&#34; /&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;예제에서는 폰트 매커니즘을 설명하기 위해서 기본 폰트인 “sans”, “serif”, “mono”를 변경하였다. 그러나 이를 변경할 경우에 어떤 side-effect를 발생할 지 모르니 수정하지 않는 것을 권장한다. 그래서 앞서 바꾼 설정을 다시 돌려 놓아야 한다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;quartzFonts(sans = quartzFont(c(&amp;quot;Helvetica&amp;quot;, &amp;quot;Helvetica-Bold&amp;quot;, &amp;quot;Helvetica-Oblique&amp;quot;, &amp;quot;Helvetica-BoldOblique&amp;quot;)),
+            serif = quartzFont(c(&amp;quot;Times-Roman&amp;quot;, &amp;quot;Times-Bold&amp;quot;, &amp;quot;Times-Italic&amp;quot;, &amp;quot;Times-BoldItalic&amp;quot;)),
+            mono = quartzFont(c(&amp;quot;Courier&amp;quot;, &amp;quot;Courier-Bold&amp;quot;, &amp;quot;Courier-Oblique&amp;quot;, &amp;quot;Courier-BoldOblique&amp;quot;)))&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;폰트-패밀리와-폰트-페이스&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;폰트 패밀리와 폰트 페이스&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;폰트 패밀리(font family)는 폰트의 고유한 특징을 유지하면서 파생된 폰트들의 집합이다. 대표적으로 글자의 굵기에 따라 기본체(Regular), 굵은체(Bold), 가는체(Light)로 나눌 수 있으며, 기울어진 모양의 이탤릭체(Italic) 등이 폰트 패밀리다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;배포되는 폰트에 따라서 여러 유형의 폰트를 정의한다. 그러나 &lt;strong&gt;R은 폰트 패밀리에 다음과 같은 4개의 폰트만 지원한다. 그러므로 4개를 초과하는 폰트를 가진 폰트 패밀리라도 오직 4가지만 사용할 수 있다. &lt;/strong&gt; 그리고 이것을 폰트 페이스(font faces)라 부른다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Regular : 기본 폰트체&lt;/li&gt;
+&lt;li&gt;Bold : 굵은체&lt;/li&gt;
+&lt;li&gt;Italic : 이탤릭체&lt;/li&gt;
+&lt;li&gt;BoldItalic : 굵은 이탤릭체&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;quartzFont() 함수에서 인수로 사용한 4개의 텍스트가 바로 &lt;code&gt;Regular&lt;/code&gt;, &lt;code&gt;Bold&lt;/code&gt;, &lt;code&gt;Italic&lt;/code&gt;, &lt;code&gt;BoldItalic&lt;/code&gt;을 의미한다. &lt;code&gt;애플고딕&lt;/code&gt; 폰트는 오직 기본 폰트체만 배포하기 때문에 모두 동일한 폰트를 지정했다. 그리고 &lt;code&gt;D2Coding&lt;/code&gt; 폰트는 기본체와 굵은체 두 가지만 배포하기 때문에 이탤릭체에 두 개를 반복 지정한 것이다.&lt;/p&gt;
+&lt;p&gt;다음의 Raleway 폰트 패밀리는 18개의 폰트를 포함하고 있다. 그러나 이 폰트 패밀리도 R에서는 4개 밖에 사용할 수 없다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/fonts.png&#34; width=&#34;65%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Raleway&lt;/code&gt; 폰트 패밀리의 폰트들은 572개 혹은 672개의 글리프로 정의되어 있는 반면에, &lt;code&gt;나눔고딕&lt;/code&gt; Bold는 20,452개의 글리프로 구성되어 있다. 글리프의 개수가 적은 라틴문자 계열의 폰트는 이처럼 많은 유형의 폰트를 개발할 수 있는 여력이 있다는 장점이 있다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;대부분의 한글 폰트 패밀리는 이탤릭체나 굵은이탤릭체를 정의하지 않는다. 그 이유는 이탤릭체의 사용 빈도가 그리 높지 않기 때문이다. 경제성의 논리다. MS 오피스에서는 기본체(Regular)만 있더라도 애뮬레이터하여, 굵은체, 이탤릭체, 굵은이탤릭체를 표현하지만, R에서는 폰트 패밀리에서 제공하는 폰트 페이스(스타일)만 지원한다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;폰트 패밀리에서 제공하는 여러 폰트 페이스를 사용하기 위해서는 운영체제별로 quartzFont(), quartzFonts() 함수, windowsFont(), windowsFonts() 함수, X11Font(), X11Fonts() 함수를 이용해서 폰트 패밀리와 폰트 페이스를 정의해야 한다. 그렇지 않으면 오직 기본체(Regular)만 사용할 수 있다.&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;quartzFonts(d2code = quartzFont(c(&amp;quot;D2Coding&amp;quot;, &amp;quot;D2CodingBold&amp;quot;, &amp;quot;D2Coding&amp;quot;, &amp;quot;D2CodingBold&amp;quot;)))
+
+par(mar = c(0, 0, 0, 0))
+plot(1:10, 1:10, type = &amp;quot;n&amp;quot;, bty = &amp;quot;n&amp;quot;, xaxt = &amp;quot;n&amp;quot;, yaxt = &amp;quot;n&amp;quot;, 
+     xlab = &amp;quot;&amp;quot;, ylab = &amp;quot;&amp;quot;, pty = &amp;quot;s&amp;quot;, mar = c(0, 0, 0, 0))
+text(2, 9, &amp;quot;Font Test : English, regular&amp;quot;, adj = 0, cex = 2,  family = &amp;quot;sans&amp;quot;, font = 1)
+text(2, 8, &amp;quot;Font Test : English, bold&amp;quot;, adj = 0, cex = 2, family = &amp;quot;sans&amp;quot;, font = 2)
+text(2, 7, &amp;quot;Font Test : English, italic&amp;quot;, adj = 0, cex = 2, family = &amp;quot;sans&amp;quot;, font = 3)
+text(2, 6, &amp;quot;Font Test : English, bold italic&amp;quot;, adj = 0, cex = 2, family = &amp;quot;sans&amp;quot;, font = 4)
+text(2, 5, &amp;quot;폰트 테스트 : 한글, regular&amp;quot;, adj = 0, cex = 2, family = &amp;quot;d2code&amp;quot;, font = 1)
+text(2, 4, &amp;quot;폰트 테스트 : 한글, bold&amp;quot;, adj = 0, cex = 2, family = &amp;quot;d2code&amp;quot;, font = 2)
+text(2, 3, &amp;quot;폰트 테스트 : 한글, italic&amp;quot;, adj = 0, cex = 2, family = &amp;quot;d2code&amp;quot;, font = 3)
+text(2, 2, &amp;quot;폰트 테스트 : 한글, bold italic&amp;quot;, adj = 0, cex = 2, family = &amp;quot;d2code&amp;quot;, font = 4)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-01/rfonts_files/figure-html/unnamed-chunk-21-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;영문은 &lt;code&gt;sans&lt;/code&gt; 폰트로 4개의 폰트 페이스를 표현하지만, 한글 &lt;code&gt;D2Coding&lt;/code&gt;폰트는 이탤릭 계열의 페이스를 지원하지 못하였다. 그 이유는 &lt;code&gt;D2Coding&lt;/code&gt; 폰트는 이탤릭 계열의 폰트를 배포하지 않았기 때문이다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;r에서-폰트-인식하기&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;R에서 폰트 인식하기&lt;/h3&gt;
+&lt;p&gt;폰트와 폰트 패밀리의 이름을 알면 R에서 여러 서체로 텍스트를 꾸밀 수 있다. 그러나 우리는 폰트와 폰트 패밀리의 이름을 모두 외울 수도 없고, 정확한 이름을 찾기도 간단치 않다. 앞서 사용한 &lt;code&gt;애플고딕&lt;/code&gt;, &lt;code&gt;애플명조&lt;/code&gt;, &lt;code&gt;D2Coding&lt;/code&gt;은 서체 관리자에서 조회해서 알아낸 것이다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;extrafont&lt;/code&gt; 패키지의 &lt;code&gt;font_import() 함수&lt;/code&gt;는 사용자 시스템에 설치된 트루타입(TrueType) 폰트를 읽어서 R에서 사용할 수 있도록 폰트의 이름과 폰트의 페이스를 등록해 준다. &lt;code&gt;extrafont&lt;/code&gt; 패키지는 폰트 정보를 읽어 &lt;code&gt;extrafontdb&lt;/code&gt; 패키지에 폰트 데이터베이스를 생성한다. 그리고 폰트 데이터베이스를 통해서 폰트를 쉽게 가져다 쓸 수 있게 도와준다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;나눔고딕&lt;/code&gt; 폰트 정보를 가져오는 예제다. “NanumGothic”에 매치되는 폰트를 가져온다. 만약 pattern 인수를 사용하지 않으면 모든 트루타입 폰트를 가져오느라 시간이 걸릴 것이다. 그래서 &lt;code&gt;나눔고딕&lt;/code&gt; 폰트만 가져오려는 것이다. 그런데 &lt;code&gt;font_import() 함수&lt;/code&gt;가 정규표현식을 완전하게 지원하지 않아서, &lt;code&gt;나눔고딕코딩&lt;/code&gt; 폰트를 제외하고 가져올 방법이 없었다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;font_import() 함수&lt;/code&gt;의 pattern 인수는 폰트 이름이 아니라, 폰트 파일 이름의 패턴을 검색한다. 예를 들면 MS Windows에서는 &lt;code&gt;Arial Narrow&lt;/code&gt;는 검색되지 않을 것이다. 그 이유는 MS Windows에서는 &lt;code&gt;Arial Narrow&lt;/code&gt; 폰트의 파일 이름은 “ARIALN”로 표현되기 때문이다. 그러므로 폰트의 파일 이름을 인지하는 것이 필요하다. 아니면 시간이 걸리더라도 pattern 인수를 사용하지 않고, 모든 폰트를 읽어들이는 방법도 고려할 수 있다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(extrafont)
+
+# 사용자 및 시스템 폰트 디렉토리에서 폰트 가져와 등록하기
+font_import(pattern = &amp;quot;NanumGothic&amp;quot;, prompt = FALSE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;extrafontdb&lt;/code&gt; 패키지에 등록된 폰트 데이터베이스는 &lt;code&gt;extrafont&lt;/code&gt; 패키지의 &lt;code&gt;fonttable() 함수&lt;/code&gt;로 조회할 수 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(dplyr)
+library(extrafont)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Registering fonts with R&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fonttable() %&amp;gt;% 
+  filter(stringr::str_detect(FamilyName, &amp;quot;NanumGothic&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##   package                       afmfile
+## 1      NA            NanumGothic.afm.gz
+## 2      NA        NanumGothicBold.afm.gz
+## 3      NA      NanumGothicCoding.afm.gz
+## 4      NA NanumGothicCoding-Bold.afm.gz
+## 5      NA       NanumGothicLight.afm.gz
+##                                                        fontfile
+## 1            /Users/choonghyunryu/Library/Fonts/NanumGothic.ttf
+## 2        /Users/choonghyunryu/Library/Fonts/NanumGothicBold.ttf
+## 3      /Users/choonghyunryu/Library/Fonts/NanumGothicCoding.ttf
+## 4 /Users/choonghyunryu/Library/Fonts/NanumGothicCoding-Bold.ttf
+## 5       /Users/choonghyunryu/Library/Fonts/NanumGothicLight.ttf
+##                 FullName        FamilyName               FontName  Bold Italic
+## 1            NanumGothic       NanumGothic            NanumGothic FALSE  FALSE
+## 2        NanumGothicBold       NanumGothic        NanumGothicBold  TRUE  FALSE
+## 3      NanumGothicCoding NanumGothicCoding      NanumGothicCoding FALSE  FALSE
+## 4 NanumGothicCoding Bold NanumGothicCoding NanumGothicCoding-Bold  TRUE  FALSE
+## 5      NanumGothic Light NanumGothic Light       NanumGothicLight FALSE  FALSE
+##   Symbol afmsymfile
+## 1  FALSE         NA
+## 2  FALSE         NA
+## 3  FALSE         NA
+## 4  FALSE         NA
+## 5  FALSE         NA&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;역시 &lt;code&gt;나눔고딕코딩&lt;/code&gt; 폰트 정보도 가져왔다. 그래서 정규표현이 잘 지원되는 &lt;code&gt;str_detect() 함수&lt;/code&gt;로 나눔고딕 정보만 조회한다. R에서 지원하지 않는 폰트 페이스인 Light는 폰트이름과 같은 폰트 패밀리로 등록되었고, Regular와 Bold가 NanumGothic 폰트 패밀리도 등록되었다. Bold 변수, Italic 변수로 폰트 페이스를 구분한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fonttable() %&amp;gt;% 
+  filter(stringr::str_detect(FamilyName, &amp;quot;NanumGothic(?!Coding)&amp;quot;)) %&amp;gt;% 
+  select(FamilyName:Italic)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##          FamilyName         FontName  Bold Italic
+## 1       NanumGothic      NanumGothic FALSE  FALSE
+## 2       NanumGothic  NanumGothicBold  TRUE  FALSE
+## 3 NanumGothic Light NanumGothicLight FALSE  FALSE&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;이 결과는 다음 스크립트와 동일한 역할을 수행한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;quartzFonts(NanumGothic = quartzFont(c(&amp;quot;NanumGothic&amp;quot;, &amp;quot;NanumGothicBold&amp;quot;, &amp;quot;NanumGothic&amp;quot;, &amp;quot;NanumGothicBold&amp;quot;)))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Linux와 macOS에서는 정확한 폰트의 이름만 알면, text() 함수의 family 인수처럼 기본 폰트를 변경할 수 있다. 그러나 MS Windows에서는 windowsFont(), windowsFonts() 함수로 Window 디바이스에서 폰트를 인식할 수 있도록 R에게 알려 주어야 한다. font_import() 함수가 모든 것을 해결해 주지 않는다.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;비트맵 아키텍처를 사용하는 MS Windows 환경에서는 font_import() 함수를 수행한 후에, 추가로 다음 스크립트를 수행해야 해당 폰트를 사용할 수 있다. loadfonts() 함수는 windowsFont(), windowsFonts() 함수의 사용을 쉽게 해주는 역할을 한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;loadfonts(device = &amp;quot;win&amp;quot;, quiet = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;extrafont::font_import() 함수는 한번만 수행하면 해당 폰트가 등록되며, extrafont::loadfonts() 함수는 R 세션마다 매번 수행해야 한다. MS Windows 사용자는 주의해야 할 부분이다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div id=&#34;그래픽-전역변수에-폰트-패밀리-지정하기&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;그래픽 전역변수에 폰트 패밀리 지정하기&lt;/h3&gt;
+&lt;p&gt;앞의 작업은 한글 출력을 위한 완벽한 작업은 아니다. 폰트 패밀리에 한글 폰트를 매핑한 것에 지나지 않는다. 그러므로 폰트를 사용하기 위해서는 &lt;code&gt;text()&lt;/code&gt;와 같은 저수준 그래픽 함수(low level graphics function)를 사용할때마다 폰트 패밀리를 지정해야 한다. 매우 번거로운 작업이다. 그래서 &lt;code&gt;par() 함수&lt;/code&gt;로 그래픽 전역변수에 폰트 패밀리를 등록한다.&lt;/p&gt;
+&lt;p&gt;특히 macOS 환경에서 모든 한글이 포함되는 플롯을 그리는 작업에서 한글을 정상적으로 출력하기 위해서는 전역 그래픽 환경변수에 폰트 패밀리(font family)를 설정해 주어야 한다.&lt;/p&gt;
+&lt;p&gt;애플명조를 사용하고 싶다면 다음처럼 &lt;code&gt;par() 함수&lt;/code&gt;로 폰트 패밀리에 &lt;code&gt;AppleMyungjo&lt;/code&gt;를 지정한다. &lt;code&gt;par() 함수&lt;/code&gt;로 설정된 환경변수는 전역변수이기 때문에 R 세션이 종료될 때까지 설정이 유지된다. 즉, R을 종료할 때까지 모든 텍스트는 애플명조 폰트를 사용한다. 다만, 예제의 &lt;code&gt;text() 함수&lt;/code&gt;처럼 폰트 패밀리를 지정할 수 있는 인수를 지원한다면, “Courier”나 “NanumGothic” 폰트를 사용할 수도 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;par(family = &amp;quot;AppleMyungjo&amp;quot;, mar = c(0, 0, 0, 0))
+
+plot(1:8, 1:8, type = &amp;quot;n&amp;quot;, bty = &amp;quot;n&amp;quot;, xaxt = &amp;quot;n&amp;quot;, yaxt = &amp;quot;n&amp;quot;, 
+     xlab = &amp;quot;&amp;quot;, ylab = &amp;quot;&amp;quot;, pty = &amp;quot;s&amp;quot;, mar = c(0, 0, 0, 0))
+text(2, 7, &amp;quot;Font Test : English&amp;quot;, adj = 0, cex = 2)
+text(2, 6, &amp;quot;Font Test : English&amp;quot;, adj = 0, cex = 2)
+text(2, 5, &amp;quot;Font Test : English&amp;quot;, adj = 0, cex = 2, family = &amp;quot;Courier&amp;quot;)
+text(2, 4, &amp;quot;폰트 테스트 : 한글&amp;quot;, adj = 0, cex = 2)
+text(2, 3, &amp;quot;폰트 테스트 : 한글&amp;quot;, adj = 0, cex = 2)
+text(2, 2, &amp;quot;폰트 테스트 : 한글&amp;quot;, adj = 0, cex = 2, family = &amp;quot;NanumGothic&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-01/rfonts_files/figure-html/unnamed-chunk-27-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;다음은 시스템 폰트 디렉토리에 있는 사용자가 설치한 &lt;code&gt;나눔고딕&lt;/code&gt; 폰트로 플롯을 출력한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 전역 그래픽 환경변수의 폰트 패밀리에 시스템 폰트 디렉토리에 있는 폰트 패밀리 지정
+par(family = &amp;quot;NanumGothic&amp;quot;)
+plot(rnorm(100), type = &amp;quot;b&amp;quot;, pch = 16, main = list(&amp;quot;정규난수의 플로팅 Test&amp;quot;, cex = 2))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-01/rfonts_files/figure-html/unnamed-chunk-28-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 전역 그래픽 환경변수의 폰트 패밀리에 시스템 폰트 디렉토리에 없는 폰트 패밀리 지정
+# 폰트 패밀리 이름을 정확하게 입력해야 한다.
+par(family = &amp;quot;NanumGothic123&amp;quot;)
+plot(rnorm(100), type = &amp;quot;b&amp;quot;, pch = 16, main = list(&amp;quot;정규난수의 플로팅 Test&amp;quot;, cex = 2))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-01/rfonts_files/figure-html/unnamed-chunk-28-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;마지막 예제처럼 폰트 혹은 폰트 패밀리의 이름을 오타로 잘못 기술하거나, 없는 폰트 패밀리의 이름을 기술하면 다음처럼 경고와 함께 모든 텍스트는 출력되지 않는다. 물론 “NanumGothic”라는 폰트 패밀리는 나의 macOS R 환경에는 존재하지 않는다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; warnings() %&amp;gt;% head(n = 3)
+Warning messages:
+1: In doTryCatch(return(expr), name, parentenv, handler) :
+  no font could be found for family &amp;quot;NanumGothic123&amp;quot;
+2: In doTryCatch(return(expr), name, parentenv, handler) :
+  no font could be found for family &amp;quot;NanumGothic123&amp;quot;
+3: In doTryCatch(return(expr), name, parentenv, handler) :
+  no font could be found for family &amp;quot;NanumGothic123&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ggplot2에서의-폰트의-사용&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;ggplot2에서의 폰트의 사용&lt;/h2&gt;
+&lt;p&gt;ggplot2는 R 그래픽의 전역 변수와는 다른 매커니즘이다. 그 근간은 R 그래픽를 따르지만, 독립된 환경을 구사한다. 그러므로 &lt;code&gt;par() 함수&lt;/code&gt;로 폰트 패밀리를 지원할 수 없다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(ggplot2)
+
+par(family = &amp;quot;NanumGothic&amp;quot;)
+
+ggplot(mpg, aes(class)) +
+  geom_bar(fill = &amp;quot;steelblue&amp;quot;, alpha  = 0.5) + 
+  labs(title = &amp;quot;차량 클래스별 도수&amp;quot;, y = &amp;quot;도수&amp;quot;) +
+  theme(plot.title = element_text(size = 20))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-01/rfonts_files/figure-html/unnamed-chunk-30-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;결과 플롯을 보면 한글 폰트인 나눔고딕 폰트가 적용되지 못했다. ggplot2 플롯은 테마에서 폰트 관련 설정을 정의한다. 그래서 ggplot의 기본 테마인 &lt;code&gt;theme_gray&lt;/code&gt; 테마의 &lt;code&gt;base_family&lt;/code&gt;로 폰트 패밀리를 지정해야 한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(mpg, aes(class)) +
+  geom_bar(fill = &amp;quot;steelblue&amp;quot;, alpha  = 0.5) + 
+  labs(title = &amp;quot;차량 클래스별 도수&amp;quot;, y = &amp;quot;도수&amp;quot;) +
+  theme_gray(base_family = &amp;quot;NanumGothic&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-01/rfonts_files/figure-html/unnamed-chunk-31-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;theme_gray&lt;/code&gt; 테마의 &lt;code&gt;base_family&lt;/code&gt; 설정은 모든 텍스트 요소에 일괄적으로 적용된다. 메인 타이틀과 y-축 라벨의 폰트 패밀리를 달리 지정할 수 있을까? 개별 텍스트 요소에 다른 설정을 적용하기 위해서는 &lt;code&gt;theme() 함수&lt;/code&gt;를 사용한다.&lt;/p&gt;
+&lt;p&gt;다음은 &lt;code&gt;theme() 함수&lt;/code&gt;로 메인 타이틀은 앞에서 “mono”에 매핑한 &lt;code&gt;D2Coding&lt;/code&gt; 폰트의 굵은 폰트를 y-축 라벨은 &lt;code&gt;나눔고딕&lt;/code&gt; 폰트를 지정한다. 그리고 폰트의 크기도 기본 설정에서 변경하였다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(mpg, aes(class)) +
+  geom_bar(fill = &amp;quot;steelblue&amp;quot;, alpha  = 0.5) + 
+  labs(title = &amp;quot;차량 클래스별 도수&amp;quot;, y = &amp;quot;도수&amp;quot;) +
+  theme(plot.title = element_text(family = &amp;quot;d2code&amp;quot;, size = 20, face = 2),
+        axis.title.y = element_text(family = &amp;quot;NanumGothic&amp;quot;, size = 12))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-01/rfonts_files/figure-html/unnamed-chunk-32-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;ggplot에서도 &lt;code&gt;par() 함수&lt;/code&gt;처럼 폰트 설정을 전역변수로 설정하는 방법이 없을까? 매번 플롯을 그릴 때마 폰트 패밀리를 지정해야 할까?&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;theme_set() 함수&lt;/code&gt;로 &lt;code&gt;par() 함수&lt;/code&gt;처럼 ggplot의 그래픽 환경을 설정할 수 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;theme_set(theme_gray(base_family = &amp;quot;NanumGothic&amp;quot;))
+ggplot(mpg, aes(class)) +
+  geom_bar(fill = &amp;quot;steelblue&amp;quot;, alpha  = 0.5) + 
+  labs(title = &amp;quot;차량 클래스별 도수&amp;quot;, y = &amp;quot;도수&amp;quot;) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-01/rfonts_files/figure-html/unnamed-chunk-33-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;이전에 &lt;code&gt;theme_set() 함수&lt;/code&gt;로 폰트 패밀리를 지정했기 때문에 한글이 나눔고딕체로 정상 출력된다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(mpg, aes(class, hwy, fill = class)) + 
+  geom_boxplot(alpha  = 0.5) + 
+  labs(title = &amp;quot;차량 클래스별 연비&amp;quot;, y = &amp;quot;연비 (highway miles per gallon)&amp;quot;) + 
+  theme(legend.position = &amp;quot;none&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-01/rfonts_files/figure-html/unnamed-chunk-34-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;pdf-디바이스&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;PDF 디바이스&lt;/h2&gt;
+&lt;div id=&#34;그래픽-디바이스&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;그래픽 디바이스&lt;/h3&gt;
+&lt;p&gt;R의 그래픽 디바이스(graphics devices)는 플롯이 출력되는 모든 대상을 의미한다. 앞에서 다룬 MS Windows의 &lt;code&gt;windows&lt;/code&gt;, Linux(UNIX-like)의 &lt;code&gt;X11&lt;/code&gt;, macOS의 &lt;code&gt;quartz&lt;/code&gt;는 각각의 운영체제에서의 그래픽 윈도우를 의미한다. 즉, 기본적으로 플롯이 출력되는 화면이다. 이것은 R의 그래픽 디바이스다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;프린터&lt;/code&gt;나, &lt;code&gt;메타파일&lt;/code&gt;, &lt;code&gt;PNG&lt;/code&gt;, &lt;code&gt;JPEG&lt;/code&gt;, &lt;code&gt;BMP&lt;/code&gt;, &lt;code&gt;TIFF&lt;/code&gt;와 같은 비트맵(bitmap) 포맷의 그래픽 파일도 그래픽 디바이스다. 또한 &lt;code&gt;SVG(Scalar Vector Graphics)&lt;/code&gt;, &lt;code&gt;PDF&lt;/code&gt;, &lt;code&gt;PostScript&lt;/code&gt; 파일도 그래픽 디바이스다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;pdf-파일로-플롯-내보내기&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;PDF 파일로 플롯 내보내기&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;PNG&lt;/code&gt;, &lt;code&gt;JPEG&lt;/code&gt;, &lt;code&gt;BMP&lt;/code&gt;, &lt;code&gt;TIFF&lt;/code&gt;와 같은 비트맵 포맷의 파일로 윈도우에 표시된 플롯을 내보내는 방법은 쉽기도 하지만 텍스트 표현에 특별한 이슈가 없다. 그 이유는 윈도우에 표시된 플롯을 비트맵 형식으로 전환하기 때문에, 윈도우에 이상 없이 출력된 플롯은 모두 파일로 출력이 가능하다.&lt;/p&gt;
+&lt;p&gt;그러나 PostScript 파일, 특히 PDF 파일의 매커니즘은 비트맵 형식의 그래픽 파일과는 다르다. 이 파일 포맷은 폰트로 텍스트를 표현하기 때문에 해당 그래픽 디바이스에 없는 폰트로 만들어진 플롯을 출력할 경우는 다음과 같은 에러가 발생한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pdf(&amp;quot;mpg.pdf&amp;quot;)
+ggplot(mpg, aes(class)) +
+  geom_bar(fill = &amp;quot;steelblue&amp;quot;, alpha  = 0.5) + 
+  labs(title = &amp;quot;차량 클래스별 도수&amp;quot;, y = &amp;quot;도수&amp;quot;) +
+  theme_gray(base_family = &amp;quot;NanumGothic&amp;quot;)
+dev.off()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;Error in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y,  : 
+  invalid font type
+In addition: There were 50 or more warnings (use warnings() to see the first 50)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; warnings() %&amp;gt;% head(n = 3)
+Warning messages:
+1: In grid.Call(C_stringMetric, as.graphicsAnnot(x$label)) :
+  font family &amp;#39;NanumGothic&amp;#39; not found in PostScript font database
+2: In grid.Call(C_stringMetric, as.graphicsAnnot(x$label)) :
+  font family &amp;#39;NanumGothic&amp;#39; not found in PostScript font database
+3: In grid.Call(C_stringMetric, as.graphicsAnnot(x$label)) :
+  font family &amp;#39;NanumGothic&amp;#39; not found in PostScript font database&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;pdf-디바이스-기본-폰트&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;PDF 디바이스 기본 폰트&lt;/h3&gt;
+&lt;p&gt;PDF 디바이스의 기본 폰트는 다음과 같다. 여기서 한글은 &lt;code&gt;&#34;Korea1&#34;&lt;/code&gt;과 &lt;code&gt;&#34;Korea1deb&#34;&lt;/code&gt; 두 개다. 일본어 폰트와 중국어 폰트도 보인다. 또한 이들 폰트들은 비상업용 폰트로 폰트 라이선스에서 자유롭다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(dplyr)
+
+pdfFonts() %&amp;gt;% names()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  [1] &amp;quot;serif&amp;quot;                &amp;quot;sans&amp;quot;                 &amp;quot;mono&amp;quot;                
+##  [4] &amp;quot;AvantGarde&amp;quot;           &amp;quot;Bookman&amp;quot;              &amp;quot;Courier&amp;quot;             
+##  [7] &amp;quot;Helvetica&amp;quot;            &amp;quot;Helvetica-Narrow&amp;quot;     &amp;quot;NewCenturySchoolbook&amp;quot;
+## [10] &amp;quot;Palatino&amp;quot;             &amp;quot;Times&amp;quot;                &amp;quot;URWGothic&amp;quot;           
+## [13] &amp;quot;URWBookman&amp;quot;           &amp;quot;NimbusMon&amp;quot;            &amp;quot;NimbusSan&amp;quot;           
+## [16] &amp;quot;URWHelvetica&amp;quot;         &amp;quot;NimbusSanCond&amp;quot;        &amp;quot;CenturySch&amp;quot;          
+## [19] &amp;quot;URWPalladio&amp;quot;          &amp;quot;NimbusRom&amp;quot;            &amp;quot;URWTimes&amp;quot;            
+## [22] &amp;quot;ArialMT&amp;quot;              &amp;quot;Japan1&amp;quot;               &amp;quot;Japan1HeiMin&amp;quot;        
+## [25] &amp;quot;Japan1GothicBBB&amp;quot;      &amp;quot;Japan1Ryumin&amp;quot;         &amp;quot;Korea1&amp;quot;              
+## [28] &amp;quot;Korea1deb&amp;quot;            &amp;quot;CNS1&amp;quot;                 &amp;quot;GB1&amp;quot;                 
+## [31] &amp;quot;Arial Narrow&amp;quot;         &amp;quot;NanumGothic&amp;quot;          &amp;quot;NanumGothicCoding&amp;quot;   
+## [34] &amp;quot;NanumGothic Light&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;한글 폰트인 &lt;code&gt;&#34;Korea1&#34;&lt;/code&gt;는 &lt;code&gt;HY신명조&lt;/code&gt;인 &lt;code&gt;HYSMyeongJoStd-Medium-Acro&lt;/code&gt;, &lt;code&gt;&#34;Korea1deb&#34;&lt;/code&gt;는 &lt;code&gt;HY중고딕&lt;/code&gt;인 &lt;code&gt;HYGothic-Medium-Acro&lt;/code&gt;에 매핑되어 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pdfFonts()[c(&amp;quot;Korea1&amp;quot;, &amp;quot;Korea1deb&amp;quot;)] %&amp;gt;% 
+  purrr::map_chr(function(x) x[[&amp;quot;family&amp;quot;]])&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##                       Korea1                    Korea1deb 
+## &amp;quot;HYSMyeongJoStd-Medium-Acro&amp;quot;       &amp;quot;HYGothic-Medium-Acro&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;pdf-디바이스에-폰트-출력하기&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;PDF 디바이스에 폰트 출력하기&lt;/h3&gt;
+&lt;p&gt;PDF 디바이스에 기본 폰트가 아닌 다른 폰트를 설정하기 위해서는 다음처럼 &lt;code&gt;extrafont&lt;/code&gt; 패키지의 &lt;code&gt;font_import() 함수&lt;/code&gt;와 &lt;code&gt;loadfonts() 함수&lt;/code&gt;를 사용해야 한다. 이 예제는 &lt;code&gt;나눔스퀘어&lt;/code&gt; 폰트를 PDF 파일로 출력하기 위한 과정이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 사용자 및 시스템 폰트 디렉토리에서 폰트 가져와 등록하기
+font_import(pattern = &amp;quot;NanumSquare&amp;quot;, prompt = FALSE)
+
+# 등록한 폰트를 PDF 디바이스에 로드하기
+loadfonts(&amp;quot;pdf&amp;quot;, quiet = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;일단, 원하는 폰트가 PDF 디바이스에 로드되었으면,
+PDF 디바이스에 폰트를 출력하는 것은 다음과 같이 두 가지 케이스로 분류해야 한다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;기본 폰트
+&lt;ul&gt;
+&lt;li&gt;pdf() 함수로 PDF 디바이스에 플롯 내보내기&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;추가 폰트
+&lt;ul&gt;
+&lt;li&gt;PDF 디바이스에 추가 폰트를 로드한 후,
+&lt;ul&gt;
+&lt;li&gt;폰트를 로드하지 않으면, 에러 발생&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;cairo_pdf() 함수로 PDF 디바이스에 플롯 내보내기
+&lt;ul&gt;
+&lt;li&gt;pdf() 함수를 사용하면 추가 폰트가 아닌 대체 폰트가 출력될 수 있음&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div id=&#34;영문-추가-폰트-출력하기&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;영문 추가 폰트 출력하기&lt;/h4&gt;
+&lt;p&gt;폰트 디렉토리에서 dlookr 패키지의 플롯에서 사용하고 있는 &lt;code&gt;Arial Narrow&lt;/code&gt; 패키지 정보를 가져온다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 사용자 및 시스템 폰트 디렉토리에서 폰트 가져와 등록하기
+font_import(pattern = &amp;quot;Arial Narrow&amp;quot;, prompt = FALSE)&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;Arial Narrow&lt;/code&gt; 폰트는 MS Windows에는 설치되어 있다. 그러나 상업용 라이센스가 있는 폰트라 타 운영체제에서는 이 폰트와 유사한 Free 폰트인 &lt;code&gt;LiberationSansNarrow&lt;/code&gt; 폰트 1.07.4 버전을 사용하면 된다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p_arial_narrow &amp;lt;- ggplot(mpg, aes(class)) +
+  geom_bar(fill = &amp;quot;steelblue&amp;quot;, alpha  = 0.5) + 
+  labs(title = &amp;quot;Frequency by class of cars&amp;quot;, y = &amp;quot;Frequency&amp;quot;) +
+  theme(text=element_text(family = &amp;quot;Arial Narrow&amp;quot;))
+
+p_arial_narrow&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-01/rfonts_files/figure-html/unnamed-chunk-42-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;시각화 결과를 보면 &lt;code&gt;Arial Narrow&lt;/code&gt; 폰트의 특징을 파악하기 어렵다. 그러나 다음 시각화의 결과를 보면 이름처럼 폭이 좁아진 모습을 판단할 수 있을 것이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;par(mar = c(0, 0, 0, 0))
+plot(1:10, 1:10, type = &amp;quot;n&amp;quot;, bty = &amp;quot;n&amp;quot;, xaxt = &amp;quot;n&amp;quot;, yaxt = &amp;quot;n&amp;quot;, 
+     xlab = &amp;quot;&amp;quot;, ylab = &amp;quot;&amp;quot;, pty = &amp;quot;s&amp;quot;, mar = c(0, 0, 0, 0))
+text(2, 9, &amp;quot;Font Test : regular - sans&amp;quot;, adj = 0, cex = 2,  
+     family = &amp;quot;sans&amp;quot;, font = 1)
+text(2, 8, &amp;quot;Font Test : regular - Arial Narrow&amp;quot;, adj = 0, cex = 2, 
+     family = &amp;quot;Arial Narrow&amp;quot;, font = 1)
+text(2, 7, &amp;quot;Font Test : bold - sans&amp;quot;, adj = 0, cex = 2, 
+     family = &amp;quot;sans&amp;quot;, font = 2)
+text(2, 6, &amp;quot;Font Test : bold - Arial Narrow&amp;quot;, adj = 0, cex = 2, 
+     family = &amp;quot;Arial Narrow&amp;quot;, font = 2)
+text(2, 5, &amp;quot;Font Test : italic - sans&amp;quot;, adj = 0, cex = 2, 
+     family = &amp;quot;sans&amp;quot;, font = 3)
+text(2, 4, &amp;quot;Font Test : italic - Arial Narrow&amp;quot;, adj = 0, cex = 2, 
+     family = &amp;quot;Arial Narrow&amp;quot;, font = 3)
+text(2, 3, &amp;quot;Font Test : bold italic - sans&amp;quot;, adj = 0, cex = 2, 
+     family = &amp;quot;sans&amp;quot;, font = 4)
+text(2, 2, &amp;quot;Font Test : bold italic - Arial Narrow&amp;quot;, adj = 0, cex = 2, 
+     family = &amp;quot;Arial Narrow&amp;quot;, font = 4)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-01/rfonts_files/figure-html/unnamed-chunk-43-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;extrafont 패키지의 font_import() 함수로 폰트 테이블 등록된 &lt;code&gt;Arial Narrow&lt;/code&gt; 폰트는 윈도우(X11, Quartz) 디바이스에는 출력되지만 MS Windows의 윈도우 디바이스나 PDF 디바이스에도 등록해 주어야 사용이 가능하다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;loadfonts(device = &amp;quot;pdf&amp;quot;, quiet = TRUE)
+
+pdfFonts() %&amp;gt;% 
+  names() %&amp;gt;% 
+  grep(&amp;quot;Nanum|Arial&amp;quot;, ., value = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;ArialMT&amp;quot;           &amp;quot;Arial Narrow&amp;quot;      &amp;quot;NanumGothic&amp;quot;      
+## [4] &amp;quot;NanumGothicCoding&amp;quot; &amp;quot;NanumGothic Light&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;그러나 pdf() 함수로 플롯을 PDF 디바이스로 내보낸 결과를 보면, &lt;code&gt;Arial Narrow&lt;/code&gt; 폰트가 아니다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pdf(&amp;quot;arial_narrow.pdf&amp;quot;, family = &amp;quot;Arial Narrow&amp;quot;, width = 5, height = 5)
+plot(mtcars$mpg, mtcars$wt, 
+     main = &amp;quot;Fuel Efficiency of 32 Cars&amp;quot;,
+     xlab = &amp;quot;Weight (x1000 lb)&amp;quot;,
+     ylab = &amp;quot;Miles per Gallon&amp;quot;)
+dev.off()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;../img/arial_narrow.pdf.png&#34; width=&#34;65%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;출력된 폰트는 PDF 디바이스 폰트에 등록된 첫번 째 폰트인 “serif”, 즉 실제로는 &lt;code&gt;Times Roman&lt;/code&gt; 폰트다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pdfFonts() %&amp;gt;% names() %&amp;gt;% head(3)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;serif&amp;quot; &amp;quot;sans&amp;quot;  &amp;quot;mono&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pdfFonts()[&amp;quot;serif&amp;quot;]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## $serif
+## $family
+## [1] &amp;quot;Times&amp;quot;
+## 
+## $metrics
+## [1] &amp;quot;Times-Roman.afm&amp;quot;      &amp;quot;Times-Bold.afm&amp;quot;       &amp;quot;Times-Italic.afm&amp;quot;    
+## [4] &amp;quot;Times-BoldItalic.afm&amp;quot; &amp;quot;Symbol.afm&amp;quot;          
+## 
+## $encoding
+## [1] &amp;quot;default&amp;quot;
+## 
+## attr(,&amp;quot;class&amp;quot;)
+## [1] &amp;quot;Type1Font&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;PDF 디바이스에 추가 폰트를 출력하기 위해서는 반드시 &lt;code&gt;cariro_pdf() 함수&lt;/code&gt;를 사용해야 한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;cairo_pdf(&amp;quot;cairo_arrial_narrow.pdf&amp;quot;, family = &amp;quot;Arial Narrow&amp;quot;, width = 5, height = 5)
+plot(mtcars$mpg, mtcars$wt, 
+     main = &amp;quot;Fuel Efficiency of 32 Cars&amp;quot;,
+     xlab = &amp;quot;Weight (x1000 lb)&amp;quot;,
+     ylab = &amp;quot;Miles per Gallon&amp;quot;)
+dev.off()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;../img/cairo_arrial_narrow.pdf.png&#34; width=&#34;65%&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;한글-추가-폰트-출력하기&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;한글 추가 폰트 출력하기&lt;/h4&gt;
+&lt;p&gt;한글이 포함된 플롯을 네 가지 방법으로 PDF 디바이스로 내보낸다.&lt;/p&gt;
+&lt;p&gt;폰트 패밀리를 지정하지 않고, &lt;code&gt;pdf() 함수&lt;/code&gt;를 사용하면 한글이 출력되지 않는다. 그러나 같은 방법으로 “Korea1deb” 폰트 패밀리를 지정하면 한글이 정상적으로 출력되지만 함께 출력되는 영문 문자의 배열이 흐트러져 이상하게 출력된다.
+&lt;code&gt;cairo_pdf() 함수&lt;/code&gt;에서는 PDF 디바이스의 기본 폰트인 “Korea1deb” 폰트 패밀리를 인식하지 못한다. 그러나 추가 폰트인 “NanumGothic”는 정상적으로 잘 출력된다. 그러므로 추가 폰트를 사용한 경우에는 네번 째 방법을 이용한다. 플롯의 비교를 위해서 출력된 PDF 파일을 2 &lt;span class=&#34;math inline&#34;&gt;\(times\)&lt;/span&gt; 2 구조로 배열 해 보았다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;PDF 디바이스의 기본 폰트인 “Korea1deb” 폰트 패밀리가 Cairo PDF 디바이스에 적용되지 않는 것처럼, 윈도우 디바이스에서도 사용할 수 없다. 왜냐하면 PDF 디바이스 전용 폰트이기 때문이다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pdf(&amp;quot;font_test1.pdf&amp;quot;, width = 5, height = 5)
+plot(mtcars$mpg, mtcars$wt, 
+     main = &amp;quot;pdf(), no font family\n 한글 출력 테스트&amp;quot;,
+     xlab = &amp;quot;Weight (x1000 lb)&amp;quot;,
+     ylab = &amp;quot;Miles per Gallon&amp;quot;)
+dev.off()
+
+pdf(&amp;quot;font_test2.pdf&amp;quot;, family = &amp;quot;Korea1deb&amp;quot;, width = 5, height = 5)
+plot(mtcars$mpg, mtcars$wt, 
+     main = &amp;quot;pdf(), Korea1deb font family\n 한글 출력 테스트&amp;quot;,
+     xlab = &amp;quot;Weight (x1000 lb)&amp;quot;,
+     ylab = &amp;quot;Miles per Gallon&amp;quot;)
+dev.off()
+
+cairo_pdf(&amp;quot;font_test3.pdf&amp;quot;, family = &amp;quot;Korea1deb&amp;quot;, width = 5, height = 5)
+plot(mtcars$mpg, mtcars$wt, 
+     main = &amp;quot;cairo_pdf(), Korea1deb font family\n 한글 출력 테스트&amp;quot;,
+     xlab = &amp;quot;Weight (x1000 lb)&amp;quot;,
+     ylab = &amp;quot;Miles per Gallon&amp;quot;)
+dev.off()
+
+cairo_pdf(&amp;quot;font_test4.pdf&amp;quot;, family = &amp;quot;NanumGothic&amp;quot;, width = 5, height = 5)
+plot(mtcars$mpg, mtcars$wt, 
+     main = &amp;quot;cairo_pdf(), Korea1deb font family\n 한글 출력 테스트&amp;quot;,
+     xlab = &amp;quot;Weight (x1000 lb)&amp;quot;,
+     ylab = &amp;quot;Miles per Gallon&amp;quot;)
+dev.off()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;../img/pdf_korean.png&#34; width=&#34;65%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;ggplot2 플롯도 동일한 방법으로 비교해 본다. ggplot2 플롯 사례에서도 동일한 결과가 나타난다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p &amp;lt;- ggplot(mpg, aes(class)) +
+  geom_bar(fill = &amp;quot;steelblue&amp;quot;, alpha  = 0.5) + 
+  labs(title = &amp;quot;pdf(), no font family\n 한글 출력 테스트&amp;quot;, y = &amp;quot;Frequency&amp;quot;) 
+ggsave(&amp;quot;ggplot_korean1.pdf&amp;quot;, p, width = 5, height = 5)
+
+p &amp;lt;- ggplot(mpg, aes(class)) +
+  geom_bar(fill = &amp;quot;steelblue&amp;quot;, alpha  = 0.5) + 
+  labs(title = &amp;quot;pdf(), Korea1deb font family\n 한글 출력 테스트&amp;quot;, y = &amp;quot;Frequency&amp;quot;) +
+  theme(text=element_text(family = &amp;quot;Korea1deb&amp;quot;))
+ggsave(&amp;quot;ggplot_korean2.pdf&amp;quot;, p, width = 5, height = 5)
+
+p &amp;lt;- ggplot(mpg, aes(class)) +
+  geom_bar(fill = &amp;quot;steelblue&amp;quot;, alpha  = 0.5) + 
+  labs(title = &amp;quot;cairo_pdf(), no font family\n 한글 출력 테스트&amp;quot;, y = &amp;quot;Frequency&amp;quot;) +
+  theme(text=element_text(family = &amp;quot;Korea1deb&amp;quot;)) 
+cairo_pdf(&amp;quot;ggplot_korean3.pdf&amp;quot;, width = 5, height = 5)
+p
+dev.off()
+
+p &amp;lt;- ggplot(mpg, aes(class)) +
+  geom_bar(fill = &amp;quot;steelblue&amp;quot;, alpha  = 0.5) + 
+  labs(title = &amp;quot;cairo_pdf(), no font family\n 한글 출력 테스트&amp;quot;, y = &amp;quot;Frequency&amp;quot;) +
+  theme(text=element_text(family = &amp;quot;NanumGothic&amp;quot;))
+cairo_pdf(&amp;quot;ggplot_korean4.pdf&amp;quot;, width = 5, height = 5)
+p
+dev.off()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;../img/ggplot_korean.png&#34; width=&#34;65%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;ggplot 플롯은 &lt;code&gt;ggsave() 함수&lt;/code&gt;로 외부 파일로 내보낼 수 있다. 이중 PDF 디바이스로 내보내는 다음 예제도 &lt;code&gt;pdf() 함수&lt;/code&gt;를 사용하는 것과 같은 결과를 얻는다. 그 이유는 &lt;code&gt;ggsave() 함수&lt;/code&gt;가 &lt;code&gt;pdf() 함수&lt;/code&gt;를 랩핑했기 때문이다. 그러므로 추가 폰트를 사용한 ggplot 플롯은 &lt;code&gt;ggsave() 함수&lt;/code&gt;를 사용하지 말고 &lt;code&gt;cairo_pdf() 함수&lt;/code&gt;를 사용해야 한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggsave(&amp;quot;pmg_arrial_narrow.pdf&amp;quot;, plot = p_arial_narrow,  family = &amp;quot;Arial Narrow&amp;quot;,
+       width = 6, height = 4)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;pdf-디바이스에-폰트-포함하기&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;PDF 디바이스에 폰트 포함하기&lt;/h3&gt;
+&lt;p&gt;만약에 PDF 디바이스로 출력된 폰트가 없는 사용자에게 PDF 파일을 공유하면, 파일을 공유받은 사용자의 환경에 해당 폰트가 없어서 파일의 출력에 문제가 발생할 수 있다. 그래서 다음처럼 PDF 디바이스 파일에 폰트를 포함하기도 한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;embed_fonts(&amp;quot;ggplot_korean4.pdf&amp;quot;, outfile = &amp;quot;ggplot_korean4_emb.pdf&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;두 파일의 용량을 비교해보면 폰트를 포함한 PDF 파일의 용량이 다소 크다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;system(&amp;quot;ls -al ggplot_korean4*&amp;quot;, intern = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;-rw-r--r--@ 1 choonghyunryu  staff  13825 Feb  3 23:52 ggplot_korean4.pdf&amp;quot;    
+## [2] &amp;quot;-rw-r--r--  1 choonghyunryu  staff  15348 Feb  4 00:08 ggplot_korean4_emb.pdf&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;마무리-하며&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;마무리 하며&lt;/h2&gt;
+&lt;p&gt;dlookr 패키지의 최초 마이너 버전 업그레이드의 가장 큰 특징은 ggplot 플롯에 추가 폰트인 &lt;code&gt;Arial Narrow&lt;/code&gt; 폰트를 사용한 점이다. 이 작업을 진행하면서 발생했던 이슈들을 정리해 보았다.&lt;/p&gt;
+&lt;p&gt;혹자에게는 복잡한 작업이 필요치 않을 수 있지만, 한글을 사용하는 우리의 R 사용자는 반드시 한글 출력 문제에 부딪칠 수 밖에 없는 숙명이 있다. 어찌 정리하다보니 길어졌다. 많은 이야기를 쏟아내다보니 산만하고 복잡해진 감이 없지 않다. 그러나 이 기회에 한글 출력을 확실하게 해결하리라는 바램으로 글을 마친다.&lt;/p&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

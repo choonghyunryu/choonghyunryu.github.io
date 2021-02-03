@@ -185,8 +185,6 @@
     
     
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
-<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
-<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
 
 
 <div id="개요" class="section level2">
@@ -308,9 +306,6 @@ summary(data_exam)
 #&gt; The following object is masked from &#39;package:ggplot2&#39;:
 #&gt; 
 #&gt;     margin
-#&gt; Registered S3 method overwritten by &#39;quantmod&#39;:
-#&gt;   method            from
-#&gt;   as.zoo.data.frame zoo
 
 # 데이터 정제
 newDat &lt;- cleanse(data_exam)
@@ -1092,7 +1087,7 @@ tmp &lt;- breastCancer %&gt;%
 <pre class="r"><code># 집계 정보
 summary(sb)
 #&gt; ** Split train/test set information **
-#&gt;  + random seed        :  20036 
+#&gt;  + random seed        :  58393 
 #&gt;  + split data            
 #&gt;     - train set count :  489 
 #&gt;     - test set count  :  210 
@@ -1103,7 +1098,7 @@ summary(sb)
 # 집계 정
 summary(tmp)
 #&gt; ** Split train/test set information **
-#&gt;  + random seed        :  35656 
+#&gt;  + random seed        :  97035 
 #&gt;  + split data            
 #&gt;     - train set count :  419 
 #&gt;     - test set count  :  280 
@@ -1163,7 +1158,7 @@ prop.table(table(sb$Class))
 # 집계 - 불균형 클래스 데이터
 summary(sb)
 #&gt; ** Split train/test set information **
-#&gt;  + random seed        :  20036 
+#&gt;  + random seed        :  58393 
 #&gt;  + split data            
 #&gt;     - train set count :  489 
 #&gt;     - test set count  :  210 
@@ -1187,7 +1182,7 @@ train_over &lt;- sb %&gt;%
 table(train_over$Class)
 #&gt; 
 #&gt;    benign malignant 
-#&gt;       325       325</code></pre>
+#&gt;       315       315</code></pre>
 </div>
 <div id="resampling---majority-class의-언더-샘플링" class="section level5">
 <h5>Resampling - majority class의 언더 샘플링</h5>
@@ -1201,7 +1196,7 @@ train_under &lt;- sb %&gt;%
 table(train_under$Class)
 #&gt; 
 #&gt;    benign malignant 
-#&gt;       164       164</code></pre>
+#&gt;       174       174</code></pre>
 </div>
 <div id="generate-synthetic-samples---smote" class="section level5">
 <h5>Generate synthetic samples - SMOTE</h5>
@@ -1215,7 +1210,7 @@ train_smote &lt;- sb %&gt;%
 table(train_smote$Class)
 #&gt; 
 #&gt;    benign malignant 
-#&gt;       656       492</code></pre>
+#&gt;       696       522</code></pre>
 </div>
 </div>
 </div>
@@ -1240,7 +1235,7 @@ train &lt;- train_smote %&gt;%
 #&gt; 
 #&gt; ── Checking unique rate ─────────────────────────────── high unique rate ──
 #&gt; remove variables with high unique rate
-#&gt; ● Id = 421(0.366724738675958)
+#&gt; ● Id = 431(0.353858784893268)
 #&gt; 
 #&gt; ── Checking character variables ─────────────────────── categorical data ──
 #&gt; No character variables.</code></pre>
@@ -1491,19 +1486,19 @@ cutoff &lt;- plot_cutoff(pred_best, test$Class, &quot;malignant&quot;, type = &q
 <p><img src="/post/2020-03/2020-03-27-r-alookr.ko_files/figure-html/model19-1.png" width="672" /></p>
 <pre class="r"><code>
 cutoff
-#&gt; [1] 0.45
+#&gt; [1] 0.03
 
 cutoff2 &lt;- plot_cutoff(pred_best, test$Class, &quot;malignant&quot;, type = &quot;density&quot;)</code></pre>
 <p><img src="/post/2020-03/2020-03-27-r-alookr.ko_files/figure-html/model19-2.png" width="672" /></p>
 <pre class="r"><code>
 cutoff2
-#&gt; [1] 0.8904
+#&gt; [1] 0.2211
 
 cutoff3 &lt;- plot_cutoff(pred_best, test$Class, &quot;malignant&quot;, type = &quot;prob&quot;)</code></pre>
 <p><img src="/post/2020-03/2020-03-27-r-alookr.ko_files/figure-html/model19-3.png" width="672" /></p>
 <pre class="r"><code>
 cutoff3
-#&gt; [1] 0.45</code></pre>
+#&gt; [1] 0.03</code></pre>
 </div>
 <div id="performance_metric을-이용한-예측과-조정된-컷오프-예측의-성능-비교" class="section level4">
 <h4>performance_metric()을 이용한 예측과 조정된 컷오프 예측의 성능 비교</h4>
@@ -1570,37 +1565,37 @@ pred_prob
 
 # Accuracy 비교
 performance_metric(pred_prob, test$Class, &quot;malignant&quot;, &quot;Accuracy&quot;)
-#&gt; [1] 0.9714286
+#&gt; [1] 0.5809524
 
 performance_metric(pred_prob, test$Class, &quot;malignant&quot;, &quot;Accuracy&quot;,
                    cutoff = cutoff)
-#&gt; [1] 0.9761905
+#&gt; [1] 0.552381
 
 # Confusion Matrix 비교
 performance_metric(pred_prob, test$Class, &quot;malignant&quot;, &quot;ConfusionMatrix&quot;)
 #&gt;            actual
 #&gt; predict     benign malignant
-#&gt;   benign       129         2
-#&gt;   malignant      4        75
+#&gt;   benign        93        38
+#&gt;   malignant     50        29
 
 performance_metric(pred_prob, test$Class, &quot;malignant&quot;, &quot;ConfusionMatrix&quot;, 
                    cutoff = cutoff)
 #&gt;            actual
 #&gt; predict     benign malignant
-#&gt;   benign       128         0
-#&gt;   malignant      5        77
+#&gt;   benign        80        31
+#&gt;   malignant     63        36
 
 # F1 Score 비교
 performance_metric(pred_prob, test$Class, &quot;malignant&quot;, &quot;F1_Score&quot;)
-#&gt; [1] 0.9615385
+#&gt; [1] 0.3972603
 
 performance_metric(pred_prob, test$Class,  &quot;malignant&quot;, &quot;F1_Score&quot;, 
                    cutoff = cutoff)
-#&gt; [1] 0.9685535
+#&gt; [1] 0.4337349
 
 performance_metric(pred_prob, test$Class,  &quot;malignant&quot;, &quot;F1_Score&quot;, 
                    cutoff = cutoff2)
-#&gt; [1] 0.9027778</code></pre>
+#&gt; [1] 0.4102564</code></pre>
 <p>조정된 컷오프(cut-off)의 성능이 양호하면, 컷오프를 적용하여 <code>positives class</code>를 예측한다.</p>
 </div>
 </div>
@@ -1617,7 +1612,7 @@ performance_metric(pred_prob, test$Class,  &quot;malignant&quot;, &quot;F1_Score
 #&gt; 
 #&gt; ── Checking unique rate ─────────────────────────────── high unique rate ──
 #&gt; remove variables with high unique rate
-#&gt; ● Id = 315(0.960365853658537)
+#&gt; ● Id = 342(0.982758620689655)
 #&gt; 
 #&gt; ── Checking character variables ─────────────────────── categorical data ──
 #&gt; No character variables.
@@ -1648,14 +1643,14 @@ data_pred &lt;- data_pred %&gt;%
 #&gt; future R sessions, see ?future::supportsMulticore
 
 pred_actual
-#&gt;  [1] malignant malignant malignant benign    malignant benign    malignant
-#&gt;  [8] malignant malignant malignant malignant benign    benign    malignant
-#&gt; [15] malignant benign    malignant malignant benign    malignant benign   
-#&gt; [22] malignant malignant malignant benign    malignant malignant benign   
-#&gt; [29] malignant benign    benign    benign    malignant malignant malignant
-#&gt; [36] benign    benign    malignant malignant benign    malignant benign   
-#&gt; [43] benign    malignant benign    malignant benign    malignant malignant
-#&gt; [50] malignant
+#&gt;  [1] benign    benign    benign    malignant benign    benign    benign   
+#&gt;  [8] benign    benign    malignant benign    malignant malignant benign   
+#&gt; [15] benign    benign    benign    malignant malignant benign    malignant
+#&gt; [22] malignant malignant benign    malignant malignant malignant benign   
+#&gt; [29] benign    malignant malignant malignant benign    malignant benign   
+#&gt; [36] benign    benign    malignant benign    benign    malignant benign   
+#&gt; [43] benign    benign    malignant benign    benign    benign    malignant
+#&gt; [50] benign   
 #&gt; Levels: benign malignant</code></pre>
 <p>컷오프로 예측하려면 다음과 같이 <code>run_predict()</code> 함수에 컷오프 <code>cutoff</code> 인수를 지정한다.:</p>
 <p>이 예제에서는 컷오프(cut-off) 사용 결과와 사용하지 않는 결과 간에 차이가 없다.</p>
@@ -1668,18 +1663,18 @@ pred_actual
   factor()
 
 pred_actual2
-#&gt;  [1] malignant malignant malignant benign    malignant benign    malignant
-#&gt;  [8] malignant malignant malignant malignant benign    benign    malignant
-#&gt; [15] malignant benign    malignant malignant benign    malignant benign   
-#&gt; [22] malignant malignant malignant benign    malignant malignant benign   
-#&gt; [29] malignant benign    benign    benign    malignant malignant malignant
-#&gt; [36] benign    benign    malignant malignant benign    malignant benign   
-#&gt; [43] benign    malignant benign    malignant benign    malignant malignant
+#&gt;  [1] benign    benign    malignant malignant benign    benign    benign   
+#&gt;  [8] malignant benign    malignant benign    malignant malignant benign   
+#&gt; [15] benign    benign    benign    malignant malignant malignant malignant
+#&gt; [22] malignant malignant malignant malignant malignant malignant benign   
+#&gt; [29] benign    malignant malignant malignant benign    malignant malignant
+#&gt; [36] benign    benign    malignant benign    benign    malignant benign   
+#&gt; [43] benign    benign    malignant malignant benign    benign    malignant
 #&gt; [50] malignant
 #&gt; Levels: benign malignant
 
 sum(pred_actual != pred_actual2)
-#&gt; [1] 0</code></pre>
+#&gt; [1] 7</code></pre>
 </div>
 </div>
 </div>
@@ -1699,6 +1694,9 @@ sum(pred_actual != pred_actual2)
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
       <li>
+        <a href="/post/2021-01/rfonts/" class="nav-link">추가 폰트 사용하기</a>
+      </li>
+      <li>
         <a href="/post/2021-01/morpheme/" class="nav-link">Mecab으로 한글 띄어쓰기 검사기 만들기</a>
       </li>
       <li>
@@ -1709,9 +1707,6 @@ sum(pred_actual != pred_actual2)
       </li>
       <li>
         <a href="/post/2020-07/ggplot2_exam/" class="nav-link">몇 개의 ggplot tips</a>
-      </li>
-      <li>
-        <a href="/post/2020-03/window_function/" class="nav-link">Introduce window function</a>
       </li>
     </ul>
     <div>
@@ -1734,7 +1729,7 @@ sum(pred_actual != pred_actual2)
         
         <a href='/categories/visualization/' class="post_tag button button_translucent">
           VISUALIZATION
-          <span class="button_tally">7</span>
+          <span class="button_tally">8</span>
         </a>
         
         <a href='/categories/tidyverse/' class="post_tag button button_translucent">
@@ -1764,14 +1759,14 @@ sum(pred_actual != pred_actual2)
     <div>
       <h2 class="mt-4 taxonomy" id="tags-section">Tags</h2>
       <nav class="tags_nav">
-        <a href='/tags/plot/' class="post_tag button button_translucent">
-          PLOT
+        <a href='/tags/dlookr/' class="post_tag button button_translucent">
+          DLOOKR
           <span class="button_tally">6</span>
         </a>
         
-        <a href='/tags/dlookr/' class="post_tag button button_translucent">
-          DLOOKR
-          <span class="button_tally">5</span>
+        <a href='/tags/plot/' class="post_tag button button_translucent">
+          PLOT
+          <span class="button_tally">6</span>
         </a>
         
         <a href='/tags/graphics/' class="post_tag button button_translucent">
@@ -1796,6 +1791,11 @@ sum(pred_actual != pred_actual2)
         
         <a href='/tags/eda/' class="post_tag button button_translucent">
           EDA
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/ggplot2/' class="post_tag button button_translucent">
+          GGPLOT2
           <span class="button_tally">3</span>
         </a>
         
@@ -1826,11 +1826,6 @@ sum(pred_actual != pred_actual2)
         
         <a href='/tags/deep-learning/' class="post_tag button button_translucent">
           DEEP-LEARNING
-          <span class="button_tally">2</span>
-        </a>
-        
-        <a href='/tags/development/' class="post_tag button button_translucent">
-          DEVELOPMENT
           <span class="button_tally">2</span>
         </a>
         
@@ -1892,7 +1887,7 @@ sum(pred_actual != pred_actual2)
             </a>
             
             
-            <a href='/tags/dlookr/' class=" post_tag button button_translucent" data-position=5>DLOOKR<span class="button_tally">5</span>
+            <a href='/tags/dlookr/' class=" post_tag button button_translucent" data-position=6>DLOOKR<span class="button_tally">6</span>
             </a>
             
             
@@ -1912,11 +1907,19 @@ sum(pred_actual != pred_actual2)
             </a>
             
             
+            <a href='/tags/extrafont/' class=" post_tag button button_translucent" data-position=1>EXTRAFONT<span class="button_tally">1</span>
+            </a>
+            
+            
             <a href='/tags/factor/' class=" post_tag button button_translucent" data-position=1>FACTOR<span class="button_tally">1</span>
             </a>
             
             
             <a href='/tags/finance/' class=" post_tag button button_translucent" data-position=2>FINANCE<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/fonts/' class=" post_tag button button_translucent" data-position=1>FONTS<span class="button_tally">1</span>
             </a>
             
             
@@ -1940,7 +1943,7 @@ sum(pred_actual != pred_actual2)
             </a>
             
             
-            <a href='/tags/ggplot2/' class=" post_tag button button_translucent" data-position=2>GGPLOT2<span class="button_tally">2</span>
+            <a href='/tags/ggplot2/' class=" post_tag button button_translucent" data-position=3>GGPLOT2<span class="button_tally">3</span>
             </a>
             
             

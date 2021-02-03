@@ -182,8 +182,6 @@
     
     
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
-<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
-<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
 
 
 <div id="dbplyr" class="section level2">
@@ -221,7 +219,7 @@ dbGetInfo(con)</code></pre>
 ## [1] 3
 ## 
 ## $backendPId
-## [1] 41559
+## [1] 14918
 ## 
 ## $rsId
 ## list()</code></pre>
@@ -438,7 +436,7 @@ is(trips_db)</code></pre>
               filter(trip_distance &gt; 0) %&gt;% 
               summarise(fare_per_distance = mean(fare_amount / trip_distance)))</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.024   0.000   0.025</code></pre>
+##   0.024   0.001   0.024</code></pre>
 <pre class="r"><code>is(fare_db)</code></pre>
 <pre><code>## [1] &quot;tbl_PostgreSQLConnection&quot;</code></pre>
 <pre class="r"><code>fare_db %&gt;% show_query()</code></pre>
@@ -463,7 +461,7 @@ is(trips_db)</code></pre>
 <p>collect() 함수가 실제로 연결된 DBMS에서 Query를 실행한 후 결과를 R 영역으로 가져온다.</p>
 <pre class="r"><code>system.time(fare2 &lt;- fare_db %&gt;% collect())</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.038   0.000 110.025</code></pre>
+##   0.039   0.000 143.322</code></pre>
 <pre class="r"><code>fare2</code></pre>
 <pre><code>## # A tibble: 1 x 1
 ##   fare_per_distance
@@ -558,24 +556,24 @@ payment2_db %&gt;% show_query()</code></pre>
 plan &lt;- dbGetQuery(con, sql2)
 plan</code></pre>
 <pre><code>##                                                                                                                                                         QUERY PLAN
-## 1                                                          Sort  (cost=2620742.87..2620742.89 rows=9 width=36) (actual time=193303.204..193308.068 rows=9 loops=1)
+## 1                                                            Sort  (cost=2620742.87..2620742.89 rows=9 width=36) (actual time=85545.642..85547.816 rows=9 loops=1)
 ## 2                                                                                                                               Sort Key: (avg(total_amount)) DESC
 ## 3                                                                                                                             Sort Method: quicksort  Memory: 25kB
-## 4                                   -&gt;  Finalize GroupAggregate  (cost=2620740.38..2620742.73 rows=9 width=36) (actual time=193302.804..193307.983 rows=9 loops=1)
+## 4                                     -&gt;  Finalize GroupAggregate  (cost=2620740.38..2620742.73 rows=9 width=36) (actual time=85545.490..85547.791 rows=9 loops=1)
 ## 5                                                                                                                                          Group Key: payment_type
-## 6                                            -&gt;  Gather Merge  (cost=2620740.38..2620742.48 rows=18 width=36) (actual time=193302.649..193307.643 rows=27 loops=1)
+## 6                                              -&gt;  Gather Merge  (cost=2620740.38..2620742.48 rows=18 width=36) (actual time=85545.432..85547.658 rows=27 loops=1)
 ## 7                                                                                                                                               Workers Planned: 2
 ## 8                                                                                                                                              Workers Launched: 2
-## 9                                                      -&gt;  Sort  (cost=2619740.36..2619740.38 rows=9 width=36) (actual time=193259.272..193259.281 rows=9 loops=3)
+## 9                                                        -&gt;  Sort  (cost=2619740.36..2619740.38 rows=9 width=36) (actual time=85529.273..85529.282 rows=9 loops=3)
 ## 10                                                                                                                                          Sort Key: payment_type
 ## 11                                                                                                                            Sort Method: quicksort  Memory: 26kB
 ## 12                                                                                                                 Worker 0:  Sort Method: quicksort  Memory: 26kB
 ## 13                                                                                                                 Worker 1:  Sort Method: quicksort  Memory: 26kB
-## 14                                    -&gt;  Partial HashAggregate  (cost=2619740.10..2619740.21 rows=9 width=36) (actual time=193258.966..193259.016 rows=9 loops=3)
+## 14                                      -&gt;  Partial HashAggregate  (cost=2619740.10..2619740.21 rows=9 width=36) (actual time=85529.154..85529.175 rows=9 loops=3)
 ## 15                                                                                                                                         Group Key: payment_type
-## 16                           -&gt;  Parallel Seq Scan on trips t  (cost=0.00..2443989.07 rows=35150207 width=14) (actual time=0.162..95260.406 rows=28115006 loops=3)
-## 17                                                                                                                                         Planning Time: 0.318 ms
-## 18                                                                                                                                   Execution Time: 193308.267 ms</code></pre>
+## 16                           -&gt;  Parallel Seq Scan on trips t  (cost=0.00..2443989.07 rows=35150207 width=14) (actual time=0.048..49415.323 rows=28115006 loops=3)
+## 17                                                                                                                                         Planning Time: 0.105 ms
+## 18                                                                                                                                    Execution Time: 85547.894 ms</code></pre>
 <p>요금 결제 방법에 따른 평균 총 지불 운임에 대한 통계를 계산하기 위한 dbplyr 구문의 Explain Plan이다.</p>
 <pre class="r"><code>cat(remote_query_plan(payment_db))</code></pre>
 <pre><code>## Sort  (cost=12199179.18..12199179.21 rows=9 width=72)
@@ -621,24 +619,24 @@ plan</code></pre>
 plan &lt;- dbGetQuery(con, sql3)
 plan</code></pre>
 <pre><code>##                                                                                                                                                                                                                                                                                                                                                  QUERY PLAN
-## 1                                                                                                                                                                                                                                                   Sort  (cost=3411622.93..3411622.96 rows=9 width=72) (actual time=275853.113..275857.993 rows=4 loops=1)
+## 1                                                                                                                                                                                                                                                   Sort  (cost=3411622.93..3411622.96 rows=9 width=72) (actual time=122156.001..122158.166 rows=4 loops=1)
 ## 2                                                                                                                                                                                                                                                                                                                        Sort Key: (avg(total_amount)) DESC
 ## 3                                                                                                                                                                                                                                                                                                                      Sort Method: quicksort  Memory: 25kB
-## 4                                                                                                                                                                                                                            -&gt;  Finalize GroupAggregate  (cost=3411620.22..3411622.79 rows=9 width=72) (actual time=275852.964..275857.960 rows=4 loops=1)
+## 4                                                                                                                                                                                                                            -&gt;  Finalize GroupAggregate  (cost=3411620.22..3411622.79 rows=9 width=72) (actual time=122155.861..122158.150 rows=4 loops=1)
 ## 5                          Group Key: (CASE WHEN (upper(payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(payment_type) = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (upper(payment_type) = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (upper(payment_type) = &#39;NO&#39;::text) THEN &#39;No charge&#39;::text ELSE &#39;Unknown&#39;::text END)
-## 6                                                                                                                                                                                                                                     -&gt;  Gather Merge  (cost=3411620.22..3411622.32 rows=18 width=72) (actual time=275852.844..275857.769 rows=12 loops=1)
+## 6                                                                                                                                                                                                                                     -&gt;  Gather Merge  (cost=3411620.22..3411622.32 rows=18 width=72) (actual time=122155.800..122158.000 rows=12 loops=1)
 ## 7                                                                                                                                                                                                                                                                                                                                        Workers Planned: 2
 ## 8                                                                                                                                                                                                                                                                                                                                       Workers Launched: 2
-## 9                                                                                                                                                                                                                                               -&gt;  Sort  (cost=3410620.19..3410620.22 rows=9 width=72) (actual time=275809.682..275809.688 rows=4 loops=3)
+## 9                                                                                                                                                                                                                                               -&gt;  Sort  (cost=3410620.19..3410620.22 rows=9 width=72) (actual time=122141.759..122141.764 rows=4 loops=3)
 ## 10                          Sort Key: (CASE WHEN (upper(payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(payment_type) = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (upper(payment_type) = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (upper(payment_type) = &#39;NO&#39;::text) THEN &#39;No charge&#39;::text ELSE &#39;Unknown&#39;::text END)
 ## 11                                                                                                                                                                                                                                                                                                                     Sort Method: quicksort  Memory: 25kB
 ## 12                                                                                                                                                                                                                                                                                                          Worker 0:  Sort Method: quicksort  Memory: 25kB
 ## 13                                                                                                                                                                                                                                                                                                          Worker 1:  Sort Method: quicksort  Memory: 25kB
-## 14                                                                                                                                                                                                                             -&gt;  Partial HashAggregate  (cost=3410619.76..3410620.05 rows=9 width=72) (actual time=275809.445..275809.468 rows=4 loops=3)
+## 14                                                                                                                                                                                                                             -&gt;  Partial HashAggregate  (cost=3410619.76..3410620.05 rows=9 width=72) (actual time=122141.676..122141.688 rows=4 loops=3)
 ## 15                           Group Key: CASE WHEN (upper(payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(payment_type) = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (upper(payment_type) = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (upper(payment_type) = &#39;NO&#39;::text) THEN &#39;No charge&#39;::text ELSE &#39;Unknown&#39;::text END
-## 16                                                                                                                                                                                                                   -&gt;  Parallel Seq Scan on trips t  (cost=0.00..3146993.21 rows=35150207 width=42) (actual time=0.269..205419.043 rows=28115006 loops=3)
-## 17                                                                                                                                                                                                                                                                                                                                  Planning Time: 0.505 ms
-## 18                                                                                                                                                                                                                                                                                                                            Execution Time: 275858.247 ms</code></pre>
+## 16                                                                                                                                                                                                                    -&gt;  Parallel Seq Scan on trips t  (cost=0.00..3146993.21 rows=35150207 width=42) (actual time=0.107..95875.397 rows=28115006 loops=3)
+## 17                                                                                                                                                                                                                                                                                                                                  Planning Time: 0.242 ms
+## 18                                                                                                                                                                                                                                                                                                                            Execution Time: 122158.288 ms</code></pre>
 <p>Explain Plan의 결과를 보면 SQL Query &gt; payment2_db &gt; payment_db의 순으로 성능이 좋은 것을 알 수 있다. 복잡한 연산에 대해서는 dbplyr보다는 직접 DB에 접속하여 SQL Query를 수행하는 것이 성능상 이롭다.
 그러나 dbplyr는 버전 업을 통해서 성능이 개선될 것이라는 믿음을 가지고 있다.</p>
 <p>선택은 가용자의 몫이지만 간단한 집계의 경우는 dbplyr를 사용해 보기를 권한다.</p>
@@ -672,6 +670,9 @@ plan</code></pre>
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
       <li>
+        <a href="/post/2021-01/rfonts/" class="nav-link">추가 폰트 사용하기</a>
+      </li>
+      <li>
         <a href="/post/2021-01/morpheme/" class="nav-link">Mecab으로 한글 띄어쓰기 검사기 만들기</a>
       </li>
       <li>
@@ -682,9 +683,6 @@ plan</code></pre>
       </li>
       <li>
         <a href="/post/2020-07/ggplot2_exam/" class="nav-link">몇 개의 ggplot tips</a>
-      </li>
-      <li>
-        <a href="/post/2020-03/2020-03-27-r-alookr.ko/" class="nav-link">alookr: Binary classification modeling</a>
       </li>
     </ul>
     <div>
@@ -707,7 +705,7 @@ plan</code></pre>
         
         <a href='/categories/visualization/' class="post_tag button button_translucent">
           VISUALIZATION
-          <span class="button_tally">7</span>
+          <span class="button_tally">8</span>
         </a>
         
         <a href='/categories/tidyverse/' class="post_tag button button_translucent">
@@ -737,14 +735,14 @@ plan</code></pre>
     <div>
       <h2 class="mt-4 taxonomy" id="tags-section">Tags</h2>
       <nav class="tags_nav">
-        <a href='/tags/plot/' class="post_tag button button_translucent">
-          PLOT
+        <a href='/tags/dlookr/' class="post_tag button button_translucent">
+          DLOOKR
           <span class="button_tally">6</span>
         </a>
         
-        <a href='/tags/dlookr/' class="post_tag button button_translucent">
-          DLOOKR
-          <span class="button_tally">5</span>
+        <a href='/tags/plot/' class="post_tag button button_translucent">
+          PLOT
+          <span class="button_tally">6</span>
         </a>
         
         <a href='/tags/graphics/' class="post_tag button button_translucent">
@@ -769,6 +767,11 @@ plan</code></pre>
         
         <a href='/tags/eda/' class="post_tag button button_translucent">
           EDA
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/ggplot2/' class="post_tag button button_translucent">
+          GGPLOT2
           <span class="button_tally">3</span>
         </a>
         
@@ -799,11 +802,6 @@ plan</code></pre>
         
         <a href='/tags/deep-learning/' class="post_tag button button_translucent">
           DEEP-LEARNING
-          <span class="button_tally">2</span>
-        </a>
-        
-        <a href='/tags/development/' class="post_tag button button_translucent">
-          DEVELOPMENT
           <span class="button_tally">2</span>
         </a>
         
@@ -865,7 +863,7 @@ plan</code></pre>
             </a>
             
             
-            <a href='/tags/dlookr/' class=" post_tag button button_translucent" data-position=5>DLOOKR<span class="button_tally">5</span>
+            <a href='/tags/dlookr/' class=" post_tag button button_translucent" data-position=6>DLOOKR<span class="button_tally">6</span>
             </a>
             
             
@@ -885,11 +883,19 @@ plan</code></pre>
             </a>
             
             
+            <a href='/tags/extrafont/' class=" post_tag button button_translucent" data-position=1>EXTRAFONT<span class="button_tally">1</span>
+            </a>
+            
+            
             <a href='/tags/factor/' class=" post_tag button button_translucent" data-position=1>FACTOR<span class="button_tally">1</span>
             </a>
             
             
             <a href='/tags/finance/' class=" post_tag button button_translucent" data-position=2>FINANCE<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/fonts/' class=" post_tag button button_translucent" data-position=1>FONTS<span class="button_tally">1</span>
             </a>
             
             
@@ -913,7 +919,7 @@ plan</code></pre>
             </a>
             
             
-            <a href='/tags/ggplot2/' class=" post_tag button button_translucent" data-position=2>GGPLOT2<span class="button_tally">2</span>
+            <a href='/tags/ggplot2/' class=" post_tag button button_translucent" data-position=3>GGPLOT2<span class="button_tally">3</span>
             </a>
             
             

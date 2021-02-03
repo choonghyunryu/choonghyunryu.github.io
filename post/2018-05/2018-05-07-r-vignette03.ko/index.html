@@ -181,8 +181,6 @@
     
     
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
-<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
-<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
 
 
 <div id="일러두기" class="section level2">
@@ -454,6 +452,14 @@ plot(income)</code></pre>
 <p><img src="/post/2018-05/2018-05-07-r-vignette03.ko_files/figure-html/imputate_na-1.png" width="672" /></p>
 <p>다음은 범주형 변수인 urban을 “mice” 방법으로 결측치를 대체한다. <code>summary()</code>는 결측치 대체 정보를 요약하고, <code>plot()</code>은 결측정보를 시각화한다.</p>
 <pre class="r"><code>library(mice)
+#&gt; 
+#&gt; Attaching package: &#39;mice&#39;
+#&gt; The following object is masked from &#39;package:stats&#39;:
+#&gt; 
+#&gt;     filter
+#&gt; The following objects are masked from &#39;package:base&#39;:
+#&gt; 
+#&gt;     cbind, rbind
 
 urban &lt;- imputate_na(carseats, Urban, US, method = &quot;mice&quot;)
 #&gt; 
@@ -488,23 +494,23 @@ urban &lt;- imputate_na(carseats, Urban, US, method = &quot;mice&quot;)
 urban
 #&gt;   [1] Yes Yes Yes Yes Yes No  Yes Yes No  No  No  Yes Yes Yes Yes No  Yes Yes
 #&gt;  [19] No  Yes Yes No  Yes Yes Yes No  No  Yes Yes Yes Yes Yes No  Yes Yes No 
-#&gt;  [37] No  No  Yes No  No  Yes Yes Yes Yes Yes No  Yes Yes Yes Yes Yes Yes Yes
+#&gt;  [37] No  Yes Yes No  No  Yes Yes Yes Yes Yes No  Yes Yes Yes Yes Yes Yes Yes
 #&gt;  [55] No  Yes Yes Yes Yes Yes Yes No  Yes Yes No  No  Yes Yes Yes Yes Yes No 
-#&gt;  [73] Yes No  No  No  Yes No  Yes Yes Yes Yes Yes Yes No  No  Yes No  Yes No 
+#&gt;  [73] Yes No  No  No  Yes No  Yes Yes Yes Yes Yes Yes No  No  Yes No  Yes Yes
 #&gt;  [91] No  Yes Yes Yes Yes Yes No  Yes No  No  No  Yes No  Yes Yes Yes No  Yes
 #&gt; [109] Yes No  Yes Yes Yes Yes Yes Yes No  Yes Yes Yes Yes Yes Yes No  Yes No 
 #&gt; [127] Yes Yes Yes No  Yes Yes Yes Yes Yes No  No  Yes Yes No  Yes Yes Yes Yes
 #&gt; [145] No  Yes Yes No  No  Yes No  No  No  No  No  Yes Yes No  Yes No  No  No 
 #&gt; [163] Yes No  No  Yes Yes Yes Yes Yes Yes Yes Yes Yes No  Yes No  Yes No  Yes
 #&gt; [181] Yes Yes Yes Yes No  Yes No  Yes Yes No  No  Yes No  Yes Yes Yes Yes Yes
-#&gt; [199] Yes Yes No  Yes No  Yes Yes No  Yes No  Yes No  No  Yes Yes Yes Yes Yes
+#&gt; [199] Yes Yes No  Yes No  Yes Yes Yes Yes No  Yes No  No  Yes Yes Yes Yes Yes
 #&gt; [217] Yes No  Yes Yes Yes Yes Yes Yes No  Yes Yes Yes No  No  No  No  Yes No 
-#&gt; [235] No  Yes Yes Yes Yes Yes Yes Yes No  Yes Yes No  Yes Yes Yes Yes Yes Yes
+#&gt; [235] No  Yes No  Yes Yes Yes Yes Yes No  Yes Yes No  Yes Yes Yes Yes Yes Yes
 #&gt; [253] Yes No  Yes Yes Yes Yes No  No  Yes Yes Yes Yes Yes Yes No  No  Yes Yes
-#&gt; [271] Yes Yes Yes Yes Yes Yes Yes Yes No  Yes Yes No  No  No  No  Yes No  Yes
+#&gt; [271] Yes Yes Yes Yes Yes Yes Yes Yes No  Yes No  No  No  No  No  Yes No  Yes
 #&gt; [289] No  Yes No  Yes Yes Yes Yes No  Yes Yes Yes No  Yes Yes Yes Yes Yes Yes
 #&gt; [307] Yes Yes Yes Yes Yes Yes Yes Yes Yes Yes Yes No  No  No  Yes Yes Yes Yes
-#&gt; [325] Yes Yes Yes Yes Yes Yes No  Yes Yes Yes No  Yes Yes Yes Yes Yes Yes No 
+#&gt; [325] Yes Yes Yes Yes Yes Yes No  Yes Yes Yes Yes Yes Yes Yes Yes Yes Yes No 
 #&gt; [343] No  Yes No  Yes No  No  Yes No  No  No  Yes No  Yes Yes Yes Yes Yes Yes
 #&gt; [361] No  No  Yes Yes Yes No  No  Yes No  Yes Yes Yes No  Yes Yes Yes Yes No 
 #&gt; [379] Yes Yes Yes Yes Yes Yes Yes Yes Yes No  Yes Yes Yes Yes Yes No  Yes Yes
@@ -515,6 +521,8 @@ urban
 #&gt; [1] mice
 #&gt; attr(,&quot;na_pos&quot;)
 #&gt;  [1]  38  90 159 206 237 252 281 283 335 378
+#&gt; attr(,&quot;seed&quot;)
+#&gt; [1] 43320
 #&gt; attr(,&quot;type&quot;)
 #&gt; [1] missing values
 #&gt; attr(,&quot;message&quot;)
@@ -524,10 +532,14 @@ urban
 #&gt; Levels: No Yes
 # summary of imputate
 summary(urban)
+#&gt; * Impute missing values based on Multivariate Imputation by Chained Equations
+#&gt;  - method : mice
+#&gt;  - random seed : 43320
+#&gt; 
 #&gt; * Information of Imputation (before vs after)
 #&gt;      original imputation original_percent imputation_percent
-#&gt; No        115        121            28.75              30.25
-#&gt; Yes       275        279            68.75              69.75
+#&gt; No        115        119            28.75              29.75
+#&gt; Yes       275        281            68.75              70.25
 #&gt; &lt;NA&gt;       10          0             2.50               0.00
 # viz of imputate
 plot(urban)</code></pre>
@@ -542,6 +554,9 @@ carseats %&gt;%
   group_by(US) %&gt;%
   summarise(orig = mean(Income, na.rm = TRUE),
     imputation = mean(Income_imp))
+#&gt; Registered S3 method overwritten by &#39;quantmod&#39;:
+#&gt;   method            from
+#&gt;   as.zoo.data.frame zoo
 #&gt; `summarise()` ungrouping output (override with `.groups` argument)
 #&gt; # A tibble: 2 x 3
 #&gt;   US     orig imputation
@@ -886,8 +901,8 @@ binning(carseats$Income, nbins = 5, type = &quot;bclust&quot;)
 #&gt; binned type: bclust
 #&gt; number of bins: 5
 #&gt; x
-#&gt;   [21,38.5] (38.5,65.5]   (65.5,85]    (85,108]   (108,120]        &lt;NA&gt; 
-#&gt;          72          98          91          81          38          20
+#&gt;   [21,50.5] (50.5,71.5]   (71.5,85]    (85,108]   (108,120]        &lt;NA&gt; 
+#&gt;         115          86          60          81          38          20
 
 # -------------------------
 # Using pipes &amp; dplyr
@@ -917,8 +932,8 @@ carseats %&gt;%
 <p>다음의 <code>binning_by()</code> 예제는 <code>US</code>가 binary class를 갖는 target 변수일 경우에 <code>Advertising</code>를 Optimal Binning하는 방법의 예시다.</p>
 <pre class="r"><code># optimal binning
 bin &lt;- binning_by(carseats, &quot;US&quot;, &quot;Advertising&quot;)
-#&gt; Warning in binning_by(carseats, &quot;US&quot;, &quot;Advertising&quot;): The factor y has been
-#&gt; changed to a numeric vector consisting of 0 and 1.
+#&gt; Warning in binning_by(carseats, &quot;US&quot;, &quot;Advertising&quot;): The factor y has been changed to a numeric vector consisting of 0 and 1.
+#&gt; &#39;Yes&#39; changed to 1 (positive) and &#39;No&#39; changed to 0 (negative).
 bin
 #&gt; binned type: optimal
 #&gt; number of bins: 3
@@ -928,29 +943,39 @@ bin
 
 # summary optimal_bins class
 summary(bin)
-#&gt;   levels freq   rate
-#&gt; 1 [-1,0]  144 0.3600
-#&gt; 2  (0,6]   69 0.1725
-#&gt; 3 (6,29]  187 0.4675
+#&gt; ── Binning Table ──────────────────────── Several Metrics ──
+#&gt;      Bin CntRec CntPos CntNeg RatePos RateNeg    Odds      WoE      IV     JSD
+#&gt; 1 [-1,0]    144     19    125 0.07364 0.88028  0.1520 -2.48101 2.00128 0.20093
+#&gt; 2  (0,6]     69     54     15 0.20930 0.10563  3.6000  0.68380 0.07089 0.00869
+#&gt; 3 (6,29]    187    185      2 0.71705 0.01408 92.5000  3.93008 2.76272 0.21861
+#&gt; 4  Total    400    258    142 1.00000 1.00000  1.8169       NA 4.83489 0.42823
+#&gt;       AUC
+#&gt; 1 0.03241
+#&gt; 2 0.01883
+#&gt; 3 0.00903
+#&gt; 4 0.06028
+#&gt; 
+#&gt; ── General Metrics ─────────────────────────────────────────
+#&gt; ● Gini index                       :  -0.87944
+#&gt; ● IV (Jeffrey)                     :  4.83489
+#&gt; ● JS (Jensen-Shannon) Divergence   :  0.42823
+#&gt; ● Kolmogorov-Smirnov Statistics    :  0.80664
+#&gt; ● HHI (Herfindahl-Hirschman Index) :  0.37791
+#&gt; ● HHI (normalized)                 :  0.06687
+#&gt; ● Cramer&#39;s V                       :  0.81863
+#&gt; 
+#&gt; ── Significance Tests ──────────────────── Chisquare Test ──
+#&gt;    Bin A  Bin B statistics      p_value
+#&gt; 1 [-1,0]  (0,6]   87.67064 7.731349e-21
+#&gt; 2  (0,6] (6,29]   34.73349 3.780706e-09
 
 # information value 
 attr(bin, &quot;iv&quot;)
-#&gt; [1] 4.8349
+#&gt; NULL
 
 # information value table
 attr(bin, &quot;ivtable&quot;)
-#&gt;   Cutpoint CntRec CntGood CntBad CntCumRec CntCumGood CntCumBad PctRec GoodRate
-#&gt; 1     &lt;= 0    144      19    125       144         19       125 0.3600   0.1319
-#&gt; 2     &lt;= 6     69      54     15       213         73       140 0.1725   0.7826
-#&gt; 3      &gt; 6    187     185      2       400        258       142 0.4675   0.9893
-#&gt; 4  Missing      0       0      0       400        258       142 0.0000      NaN
-#&gt; 5    Total    400     258    142        NA         NA        NA 1.0000   0.6450
-#&gt;   BadRate    Odds  LnOdds     WoE     IV
-#&gt; 1  0.8681  0.1520 -1.8839 -2.4810 2.0013
-#&gt; 2  0.2174  3.6000  1.2809  0.6838 0.0709
-#&gt; 3  0.0107 92.5000  4.5272  3.9301 2.7627
-#&gt; 4     NaN     NaN     NaN     NaN    NaN
-#&gt; 5  0.3550  1.8169  0.5971  0.0000 4.8349
+#&gt; NULL
 
 # visualize optimal_bins class
 plot(bin, sub = &quot;bins of Advertising variable&quot;)</code></pre>
@@ -1088,6 +1113,9 @@ Figure 6: 데이터변환 보고서 Binning 정보 (웹)
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
       <li>
+        <a href="/post/2021-01/rfonts/" class="nav-link">추가 폰트 사용하기</a>
+      </li>
+      <li>
         <a href="/post/2021-01/morpheme/" class="nav-link">Mecab으로 한글 띄어쓰기 검사기 만들기</a>
       </li>
       <li>
@@ -1098,9 +1126,6 @@ Figure 6: 데이터변환 보고서 Binning 정보 (웹)
       </li>
       <li>
         <a href="/post/2020-07/ggplot2_exam/" class="nav-link">몇 개의 ggplot tips</a>
-      </li>
-      <li>
-        <a href="/post/2020-03/2020-03-27-r-alookr.ko/" class="nav-link">alookr: Binary classification modeling</a>
       </li>
     </ul>
     <div>
@@ -1123,7 +1148,7 @@ Figure 6: 데이터변환 보고서 Binning 정보 (웹)
         
         <a href='/categories/visualization/' class="post_tag button button_translucent">
           VISUALIZATION
-          <span class="button_tally">7</span>
+          <span class="button_tally">8</span>
         </a>
         
         <a href='/categories/tidyverse/' class="post_tag button button_translucent">
@@ -1153,14 +1178,14 @@ Figure 6: 데이터변환 보고서 Binning 정보 (웹)
     <div>
       <h2 class="mt-4 taxonomy" id="tags-section">Tags</h2>
       <nav class="tags_nav">
-        <a href='/tags/plot/' class="post_tag button button_translucent">
-          PLOT
+        <a href='/tags/dlookr/' class="post_tag button button_translucent">
+          DLOOKR
           <span class="button_tally">6</span>
         </a>
         
-        <a href='/tags/dlookr/' class="post_tag button button_translucent">
-          DLOOKR
-          <span class="button_tally">5</span>
+        <a href='/tags/plot/' class="post_tag button button_translucent">
+          PLOT
+          <span class="button_tally">6</span>
         </a>
         
         <a href='/tags/graphics/' class="post_tag button button_translucent">
@@ -1185,6 +1210,11 @@ Figure 6: 데이터변환 보고서 Binning 정보 (웹)
         
         <a href='/tags/eda/' class="post_tag button button_translucent">
           EDA
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/ggplot2/' class="post_tag button button_translucent">
+          GGPLOT2
           <span class="button_tally">3</span>
         </a>
         
@@ -1215,11 +1245,6 @@ Figure 6: 데이터변환 보고서 Binning 정보 (웹)
         
         <a href='/tags/deep-learning/' class="post_tag button button_translucent">
           DEEP-LEARNING
-          <span class="button_tally">2</span>
-        </a>
-        
-        <a href='/tags/development/' class="post_tag button button_translucent">
-          DEVELOPMENT
           <span class="button_tally">2</span>
         </a>
         
@@ -1281,7 +1306,7 @@ Figure 6: 데이터변환 보고서 Binning 정보 (웹)
             </a>
             
             
-            <a href='/tags/dlookr/' class=" post_tag button button_translucent" data-position=5>DLOOKR<span class="button_tally">5</span>
+            <a href='/tags/dlookr/' class=" post_tag button button_translucent" data-position=6>DLOOKR<span class="button_tally">6</span>
             </a>
             
             
@@ -1301,11 +1326,19 @@ Figure 6: 데이터변환 보고서 Binning 정보 (웹)
             </a>
             
             
+            <a href='/tags/extrafont/' class=" post_tag button button_translucent" data-position=1>EXTRAFONT<span class="button_tally">1</span>
+            </a>
+            
+            
             <a href='/tags/factor/' class=" post_tag button button_translucent" data-position=1>FACTOR<span class="button_tally">1</span>
             </a>
             
             
             <a href='/tags/finance/' class=" post_tag button button_translucent" data-position=2>FINANCE<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/fonts/' class=" post_tag button button_translucent" data-position=1>FONTS<span class="button_tally">1</span>
             </a>
             
             
@@ -1329,7 +1362,7 @@ Figure 6: 데이터변환 보고서 Binning 정보 (웹)
             </a>
             
             
-            <a href='/tags/ggplot2/' class=" post_tag button button_translucent" data-position=2>GGPLOT2<span class="button_tally">2</span>
+            <a href='/tags/ggplot2/' class=" post_tag button button_translucent" data-position=3>GGPLOT2<span class="button_tally">3</span>
             </a>
             
             

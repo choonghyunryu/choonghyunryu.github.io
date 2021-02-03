@@ -183,8 +183,6 @@
     
     
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
-<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
-<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
 
 
 <div id="일러두기" class="section level2">
@@ -758,8 +756,7 @@ summary(num_num)
 #&gt; F-statistic: 98.25 on 1 and 398 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p><code>plot()</code>은 target 변수와 예측변수 사이의 관계를 시각화한다. <code>Sales</code>와 <code>Price</code> 간의 관계는 산점도(scatter plot)로 시각화된다.
 왼쪽 그림은 <code>Sales</code>와 <code>Price</code>의 산포도와 회귀선 및 회귀선의 신뢰구간을 나타낸다. 오른쪽 그림은 원 데이터와 선형모델의 예측값 사이의 관계를 산점도로 나타낸 것이다. 두 변수 사이에 선형 관계가 있는 경우 관측치의 산점도는 빨간색 대각선에 수렴한다.</p>
-<pre class="r"><code>plot(num_num)
-#&gt; `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<pre class="r"><code>plot(num_num)</code></pre>
 <p><img src="/post/2018-05/2018-05-07-r-vignette02.ko_files/figure-html/target_by8-1.png" width="672" /></p>
 </div>
 <div id="예측변수가-범주형-변수인-경우-1" class="section level4">
@@ -971,6 +968,9 @@ Figure 10: EDA 보고서 정규성 검정 정보 (웹)
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
       <li>
+        <a href="/post/2021-01/rfonts/" class="nav-link">추가 폰트 사용하기</a>
+      </li>
+      <li>
         <a href="/post/2021-01/morpheme/" class="nav-link">Mecab으로 한글 띄어쓰기 검사기 만들기</a>
       </li>
       <li>
@@ -981,9 +981,6 @@ Figure 10: EDA 보고서 정규성 검정 정보 (웹)
       </li>
       <li>
         <a href="/post/2020-07/ggplot2_exam/" class="nav-link">몇 개의 ggplot tips</a>
-      </li>
-      <li>
-        <a href="/post/2020-03/2020-03-27-r-alookr.ko/" class="nav-link">alookr: Binary classification modeling</a>
       </li>
     </ul>
     <div>
@@ -1006,7 +1003,7 @@ Figure 10: EDA 보고서 정규성 검정 정보 (웹)
         
         <a href='/categories/visualization/' class="post_tag button button_translucent">
           VISUALIZATION
-          <span class="button_tally">7</span>
+          <span class="button_tally">8</span>
         </a>
         
         <a href='/categories/tidyverse/' class="post_tag button button_translucent">
@@ -1036,14 +1033,14 @@ Figure 10: EDA 보고서 정규성 검정 정보 (웹)
     <div>
       <h2 class="mt-4 taxonomy" id="tags-section">Tags</h2>
       <nav class="tags_nav">
-        <a href='/tags/plot/' class="post_tag button button_translucent">
-          PLOT
+        <a href='/tags/dlookr/' class="post_tag button button_translucent">
+          DLOOKR
           <span class="button_tally">6</span>
         </a>
         
-        <a href='/tags/dlookr/' class="post_tag button button_translucent">
-          DLOOKR
-          <span class="button_tally">5</span>
+        <a href='/tags/plot/' class="post_tag button button_translucent">
+          PLOT
+          <span class="button_tally">6</span>
         </a>
         
         <a href='/tags/graphics/' class="post_tag button button_translucent">
@@ -1068,6 +1065,11 @@ Figure 10: EDA 보고서 정규성 검정 정보 (웹)
         
         <a href='/tags/eda/' class="post_tag button button_translucent">
           EDA
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/ggplot2/' class="post_tag button button_translucent">
+          GGPLOT2
           <span class="button_tally">3</span>
         </a>
         
@@ -1098,11 +1100,6 @@ Figure 10: EDA 보고서 정규성 검정 정보 (웹)
         
         <a href='/tags/deep-learning/' class="post_tag button button_translucent">
           DEEP-LEARNING
-          <span class="button_tally">2</span>
-        </a>
-        
-        <a href='/tags/development/' class="post_tag button button_translucent">
-          DEVELOPMENT
           <span class="button_tally">2</span>
         </a>
         
@@ -1164,7 +1161,7 @@ Figure 10: EDA 보고서 정규성 검정 정보 (웹)
             </a>
             
             
-            <a href='/tags/dlookr/' class=" post_tag button button_translucent" data-position=5>DLOOKR<span class="button_tally">5</span>
+            <a href='/tags/dlookr/' class=" post_tag button button_translucent" data-position=6>DLOOKR<span class="button_tally">6</span>
             </a>
             
             
@@ -1184,11 +1181,19 @@ Figure 10: EDA 보고서 정규성 검정 정보 (웹)
             </a>
             
             
+            <a href='/tags/extrafont/' class=" post_tag button button_translucent" data-position=1>EXTRAFONT<span class="button_tally">1</span>
+            </a>
+            
+            
             <a href='/tags/factor/' class=" post_tag button button_translucent" data-position=1>FACTOR<span class="button_tally">1</span>
             </a>
             
             
             <a href='/tags/finance/' class=" post_tag button button_translucent" data-position=2>FINANCE<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/fonts/' class=" post_tag button button_translucent" data-position=1>FONTS<span class="button_tally">1</span>
             </a>
             
             
@@ -1212,7 +1217,7 @@ Figure 10: EDA 보고서 정규성 검정 정보 (웹)
             </a>
             
             
-            <a href='/tags/ggplot2/' class=" post_tag button button_translucent" data-position=2>GGPLOT2<span class="button_tally">2</span>
+            <a href='/tags/ggplot2/' class=" post_tag button button_translucent" data-position=3>GGPLOT2<span class="button_tally">3</span>
             </a>
             
             

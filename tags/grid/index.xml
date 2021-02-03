@@ -16,8 +16,6 @@
         
           
 &lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;오클랜드 대학교의 Paul Murrell은 &lt;code&gt;grid&lt;/code&gt;라는 이름의 그래픽 라이브러리(package)를 개발했다. 이 라이브러리가 바로 &lt;code&gt;lattice&lt;/code&gt;와 &lt;code&gt;ggplot2&lt;/code&gt; package의 토대가 된다.&lt;/p&gt;
@@ -50,8 +48,6 @@ Paul Murrell 그림을 응용해서 그려 보았다. 산을 그리는 로직은
         
           
 &lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;오클랜드 대학교의 Paul Murrell은 &lt;code&gt;grid&lt;/code&gt;라는 이름의 그래픽 라이브러리(package)를 개발했다. 이 라이브러리가 바로 &lt;code&gt;lattice&lt;/code&gt;와 &lt;code&gt;ggplot2&lt;/code&gt; package의 토대가 된다.&lt;/p&gt;
@@ -84,8 +80,6 @@ Paul Murrell 그림을 응용해서 그려 보았다. 산을 그리는 로직은
         
           
 &lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;일러두기&#34; class=&#34;section level2&#34;&gt;

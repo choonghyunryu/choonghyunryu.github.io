@@ -183,8 +183,6 @@
     
     
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
-<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
-<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
 
 
 <div id="들어가기" class="section level1">
@@ -230,7 +228,7 @@ Figure 1: Synchronous vs Asynchronous in R
 <p>R은 기본적으로 동기화 매커니즘을 가지고 있으므로 5초 가량 getValue() 함수가 수행된 후에 x의 값 3.141593가 출력된다.</p>
 <pre class="r"><code>&gt; system.time(x &lt;- getValue(pi))
    user  system elapsed 
-  0.000   0.000  15.003 </code></pre>
+  0.000   0.000  15.001 </code></pre>
 <pre class="r"><code>&gt; x
 [1] 3.141593</code></pre>
 </div>
@@ -250,7 +248,7 @@ how to control forked processing or not, and how to silence this warning in
 future R sessions, see ?future::supportsMulticore
 &gt; system.time(x &lt;- future(getValue(pi)))
    user  system elapsed 
-  0.012   0.000   0.014 </code></pre>
+  0.011   0.000   0.013 </code></pre>
 <p>future() 함수가 반환한 x 객체는 MulticoreFuture class 객체다.</p>
 <pre class="r"><code>&gt; is(x)
 [1] &quot;MultisessionFuture&quot;
@@ -272,7 +270,7 @@ Resolved: FALSE
 Value: &lt;not collected&gt;
 Conditions captured: &lt;none&gt;
 Early signaling: FALSE
-Owner process: ebca26bb-9f21-5b1d-b3e3-ed53356719b1
+Owner process: d49fc19e-1b63-52e8-4faf-af4ab2d22336
 Class: &#39;MultisessionFuture&#39;, &#39;ClusterFuture&#39;, &#39;MultiprocessFuture&#39;, &#39;Future&#39;, &#39;environment&#39;</code></pre>
 <p>실제 계산된 값을 사용하기 위해서는 value() 함수로 MulticoreFuture 객체를 원래 반환값의 객체로 변환해 주어야 한다.</p>
 <p>즉, <strong>future() 함수로 던지고, value() 함수로 받아야 한다.</strong></p>
@@ -315,23 +313,23 @@ function (...)  .Primitive(&quot;c&quot;)</code></pre>
   return(pid)
 }</code></pre>
 <pre class="r"><code>&gt; Sys.getpid()
-[1] 40891
+[1] 14248
 &gt; system.time(pid &lt;- getValue2())
 Resolving ...
    user  system elapsed 
-  0.000   0.000   5.002 
+  0.001   0.000   5.000 
 &gt; pid
-[1] 40891</code></pre>
+[1] 14248</code></pre>
 <p>%&lt;-% 연산자 expr가 백그라운드에서 수행되기 때문에, 호출된 getValue2() 함수의 cat() 함수의 결과가 출력되지 않는다. 왜냐하면 cat() 함수는 포그라운드(Foreground) 콘솔에 문자열을 출력하는 함수이기 때문이다.
 또한 %&lt;-% 연산자가 호출되지 이전의 프로세스 아이디와 expr이 수행되는 환경의 프로세스 아이디가 다름을 알 수 있다.</p>
 <pre class="r"><code>&gt; Sys.getpid()
-[1] 40891
+[1] 14248
 &gt; system.time(pid %&lt;-% getValue2())
    user  system elapsed 
-  0.008   0.000   0.009 
+  0.007   0.000   0.008 
 &gt; pid
 Resolving ...
-[1] 41004</code></pre>
+[1] 14362</code></pre>
 </div>
 <div id="plan" class="section level3">
 <h3>Plan</h3>
@@ -355,7 +353,7 @@ Resolving ...
 &gt; 
 &gt; system.time(x &lt;- future(getValue(pi)))
    user  system elapsed 
-  0.009   0.001  15.013 
+  0.008   0.000  15.010 
 &gt; is(x)
 [1] &quot;SequentialFuture&quot;
 &gt; value(x)
@@ -408,6 +406,9 @@ Resolving ...
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
       <li>
+        <a href="/post/2021-01/rfonts/" class="nav-link">추가 폰트 사용하기</a>
+      </li>
+      <li>
         <a href="/post/2021-01/morpheme/" class="nav-link">Mecab으로 한글 띄어쓰기 검사기 만들기</a>
       </li>
       <li>
@@ -418,9 +419,6 @@ Resolving ...
       </li>
       <li>
         <a href="/post/2020-07/ggplot2_exam/" class="nav-link">몇 개의 ggplot tips</a>
-      </li>
-      <li>
-        <a href="/post/2020-03/2020-03-27-r-alookr.ko/" class="nav-link">alookr: Binary classification modeling</a>
       </li>
     </ul>
     <div>
@@ -443,7 +441,7 @@ Resolving ...
         
         <a href='/categories/visualization/' class="post_tag button button_translucent">
           VISUALIZATION
-          <span class="button_tally">7</span>
+          <span class="button_tally">8</span>
         </a>
         
         <a href='/categories/tidyverse/' class="post_tag button button_translucent">
@@ -473,14 +471,14 @@ Resolving ...
     <div>
       <h2 class="mt-4 taxonomy" id="tags-section">Tags</h2>
       <nav class="tags_nav">
-        <a href='/tags/plot/' class="post_tag button button_translucent">
-          PLOT
+        <a href='/tags/dlookr/' class="post_tag button button_translucent">
+          DLOOKR
           <span class="button_tally">6</span>
         </a>
         
-        <a href='/tags/dlookr/' class="post_tag button button_translucent">
-          DLOOKR
-          <span class="button_tally">5</span>
+        <a href='/tags/plot/' class="post_tag button button_translucent">
+          PLOT
+          <span class="button_tally">6</span>
         </a>
         
         <a href='/tags/graphics/' class="post_tag button button_translucent">
@@ -505,6 +503,11 @@ Resolving ...
         
         <a href='/tags/eda/' class="post_tag button button_translucent">
           EDA
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/ggplot2/' class="post_tag button button_translucent">
+          GGPLOT2
           <span class="button_tally">3</span>
         </a>
         
@@ -535,11 +538,6 @@ Resolving ...
         
         <a href='/tags/deep-learning/' class="post_tag button button_translucent">
           DEEP-LEARNING
-          <span class="button_tally">2</span>
-        </a>
-        
-        <a href='/tags/development/' class="post_tag button button_translucent">
-          DEVELOPMENT
           <span class="button_tally">2</span>
         </a>
         
@@ -601,7 +599,7 @@ Resolving ...
             </a>
             
             
-            <a href='/tags/dlookr/' class=" post_tag button button_translucent" data-position=5>DLOOKR<span class="button_tally">5</span>
+            <a href='/tags/dlookr/' class=" post_tag button button_translucent" data-position=6>DLOOKR<span class="button_tally">6</span>
             </a>
             
             
@@ -621,11 +619,19 @@ Resolving ...
             </a>
             
             
+            <a href='/tags/extrafont/' class=" post_tag button button_translucent" data-position=1>EXTRAFONT<span class="button_tally">1</span>
+            </a>
+            
+            
             <a href='/tags/factor/' class=" post_tag button button_translucent" data-position=1>FACTOR<span class="button_tally">1</span>
             </a>
             
             
             <a href='/tags/finance/' class=" post_tag button button_translucent" data-position=2>FINANCE<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/fonts/' class=" post_tag button button_translucent" data-position=1>FONTS<span class="button_tally">1</span>
             </a>
             
             
@@ -649,7 +655,7 @@ Resolving ...
             </a>
             
             
-            <a href='/tags/ggplot2/' class=" post_tag button button_translucent" data-position=2>GGPLOT2<span class="button_tally">2</span>
+            <a href='/tags/ggplot2/' class=" post_tag button button_translucent" data-position=3>GGPLOT2<span class="button_tally">3</span>
             </a>
             
             

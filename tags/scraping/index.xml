@@ -16,8 +16,6 @@
         
           
 &lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;주가-데이터-수집하기&#34; class=&#34;section level1&#34;&gt;
@@ -151,12 +149,12 @@
 6 2015-08-28  095570 7660 7840 7090  7140  956575 6986.431
 &amp;gt; tail(KOSPI_STOCKS)
            date symbols  Open  High   Low Close Volume Adjusted
-7162 2020-12-21  006840 24950 25050 24400 24950  49917    24950
-7163 2020-12-22  006840 24550 24750 24300 24550  41056    24550
-7164 2020-12-23  006840 24550 24700 23300 23600  90361    23600
-7165 2020-12-24  006840 23600 25350 23550 25200 112401    25200
-7166 2020-12-28  006840 25300 25950 24700 24900 195401    24900
-7167 2020-12-29  006840 25050 25250 24700 25100 123822    25100&lt;/code&gt;&lt;/pre&gt;
+7219 2021-01-20  006840 25700 25850 24900 25650 109181    25650
+7220 2021-01-21  006840 25750 26150 25550 25850  96709    25850
+7221 2021-01-22  006840 25750 29550 25600 29100 727088    29100
+7222 2021-01-25  006840 29000 31100 29000 30100 386257    30100
+7223 2021-01-26  006840 30100 30200 29000 29950 170870    29950
+7224 2021-01-27  006840 29750 29800 28650 28850 106424    28850&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;관심종목-거래정보-가져오기&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;관심종목 거래정보 가져오기&lt;/h3&gt;
@@ -282,45 +280,45 @@ Figure 3: 삼성생명 candle sticks chart
 &amp;gt; dim(AMEX)
 [1] 303  17
 &amp;gt; dim(NASDAQ)
-[1] 3942   17
+[1] 4038   17
 &amp;gt; dim(NYSE)
-[1] 3282   17
+[1] 3312   17
 &amp;gt; head(NYSE)
       Symbol
-6227       A
-6228      AA
-6229    AAIC
-6230 AAIC-PB
-6231 AAIC-PC
-6232     AAN
+6353       A
+6354      AA
+6355    AAIC
+6356 AAIC-PB
+6357 AAIC-PC
+6358     AAN
                                                                                                                Name
-6227                                                                        Agilent Technologies, Inc. Common Stock
-6228                                                                                Alcoa Corporation Common Stock 
-6229                                                                  Arlington Asset Investment Corp Class A (new)
-6230                                                                         Arlington Asset Investment Corp 7.00% 
-6231 Arlington Asset Investment Corp 8.250% Seies C Fixed-to-Floating Rate Cumulative Redeemable Preferred Stock   
-6232                                                                    Aarons Holdings Company, Inc. Common Stock 
+6353                                                                        Agilent Technologies, Inc. Common Stock
+6354                                                                                Alcoa Corporation Common Stock 
+6355                                                                  Arlington Asset Investment Corp Class A (new)
+6356                                                                         Arlington Asset Investment Corp 7.00% 
+6357 Arlington Asset Investment Corp 8.250% Seies C Fixed-to-Floating Rate Cumulative Redeemable Preferred Stock   
+6358                                                                    Aarons Holdings Company, Inc. Common Stock 
      LastSale MarketCap IPOyear Sector Industry Exchange Test.Issue
-6227       NA        NA      NA     NA       NA     NYSE      FALSE
-6228       NA        NA      NA     NA       NA     NYSE      FALSE
-6229       NA        NA      NA     NA       NA     NYSE      FALSE
-6230       NA        NA      NA     NA       NA     NYSE      FALSE
-6231       NA        NA      NA     NA       NA     NYSE      FALSE
-6232       NA        NA      NA     NA       NA     NYSE      FALSE
+6353       NA        NA      NA     NA       NA     NYSE      FALSE
+6354       NA        NA      NA     NA       NA     NYSE      FALSE
+6355       NA        NA      NA     NA       NA     NYSE      FALSE
+6356       NA        NA      NA     NA       NA     NYSE      FALSE
+6357       NA        NA      NA     NA       NA     NYSE      FALSE
+6358       NA        NA      NA     NA       NA     NYSE      FALSE
      Round.Lot.Size   ETF Market.Category Financial.Status Next.Shares
-6227            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
-6228            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
-6229            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
-6230            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
-6231            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
-6232            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
+6353            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
+6354            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
+6355            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
+6356            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
+6357            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
+6358            100 FALSE            &amp;lt;NA&amp;gt;             &amp;lt;NA&amp;gt;          NA
      ACT.Symbol CQS.Symbol NASDAQ.Symbol
-6227          A          A             A
-6228         AA         AA            AA
-6229       AAIC       AAIC          AAIC
-6230     AAIC$B     AAICpB        AAIC-B
-6231     AAIC$C     AAICpC        AAIC-C
-6232        AAN        AAN           AAN&lt;/code&gt;&lt;/pre&gt;
+6353          A          A             A
+6354         AA         AA            AA
+6355       AAIC       AAIC          AAIC
+6356     AAIC$B     AAICpB        AAIC-B
+6357     AAIC$C     AAICpC        AAIC-C
+6358        AAN        AAN           AAN&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;관심종목-거래정보-가져오기-1&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;관심종목 거래정보 가져오기&lt;/h3&gt;
@@ -329,13 +327,13 @@ Figure 3: 삼성생명 candle sticks chart
 &lt;p&gt;애플의 종목코드는 &lt;code&gt;AAPL&lt;/code&gt;이다. 이 종목의 거래정보를 Yahoo로부터 가져오자.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;gt; NASDAQ[grep(&amp;quot;Apple&amp;quot;, NASDAQ$Name), ]
      Symbol                      Name LastSale MarketCap IPOyear Sector
-2293   AAPL Apple Inc. - Common Stock       NA        NA      NA     NA
+2323   AAPL Apple Inc. - Common Stock       NA        NA      NA     NA
      Industry Exchange Test.Issue Round.Lot.Size   ETF
-2293       NA   NASDAQ      FALSE            100 FALSE
+2323       NA   NASDAQ      FALSE            100 FALSE
                    Market.Category Financial.Status Next.Shares ACT.Symbol
-2293 NASDAQ Global Select MarketSM Normal (Default)          NA       &amp;lt;NA&amp;gt;
+2323 NASDAQ Global Select MarketSM Normal (Default)          NA       &amp;lt;NA&amp;gt;
      CQS.Symbol NASDAQ.Symbol
-2293       &amp;lt;NA&amp;gt;          AAPL
+2323       &amp;lt;NA&amp;gt;          AAPL
 &amp;gt; symbols &amp;lt;- NASDAQ[grep(&amp;quot;Apple&amp;quot;, NASDAQ$Name), &amp;quot;Symbol&amp;quot;]
 &amp;gt; 
 &amp;gt; apple &amp;lt;- getSymbols(symbols, from = &amp;#39;1990-01-01&amp;#39;, to = &amp;#39;2016-03-31&amp;#39;,

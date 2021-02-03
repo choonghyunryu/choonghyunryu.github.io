@@ -16,8 +16,6 @@
         
           
 &lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;개요&#34; class=&#34;section level2&#34;&gt;
@@ -139,9 +137,6 @@ summary(data_exam)
 #&amp;gt; The following object is masked from &amp;#39;package:ggplot2&amp;#39;:
 #&amp;gt; 
 #&amp;gt;     margin
-#&amp;gt; Registered S3 method overwritten by &amp;#39;quantmod&amp;#39;:
-#&amp;gt;   method            from
-#&amp;gt;   as.zoo.data.frame zoo
 
 # 데이터 정제
 newDat &amp;lt;- cleanse(data_exam)
@@ -923,7 +918,7 @@ tmp &amp;lt;- breastCancer %&amp;gt;%
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 집계 정보
 summary(sb)
 #&amp;gt; ** Split train/test set information **
-#&amp;gt;  + random seed        :  20036 
+#&amp;gt;  + random seed        :  58393 
 #&amp;gt;  + split data            
 #&amp;gt;     - train set count :  489 
 #&amp;gt;     - test set count  :  210 
@@ -934,7 +929,7 @@ summary(sb)
 # 집계 정
 summary(tmp)
 #&amp;gt; ** Split train/test set information **
-#&amp;gt;  + random seed        :  35656 
+#&amp;gt;  + random seed        :  97035 
 #&amp;gt;  + split data            
 #&amp;gt;     - train set count :  419 
 #&amp;gt;     - test set count  :  280 
@@ -994,7 +989,7 @@ prop.table(table(sb$Class))
 # 집계 - 불균형 클래스 데이터
 summary(sb)
 #&amp;gt; ** Split train/test set information **
-#&amp;gt;  + random seed        :  20036 
+#&amp;gt;  + random seed        :  58393 
 #&amp;gt;  + split data            
 #&amp;gt;     - train set count :  489 
 #&amp;gt;     - test set count  :  210 
@@ -1018,7 +1013,7 @@ train_over &amp;lt;- sb %&amp;gt;%
 table(train_over$Class)
 #&amp;gt; 
 #&amp;gt;    benign malignant 
-#&amp;gt;       325       325&lt;/code&gt;&lt;/pre&gt;
+#&amp;gt;       315       315&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;resampling---majority-class의-언더-샘플링&#34; class=&#34;section level5&#34;&gt;
 &lt;h5&gt;Resampling - majority class의 언더 샘플링&lt;/h5&gt;
@@ -1032,7 +1027,7 @@ train_under &amp;lt;- sb %&amp;gt;%
 table(train_under$Class)
 #&amp;gt; 
 #&amp;gt;    benign malignant 
-#&amp;gt;       164       164&lt;/code&gt;&lt;/pre&gt;
+#&amp;gt;       174       174&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;generate-synthetic-samples---smote&#34; class=&#34;section level5&#34;&gt;
 &lt;h5&gt;Generate synthetic samples - SMOTE&lt;/h5&gt;
@@ -1046,7 +1041,7 @@ train_smote &amp;lt;- sb %&amp;gt;%
 table(train_smote$Class)
 #&amp;gt; 
 #&amp;gt;    benign malignant 
-#&amp;gt;       656       492&lt;/code&gt;&lt;/pre&gt;
+#&amp;gt;       696       522&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1071,7 +1066,7 @@ train &amp;lt;- train_smote %&amp;gt;%
 #&amp;gt; 
 #&amp;gt; ── Checking unique rate ─────────────────────────────── high unique rate ──
 #&amp;gt; remove variables with high unique rate
-#&amp;gt; ● Id = 421(0.366724738675958)
+#&amp;gt; ● Id = 431(0.353858784893268)
 #&amp;gt; 
 #&amp;gt; ── Checking character variables ─────────────────────── categorical data ──
 #&amp;gt; No character variables.&lt;/code&gt;&lt;/pre&gt;
@@ -1322,19 +1317,19 @@ cutoff &amp;lt;- plot_cutoff(pred_best, test$Class, &amp;quot;malignant&amp;quot
 &lt;p&gt;&lt;img src=&#34;/post/2020-03/2020-03-27-r-alookr.ko_files/figure-html/model19-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;
 cutoff
-#&amp;gt; [1] 0.45
+#&amp;gt; [1] 0.03
 
 cutoff2 &amp;lt;- plot_cutoff(pred_best, test$Class, &amp;quot;malignant&amp;quot;, type = &amp;quot;density&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2020-03/2020-03-27-r-alookr.ko_files/figure-html/model19-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;
 cutoff2
-#&amp;gt; [1] 0.8904
+#&amp;gt; [1] 0.2211
 
 cutoff3 &amp;lt;- plot_cutoff(pred_best, test$Class, &amp;quot;malignant&amp;quot;, type = &amp;quot;prob&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2020-03/2020-03-27-r-alookr.ko_files/figure-html/model19-3.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;
 cutoff3
-#&amp;gt; [1] 0.45&lt;/code&gt;&lt;/pre&gt;
+#&amp;gt; [1] 0.03&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;performance_metric을-이용한-예측과-조정된-컷오프-예측의-성능-비교&#34; class=&#34;section level4&#34;&gt;
 &lt;h4&gt;performance_metric()을 이용한 예측과 조정된 컷오프 예측의 성능 비교&lt;/h4&gt;
@@ -1401,37 +1396,37 @@ pred_prob
 
 # Accuracy 비교
 performance_metric(pred_prob, test$Class, &amp;quot;malignant&amp;quot;, &amp;quot;Accuracy&amp;quot;)
-#&amp;gt; [1] 0.9714286
+#&amp;gt; [1] 0.5809524
 
 performance_metric(pred_prob, test$Class, &amp;quot;malignant&amp;quot;, &amp;quot;Accuracy&amp;quot;,
                    cutoff = cutoff)
-#&amp;gt; [1] 0.9761905
+#&amp;gt; [1] 0.552381
 
 # Confusion Matrix 비교
 performance_metric(pred_prob, test$Class, &amp;quot;malignant&amp;quot;, &amp;quot;ConfusionMatrix&amp;quot;)
 #&amp;gt;            actual
 #&amp;gt; predict     benign malignant
-#&amp;gt;   benign       129         2
-#&amp;gt;   malignant      4        75
+#&amp;gt;   benign        93        38
+#&amp;gt;   malignant     50        29
 
 performance_metric(pred_prob, test$Class, &amp;quot;malignant&amp;quot;, &amp;quot;ConfusionMatrix&amp;quot;, 
                    cutoff = cutoff)
 #&amp;gt;            actual
 #&amp;gt; predict     benign malignant
-#&amp;gt;   benign       128         0
-#&amp;gt;   malignant      5        77
+#&amp;gt;   benign        80        31
+#&amp;gt;   malignant     63        36
 
 # F1 Score 비교
 performance_metric(pred_prob, test$Class, &amp;quot;malignant&amp;quot;, &amp;quot;F1_Score&amp;quot;)
-#&amp;gt; [1] 0.9615385
+#&amp;gt; [1] 0.3972603
 
 performance_metric(pred_prob, test$Class,  &amp;quot;malignant&amp;quot;, &amp;quot;F1_Score&amp;quot;, 
                    cutoff = cutoff)
-#&amp;gt; [1] 0.9685535
+#&amp;gt; [1] 0.4337349
 
 performance_metric(pred_prob, test$Class,  &amp;quot;malignant&amp;quot;, &amp;quot;F1_Score&amp;quot;, 
                    cutoff = cutoff2)
-#&amp;gt; [1] 0.9027778&lt;/code&gt;&lt;/pre&gt;
+#&amp;gt; [1] 0.4102564&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;조정된 컷오프(cut-off)의 성능이 양호하면, 컷오프를 적용하여 &lt;code&gt;positives class&lt;/code&gt;를 예측한다.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1448,7 +1443,7 @@ performance_metric(pred_prob, test$Class,  &amp;quot;malignant&amp;quot;, &amp;q
 #&amp;gt; 
 #&amp;gt; ── Checking unique rate ─────────────────────────────── high unique rate ──
 #&amp;gt; remove variables with high unique rate
-#&amp;gt; ● Id = 315(0.960365853658537)
+#&amp;gt; ● Id = 342(0.982758620689655)
 #&amp;gt; 
 #&amp;gt; ── Checking character variables ─────────────────────── categorical data ──
 #&amp;gt; No character variables.
@@ -1479,14 +1474,14 @@ data_pred &amp;lt;- data_pred %&amp;gt;%
 #&amp;gt; future R sessions, see ?future::supportsMulticore
 
 pred_actual
-#&amp;gt;  [1] malignant malignant malignant benign    malignant benign    malignant
-#&amp;gt;  [8] malignant malignant malignant malignant benign    benign    malignant
-#&amp;gt; [15] malignant benign    malignant malignant benign    malignant benign   
-#&amp;gt; [22] malignant malignant malignant benign    malignant malignant benign   
-#&amp;gt; [29] malignant benign    benign    benign    malignant malignant malignant
-#&amp;gt; [36] benign    benign    malignant malignant benign    malignant benign   
-#&amp;gt; [43] benign    malignant benign    malignant benign    malignant malignant
-#&amp;gt; [50] malignant
+#&amp;gt;  [1] benign    benign    benign    malignant benign    benign    benign   
+#&amp;gt;  [8] benign    benign    malignant benign    malignant malignant benign   
+#&amp;gt; [15] benign    benign    benign    malignant malignant benign    malignant
+#&amp;gt; [22] malignant malignant benign    malignant malignant malignant benign   
+#&amp;gt; [29] benign    malignant malignant malignant benign    malignant benign   
+#&amp;gt; [36] benign    benign    malignant benign    benign    malignant benign   
+#&amp;gt; [43] benign    benign    malignant benign    benign    benign    malignant
+#&amp;gt; [50] benign   
 #&amp;gt; Levels: benign malignant&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;컷오프로 예측하려면 다음과 같이 &lt;code&gt;run_predict()&lt;/code&gt; 함수에 컷오프 &lt;code&gt;cutoff&lt;/code&gt; 인수를 지정한다.:&lt;/p&gt;
 &lt;p&gt;이 예제에서는 컷오프(cut-off) 사용 결과와 사용하지 않는 결과 간에 차이가 없다.&lt;/p&gt;
@@ -1499,18 +1494,18 @@ pred_actual
   factor()
 
 pred_actual2
-#&amp;gt;  [1] malignant malignant malignant benign    malignant benign    malignant
-#&amp;gt;  [8] malignant malignant malignant malignant benign    benign    malignant
-#&amp;gt; [15] malignant benign    malignant malignant benign    malignant benign   
-#&amp;gt; [22] malignant malignant malignant benign    malignant malignant benign   
-#&amp;gt; [29] malignant benign    benign    benign    malignant malignant malignant
-#&amp;gt; [36] benign    benign    malignant malignant benign    malignant benign   
-#&amp;gt; [43] benign    malignant benign    malignant benign    malignant malignant
+#&amp;gt;  [1] benign    benign    malignant malignant benign    benign    benign   
+#&amp;gt;  [8] malignant benign    malignant benign    malignant malignant benign   
+#&amp;gt; [15] benign    benign    benign    malignant malignant malignant malignant
+#&amp;gt; [22] malignant malignant malignant malignant malignant malignant benign   
+#&amp;gt; [29] benign    malignant malignant malignant benign    malignant malignant
+#&amp;gt; [36] benign    benign    malignant benign    benign    malignant benign   
+#&amp;gt; [43] benign    benign    malignant malignant benign    benign    malignant
 #&amp;gt; [50] malignant
 #&amp;gt; Levels: benign malignant
 
 sum(pred_actual != pred_actual2)
-#&amp;gt; [1] 0&lt;/code&gt;&lt;/pre&gt;
+#&amp;gt; [1] 7&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
