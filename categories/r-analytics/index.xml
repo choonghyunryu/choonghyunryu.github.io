@@ -5,7 +5,455 @@
     <link>/categories/r-analytics/</link>
     <description>Recent content in R Analytics on Dataholic</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 05 Jan 2021 17:09:12 +0800</lastBuildDate><atom:link href="/categories/r-analytics/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 06 Feb 2021 17:09:12 +0800</lastBuildDate><atom:link href="/categories/r-analytics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>비닝(Binning)</title>
+      <link>/post/2021-02/binning/</link>
+      <pubDate>Sat, 06 Feb 2021 17:09:12 +0800</pubDate>
+      
+      <guid>/post/2021-02/binning/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;다룰-이야기&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;다룰 이야기&lt;/h2&gt;
+&lt;p&gt;연속형 변수가 범주화되면 디테일한 데이터의 정보가 사라진다. 예를 들면 시험성적이 96점인 학생의 A 학점은 90점으로 A 학점을 받은 학생과 동일하게 인식되지만, 두 학생의 성적 우열은 엄연히 존재한다.&lt;/p&gt;
+&lt;p&gt;모든 경우는 아니지만 연속형 변수를 비닝하면, 데이터의 분포에 따라서 이상치(outliers)로 발생할 수 있는 이슈를 회피하거나 과적합(over fitting)을 완화시켜주기도 한다. 그래서 흔하지 않지만, 가끔은 연속형 변수를 범주형 변수로 변환할 필요가 있다. 특히 금융권에서 사용하는 스코어카드 기법에서는 연속형 변수를 범주형 변수로 변환하는 작업을 빈번히 사용한다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;dlookr 패키지에는 일반적인 비닝과 스코어링 모델(Scoring Modeling)을 위한 Optimal Binning 기능을 지원한다. 여기서는 일반적인 방법으로서의 비닝에 대해서만 다룬다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div id=&#34;비닝binning&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;비닝(Binning)&lt;/h2&gt;
+&lt;p&gt;비닝(Binning)을 쉽게 이해하려면 히스토그램을 떠올리면 된다. 다음은 iris 데이터 중 연속형 변수를 히스토그램으로 표현한 것이다. 연속형 변수를 일정한 간격으로 나누어 &lt;code&gt;계급(class)&lt;/code&gt;을 만든 후 해당하는 &lt;code&gt;계급의 구간(class interval)&lt;/code&gt;에 몇 개의 관측치가 포함되는지 집계한 것이 &lt;code&gt;도수분포표(frequency table)&lt;/code&gt;다. 그리고 계급 구간별로 도수를 막대의 높이로 표현한 것이 &lt;code&gt;히스토그램(histogram)&lt;/code&gt;이다. 원래의 데이터를 데이터가 포함된 계급에 매핑하는 범주화하는 이 작업도 비닝의 한 방법이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;iris$Sepal.Length&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##   [1] 5.1 4.9 4.7 4.6 5.0 5.4 4.6 5.0 4.4 4.9 5.4 4.8 4.8 4.3 5.8 5.7 5.4 5.1
+##  [19] 5.7 5.1 5.4 5.1 4.6 5.1 4.8 5.0 5.0 5.2 5.2 4.7 4.8 5.4 5.2 5.5 4.9 5.0
+##  [37] 5.5 4.9 4.4 5.1 5.0 4.5 4.4 5.0 5.1 4.8 5.1 4.6 5.3 5.0 7.0 6.4 6.9 5.5
+##  [55] 6.5 5.7 6.3 4.9 6.6 5.2 5.0 5.9 6.0 6.1 5.6 6.7 5.6 5.8 6.2 5.6 5.9 6.1
+##  [73] 6.3 6.1 6.4 6.6 6.8 6.7 6.0 5.7 5.5 5.5 5.8 6.0 5.4 6.0 6.7 6.3 5.6 5.5
+##  [91] 5.5 6.1 5.8 5.0 5.6 5.7 5.7 6.2 5.1 5.7 6.3 5.8 7.1 6.3 6.5 7.6 4.9 7.3
+## [109] 6.7 7.2 6.5 6.4 6.8 5.7 5.8 6.4 6.5 7.7 7.7 6.0 6.9 5.6 7.7 6.3 6.7 7.2
+## [127] 6.2 6.1 6.4 7.2 7.4 7.9 6.4 6.3 6.1 7.7 6.3 6.4 6.0 6.9 6.7 6.9 5.8 6.8
+## [145] 6.7 6.7 6.3 6.5 6.2 5.9&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;hist_info &amp;lt;- hist(iris$Sepal.Length, col = &amp;quot;lightblue&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-02/binning_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;히스토그램을 그리는 &lt;code&gt;hist()&lt;/code&gt; 함수는 유용한 정보를 list로 반환한다. 정보의 반환을 &lt;code&gt;return()&lt;/code&gt; 함수가 아닌 &lt;code&gt;invisible()&lt;/code&gt; 함수를 사용해서 별도의 이름에 할당한 후 그 정보를 사용할 수 있다. 특히 계급을 정의할 수 있는 계급의 경계는 breaks로, 계급 구간에 포함된 원 데이터의 개수인 &lt;code&gt;도수(frequency)&lt;/code&gt;는 counts로 반환되었다. density는 &lt;code&gt;상대도수(relative frequency)&lt;/code&gt;를 의미한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;hist_info&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## $breaks
+## [1] 4.0 4.5 5.0 5.5 6.0 6.5 7.0 7.5 8.0
+## 
+## $counts
+## [1]  5 27 27 30 31 18  6  6
+## 
+## $density
+## [1] 0.06666667 0.36000000 0.36000000 0.40000000 0.41333333 0.24000000 0.08000000
+## [8] 0.08000000
+## 
+## $mids
+## [1] 4.25 4.75 5.25 5.75 6.25 6.75 7.25 7.75
+## 
+## $xname
+## [1] &amp;quot;iris$Sepal.Length&amp;quot;
+## 
+## $equidist
+## [1] TRUE
+## 
+## attr(,&amp;quot;class&amp;quot;)
+## [1] &amp;quot;histogram&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;cut-함수로-비닝하기&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;cut() 함수로 비닝하기&lt;/h3&gt;
+&lt;p&gt;R에서는 &lt;code&gt;cut()&lt;/code&gt; 함수로 비닝한다. 그런데 사용자가 계급의 경계인 breaks를 지정해 주어야 한다. 앞에서 수행한 히스토그램의 정보를 활용해 보자.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bins &amp;lt;- cut(iris$Sepal.Length, breaks = hist_info$breaks)
+
+bins&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##   [1] (5,5.5] (4.5,5] (4.5,5] (4.5,5] (4.5,5] (5,5.5] (4.5,5] (4.5,5] (4,4.5]
+##  [10] (4.5,5] (5,5.5] (4.5,5] (4.5,5] (4,4.5] (5.5,6] (5.5,6] (5,5.5] (5,5.5]
+##  [19] (5.5,6] (5,5.5] (5,5.5] (5,5.5] (4.5,5] (5,5.5] (4.5,5] (4.5,5] (4.5,5]
+##  [28] (5,5.5] (5,5.5] (4.5,5] (4.5,5] (5,5.5] (5,5.5] (5,5.5] (4.5,5] (4.5,5]
+##  [37] (5,5.5] (4.5,5] (4,4.5] (5,5.5] (4.5,5] (4,4.5] (4,4.5] (4.5,5] (5,5.5]
+##  [46] (4.5,5] (5,5.5] (4.5,5] (5,5.5] (4.5,5] (6.5,7] (6,6.5] (6.5,7] (5,5.5]
+##  [55] (6,6.5] (5.5,6] (6,6.5] (4.5,5] (6.5,7] (5,5.5] (4.5,5] (5.5,6] (5.5,6]
+##  [64] (6,6.5] (5.5,6] (6.5,7] (5.5,6] (5.5,6] (6,6.5] (5.5,6] (5.5,6] (6,6.5]
+##  [73] (6,6.5] (6,6.5] (6,6.5] (6.5,7] (6.5,7] (6.5,7] (5.5,6] (5.5,6] (5,5.5]
+##  [82] (5,5.5] (5.5,6] (5.5,6] (5,5.5] (5.5,6] (6.5,7] (6,6.5] (5.5,6] (5,5.5]
+##  [91] (5,5.5] (6,6.5] (5.5,6] (4.5,5] (5.5,6] (5.5,6] (5.5,6] (6,6.5] (5,5.5]
+## [100] (5.5,6] (6,6.5] (5.5,6] (7,7.5] (6,6.5] (6,6.5] (7.5,8] (4.5,5] (7,7.5]
+## [109] (6.5,7] (7,7.5] (6,6.5] (6,6.5] (6.5,7] (5.5,6] (5.5,6] (6,6.5] (6,6.5]
+## [118] (7.5,8] (7.5,8] (5.5,6] (6.5,7] (5.5,6] (7.5,8] (6,6.5] (6.5,7] (7,7.5]
+## [127] (6,6.5] (6,6.5] (6,6.5] (7,7.5] (7,7.5] (7.5,8] (6,6.5] (6,6.5] (6,6.5]
+## [136] (7.5,8] (6,6.5] (6,6.5] (5.5,6] (6.5,7] (6.5,7] (6.5,7] (5.5,6] (6.5,7]
+## [145] (6.5,7] (6.5,7] (6,6.5] (6,6.5] (6,6.5] (5.5,6]
+## Levels: (4,4.5] (4.5,5] (5,5.5] (5.5,6] (6,6.5] (6.5,7] (7,7.5] (7.5,8]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;table(bins)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## bins
+## (4,4.5] (4.5,5] (5,5.5] (5.5,6] (6,6.5] (6.5,7] (7,7.5] (7.5,8] 
+##       5      27      27      30      31      18       6       6&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;pretty()&lt;/code&gt; 함수는 적당하게 계급의 경계를 구해준다. 이 함수를 이용해서 비닝해 보자.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pretty(iris$Sepal.Length) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 4 5 6 7 8&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;cut(iris$Sepal.Length, breaks = pretty(iris$Sepal.Length))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##   [1] (5,6] (4,5] (4,5] (4,5] (4,5] (5,6] (4,5] (4,5] (4,5] (4,5] (5,6] (4,5]
+##  [13] (4,5] (4,5] (5,6] (5,6] (5,6] (5,6] (5,6] (5,6] (5,6] (5,6] (4,5] (5,6]
+##  [25] (4,5] (4,5] (4,5] (5,6] (5,6] (4,5] (4,5] (5,6] (5,6] (5,6] (4,5] (4,5]
+##  [37] (5,6] (4,5] (4,5] (5,6] (4,5] (4,5] (4,5] (4,5] (5,6] (4,5] (5,6] (4,5]
+##  [49] (5,6] (4,5] (6,7] (6,7] (6,7] (5,6] (6,7] (5,6] (6,7] (4,5] (6,7] (5,6]
+##  [61] (4,5] (5,6] (5,6] (6,7] (5,6] (6,7] (5,6] (5,6] (6,7] (5,6] (5,6] (6,7]
+##  [73] (6,7] (6,7] (6,7] (6,7] (6,7] (6,7] (5,6] (5,6] (5,6] (5,6] (5,6] (5,6]
+##  [85] (5,6] (5,6] (6,7] (6,7] (5,6] (5,6] (5,6] (6,7] (5,6] (4,5] (5,6] (5,6]
+##  [97] (5,6] (6,7] (5,6] (5,6] (6,7] (5,6] (7,8] (6,7] (6,7] (7,8] (4,5] (7,8]
+## [109] (6,7] (7,8] (6,7] (6,7] (6,7] (5,6] (5,6] (6,7] (6,7] (7,8] (7,8] (5,6]
+## [121] (6,7] (5,6] (7,8] (6,7] (6,7] (7,8] (6,7] (6,7] (6,7] (7,8] (7,8] (7,8]
+## [133] (6,7] (6,7] (6,7] (7,8] (6,7] (6,7] (5,6] (6,7] (6,7] (6,7] (5,6] (6,7]
+## [145] (6,7] (6,7] (6,7] (6,7] (6,7] (5,6]
+## Levels: (4,5] (5,6] (6,7] (7,8]&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;dlookr을-이용한-비닝&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;dlookr을 이용한 비닝&lt;/h2&gt;
+&lt;div id=&#34;예제-데이터-생성&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;예제 데이터 생성&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;ISLR&lt;/code&gt; 패키지의 &lt;code&gt;Carseats&lt;/code&gt;는 유아용 차량 시트 판매에 대한 정보를 담고 있다. 400개의 관측치로 11개의 변수를 가지고 있다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Income&lt;/code&gt;은 소득 수준을 나타내며, 그 단위는 1000 US 달러다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Generate data for the example
+carseats &amp;lt;- ISLR::Carseats
+
+dim(carseats)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 400  11&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;names(carseats)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  [1] &amp;quot;Sales&amp;quot;       &amp;quot;CompPrice&amp;quot;   &amp;quot;Income&amp;quot;      &amp;quot;Advertising&amp;quot; &amp;quot;Population&amp;quot; 
+##  [6] &amp;quot;Price&amp;quot;       &amp;quot;ShelveLoc&amp;quot;   &amp;quot;Age&amp;quot;         &amp;quot;Education&amp;quot;   &amp;quot;Urban&amp;quot;      
+## [11] &amp;quot;US&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;carseats[sample(seq(NROW(carseats)), 20), &amp;quot;Income&amp;quot;] &amp;lt;- NA
+carseats[sample(seq(NROW(carseats)), 5), &amp;quot;Urban&amp;quot;] &amp;lt;- NA
+
+carseats$Income&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##   [1]  73  48  35 100  64 113 105  81 110 113  78  94  35  28  NA  95  32  74
+##  [19] 110  76  90  29  46  31 119  32 115 118  74  99  94  58  32  38  54  84
+##  [37]  76  41  73  60  98  53  69  42  79  63  90  98  52  93  32  90  40  64
+##  [55] 103  81  82  91  93  71 102  32  45  88  67  NA  92  61  69  59  81  51
+##  [73]  45  90  68 111  87  NA  48  NA 100  72  83  36  25 103  84  67  42  66
+##  [91]  22  46 113  30  97  25  42  82  77  47  69  93  22  91  96 100  33 107
+## [109]  79  65  62 118  99  29  87  35  75  53  88  94 105  NA 100 103 113  78
+## [127]  NA  48 100 120  84  69  87  98  31  94  75  42 103  62  60  42  84  88
+## [145]  68  NA  83  54 119 120  84  58  78  36  69  72  34  58  90  60  28  21
+## [163]  74  64  64  58  67  73  89  41  39 106  NA  91  24  89 107  72  71  NA
+## [181] 112  83  60  74  33 100  51  32  37 117  37  42  NA  70  98  93  28  61
+## [199]  80  88  92  83  78  82  80  22  67 105  54  21  41 118  69  84 115  83
+## [217]  33  44  61  79 120  44 119  45  82  25  33  64  73 104  60  69  80  76
+## [235]  62  32  34  28  24 105  80  63  NA  25  30  43  56 114  52  NA 105 111
+## [253]  97  NA 104  81  40  62  38  36 117  42  77  26  29  35  93  82  57  69
+## [271]  26  56  33 106  93 119  69  48 113  57  86  69  96 110  46  26 118  44
+## [289]  40  77 111  70  66  84  76  35  44  83  63  40  78  93  77  52  98  29
+## [307]  32  92  80 111  65  68 117  81  NA  21  36  30  72  45  70  39  50  NA
+## [325]  NA  69  30  38  66  54  59  63  33  60 117  70  35  NA  24  44  29 120
+## [343] 102  NA  80  68 107  39 102  27 101 115 103  67  31 100 109  73  96  62
+## [361]  86  25  55  75  21  30  56 106  22 100  41  81  50  71  47  46  NA  61
+## [379]  88  NA  64  65  28 117  37  73 116  73  89  42  75  63  42  51  58 108
+## [397]  23  26  79  37&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;비닝하기&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;비닝하기&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;dlookr&lt;/code&gt; 패키지의 &lt;code&gt;binning()&lt;/code&gt; 함수는 연속형 변수를 범주형 변수로 비닝한다. &lt;code&gt;Income&lt;/code&gt;을 비닝해 보자. 소득이 10개 소득 구간의 범주로 비닝되었다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(dlookr)
+
+bin &amp;lt;- binning(carseats$Income)
+
+bin&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## binned type: quantile
+## number of bins: 10
+## x
+##    [21,31]  (31,39.4]  (39.4,50]    (50,62]    (62,69]    (69,78]    (78,86] 
+##         40         36         39         40         37         39         36 
+##  (86,96.6] (96.6,107]  (107,120]       &amp;lt;NA&amp;gt; 
+##         37         39         37         20&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;summary()&lt;/code&gt; 함수는 범주화된 구간의 도수분포표(frequency table)를 구해준다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(bin)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##        levels freq   rate
+## 1     [21,31]   40 0.1000
+## 2   (31,39.4]   36 0.0900
+## 3   (39.4,50]   39 0.0975
+## 4     (50,62]   40 0.1000
+## 5     (62,69]   37 0.0925
+## 6     (69,78]   39 0.0975
+## 7     (78,86]   36 0.0900
+## 8   (86,96.6]   37 0.0925
+## 9  (96.6,107]   39 0.0975
+## 10  (107,120]   37 0.0925
+## 11       &amp;lt;NA&amp;gt;   20 0.0500&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;plot()&lt;/code&gt; 함수는 범주화된 구간에 대한 분포를 시각화한다. 플롯 상단은 변형된 히스토그램이다. 일반적으로 히스토그램은 구간의 너비는 동일하고, 높이로 그 밀도를 가늠한다. 그러나 이 변형된 히스토그램은 구간의 너비가 실제 구간의 길이와 동일하게 표현된다. 그러므로 높이가 밀도를 의미하지 않는다. “밀도는 사각형의 너비 &lt;span class=&#34;math inline&#34;&gt;\(\times\)&lt;/span&gt; 사각형의 높이다.” 즉, 기본 히스토그램보다 더 많은 정보를 표현한다.&lt;/p&gt;
+&lt;p&gt;기본에 우리가 알고 있는 히스토그램은 아래의 막대 그래프와 유사하다. 즉, 두 플롯을 이용해서 데이터의 분포를 좀 더 직관적으로 파악할 수 있는 시각화 도구다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(bin)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-02/binning_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;75%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;앞에서 소득을 소득 구간으로 비닝할 때 사용한 비닝 방법은 “quantile”이다. 이 방법은 분위수의 간격이 동일하게 구간을 나눈다. 그러므로 구간이 10개이므로 첫째 구간은 0~10% 분위수 구간이다. 즉, 10% 분위수는 30이다. 연산 과정에서 정확하게 딱 떨어지지는 않지만, 범주별로 동일한(거의) 도수를 갖게 된다.&lt;/p&gt;
+&lt;p&gt;이번에는 각 구간의 너비(interval)가 동일하게 비닝한다. 간단하게 &lt;code&gt;type&lt;/code&gt; 인수값을 “equal”로 지정한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bin_equal &amp;lt;- binning(carseats$Income, type = &amp;quot;equal&amp;quot;)
+
+bin_equal&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## binned type: equal
+## number of bins: 10
+## x
+##   [21,30.9] (30.9,40.8] (40.8,50.7] (50.7,60.6] (60.6,70.5] (70.5,80.4] 
+##          37          43          35          31          50          45 
+## (80.4,90.3]  (90.3,100]   (100,110]   (110,120]        &amp;lt;NA&amp;gt; 
+##          42          38          27          32          20&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(bin_equal)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##         levels freq   rate
+## 1    [21,30.9]   37 0.0925
+## 2  (30.9,40.8]   43 0.1075
+## 3  (40.8,50.7]   35 0.0875
+## 4  (50.7,60.6]   31 0.0775
+## 5  (60.6,70.5]   50 0.1250
+## 6  (70.5,80.4]   45 0.1125
+## 7  (80.4,90.3]   42 0.1050
+## 8   (90.3,100]   38 0.0950
+## 9    (100,110]   27 0.0675
+## 10   (110,120]   32 0.0800
+## 11        &amp;lt;NA&amp;gt;   20 0.0500&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(bin_equal)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-02/binning_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;75%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;이번에는 각 구간의 너비(interval)가 동일하게 비닝한다. 간단하게 &lt;code&gt;type&lt;/code&gt; 인수값을 “equal”로 지정한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bin_equal &amp;lt;- binning(carseats$Income, type = &amp;quot;equal&amp;quot;)
+
+bin_equal&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## binned type: equal
+## number of bins: 10
+## x
+##   [21,30.9] (30.9,40.8] (40.8,50.7] (50.7,60.6] (60.6,70.5] (70.5,80.4] 
+##          37          43          35          31          50          45 
+## (80.4,90.3]  (90.3,100]   (100,110]   (110,120]        &amp;lt;NA&amp;gt; 
+##          42          38          27          32          20&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(bin_equal)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##         levels freq   rate
+## 1    [21,30.9]   37 0.0925
+## 2  (30.9,40.8]   43 0.1075
+## 3  (40.8,50.7]   35 0.0875
+## 4  (50.7,60.6]   31 0.0775
+## 5  (60.6,70.5]   50 0.1250
+## 6  (70.5,80.4]   45 0.1125
+## 7  (80.4,90.3]   42 0.1050
+## 8   (90.3,100]   38 0.0950
+## 9    (100,110]   27 0.0675
+## 10   (110,120]   32 0.0800
+## 11        &amp;lt;NA&amp;gt;   20 0.0500&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(bin_equal)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-02/binning_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;75%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;이번에는 내부적으로 &lt;code&gt;base&lt;/code&gt; 패키지의 &lt;code&gt;pretty()&lt;/code&gt; 함수를 사용하는 “pretty” 방법이다. 간단하게 &lt;code&gt;type&lt;/code&gt; 인수값을 “pretty”로 지정한다. 결과는 데이터에 따라 다르지만, 이번 데이터 사례는 “equal” 방법과 동일한 결과로 비닝한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bin_pretty &amp;lt;- binning(carseats$Income, type = &amp;quot;pretty&amp;quot;)
+
+bin_pretty&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## binned type: pretty
+## number of bins: 10
+## x
+##   [20,30]   (30,40]   (40,50]   (50,60]   (60,70]   (70,80]   (80,90]  (90,100] 
+##        37        43        35        31        50        45        42        38 
+## (100,110] (110,120]      &amp;lt;NA&amp;gt; 
+##        27        32        20&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(bin_pretty)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##       levels freq   rate
+## 1    [20,30]   37 0.0925
+## 2    (30,40]   43 0.1075
+## 3    (40,50]   35 0.0875
+## 4    (50,60]   31 0.0775
+## 5    (60,70]   50 0.1250
+## 6    (70,80]   45 0.1125
+## 7    (80,90]   42 0.1050
+## 8   (90,100]   38 0.0950
+## 9  (100,110]   27 0.0675
+## 10 (110,120]   32 0.0800
+## 11      &amp;lt;NA&amp;gt;   20 0.0500&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(bin_pretty)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-02/binning_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;75%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;“kmenas” 방법은 &lt;code&gt;Kmeans 클러스터링&lt;/code&gt; 기법을 이용해서 비닝한다. 하나의 연속형 변수로 &lt;code&gt;Kmeans 클러스터링&lt;/code&gt; 후, 같은 클러스터에 포함된 값들을 하나의 구간으로 나눈다. 하나의 변수로 클러스터링하기 때문에 구간이 단조(monotonic, 주어진 순서를 보존하면서 상승/하강) 증가하게 형성된다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bin_kmeans &amp;lt;- binning(carseats$Income, type = &amp;quot;kmeans&amp;quot;)
+
+bin_kmeans&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## binned type: kmeans
+## number of bins: 10
+## x
+##   [21,35.5]   (35.5,49]   (49,61.5] (61.5,70.5] (70.5,78.5]   (78.5,85] 
+##          62          51          37          46          35          34 
+##   (85,92.5] (92.5,99.5]  (99.5,110]   (110,120]        &amp;lt;NA&amp;gt; 
+##          24          24          35          32          20&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(bin_kmeans)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##         levels freq   rate
+## 1    [21,35.5]   62 0.1550
+## 2    (35.5,49]   51 0.1275
+## 3    (49,61.5]   37 0.0925
+## 4  (61.5,70.5]   46 0.1150
+## 5  (70.5,78.5]   35 0.0875
+## 6    (78.5,85]   34 0.0850
+## 7    (85,92.5]   24 0.0600
+## 8  (92.5,99.5]   24 0.0600
+## 9   (99.5,110]   35 0.0875
+## 10   (110,120]   32 0.0800
+## 11        &amp;lt;NA&amp;gt;   20 0.0500&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(bin_kmeans)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-02/binning_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;75%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;type&lt;/code&gt; 인수값을 “bclust”로 지정하면 bagged clustering을 수행하여 비닝한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bin_bclust &amp;lt;- binning(carseats$Income, type = &amp;quot;bclust&amp;quot;)
+
+bin_bclust&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## binned type: bclust
+## number of bins: 10
+## x
+##   [21,29.5] (29.5,37.5] (37.5,47.5] (47.5,55.5] (55.5,61.5] (61.5,71.5] 
+##          32          38          39          19          22          49 
+##   (71.5,85]   (85,98.5]  (98.5,108]   (108,120]        &amp;lt;NA&amp;gt; 
+##          66          46          33          36          20&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(bin_bclust)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##         levels freq   rate
+## 1    [21,29.5]   32 0.0800
+## 2  (29.5,37.5]   38 0.0950
+## 3  (37.5,47.5]   39 0.0975
+## 4  (47.5,55.5]   19 0.0475
+## 5  (55.5,61.5]   22 0.0550
+## 6  (61.5,71.5]   49 0.1225
+## 7    (71.5,85]   66 0.1650
+## 8    (85,98.5]   46 0.1150
+## 9   (98.5,108]   33 0.0825
+## 10   (108,120]   36 0.0900
+## 11        &amp;lt;NA&amp;gt;   20 0.0500&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(bin_bclust)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-02/binning_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;75%&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;비닝-결과의-추출&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;비닝 결과의 추출&lt;/h3&gt;
+&lt;p&gt;비닝한 결과를 서머리하거나 시각화한 후 비닝한 결과에 확신이 생긴다면, &lt;code&gt;extract()&lt;/code&gt; 함수로 비닝한 데이터를 추출한다. 마지막 예제, bagged clustering 기법의 비닝 결과를 채택하였다고 가정한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;carseats$Income_bin &amp;lt;- extract(bin_bclust)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;비닝된 모든 관측치를 살펴보기에는 건수가 크니 앞의 20건만 살펴보자.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;head(carseats$Income_bin, n = 10)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  [1] (71.5,85]   (47.5,55.5] (29.5,37.5] (98.5,108]  (61.5,71.5] (108,120]  
+##  [7] (98.5,108]  (71.5,85]   (108,120]   (108,120]  
+## 10 Levels: [21,29.5] &amp;lt; (29.5,37.5] &amp;lt; (37.5,47.5] &amp;lt; ... &amp;lt; (108,120]&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;dplyr-패키지와의-협업&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;dplyr 패키지와의 협업&lt;/h3&gt;
+&lt;p&gt;dlookr 패키지는 dplyr 패키지와 궁합이 잘 맞는다. 다음은 &lt;code&gt;Income&lt;/code&gt;을 비닝 후 &lt;code&gt;ShelveLoc&lt;/code&gt; 변수의 수준(levels)별로 비닝 구간의 분포를 비교한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(dplyr)
+
+carseats %&amp;gt;%
+ mutate(Income_bin = binning(carseats$Income) %&amp;gt;% 
+                     extract()) %&amp;gt;%
+ group_by(ShelveLoc, Income_bin) %&amp;gt;%
+ summarise(freq = n()) %&amp;gt;%
+ arrange(ShelveLoc, desc(freq)) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 33 x 3
+## # Groups:   ShelveLoc [3]
+##    ShelveLoc Income_bin  freq
+##    &amp;lt;fct&amp;gt;     &amp;lt;ord&amp;gt;      &amp;lt;int&amp;gt;
+##  1 Bad       (50,62]       13
+##  2 Bad       (107,120]     11
+##  3 Bad       (78,86]       10
+##  4 Bad       (96.6,107]    10
+##  5 Bad       (39.4,50]      9
+##  6 Bad       (86,96.6]      9
+##  7 Bad       (69,78]        8
+##  8 Bad       (31,39.4]      7
+##  9 Bad       (62,69]        7
+## 10 Bad       [21,31]        6
+## # … with 23 more rows&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;dlookr&lt;/code&gt; 패키지의 &lt;code&gt;target_by()&lt;/code&gt;, &lt;code&gt;relate()&lt;/code&gt;, &lt;code&gt;plot.relate()&lt;/code&gt; 함수를 이용하면, dplyr 구문 형태로 쉽게 그 분포를 시각화 할 수 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;carseats %&amp;gt;%
+  mutate(Income_bin = binning(carseats$Income) %&amp;gt;% 
+           extract()) %&amp;gt;%
+  target_by(ShelveLoc) %&amp;gt;% 
+  relate(Income_bin) %&amp;gt;% 
+  plot()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-02/binning_files/figure-html/unnamed-chunk-18-1.png&#34; width=&#34;80%&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;그-밖의-기능&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;그 밖의 기능&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;binning()&lt;/code&gt; 함수는 비닝 결과를 조정하는 여러 인수를 지원한다. 하나씩 살펴보자.&lt;/p&gt;
+&lt;div id=&#34;bins-개수-지정하기&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Bins 개수 지정하기&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;nbins&lt;/code&gt; 인수는 비닝된 범주의 개수를 지정한다. 이 인수를 사용하면 알고리즘을 통해 관측치의 개수를 고려해서 적당한 범주로 나눈다. 그러나 경우에 따라서 분석가가 원하는 범주의 개수와 다를 수 있다. 이 경우에 &lt;code&gt;nbins&lt;/code&gt; 인수로 범주의 개수를 지정할 수 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bin_bclust &amp;lt;- binning(carseats$Income, type = &amp;quot;bclust&amp;quot;, nbins = 5)
+
+bin_bclust&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## binned type: bclust
+## number of bins: 5
+## x
+##   [21,39.5] (39.5,64.5] (64.5,79.5] (79.5,95.5]  (95.5,120]        &amp;lt;NA&amp;gt; 
+##          76          90          69          66          79          20&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(bin_bclust)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##        levels freq   rate
+## 1   [21,39.5]   76 0.1900
+## 2 (39.5,64.5]   90 0.2250
+## 3 (64.5,79.5]   69 0.1725
+## 4 (79.5,95.5]   66 0.1650
+## 5  (95.5,120]   79 0.1975
+## 6        &amp;lt;NA&amp;gt;   20 0.0500&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(bin_bclust)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-02/binning_files/figure-html/unnamed-chunk-19-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ordered-factor-또는-factor&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;ordered factor 또는 factor&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;binning()&lt;/code&gt; 함수로 만들어진 범주는 R의 &lt;code&gt;ordered factor&lt;/code&gt;로 반환된다. 만약 분석가가 &lt;code&gt;ordered factor&lt;/code&gt;가 아닌 &lt;code&gt;factor&lt;/code&gt;를 원한다면 &lt;code&gt;ordered&lt;/code&gt; 인수값에 FALSE를 지정한다. 기본값은 TRUE이기 때문에 앞에서 수행한 모든 예제는 순서 범주형인 &lt;code&gt;ordered factor&lt;/code&gt;로 반환되었다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bin_bclust &amp;lt;- binning(carseats$Income, type = &amp;quot;bclust&amp;quot;)
+
+extract(bin_bclust) %&amp;gt;% 
+  head()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] (71.5,86.5] (47.5,55.5] (26.5,39.5] (96.5,108]  (61.5,71.5] (108,120]  
+## 10 Levels: [21,26.5] &amp;lt; (26.5,39.5] &amp;lt; (39.5,47.5] &amp;lt; ... &amp;lt; (108,120]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bin_bclust &amp;lt;- binning(carseats$Income, type = &amp;quot;bclust&amp;quot;, ordered = FALSE)
+
+extract(bin_bclust) %&amp;gt;% 
+  head()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] (66.5,79.5] (37.5,49]   (27.5,37.5] (85,102]    (58.5,66.5] (108,120]  
+## 10 Levels: [21,27.5] (27.5,37.5] (37.5,49] (49,58.5] ... (108,120]&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;범주-라벨-지정하기&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;범주 라벨 지정하기&lt;/h4&gt;
+&lt;p&gt;범주 라벨 이름을 breaks를 이용해서 (34.5,49]와 같이 표현할 수도 았지만, 분석가가 &lt;code&gt;labels&lt;/code&gt; 인수를 사용해서 다음처럼 의미를 부여할 수도 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bin &amp;lt;- binning(carseats$Income, nbins = 3, labels = c(&amp;quot;Low&amp;quot;, &amp;quot;Middle&amp;quot;, &amp;quot;High&amp;quot;))
+bin&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## binned type: quantile
+## number of bins: 3
+## x
+##    Low Middle   High   &amp;lt;NA&amp;gt; 
+##    127    131    122     20&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(bin)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##   levels freq   rate
+## 1    Low  127 0.3175
+## 2 Middle  131 0.3275
+## 3   High  122 0.3050
+## 4   &amp;lt;NA&amp;gt;   20 0.0500&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(bin)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-02/binning_files/figure-html/unnamed-chunk-21-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;breaks를-이쁘게-다듬기&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Breaks를 이쁘게 다듬기&lt;/h4&gt;
+&lt;p&gt;연속형 변수에서 breaks는 일반적으로 소수점으로 만들어진다. 이 경우에는 개별 breaks의 소수점 아래 자리수가 다를 수 있다. 다른 자리수로 만든 범주는 시각적으로 해석하기에 거추장스럽다. 이 경우에는 &lt;code&gt;approxy.lab&lt;/code&gt; 인수를 TRUE로 지정하면 깔끔한 형태로 바꿔준다. 기본값이 TRUE이기 때문에 별도로 지정하지 않아도 된다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bin &amp;lt;- binning(carseats$Income, approxy.lab = FALSE)
+bin&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## binned type: quantile
+## number of bins: 10
+## x
+##    [21,31]  (31,39.4]  (39.4,50]    (50,62]    (62,69]    (69,78]    (78,86] 
+##         40         36         39         40         37         39         36 
+##  (86,96.6] (96.6,107]  (107,120]       &amp;lt;NA&amp;gt; 
+##         37         39         37         20&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bin &amp;lt;- binning(carseats$Income, approxy.lab = TRUE)
+bin&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## binned type: quantile
+## number of bins: 10
+## x
+##    [21,31]  (31,39.4]  (39.4,50]    (50,62]    (62,69]    (69,78]    (78,86] 
+##         40         36         39         40         37         39         36 
+##  (86,96.6] (96.6,107]  (107,120]       &amp;lt;NA&amp;gt; 
+##         37         39         37         20&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
     <item>
       <title>Mecab으로 한글 띄어쓰기 검사기 만들기</title>
       <link>/post/2021-01/morpheme/</link>

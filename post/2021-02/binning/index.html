@@ -1,0 +1,1214 @@
+
+<!DOCTYPE html>
+<html lang="en" data-figures="" class="page">
+  <head>
+<title>비닝(Binning) | Dataholic</title>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.79.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-118779401-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-118779401-1');
+</script>
+<meta property="og:locale" content="en" />
+
+<meta property="og:type" content="article">
+<meta name="description" content="다룰 이야기 연속형 변수가 범주화되면 디테일한 데이터의 정보가 사라진다. 예를 들면 시험성적이 96점인 학생의 A 학점은 90점으로 A 학점을 받은 학생과 동일하게 인식되지만, 두 학생의 성적 우열은 엄연히 존재한다.
+모든 경우는 아니지만 연속형 변수를 비닝하면, …">
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:creator" content="">
+<meta name="twitter:title" content="비닝(Binning)" />
+<meta property="og:url" content="/post/2021-02/binning/" />
+<meta property="og:title" content="비닝(Binning)" />
+<meta property="og:description" content="다룰 이야기 연속형 변수가 범주화되면 디테일한 데이터의 정보가 사라진다. 예를 들면 시험성적이 96점인 학생의 A 학점은 90점으로 A 학점을 받은 학생과 동일하게 인식되지만, 두 학생의 성적 우열은 엄연히 존재한다.
+모든 경우는 아니지만 연속형 변수를 비닝하면, …" />
+<meta property="og:image" content="/" />
+<link rel="apple-touch-icon" sizes="180x180" href='/icons/apple-touch-icon.png'>
+<link rel="icon" type="image/png" sizes="32x32" href='/icons/favicon-32x32.png'>
+<link rel="manifest" href='/icons/site.webmanifest'>
+<link rel="mask-icon" href='/safari-pinned-tab.svg' color="#002538">
+<meta name="msapplication-TileColor" content="#002538">
+<meta name="theme-color" content="#002538">
+
+<link rel="canonical" href="/post/2021-02/binning/">
+
+    
+
+    
+    
+    <link rel="preload" href="/css/styles.2b3290fc6e94839826981c23ed76e1831472bd3f8af68332da00b97d9430b56bfb7e9394d5c09aca633c093c621709cdd745eec940be733933ac5d876223de52.css" integrity = "sha512-KzKQ/G6Ug5gmmBwj7XbhgxRyvT&#43;K9oMy2gC5fZQwtWv7fpOU1cCaymM8CTxiFwnN10XuyUC&#43;czkzrF2HYiPeUg==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="/js/bundle.min.03f1cc201c9efa18e14550bff374f58e89f1e6b2a30a0e22f84c87f6eb766e419bd6569c3a60846ea3e65816112dfa454f4785d306d024b6ef2616d067862a7a.js" as="script" integrity=
+    "sha512-A/HMIBye&#43;hjhRVC/83T1jonx5rKjCg4i&#43;EyH9ut2bkGb1lacOmCEbqPmWBYRLfpFT0eF0wbQJLbvJhbQZ4Yqeg==" crossorigin="anonymous">
+
+    
+    <link rel="stylesheet" type="text/css" href="/css/styles.2b3290fc6e94839826981c23ed76e1831472bd3f8af68332da00b97d9430b56bfb7e9394d5c09aca633c093c621709cdd745eec940be733933ac5d876223de52.css" integrity="sha512-KzKQ/G6Ug5gmmBwj7XbhgxRyvT&#43;K9oMy2gC5fZQwtWv7fpOU1cCaymM8CTxiFwnN10XuyUC&#43;czkzrF2HYiPeUg==" crossorigin="anonymous">
+    
+  </head>
+  
+  
+    
+  
+  <body data-code="7" data-lines="false" id="documentTop">
+
+<header class="nav_header" >
+  <nav class="nav">
+    <a href='/' class="nav_brand nav_item">
+      <img src="/logos/logo.png" class="logo">
+      <div class="nav_close">
+        <div>
+          <svg class="icon">
+  <use xlink:href="#open-menu"></use>
+</svg>
+          <svg class="icon">
+  <use xlink:href="#closeme"></use>
+</svg>
+        </div>
+      </div>
+    </a>
+    <div class='nav_body nav_body_left'>
+      
+      
+      
+        
+
+  <div class="nav_parent">
+    <a href="/" class="nav_item">Home </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/post/" class="nav_item">R </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/gallery/" class="nav_item">Gellary </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/moment/" class="nav_item">Moment </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/about/" class="nav_item">About </a>
+  </div>
+      
+      <div class="nav_parent">
+        <a href="#" class="nav_item"></a>
+        <div class="nav_sub">
+          <span class="nav_child"></span>
+          
+          <a href="/" class="nav_child nav_item">English</a>
+          
+          <a href="/kr/" class="nav_child nav_item">Korean</a>
+          
+        </div>
+      </div>
+      
+<div class='follow'>
+  <a href="https://github.com/choonghyunryu">
+    <svg class="icon">
+  <use xlink:href="#github"></use>
+</svg>
+  </a>
+  <a href="https://www.facebook.com/choonghyun.ryu">
+    <svg class="icon">
+  <use xlink:href="#facebook"></use>
+</svg>
+  </a>
+  <a href="https://www.linkedin.com/in/choonghyun-ryu-10a95726/">
+    <svg class="icon">
+  <use xlink:href="#linkedin"></use>
+</svg>
+  </a>
+    
+  <a href="/index.xml">
+    <svg class="icon">
+  <use xlink:href="#rss"></use>
+</svg>
+  </a>
+<div class="color_mode">
+  <input type="checkbox" class="color_choice" id="mode">
+</div>
+
+</div>
+
+    </div>
+  </nav>
+</header>
+
+    <main>
+  
+<div class="grid-inverse wrap content">
+  <article class="post_content">
+    <h1 class="post_title">비닝(Binning)</h1><div class="post_meta">
+  
+    <svg class="icon">
+  <use xlink:href="#calendar"></use>
+</svg>
+    <span class="post_date">
+      2021-02-06</span>
+      <a href='/tags/binning' class="post_tag button button_translucent">Binning
+      </a>
+      <a href='/tags/transformation' class="post_tag button button_translucent">Transformation
+      </a>
+      <a href='/tags/dlookr' class="post_tag button button_translucent">dlookr
+      </a>
+</div>
+
+    
+  <div class="post_share">
+    Share on:
+    <a href="https://twitter.com/intent/tweet?text=%eb%b9%84%eb%8b%9d%28Binning%29&url=%2fpost%2f2021-02%2fbinning%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#twitter"></use>
+</svg>
+    </a>
+    <a href="https://www.facebook.com/sharer.php?u=%2fpost%2f2021-02%2fbinning%2f&t=%eb%b9%84%eb%8b%9d%28Binning%29" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#facebook"></use>
+</svg>
+    </a>
+    <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#linkedin"></use>
+</svg>
+    </a>
+    <a href="/post/2021-02/binning/" title="Copy Link" class="link link_yank">
+      <svg class="icon">
+  <use xlink:href="#copy"></use>
+</svg>
+    </a>
+  </div>
+
+    
+    
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<div id="다룰-이야기" class="section level2">
+<h2>다룰 이야기</h2>
+<p>연속형 변수가 범주화되면 디테일한 데이터의 정보가 사라진다. 예를 들면 시험성적이 96점인 학생의 A 학점은 90점으로 A 학점을 받은 학생과 동일하게 인식되지만, 두 학생의 성적 우열은 엄연히 존재한다.</p>
+<p>모든 경우는 아니지만 연속형 변수를 비닝하면, 데이터의 분포에 따라서 이상치(outliers)로 발생할 수 있는 이슈를 회피하거나 과적합(over fitting)을 완화시켜주기도 한다. 그래서 흔하지 않지만, 가끔은 연속형 변수를 범주형 변수로 변환할 필요가 있다. 특히 금융권에서 사용하는 스코어카드 기법에서는 연속형 변수를 범주형 변수로 변환하는 작업을 빈번히 사용한다.</p>
+<blockquote>
+<p>dlookr 패키지에는 일반적인 비닝과 스코어링 모델(Scoring Modeling)을 위한 Optimal Binning 기능을 지원한다. 여기서는 일반적인 방법으로서의 비닝에 대해서만 다룬다.</p>
+</blockquote>
+</div>
+<div id="비닝binning" class="section level2">
+<h2>비닝(Binning)</h2>
+<p>비닝(Binning)을 쉽게 이해하려면 히스토그램을 떠올리면 된다. 다음은 iris 데이터 중 연속형 변수를 히스토그램으로 표현한 것이다. 연속형 변수를 일정한 간격으로 나누어 <code>계급(class)</code>을 만든 후 해당하는 <code>계급의 구간(class interval)</code>에 몇 개의 관측치가 포함되는지 집계한 것이 <code>도수분포표(frequency table)</code>다. 그리고 계급 구간별로 도수를 막대의 높이로 표현한 것이 <code>히스토그램(histogram)</code>이다. 원래의 데이터를 데이터가 포함된 계급에 매핑하는 범주화하는 이 작업도 비닝의 한 방법이다.</p>
+<pre class="r"><code>iris$Sepal.Length</code></pre>
+<pre><code>##   [1] 5.1 4.9 4.7 4.6 5.0 5.4 4.6 5.0 4.4 4.9 5.4 4.8 4.8 4.3 5.8 5.7 5.4 5.1
+##  [19] 5.7 5.1 5.4 5.1 4.6 5.1 4.8 5.0 5.0 5.2 5.2 4.7 4.8 5.4 5.2 5.5 4.9 5.0
+##  [37] 5.5 4.9 4.4 5.1 5.0 4.5 4.4 5.0 5.1 4.8 5.1 4.6 5.3 5.0 7.0 6.4 6.9 5.5
+##  [55] 6.5 5.7 6.3 4.9 6.6 5.2 5.0 5.9 6.0 6.1 5.6 6.7 5.6 5.8 6.2 5.6 5.9 6.1
+##  [73] 6.3 6.1 6.4 6.6 6.8 6.7 6.0 5.7 5.5 5.5 5.8 6.0 5.4 6.0 6.7 6.3 5.6 5.5
+##  [91] 5.5 6.1 5.8 5.0 5.6 5.7 5.7 6.2 5.1 5.7 6.3 5.8 7.1 6.3 6.5 7.6 4.9 7.3
+## [109] 6.7 7.2 6.5 6.4 6.8 5.7 5.8 6.4 6.5 7.7 7.7 6.0 6.9 5.6 7.7 6.3 6.7 7.2
+## [127] 6.2 6.1 6.4 7.2 7.4 7.9 6.4 6.3 6.1 7.7 6.3 6.4 6.0 6.9 6.7 6.9 5.8 6.8
+## [145] 6.7 6.7 6.3 6.5 6.2 5.9</code></pre>
+<pre class="r"><code>hist_info &lt;- hist(iris$Sepal.Length, col = &quot;lightblue&quot;)</code></pre>
+<p><img src="/post/2021-02/binning_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>히스토그램을 그리는 <code>hist()</code> 함수는 유용한 정보를 list로 반환한다. 정보의 반환을 <code>return()</code> 함수가 아닌 <code>invisible()</code> 함수를 사용해서 별도의 이름에 할당한 후 그 정보를 사용할 수 있다. 특히 계급을 정의할 수 있는 계급의 경계는 breaks로, 계급 구간에 포함된 원 데이터의 개수인 <code>도수(frequency)</code>는 counts로 반환되었다. density는 <code>상대도수(relative frequency)</code>를 의미한다.</p>
+<pre class="r"><code>hist_info</code></pre>
+<pre><code>## $breaks
+## [1] 4.0 4.5 5.0 5.5 6.0 6.5 7.0 7.5 8.0
+## 
+## $counts
+## [1]  5 27 27 30 31 18  6  6
+## 
+## $density
+## [1] 0.06666667 0.36000000 0.36000000 0.40000000 0.41333333 0.24000000 0.08000000
+## [8] 0.08000000
+## 
+## $mids
+## [1] 4.25 4.75 5.25 5.75 6.25 6.75 7.25 7.75
+## 
+## $xname
+## [1] &quot;iris$Sepal.Length&quot;
+## 
+## $equidist
+## [1] TRUE
+## 
+## attr(,&quot;class&quot;)
+## [1] &quot;histogram&quot;</code></pre>
+<div id="cut-함수로-비닝하기" class="section level3">
+<h3>cut() 함수로 비닝하기</h3>
+<p>R에서는 <code>cut()</code> 함수로 비닝한다. 그런데 사용자가 계급의 경계인 breaks를 지정해 주어야 한다. 앞에서 수행한 히스토그램의 정보를 활용해 보자.</p>
+<pre class="r"><code>bins &lt;- cut(iris$Sepal.Length, breaks = hist_info$breaks)
+
+bins</code></pre>
+<pre><code>##   [1] (5,5.5] (4.5,5] (4.5,5] (4.5,5] (4.5,5] (5,5.5] (4.5,5] (4.5,5] (4,4.5]
+##  [10] (4.5,5] (5,5.5] (4.5,5] (4.5,5] (4,4.5] (5.5,6] (5.5,6] (5,5.5] (5,5.5]
+##  [19] (5.5,6] (5,5.5] (5,5.5] (5,5.5] (4.5,5] (5,5.5] (4.5,5] (4.5,5] (4.5,5]
+##  [28] (5,5.5] (5,5.5] (4.5,5] (4.5,5] (5,5.5] (5,5.5] (5,5.5] (4.5,5] (4.5,5]
+##  [37] (5,5.5] (4.5,5] (4,4.5] (5,5.5] (4.5,5] (4,4.5] (4,4.5] (4.5,5] (5,5.5]
+##  [46] (4.5,5] (5,5.5] (4.5,5] (5,5.5] (4.5,5] (6.5,7] (6,6.5] (6.5,7] (5,5.5]
+##  [55] (6,6.5] (5.5,6] (6,6.5] (4.5,5] (6.5,7] (5,5.5] (4.5,5] (5.5,6] (5.5,6]
+##  [64] (6,6.5] (5.5,6] (6.5,7] (5.5,6] (5.5,6] (6,6.5] (5.5,6] (5.5,6] (6,6.5]
+##  [73] (6,6.5] (6,6.5] (6,6.5] (6.5,7] (6.5,7] (6.5,7] (5.5,6] (5.5,6] (5,5.5]
+##  [82] (5,5.5] (5.5,6] (5.5,6] (5,5.5] (5.5,6] (6.5,7] (6,6.5] (5.5,6] (5,5.5]
+##  [91] (5,5.5] (6,6.5] (5.5,6] (4.5,5] (5.5,6] (5.5,6] (5.5,6] (6,6.5] (5,5.5]
+## [100] (5.5,6] (6,6.5] (5.5,6] (7,7.5] (6,6.5] (6,6.5] (7.5,8] (4.5,5] (7,7.5]
+## [109] (6.5,7] (7,7.5] (6,6.5] (6,6.5] (6.5,7] (5.5,6] (5.5,6] (6,6.5] (6,6.5]
+## [118] (7.5,8] (7.5,8] (5.5,6] (6.5,7] (5.5,6] (7.5,8] (6,6.5] (6.5,7] (7,7.5]
+## [127] (6,6.5] (6,6.5] (6,6.5] (7,7.5] (7,7.5] (7.5,8] (6,6.5] (6,6.5] (6,6.5]
+## [136] (7.5,8] (6,6.5] (6,6.5] (5.5,6] (6.5,7] (6.5,7] (6.5,7] (5.5,6] (6.5,7]
+## [145] (6.5,7] (6.5,7] (6,6.5] (6,6.5] (6,6.5] (5.5,6]
+## Levels: (4,4.5] (4.5,5] (5,5.5] (5.5,6] (6,6.5] (6.5,7] (7,7.5] (7.5,8]</code></pre>
+<pre class="r"><code>table(bins)</code></pre>
+<pre><code>## bins
+## (4,4.5] (4.5,5] (5,5.5] (5.5,6] (6,6.5] (6.5,7] (7,7.5] (7.5,8] 
+##       5      27      27      30      31      18       6       6</code></pre>
+<p><code>pretty()</code> 함수는 적당하게 계급의 경계를 구해준다. 이 함수를 이용해서 비닝해 보자.</p>
+<pre class="r"><code>pretty(iris$Sepal.Length) </code></pre>
+<pre><code>## [1] 4 5 6 7 8</code></pre>
+<pre class="r"><code>cut(iris$Sepal.Length, breaks = pretty(iris$Sepal.Length))</code></pre>
+<pre><code>##   [1] (5,6] (4,5] (4,5] (4,5] (4,5] (5,6] (4,5] (4,5] (4,5] (4,5] (5,6] (4,5]
+##  [13] (4,5] (4,5] (5,6] (5,6] (5,6] (5,6] (5,6] (5,6] (5,6] (5,6] (4,5] (5,6]
+##  [25] (4,5] (4,5] (4,5] (5,6] (5,6] (4,5] (4,5] (5,6] (5,6] (5,6] (4,5] (4,5]
+##  [37] (5,6] (4,5] (4,5] (5,6] (4,5] (4,5] (4,5] (4,5] (5,6] (4,5] (5,6] (4,5]
+##  [49] (5,6] (4,5] (6,7] (6,7] (6,7] (5,6] (6,7] (5,6] (6,7] (4,5] (6,7] (5,6]
+##  [61] (4,5] (5,6] (5,6] (6,7] (5,6] (6,7] (5,6] (5,6] (6,7] (5,6] (5,6] (6,7]
+##  [73] (6,7] (6,7] (6,7] (6,7] (6,7] (6,7] (5,6] (5,6] (5,6] (5,6] (5,6] (5,6]
+##  [85] (5,6] (5,6] (6,7] (6,7] (5,6] (5,6] (5,6] (6,7] (5,6] (4,5] (5,6] (5,6]
+##  [97] (5,6] (6,7] (5,6] (5,6] (6,7] (5,6] (7,8] (6,7] (6,7] (7,8] (4,5] (7,8]
+## [109] (6,7] (7,8] (6,7] (6,7] (6,7] (5,6] (5,6] (6,7] (6,7] (7,8] (7,8] (5,6]
+## [121] (6,7] (5,6] (7,8] (6,7] (6,7] (7,8] (6,7] (6,7] (6,7] (7,8] (7,8] (7,8]
+## [133] (6,7] (6,7] (6,7] (7,8] (6,7] (6,7] (5,6] (6,7] (6,7] (6,7] (5,6] (6,7]
+## [145] (6,7] (6,7] (6,7] (6,7] (6,7] (5,6]
+## Levels: (4,5] (5,6] (6,7] (7,8]</code></pre>
+</div>
+</div>
+<div id="dlookr을-이용한-비닝" class="section level2">
+<h2>dlookr을 이용한 비닝</h2>
+<div id="예제-데이터-생성" class="section level3">
+<h3>예제 데이터 생성</h3>
+<p><code>ISLR</code> 패키지의 <code>Carseats</code>는 유아용 차량 시트 판매에 대한 정보를 담고 있다. 400개의 관측치로 11개의 변수를 가지고 있다.</p>
+<p><code>Income</code>은 소득 수준을 나타내며, 그 단위는 1000 US 달러다.</p>
+<pre class="r"><code># Generate data for the example
+carseats &lt;- ISLR::Carseats
+
+dim(carseats)</code></pre>
+<pre><code>## [1] 400  11</code></pre>
+<pre class="r"><code>names(carseats)</code></pre>
+<pre><code>##  [1] &quot;Sales&quot;       &quot;CompPrice&quot;   &quot;Income&quot;      &quot;Advertising&quot; &quot;Population&quot; 
+##  [6] &quot;Price&quot;       &quot;ShelveLoc&quot;   &quot;Age&quot;         &quot;Education&quot;   &quot;Urban&quot;      
+## [11] &quot;US&quot;</code></pre>
+<pre class="r"><code>carseats[sample(seq(NROW(carseats)), 20), &quot;Income&quot;] &lt;- NA
+carseats[sample(seq(NROW(carseats)), 5), &quot;Urban&quot;] &lt;- NA
+
+carseats$Income</code></pre>
+<pre><code>##   [1]  73  48  35 100  64 113 105  81 110 113  78  94  35  28  NA  95  32  74
+##  [19] 110  76  90  29  46  31 119  32 115 118  74  99  94  58  32  38  54  84
+##  [37]  76  41  73  60  98  53  69  42  79  63  90  98  52  93  32  90  40  64
+##  [55] 103  81  82  91  93  71 102  32  45  88  67  NA  92  61  69  59  81  51
+##  [73]  45  90  68 111  87  NA  48  NA 100  72  83  36  25 103  84  67  42  66
+##  [91]  22  46 113  30  97  25  42  82  77  47  69  93  22  91  96 100  33 107
+## [109]  79  65  62 118  99  29  87  35  75  53  88  94 105  NA 100 103 113  78
+## [127]  NA  48 100 120  84  69  87  98  31  94  75  42 103  62  60  42  84  88
+## [145]  68  NA  83  54 119 120  84  58  78  36  69  72  34  58  90  60  28  21
+## [163]  74  64  64  58  67  73  89  41  39 106  NA  91  24  89 107  72  71  NA
+## [181] 112  83  60  74  33 100  51  32  37 117  37  42  NA  70  98  93  28  61
+## [199]  80  88  92  83  78  82  80  22  67 105  54  21  41 118  69  84 115  83
+## [217]  33  44  61  79 120  44 119  45  82  25  33  64  73 104  60  69  80  76
+## [235]  62  32  34  28  24 105  80  63  NA  25  30  43  56 114  52  NA 105 111
+## [253]  97  NA 104  81  40  62  38  36 117  42  77  26  29  35  93  82  57  69
+## [271]  26  56  33 106  93 119  69  48 113  57  86  69  96 110  46  26 118  44
+## [289]  40  77 111  70  66  84  76  35  44  83  63  40  78  93  77  52  98  29
+## [307]  32  92  80 111  65  68 117  81  NA  21  36  30  72  45  70  39  50  NA
+## [325]  NA  69  30  38  66  54  59  63  33  60 117  70  35  NA  24  44  29 120
+## [343] 102  NA  80  68 107  39 102  27 101 115 103  67  31 100 109  73  96  62
+## [361]  86  25  55  75  21  30  56 106  22 100  41  81  50  71  47  46  NA  61
+## [379]  88  NA  64  65  28 117  37  73 116  73  89  42  75  63  42  51  58 108
+## [397]  23  26  79  37</code></pre>
+</div>
+<div id="비닝하기" class="section level3">
+<h3>비닝하기</h3>
+<p><code>dlookr</code> 패키지의 <code>binning()</code> 함수는 연속형 변수를 범주형 변수로 비닝한다. <code>Income</code>을 비닝해 보자. 소득이 10개 소득 구간의 범주로 비닝되었다.</p>
+<pre class="r"><code>library(dlookr)
+
+bin &lt;- binning(carseats$Income)
+
+bin</code></pre>
+<pre><code>## binned type: quantile
+## number of bins: 10
+## x
+##    [21,31]  (31,39.4]  (39.4,50]    (50,62]    (62,69]    (69,78]    (78,86] 
+##         40         36         39         40         37         39         36 
+##  (86,96.6] (96.6,107]  (107,120]       &lt;NA&gt; 
+##         37         39         37         20</code></pre>
+<p><code>summary()</code> 함수는 범주화된 구간의 도수분포표(frequency table)를 구해준다.</p>
+<pre class="r"><code>summary(bin)</code></pre>
+<pre><code>##        levels freq   rate
+## 1     [21,31]   40 0.1000
+## 2   (31,39.4]   36 0.0900
+## 3   (39.4,50]   39 0.0975
+## 4     (50,62]   40 0.1000
+## 5     (62,69]   37 0.0925
+## 6     (69,78]   39 0.0975
+## 7     (78,86]   36 0.0900
+## 8   (86,96.6]   37 0.0925
+## 9  (96.6,107]   39 0.0975
+## 10  (107,120]   37 0.0925
+## 11       &lt;NA&gt;   20 0.0500</code></pre>
+<p><code>plot()</code> 함수는 범주화된 구간에 대한 분포를 시각화한다. 플롯 상단은 변형된 히스토그램이다. 일반적으로 히스토그램은 구간의 너비는 동일하고, 높이로 그 밀도를 가늠한다. 그러나 이 변형된 히스토그램은 구간의 너비가 실제 구간의 길이와 동일하게 표현된다. 그러므로 높이가 밀도를 의미하지 않는다. “밀도는 사각형의 너비 <span class="math inline">\(\times\)</span> 사각형의 높이다.” 즉, 기본 히스토그램보다 더 많은 정보를 표현한다.</p>
+<p>기본에 우리가 알고 있는 히스토그램은 아래의 막대 그래프와 유사하다. 즉, 두 플롯을 이용해서 데이터의 분포를 좀 더 직관적으로 파악할 수 있는 시각화 도구다.</p>
+<pre class="r"><code>plot(bin)</code></pre>
+<p><img src="/post/2021-02/binning_files/figure-html/unnamed-chunk-9-1.png" width="75%" /></p>
+<p>앞에서 소득을 소득 구간으로 비닝할 때 사용한 비닝 방법은 “quantile”이다. 이 방법은 분위수의 간격이 동일하게 구간을 나눈다. 그러므로 구간이 10개이므로 첫째 구간은 0~10% 분위수 구간이다. 즉, 10% 분위수는 30이다. 연산 과정에서 정확하게 딱 떨어지지는 않지만, 범주별로 동일한(거의) 도수를 갖게 된다.</p>
+<p>이번에는 각 구간의 너비(interval)가 동일하게 비닝한다. 간단하게 <code>type</code> 인수값을 “equal”로 지정한다.</p>
+<pre class="r"><code>bin_equal &lt;- binning(carseats$Income, type = &quot;equal&quot;)
+
+bin_equal</code></pre>
+<pre><code>## binned type: equal
+## number of bins: 10
+## x
+##   [21,30.9] (30.9,40.8] (40.8,50.7] (50.7,60.6] (60.6,70.5] (70.5,80.4] 
+##          37          43          35          31          50          45 
+## (80.4,90.3]  (90.3,100]   (100,110]   (110,120]        &lt;NA&gt; 
+##          42          38          27          32          20</code></pre>
+<pre class="r"><code>summary(bin_equal)</code></pre>
+<pre><code>##         levels freq   rate
+## 1    [21,30.9]   37 0.0925
+## 2  (30.9,40.8]   43 0.1075
+## 3  (40.8,50.7]   35 0.0875
+## 4  (50.7,60.6]   31 0.0775
+## 5  (60.6,70.5]   50 0.1250
+## 6  (70.5,80.4]   45 0.1125
+## 7  (80.4,90.3]   42 0.1050
+## 8   (90.3,100]   38 0.0950
+## 9    (100,110]   27 0.0675
+## 10   (110,120]   32 0.0800
+## 11        &lt;NA&gt;   20 0.0500</code></pre>
+<pre class="r"><code>plot(bin_equal)</code></pre>
+<p><img src="/post/2021-02/binning_files/figure-html/unnamed-chunk-10-1.png" width="75%" /></p>
+<p>이번에는 각 구간의 너비(interval)가 동일하게 비닝한다. 간단하게 <code>type</code> 인수값을 “equal”로 지정한다.</p>
+<pre class="r"><code>bin_equal &lt;- binning(carseats$Income, type = &quot;equal&quot;)
+
+bin_equal</code></pre>
+<pre><code>## binned type: equal
+## number of bins: 10
+## x
+##   [21,30.9] (30.9,40.8] (40.8,50.7] (50.7,60.6] (60.6,70.5] (70.5,80.4] 
+##          37          43          35          31          50          45 
+## (80.4,90.3]  (90.3,100]   (100,110]   (110,120]        &lt;NA&gt; 
+##          42          38          27          32          20</code></pre>
+<pre class="r"><code>summary(bin_equal)</code></pre>
+<pre><code>##         levels freq   rate
+## 1    [21,30.9]   37 0.0925
+## 2  (30.9,40.8]   43 0.1075
+## 3  (40.8,50.7]   35 0.0875
+## 4  (50.7,60.6]   31 0.0775
+## 5  (60.6,70.5]   50 0.1250
+## 6  (70.5,80.4]   45 0.1125
+## 7  (80.4,90.3]   42 0.1050
+## 8   (90.3,100]   38 0.0950
+## 9    (100,110]   27 0.0675
+## 10   (110,120]   32 0.0800
+## 11        &lt;NA&gt;   20 0.0500</code></pre>
+<pre class="r"><code>plot(bin_equal)</code></pre>
+<p><img src="/post/2021-02/binning_files/figure-html/unnamed-chunk-11-1.png" width="75%" /></p>
+<p>이번에는 내부적으로 <code>base</code> 패키지의 <code>pretty()</code> 함수를 사용하는 “pretty” 방법이다. 간단하게 <code>type</code> 인수값을 “pretty”로 지정한다. 결과는 데이터에 따라 다르지만, 이번 데이터 사례는 “equal” 방법과 동일한 결과로 비닝한다.</p>
+<pre class="r"><code>bin_pretty &lt;- binning(carseats$Income, type = &quot;pretty&quot;)
+
+bin_pretty</code></pre>
+<pre><code>## binned type: pretty
+## number of bins: 10
+## x
+##   [20,30]   (30,40]   (40,50]   (50,60]   (60,70]   (70,80]   (80,90]  (90,100] 
+##        37        43        35        31        50        45        42        38 
+## (100,110] (110,120]      &lt;NA&gt; 
+##        27        32        20</code></pre>
+<pre class="r"><code>summary(bin_pretty)</code></pre>
+<pre><code>##       levels freq   rate
+## 1    [20,30]   37 0.0925
+## 2    (30,40]   43 0.1075
+## 3    (40,50]   35 0.0875
+## 4    (50,60]   31 0.0775
+## 5    (60,70]   50 0.1250
+## 6    (70,80]   45 0.1125
+## 7    (80,90]   42 0.1050
+## 8   (90,100]   38 0.0950
+## 9  (100,110]   27 0.0675
+## 10 (110,120]   32 0.0800
+## 11      &lt;NA&gt;   20 0.0500</code></pre>
+<pre class="r"><code>plot(bin_pretty)</code></pre>
+<p><img src="/post/2021-02/binning_files/figure-html/unnamed-chunk-12-1.png" width="75%" /></p>
+<p>“kmenas” 방법은 <code>Kmeans 클러스터링</code> 기법을 이용해서 비닝한다. 하나의 연속형 변수로 <code>Kmeans 클러스터링</code> 후, 같은 클러스터에 포함된 값들을 하나의 구간으로 나눈다. 하나의 변수로 클러스터링하기 때문에 구간이 단조(monotonic, 주어진 순서를 보존하면서 상승/하강) 증가하게 형성된다.</p>
+<pre class="r"><code>bin_kmeans &lt;- binning(carseats$Income, type = &quot;kmeans&quot;)
+
+bin_kmeans</code></pre>
+<pre><code>## binned type: kmeans
+## number of bins: 10
+## x
+##   [21,35.5]   (35.5,49]   (49,61.5] (61.5,70.5] (70.5,78.5]   (78.5,85] 
+##          62          51          37          46          35          34 
+##   (85,92.5] (92.5,99.5]  (99.5,110]   (110,120]        &lt;NA&gt; 
+##          24          24          35          32          20</code></pre>
+<pre class="r"><code>summary(bin_kmeans)</code></pre>
+<pre><code>##         levels freq   rate
+## 1    [21,35.5]   62 0.1550
+## 2    (35.5,49]   51 0.1275
+## 3    (49,61.5]   37 0.0925
+## 4  (61.5,70.5]   46 0.1150
+## 5  (70.5,78.5]   35 0.0875
+## 6    (78.5,85]   34 0.0850
+## 7    (85,92.5]   24 0.0600
+## 8  (92.5,99.5]   24 0.0600
+## 9   (99.5,110]   35 0.0875
+## 10   (110,120]   32 0.0800
+## 11        &lt;NA&gt;   20 0.0500</code></pre>
+<pre class="r"><code>plot(bin_kmeans)</code></pre>
+<p><img src="/post/2021-02/binning_files/figure-html/unnamed-chunk-13-1.png" width="75%" /></p>
+<p><code>type</code> 인수값을 “bclust”로 지정하면 bagged clustering을 수행하여 비닝한다.</p>
+<pre class="r"><code>bin_bclust &lt;- binning(carseats$Income, type = &quot;bclust&quot;)
+
+bin_bclust</code></pre>
+<pre><code>## binned type: bclust
+## number of bins: 10
+## x
+##   [21,29.5] (29.5,37.5] (37.5,47.5] (47.5,55.5] (55.5,61.5] (61.5,71.5] 
+##          32          38          39          19          22          49 
+##   (71.5,85]   (85,98.5]  (98.5,108]   (108,120]        &lt;NA&gt; 
+##          66          46          33          36          20</code></pre>
+<pre class="r"><code>summary(bin_bclust)</code></pre>
+<pre><code>##         levels freq   rate
+## 1    [21,29.5]   32 0.0800
+## 2  (29.5,37.5]   38 0.0950
+## 3  (37.5,47.5]   39 0.0975
+## 4  (47.5,55.5]   19 0.0475
+## 5  (55.5,61.5]   22 0.0550
+## 6  (61.5,71.5]   49 0.1225
+## 7    (71.5,85]   66 0.1650
+## 8    (85,98.5]   46 0.1150
+## 9   (98.5,108]   33 0.0825
+## 10   (108,120]   36 0.0900
+## 11        &lt;NA&gt;   20 0.0500</code></pre>
+<pre class="r"><code>plot(bin_bclust)</code></pre>
+<p><img src="/post/2021-02/binning_files/figure-html/unnamed-chunk-14-1.png" width="75%" /></p>
+</div>
+<div id="비닝-결과의-추출" class="section level3">
+<h3>비닝 결과의 추출</h3>
+<p>비닝한 결과를 서머리하거나 시각화한 후 비닝한 결과에 확신이 생긴다면, <code>extract()</code> 함수로 비닝한 데이터를 추출한다. 마지막 예제, bagged clustering 기법의 비닝 결과를 채택하였다고 가정한다.</p>
+<pre class="r"><code>carseats$Income_bin &lt;- extract(bin_bclust)</code></pre>
+<p>비닝된 모든 관측치를 살펴보기에는 건수가 크니 앞의 20건만 살펴보자.</p>
+<pre class="r"><code>head(carseats$Income_bin, n = 10)</code></pre>
+<pre><code>##  [1] (71.5,85]   (47.5,55.5] (29.5,37.5] (98.5,108]  (61.5,71.5] (108,120]  
+##  [7] (98.5,108]  (71.5,85]   (108,120]   (108,120]  
+## 10 Levels: [21,29.5] &lt; (29.5,37.5] &lt; (37.5,47.5] &lt; ... &lt; (108,120]</code></pre>
+</div>
+<div id="dplyr-패키지와의-협업" class="section level3">
+<h3>dplyr 패키지와의 협업</h3>
+<p>dlookr 패키지는 dplyr 패키지와 궁합이 잘 맞는다. 다음은 <code>Income</code>을 비닝 후 <code>ShelveLoc</code> 변수의 수준(levels)별로 비닝 구간의 분포를 비교한다.</p>
+<pre class="r"><code>library(dplyr)
+
+carseats %&gt;%
+ mutate(Income_bin = binning(carseats$Income) %&gt;% 
+                     extract()) %&gt;%
+ group_by(ShelveLoc, Income_bin) %&gt;%
+ summarise(freq = n()) %&gt;%
+ arrange(ShelveLoc, desc(freq)) </code></pre>
+<pre><code>## # A tibble: 33 x 3
+## # Groups:   ShelveLoc [3]
+##    ShelveLoc Income_bin  freq
+##    &lt;fct&gt;     &lt;ord&gt;      &lt;int&gt;
+##  1 Bad       (50,62]       13
+##  2 Bad       (107,120]     11
+##  3 Bad       (78,86]       10
+##  4 Bad       (96.6,107]    10
+##  5 Bad       (39.4,50]      9
+##  6 Bad       (86,96.6]      9
+##  7 Bad       (69,78]        8
+##  8 Bad       (31,39.4]      7
+##  9 Bad       (62,69]        7
+## 10 Bad       [21,31]        6
+## # … with 23 more rows</code></pre>
+<p><code>dlookr</code> 패키지의 <code>target_by()</code>, <code>relate()</code>, <code>plot.relate()</code> 함수를 이용하면, dplyr 구문 형태로 쉽게 그 분포를 시각화 할 수 있다.</p>
+<pre class="r"><code>carseats %&gt;%
+  mutate(Income_bin = binning(carseats$Income) %&gt;% 
+           extract()) %&gt;%
+  target_by(ShelveLoc) %&gt;% 
+  relate(Income_bin) %&gt;% 
+  plot()</code></pre>
+<p><img src="/post/2021-02/binning_files/figure-html/unnamed-chunk-18-1.png" width="80%" /></p>
+</div>
+<div id="그-밖의-기능" class="section level3">
+<h3>그 밖의 기능</h3>
+<p><code>binning()</code> 함수는 비닝 결과를 조정하는 여러 인수를 지원한다. 하나씩 살펴보자.</p>
+<div id="bins-개수-지정하기" class="section level4">
+<h4>Bins 개수 지정하기</h4>
+<p><code>nbins</code> 인수는 비닝된 범주의 개수를 지정한다. 이 인수를 사용하면 알고리즘을 통해 관측치의 개수를 고려해서 적당한 범주로 나눈다. 그러나 경우에 따라서 분석가가 원하는 범주의 개수와 다를 수 있다. 이 경우에 <code>nbins</code> 인수로 범주의 개수를 지정할 수 있다.</p>
+<pre class="r"><code>bin_bclust &lt;- binning(carseats$Income, type = &quot;bclust&quot;, nbins = 5)
+
+bin_bclust</code></pre>
+<pre><code>## binned type: bclust
+## number of bins: 5
+## x
+##   [21,39.5] (39.5,64.5] (64.5,79.5] (79.5,95.5]  (95.5,120]        &lt;NA&gt; 
+##          76          90          69          66          79          20</code></pre>
+<pre class="r"><code>summary(bin_bclust)</code></pre>
+<pre><code>##        levels freq   rate
+## 1   [21,39.5]   76 0.1900
+## 2 (39.5,64.5]   90 0.2250
+## 3 (64.5,79.5]   69 0.1725
+## 4 (79.5,95.5]   66 0.1650
+## 5  (95.5,120]   79 0.1975
+## 6        &lt;NA&gt;   20 0.0500</code></pre>
+<pre class="r"><code>plot(bin_bclust)</code></pre>
+<p><img src="/post/2021-02/binning_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+</div>
+<div id="ordered-factor-또는-factor" class="section level4">
+<h4>ordered factor 또는 factor</h4>
+<p><code>binning()</code> 함수로 만들어진 범주는 R의 <code>ordered factor</code>로 반환된다. 만약 분석가가 <code>ordered factor</code>가 아닌 <code>factor</code>를 원한다면 <code>ordered</code> 인수값에 FALSE를 지정한다. 기본값은 TRUE이기 때문에 앞에서 수행한 모든 예제는 순서 범주형인 <code>ordered factor</code>로 반환되었다.</p>
+<pre class="r"><code>bin_bclust &lt;- binning(carseats$Income, type = &quot;bclust&quot;)
+
+extract(bin_bclust) %&gt;% 
+  head()</code></pre>
+<pre><code>## [1] (71.5,86.5] (47.5,55.5] (26.5,39.5] (96.5,108]  (61.5,71.5] (108,120]  
+## 10 Levels: [21,26.5] &lt; (26.5,39.5] &lt; (39.5,47.5] &lt; ... &lt; (108,120]</code></pre>
+<pre class="r"><code>bin_bclust &lt;- binning(carseats$Income, type = &quot;bclust&quot;, ordered = FALSE)
+
+extract(bin_bclust) %&gt;% 
+  head()</code></pre>
+<pre><code>## [1] (66.5,79.5] (37.5,49]   (27.5,37.5] (85,102]    (58.5,66.5] (108,120]  
+## 10 Levels: [21,27.5] (27.5,37.5] (37.5,49] (49,58.5] ... (108,120]</code></pre>
+</div>
+<div id="범주-라벨-지정하기" class="section level4">
+<h4>범주 라벨 지정하기</h4>
+<p>범주 라벨 이름을 breaks를 이용해서 (34.5,49]와 같이 표현할 수도 았지만, 분석가가 <code>labels</code> 인수를 사용해서 다음처럼 의미를 부여할 수도 있다.</p>
+<pre class="r"><code>bin &lt;- binning(carseats$Income, nbins = 3, labels = c(&quot;Low&quot;, &quot;Middle&quot;, &quot;High&quot;))
+bin</code></pre>
+<pre><code>## binned type: quantile
+## number of bins: 3
+## x
+##    Low Middle   High   &lt;NA&gt; 
+##    127    131    122     20</code></pre>
+<pre class="r"><code>summary(bin)</code></pre>
+<pre><code>##   levels freq   rate
+## 1    Low  127 0.3175
+## 2 Middle  131 0.3275
+## 3   High  122 0.3050
+## 4   &lt;NA&gt;   20 0.0500</code></pre>
+<pre class="r"><code>plot(bin)</code></pre>
+<p><img src="/post/2021-02/binning_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+</div>
+<div id="breaks를-이쁘게-다듬기" class="section level4">
+<h4>Breaks를 이쁘게 다듬기</h4>
+<p>연속형 변수에서 breaks는 일반적으로 소수점으로 만들어진다. 이 경우에는 개별 breaks의 소수점 아래 자리수가 다를 수 있다. 다른 자리수로 만든 범주는 시각적으로 해석하기에 거추장스럽다. 이 경우에는 <code>approxy.lab</code> 인수를 TRUE로 지정하면 깔끔한 형태로 바꿔준다. 기본값이 TRUE이기 때문에 별도로 지정하지 않아도 된다.</p>
+<pre class="r"><code>bin &lt;- binning(carseats$Income, approxy.lab = FALSE)
+bin</code></pre>
+<pre><code>## binned type: quantile
+## number of bins: 10
+## x
+##    [21,31]  (31,39.4]  (39.4,50]    (50,62]    (62,69]    (69,78]    (78,86] 
+##         40         36         39         40         37         39         36 
+##  (86,96.6] (96.6,107]  (107,120]       &lt;NA&gt; 
+##         37         39         37         20</code></pre>
+<pre class="r"><code>bin &lt;- binning(carseats$Income, approxy.lab = TRUE)
+bin</code></pre>
+<pre><code>## binned type: quantile
+## number of bins: 10
+## x
+##    [21,31]  (31,39.4]  (39.4,50]    (50,62]    (62,69]    (69,78]    (78,86] 
+##         40         36         39         40         37         39         36 
+##  (86,96.6] (96.6,107]  (107,120]       &lt;NA&gt; 
+##         37         39         37         20</code></pre>
+</div>
+</div>
+</div>
+
+    
+      
+    
+  </article>
+<aside class="sidebar">
+  <section class="sidebar_inner">
+    
+      <h2>Choonghyun Ryu</h2>
+      <div>
+        Scientist with data, take one more step today.
+      </div>
+      <a href='/about/' class="button mt-1" role="button">Read More</a>
+    <h2 class="mt-4">Recent Posts</h2>
+    <ul class="flex-column">
+      <li>
+        <a href="/post/2021-01/rfonts/" class="nav-link">추가 폰트 사용하기</a>
+      </li>
+      <li>
+        <a href="/post/2021-01/morpheme/" class="nav-link">Mecab으로 한글 띄어쓰기 검사기 만들기</a>
+      </li>
+      <li>
+        <a href="/gallery/2021-01/reaction_diffusion/" class="nav-link">Reaction Diffusion</a>
+      </li>
+      <li>
+        <a href="/gallery/2020-12/woolsan/" class="nav-link">겸제 정선의 울산바위</a>
+      </li>
+      <li>
+        <a href="/post/2020-07/ggplot2_exam/" class="nav-link">몇 개의 ggplot tips</a>
+      </li>
+    </ul>
+    <div>
+      <h2 class="mt-4 taxonomy" id="categories-section">Categories</h2>
+      <nav class="tags_nav">
+        <a href='/categories/%EC%98%9B-%EC%9D%B4%EC%95%BC%EA%B8%B0-%ED%95%98%EB%82%98/' class="post_tag button button_translucent">
+          옛-이야기-하나
+          <span class="button_tally">120</span>
+        </a>
+        
+        <a href='/categories/r-analytics/' class="post_tag button button_translucent">
+          R-ANALYTICS
+          <span class="button_tally">21</span>
+        </a>
+        
+        <a href='/categories/gallery/' class="post_tag button button_translucent">
+          GALLERY
+          <span class="button_tally">10</span>
+        </a>
+        
+        <a href='/categories/visualization/' class="post_tag button button_translucent">
+          VISUALIZATION
+          <span class="button_tally">8</span>
+        </a>
+        
+        <a href='/categories/tidyverse/' class="post_tag button button_translucent">
+          TIDYVERSE
+          <span class="button_tally">6</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+    <div>
+      <h2 class="mt-4 taxonomy" id="series-section">Series</h2>
+      <nav class="tags_nav">
+        <a href='/series/drawing/' class="post_tag button button_translucent">
+          DRAWING
+          <span class="button_tally">8</span>
+        </a>
+        
+        <a href='/series/photo/' class="post_tag button button_translucent">
+          PHOTO
+          <span class="button_tally">2</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+    <div>
+      <h2 class="mt-4 taxonomy" id="tags-section">Tags</h2>
+      <nav class="tags_nav">
+        <a href='/tags/dlookr/' class="post_tag button button_translucent">
+          DLOOKR
+          <span class="button_tally">7</span>
+        </a>
+        
+        <a href='/tags/plot/' class="post_tag button button_translucent">
+          PLOT
+          <span class="button_tally">6</span>
+        </a>
+        
+        <a href='/tags/graphics/' class="post_tag button button_translucent">
+          GRAPHICS
+          <span class="button_tally">4</span>
+        </a>
+        
+        <a href='/tags/mathematics/' class="post_tag button button_translucent">
+          MATHEMATICS
+          <span class="button_tally">4</span>
+        </a>
+        
+        <a href='/tags/distribution/' class="post_tag button button_translucent">
+          DISTRIBUTION
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/dplyr/' class="post_tag button button_translucent">
+          DPLYR
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/eda/' class="post_tag button button_translucent">
+          EDA
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/ggplot2/' class="post_tag button button_translucent">
+          GGPLOT2
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/grid/' class="post_tag button button_translucent">
+          GRID
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/nlp/' class="post_tag button button_translucent">
+          NLP
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/text-analytics/' class="post_tag button button_translucent">
+          TEXT-ANALYTICS
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B3%80%ED%99%98/' class="post_tag button button_translucent">
+          데이터-변환
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A7%84%EB%8B%A8/' class="post_tag button button_translucent">
+          데이터-진단
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/deep-learning/' class="post_tag button button_translucent">
+          DEEP-LEARNING
+          <span class="button_tally">2</span>
+        </a>
+        
+        
+        <br>
+        <div class="post_tags_toggle button">All Tags</div>
+        <div class="post_tags">
+          <div class="tags_list">
+            
+            <a href='/tags/alookr/' class=" post_tag button button_translucent" data-position=1>ALOOKR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/association-ruls/' class=" post_tag button button_translucent" data-position=1>ASSOCIATION-RULS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/asynchronous/' class=" post_tag button button_translucent" data-position=1>ASYNCHRONOUS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/binary-classification/' class=" post_tag button button_translucent" data-position=1>BINARY-CLASSIFICATION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/binning/' class=" post_tag button button_translucent" data-position=1>BINNING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/circle/' class=" post_tag button button_translucent" data-position=1>CIRCLE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/clustering/' class=" post_tag button button_translucent" data-position=1>CLUSTERING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/complex/' class=" post_tag button button_translucent" data-position=1>COMPLEX<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/crawling/' class=" post_tag button button_translucent" data-position=1>CRAWLING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/data-acqusition/' class=" post_tag button button_translucent" data-position=1>DATA-ACQUSITION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/dbplyr/' class=" post_tag button button_translucent" data-position=1>DBPLYR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/deep-learning/' class=" post_tag button button_translucent" data-position=2>DEEP-LEARNING<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/development/' class=" post_tag button button_translucent" data-position=2>DEVELOPMENT<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/distribution/' class=" post_tag button button_translucent" data-position=3>DISTRIBUTION<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/dlookr/' class=" post_tag button button_translucent" data-position=7>DLOOKR<span class="button_tally">7</span>
+            </a>
+            
+            
+            <a href='/tags/documents-taxonomy/' class=" post_tag button button_translucent" data-position=1>DOCUMENTS-TAXONOMY<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/dplyr/' class=" post_tag button button_translucent" data-position=3>DPLYR<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/eda/' class=" post_tag button button_translucent" data-position=3>EDA<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/extract/' class=" post_tag button button_translucent" data-position=1>EXTRACT<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/extrafont/' class=" post_tag button button_translucent" data-position=1>EXTRAFONT<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/factor/' class=" post_tag button button_translucent" data-position=1>FACTOR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/finance/' class=" post_tag button button_translucent" data-position=2>FINANCE<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/fonts/' class=" post_tag button button_translucent" data-position=1>FONTS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/foodfact/' class=" post_tag button button_translucent" data-position=1>FOODFACT<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/forcats/' class=" post_tag button button_translucent" data-position=1>FORCATS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/fractal/' class=" post_tag button button_translucent" data-position=1>FRACTAL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/fuction/' class=" post_tag button button_translucent" data-position=1>FUCTION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/future/' class=" post_tag button button_translucent" data-position=1>FUTURE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/ggplot2/' class=" post_tag button button_translucent" data-position=3>GGPLOT2<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/google-trends/' class=" post_tag button button_translucent" data-position=1>GOOGLE-TRENDS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/graphics/' class=" post_tag button button_translucent" data-position=4>GRAPHICS<span class="button_tally">4</span>
+            </a>
+            
+            
+            <a href='/tags/gray-scott/' class=" post_tag button button_translucent" data-position=1>GRAY-SCOTT<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/grid/' class=" post_tag button button_translucent" data-position=3>GRID<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/gtrendsr/' class=" post_tag button button_translucent" data-position=1>GTRENDSR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/lasso/' class=" post_tag button button_translucent" data-position=2>LASSO<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/legend/' class=" post_tag button button_translucent" data-position=1>LEGEND<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/magrittr/' class=" post_tag button button_translucent" data-position=2>MAGRITTR<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/mathematics/' class=" post_tag button button_translucent" data-position=4>MATHEMATICS<span class="button_tally">4</span>
+            </a>
+            
+            
+            <a href='/tags/matrix/' class=" post_tag button button_translucent" data-position=2>MATRIX<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/mecab/' class=" post_tag button button_translucent" data-position=1>MECAB<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/morpheme/' class=" post_tag button button_translucent" data-position=1>MORPHEME<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/network-analysis/' class=" post_tag button button_translucent" data-position=1>NETWORK-ANALYSIS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/neural-network/' class=" post_tag button button_translucent" data-position=2>NEURAL-NETWORK<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/nlp/' class=" post_tag button button_translucent" data-position=3>NLP<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/nyc-taxi-data/' class=" post_tag button button_translucent" data-position=1>NYC-TAXI-DATA<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/operator/' class=" post_tag button button_translucent" data-position=1>OPERATOR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/packages/' class=" post_tag button button_translucent" data-position=1>PACKAGES<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/par/' class=" post_tag button button_translucent" data-position=1>PAR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/parallel/' class=" post_tag button button_translucent" data-position=1>PARALLEL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/pictures/' class=" post_tag button button_translucent" data-position=2>PICTURES<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/pipe/' class=" post_tag button button_translucent" data-position=1>PIPE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/plot/' class=" post_tag button button_translucent" data-position=6>PLOT<span class="button_tally">6</span>
+            </a>
+            
+            
+            <a href='/tags/plot-region/' class=" post_tag button button_translucent" data-position=1>PLOT-REGION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/postgresql/' class=" post_tag button button_translucent" data-position=1>POSTGRESQL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/probability/' class=" post_tag button button_translucent" data-position=1>PROBABILITY<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/promises/' class=" post_tag button button_translucent" data-position=1>PROMISES<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/quandl/' class=" post_tag button button_translucent" data-position=1>QUANDL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/r_tips/' class=" post_tag button button_translucent" data-position=1>R_TIPS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/reaction-diffusion/' class=" post_tag button button_translucent" data-position=1>REACTION-DIFFUSION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/readr/' class=" post_tag button button_translucent" data-position=2>READR<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/regression/' class=" post_tag button button_translucent" data-position=1>REGRESSION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/replace/' class=" post_tag button button_translucent" data-position=1>REPLACE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/rmecab/' class=" post_tag button button_translucent" data-position=1>RMECAB<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/rserve/' class=" post_tag button button_translucent" data-position=1>RSERVE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/scraping/' class=" post_tag button button_translucent" data-position=1>SCRAPING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/set/' class=" post_tag button button_translucent" data-position=1>SET<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/sqldf/' class=" post_tag button button_translucent" data-position=1>SQLDF<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/statistics/' class=" post_tag button button_translucent" data-position=2>STATISTICS<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/stock/' class=" post_tag button button_translucent" data-position=1>STOCK<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/stock-data/' class=" post_tag button button_translucent" data-position=1>STOCK-DATA<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/synchronous/' class=" post_tag button button_translucent" data-position=1>SYNCHRONOUS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/taxonomy/' class=" post_tag button button_translucent" data-position=1>TAXONOMY<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/text-analytics/' class=" post_tag button button_translucent" data-position=3>TEXT-ANALYTICS<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/text2vec/' class=" post_tag button button_translucent" data-position=1>TEXT2VEC<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/tidyr/' class=" post_tag button button_translucent" data-position=1>TIDYR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/tidyverse/' class=" post_tag button button_translucent" data-position=1>TIDYVERSE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/topic-analysis/' class=" post_tag button button_translucent" data-position=1>TOPIC-ANALYSIS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/traffic/' class=" post_tag button button_translucent" data-position=1>TRAFFIC<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/transformation/' class=" post_tag button button_translucent" data-position=1>TRANSFORMATION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/vector/' class=" post_tag button button_translucent" data-position=1>VECTOR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/web-application/' class=" post_tag button button_translucent" data-position=1>WEB-APPLICATION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/window-function/' class=" post_tag button button_translucent" data-position=1>WINDOW-FUNCTION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/zoo/' class=" post_tag button button_translucent" data-position=1>ZOO<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B3%80%ED%99%98/' class=" post_tag button button_translucent" data-position=3>데이터-변환<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%95%EC%A0%9C/' class=" post_tag button button_translucent" data-position=1>데이터-정제<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A7%84%EB%8B%A8/' class=" post_tag button button_translucent" data-position=3>데이터-진단<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%AA%A8%EB%8D%B8-%EC%A0%81%ED%95%A9/' class=" post_tag button button_translucent" data-position=1>모델-적합<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%AA%A8%EB%8D%B8-%EC%A7%84%EB%8B%A8/' class=" post_tag button button_translucent" data-position=1>모델-진단<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EC%97%AC%ED%96%89/' class=" post_tag button button_translucent" data-position=2>여행<span class="button_tally">2</span>
+            </a>
+            
+            <div class="tags_sort"><span title="sort alphabetically">[A~Z]</span><span title="sort by count">[0~9]</span>
+            </div>
+            <span class="tags_hide"><svg class="icon">
+            <use xlink:href="#closeme"></use>
+          </svg></span>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </section>
+</aside>
+
+</div>
+    </main><svg width="0" height="0" class="hidden">
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18.001 18.001" id="twitter">
+    <path d="M15.891 4.013c.808-.496 1.343-1.173 1.605-2.034a8.68 8.68 0 0 1-2.351.861c-.703-.756-1.593-1.14-2.66-1.14-1.043 0-1.924.366-2.643 1.078a3.56 3.56 0 0 0-1.076 2.605c0 .309.039.585.117.819-3.076-.105-5.622-1.381-7.628-3.837-.34.601-.51 1.213-.51 1.846 0 1.301.549 2.332 1.645 3.089-.625-.053-1.176-.211-1.645-.47 0 .929.273 1.705.82 2.388a3.623 3.623 0 0 0 2.115 1.291c-.312.08-.641.118-.979.118-.312 0-.533-.026-.664-.083.23.757.664 1.371 1.291 1.841a3.652 3.652 0 0 0 2.152.743C4.148 14.173 2.625 14.69.902 14.69c-.422 0-.721-.006-.902-.038 1.697 1.102 3.586 1.649 5.676 1.649 2.139 0 4.029-.542 5.674-1.626 1.645-1.078 2.859-2.408 3.639-3.974a10.77 10.77 0 0 0 1.172-4.892v-.468a7.788 7.788 0 0 0 1.84-1.921 8.142 8.142 0 0 1-2.11.593z"
+      ></path>
+  </symbol>
+  <symbol aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="mail">
+    <path  d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="calendar">
+    <path d="M452 40h-24V0h-40v40H124V0H84v40H60C26.916 40 0 66.916 0 100v352c0 33.084 26.916 60 60 60h392c33.084 0 60-26.916 60-60V100c0-33.084-26.916-60-60-60zm20 412c0 11.028-8.972 20-20 20H60c-11.028 0-20-8.972-20-20V188h432v264zm0-304H40v-48c0-11.028 8.972-20 20-20h24v40h40V80h264v40h40V80h24c11.028 0 20 8.972 20 20v48z"></path>
+    <path d="M76 230h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 310h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 390h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80-80h40v40h-40z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="github">
+    <path d="M255.968 5.329C114.624 5.329 0 120.401 0 262.353c0 113.536 73.344 209.856 175.104 243.872 12.8 2.368 17.472-5.568 17.472-12.384 0-6.112-.224-22.272-.352-43.712-71.2 15.52-86.24-34.464-86.24-34.464-11.616-29.696-28.416-37.6-28.416-37.6-23.264-15.936 1.728-15.616 1.728-15.616 25.696 1.824 39.2 26.496 39.2 26.496 22.848 39.264 59.936 27.936 74.528 21.344 2.304-16.608 8.928-27.936 16.256-34.368-56.832-6.496-116.608-28.544-116.608-127.008 0-28.064 9.984-51.008 26.368-68.992-2.656-6.496-11.424-32.64 2.496-68 0 0 21.504-6.912 70.4 26.336 20.416-5.696 42.304-8.544 64.096-8.64 21.728.128 43.648 2.944 64.096 8.672 48.864-33.248 70.336-26.336 70.336-26.336 13.952 35.392 5.184 61.504 2.56 68 16.416 17.984 26.304 40.928 26.304 68.992 0 98.72-59.84 120.448-116.864 126.816 9.184 7.936 17.376 23.616 17.376 47.584 0 34.368-.32 62.08-.32 70.496 0 6.88 4.608 14.88 17.6 12.352C438.72 472.145 512 375.857 512 262.353 512 120.401 397.376 5.329 255.968 5.329z"></path>
+  </symbol>
+  <symbol viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="rss">
+    <circle cx="3.429" cy="20.571" r="3.429"></circle>
+    <path d="M11.429 24h4.57C15.999 15.179 8.821 8.001 0 8v4.572c6.302.001 11.429 5.126 11.429 11.428z"></path>
+    <path d="M24 24C24 10.766 13.234 0 0 0v4.571c10.714 0 19.43 8.714 19.43 19.429z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="linkedin">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h362c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zM181 406h-60V196h60zm0-240h-60v-60h60zm210 240h-60V286c0-16.54-13.46-30-30-30s-30 13.46-30 30v120h-60V196h60v11.309C286.719 202.422 296.93 196 316 196c40.691.043 75 36.547 75 79.688zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="arrow">
+    <path d="M604.501 440.509L325.398 134.956c-5.331-5.357-12.423-7.627-19.386-7.27-6.989-.357-14.056 1.913-19.387 7.27L7.499 440.509c-9.999 10.024-9.999 26.298 0 36.323s26.223 10.024 36.222 0l262.293-287.164L568.28 476.832c9.999 10.024 26.222 10.024 36.221 0 9.999-10.023 9.999-26.298 0-36.323z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="carly">
+    <path d="M504.971 239.029L448 182.059V84c0-46.317-37.682-84-84-84h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c19.851 0 36 16.149 36 36v108c0 6.365 2.529 12.47 7.029 16.971L454.059 256l-47.029 47.029A24.002 24.002 0 0 0 400 320v108c0 19.851-16.149 36-36 36h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c46.318 0 84-37.683 84-84v-98.059l56.971-56.971c9.372-9.372 9.372-24.568 0-33.941zM112 192V84c0-19.851 16.149-36 36-36h44c13.255 0 24-10.745 24-24S205.255 0 192 0h-44c-46.318 0-84 37.683-84 84v98.059l-56.971 56.97c-9.373 9.373-9.373 24.568 0 33.941L64 329.941V428c0 46.317 37.682 84 84 84h44c13.255 0 24-10.745 24-24s-10.745-24-24-24h-44c-19.851 0-36-16.149-36-36V320c0-6.365-2.529-12.47-7.029-16.971L57.941 256l47.029-47.029A24.002 24.002 0 0 0 112 192z"></path>
+  </symbol>
+  <symbol viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="copy">
+    <path d="M23 2.75A2.75 2.75 0 0 0 20.25 0H8.75A2.75 2.75 0 0 0 6 2.75v13.5A2.75 2.75 0 0 0 8.75 19h11.5A2.75 2.75 0 0 0 23 16.25zM18.25 14.5h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5zm0-3h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5zm0-3h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5z"></path>
+    <path d="M8.75 20.5a4.255 4.255 0 0 1-4.25-4.25V2.75c0-.086.02-.166.025-.25H3.75A2.752 2.752 0 0 0 1 5.25v16A2.752 2.752 0 0 0 3.75 24h12a2.752 2.752 0 0 0 2.75-2.75v-.75z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001" id="closeme">
+    <path d="M284.286 256.002L506.143 34.144c7.811-7.811 7.811-20.475 0-28.285-7.811-7.81-20.475-7.811-28.285 0L256 227.717 34.143 5.859c-7.811-7.811-20.475-7.811-28.285 0-7.81 7.811-7.811 20.475 0 28.285l221.857 221.857L5.858 477.859c-7.811 7.811-7.811 20.475 0 28.285a19.938 19.938 0 0 0 14.143 5.857 19.94 19.94 0 0 0 14.143-5.857L256 284.287l221.857 221.857c3.905 3.905 9.024 5.857 14.143 5.857s10.237-1.952 14.143-5.857c7.811-7.811 7.811-20.475 0-28.285L284.286 256.002z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="open-menu">
+    <path d="M492 236H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0-160H20C8.954 76 0 84.954 0 96s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0 320H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="instagram">
+    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id=youtube>
+    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="stackoverflow">
+    <path d="M21 27v-8h3v11H0V19h3v8h18z"></path><path d="M17.1.2L15 1.8l7.9 10.6 2.1-1.6L17.1.2zm3.7 14.7L10.6 6.4l1.7-2 10.2 8.5-1.7 2zM7.2 12.3l12 5.6 1.1-2.4-12-5.6-1.1 2.4zm-1.8 6.8l13.56 1.96.17-2.38-13.26-2.55-.47 2.97zM19 25H5v-3h14v3z"></path>
+  </symbol>
+</svg>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+<footer class="footer">
+  <div class="footer_inner wrap pale">
+    <img src='/logos/logo.png' class="icon icon_2 transparent">
+    <p>Copyright<span class="year"></span> DATAHOLIC. All Rights Reserved</p><a class="to_top" href="#documentTop">
+  <svg class="icon">
+  <use xlink:href="#arrow"></use>
+</svg>
+</a>
+
+  </div>
+</footer>
+    <script type="text/javascript" src="/js/bundle.min.03f1cc201c9efa18e14550bff374f58e89f1e6b2a30a0e22f84c87f6eb766e419bd6569c3a60846ea3e65816112dfa454f4785d306d024b6ef2616d067862a7a.js" integrity="sha512-A/HMIBye&#43;hjhRVC/83T1jonx5rKjCg4i&#43;EyH9ut2bkGb1lacOmCEbqPmWBYRLfpFT0eF0wbQJLbvJhbQZ4Yqeg==" crossorigin="anonymous"></script>
+    
+  </body>
+</html>
