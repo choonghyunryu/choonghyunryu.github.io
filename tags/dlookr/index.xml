@@ -5,7 +5,663 @@
     <link>/tags/dlookr/</link>
     <description>Recent content in dlookr on Dataholic</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 06 Feb 2021 17:09:12 +0800</lastBuildDate><atom:link href="/tags/dlookr/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 07 Feb 2021 17:09:12 +0800</lastBuildDate><atom:link href="/tags/dlookr/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>스코어카드와 최적 비닝</title>
+      <link>/post/2021-02/optimal_binning/</link>
+      <pubDate>Sun, 07 Feb 2021 17:09:12 +0800</pubDate>
+      
+      <guid>/post/2021-02/optimal_binning/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;다룰-이야기&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;다룰 이야기&lt;/h2&gt;
+&lt;p&gt;앞서 비닝에 대해서 다루었다. 특히 dlookr 패키지로 연속형 변수를 비닝하는 여러 솔루션을 다루었다.&lt;/p&gt;
+&lt;p&gt;금융권에서 사용하는 스코어카드(scorecard) 기법에서는 연속형 변수를 범주형 변수로 변환하는 작업을 빈번히 사용한다. 이번에는 일반적인 비닝 방법이 아닌 최적 비닝(optimal binning) 방법을 사용한다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;dlookr 패키지에는 일반적인 비닝과 스코어카드 모델(scoreCard modeling)을 위한 최적 비닝 기능을 지원한다. 여기서는 최적 비닝의 개념과 최적 비닝을 수행하고, 비닝 결과의 성능을 검증하는 방법을 다룬다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div id=&#34;최적-비닝optimal-binning&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;최적 비닝(optimal binning)&lt;/h2&gt;
+&lt;p&gt;최적 비닝은 비닝하고자 하는 연속형 변수(indicator)를 비닝할 때, 이진 클래스(binary class)의 종속 변수(target variable)를 고려한다. 즉, 이진분류(binary classification predict) 모델을 적용한다. 쉽게 말하자면 종속 변수의 positive 클래스의 예측력이 높은 수준(levels, 범주)과 그렇지 않은 수준으로 비닝한다. 이때 범주화(이산화)된 결과는 순서형 범주, 즉 ordered factor가 된다.&lt;/p&gt;
+&lt;p&gt;이산화된 범주의 수준(여기서는 bins)의 positive 클래스 예측력은 단조 증감 추세(monotonic trend)를 가져야 한다. 즉, ordered factor로 표현된 bins의 순서대로 예측력이 단조증가(monotonic increase) 하거나 단조감소(monotonic decrease)해야 한다. 정확히 말하자면 뒤에서 다룰 WoE가 단조 중감추세를 가져야 한다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;단조 증가 사례&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;../img/increase.png&#34; width=&#34;65%&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;단조 감소 사례&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;../img/decrease.png&#34; width=&#34;65%&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;데이터&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;데이터&lt;/h2&gt;
+&lt;div id=&#34;데이터-준비&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;데이터 준비&lt;/h3&gt;
+&lt;p&gt;kaggle의 &lt;a href=&#34;https://www.kaggle.com/tug004/breast-cancer-dataset에&#34; class=&#34;uri&#34;&gt;https://www.kaggle.com/tug004/breast-cancer-dataset에&lt;/a&gt; &lt;code&gt;breast_cancer.csv&lt;/code&gt;는 유방암 진단 데이터를 제공한다. 이 데이터로 Scorecard의 기초 측도(measures)와 최적 비닝을 살펴 본다.&lt;/p&gt;
+&lt;p&gt;먼저 데이터를 다운로드한 후 R로 가져오자.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(dplyr)
+library(dlookr)
+
+fname &amp;lt;- &amp;quot;breast_cancer.csv&amp;quot;
+
+read.csv(fname) %&amp;gt;% 
+  select(-X) -&amp;gt; breast_cancer &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;데이터-진단&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;데이터 진단&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;breast_cancer %&amp;gt;% 
+  diagnose() %&amp;gt;% 
+  as.data.frame()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##                  variables     types missing_count missing_percent unique_count
+## 1                       id   integer             0               0          569
+## 2                diagnosis character             0               0            2
+## 3              radius_mean   numeric             0               0          456
+## 4             texture_mean   numeric             0               0          479
+## 5           perimeter_mean   numeric             0               0          522
+## 6                area_mean   numeric             0               0          539
+## 7          smoothness_mean   numeric             0               0          474
+## 8         compactness_mean   numeric             0               0          537
+## 9           concavity_mean   numeric             0               0          537
+## 10     concave.points_mean   numeric             0               0          542
+## 11           symmetry_mean   numeric             0               0          432
+## 12  fractal_dimension_mean   numeric             0               0          499
+## 13               radius_se   numeric             0               0          540
+## 14              texture_se   numeric             0               0          519
+## 15            perimeter_se   numeric             0               0          533
+## 16                 area_se   numeric             0               0          528
+## 17           smoothness_se   numeric             0               0          547
+## 18          compactness_se   numeric             0               0          541
+## 19            concavity_se   numeric             0               0          533
+## 20       concave.points_se   numeric             0               0          507
+## 21             symmetry_se   numeric             0               0          498
+## 22    fractal_dimension_se   numeric             0               0          545
+## 23            radius_worst   numeric             0               0          457
+## 24           texture_worst   numeric             0               0          511
+## 25         perimeter_worst   numeric             0               0          514
+## 26              area_worst   numeric             0               0          544
+## 27        smoothness_worst   numeric             0               0          411
+## 28       compactness_worst   numeric             0               0          529
+## 29         concavity_worst   numeric             0               0          539
+## 30    concave.points_worst   numeric             0               0          492
+## 31          symmetry_worst   numeric             0               0          500
+## 32 fractal_dimension_worst   numeric             0               0          535
+##    unique_rate
+## 1  1.000000000
+## 2  0.003514938
+## 3  0.801405975
+## 4  0.841827768
+## 5  0.917398946
+## 6  0.947275923
+## 7  0.833040422
+## 8  0.943760984
+## 9  0.943760984
+## 10 0.952548330
+## 11 0.759226714
+## 12 0.876977153
+## 13 0.949033392
+## 14 0.912126538
+## 15 0.936731107
+## 16 0.927943761
+## 17 0.961335677
+## 18 0.950790861
+## 19 0.936731107
+## 20 0.891036907
+## 21 0.875219684
+## 22 0.957820738
+## 23 0.803163445
+## 24 0.898066784
+## 25 0.903339192
+## 26 0.956063269
+## 27 0.722319859
+## 28 0.929701230
+## 29 0.947275923
+## 30 0.864674868
+## 31 0.878734622
+## 32 0.940246046&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;데이터를 진단할 결과를 보면 결측치도 없고, 연속형 변수의 중복값도 많지 않고, 대체적으로 양호하다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;종속변수&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;종속변수&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;diagnosis&lt;/code&gt;는 종속변수다. &lt;code&gt;B&lt;/code&gt;는 &lt;code&gt;benign(양성 종양)&lt;/code&gt;, &lt;code&gt;M&lt;/code&gt;는 &lt;code&gt;malignant(악성 종양)&lt;/code&gt;을 의미한다. positive를 &lt;code&gt;malignant(악성 종양)&lt;/code&gt;인 &lt;code&gt;M&lt;/code&gt;으로 negative를 &lt;code&gt;benign(양성 종양)&lt;/code&gt;인 &lt;code&gt;B&lt;/code&gt;로 정의하고 이야기를 풀어 나간다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;table(breast_cancer$diagnosis)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## 
+##   B   M 
+## 357 212&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;스코어카드-개념&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;스코어카드 개념&lt;/h2&gt;
+&lt;p&gt;스코어카드 모델에서는 모델링으로 만들어진 최종 스코어를 비닝한 등급으로 모델의 성능을 평가한다. 이 과정이 최적 비닝과 유사하고, 그 성능 평가 지표도 동일하기에 모델의 성능을 평가하는 방법에 국한해서 설명한다. (스코어카드 모델링을 다루지는 않는다.)&lt;/p&gt;
+&lt;div id=&#34;준비&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;준비&lt;/h3&gt;
+&lt;p&gt;먼저 관점의 정리가 필요하다. 역학 분석에 응용되는 사례-대조 연구(case-control studies)에서 사례군(case)은 보통 환자를 의미한다. 대조군은 환자가 아닌 군을 의미한다. 흡연이 폐암에 미치는 영향을 분석할 때 다음과 같은 분할표를 만들 수 있다.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;center&#34;&gt;&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;폐암발생&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;폐암 미발생&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;center&#34;&gt;흡연&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;a&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;b&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;center&#34;&gt;비흡연&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;c&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;d&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;이것을 이진분류로 바라보면 폐암 발생여부는 예측하려는 변수인 종속변수(target variable)고, 흡연 여부는 종속변수를 설명하는 예측변수(predictor variable)다. 폐암발생 여부가 관심사이고, 이를 예측하려는 모델이므로 폐암발생은 positive, 폐암 미발생은 negative 클래스다. 즉, &lt;strong&gt;관심 대상이 되는 클래스가 positive 클래스다.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;만약 환경과 질병의 인과관계를 규명하는 연구에서는 &lt;code&gt;질병발생&lt;/code&gt;이 positive 클래스이고 &lt;code&gt;질병 미발생&lt;/code&gt;이 negative 클래스일 것이다. 그러나 신약의 효과 규명하는 연구에서는 &lt;code&gt;완치&lt;/code&gt;가 positive 클래스이고 &lt;code&gt;미완치&lt;/code&gt;가 negative 클래스일 것이다. 즉, positive와 negative는 좋고 나쁨, 우열의 관계는 아니다. 간혹 positive와 negative를 양성과 음성으로 번역하여 표현하는 경우도 있으나, 개인적으로 마음에 들지 않아 그냥 포지티브(positive)와 네거티브(negative)라 칭하고 있다.&lt;/p&gt;
+&lt;p&gt;연체여부, 부도여부 등을 설명하는 스코어카드도 종속변수와 예측변수로 일반화할 수 있다. 개념은 동일하다. 그러나 필드에서 부르는 클래스의 용어가 다르다. 그래서 용어가 어느 정도 혼란을 줄 수도 있겠다.&lt;/p&gt;
+&lt;p&gt;질병 발생과 같은 의료분야 연구나, 연체, 부도와 같은 신용평점 모델에서의 종속변수의 클래스를 표현하는 용어는 positive 클래스, negative 클래스 보다는 good(우량), bad(불량)과 같은 표현을 한다. 폐암발생, 연체, 부도는 bad(불량)로 폐암 미발생, 연체 미발생은 good(우량)으로 표현한다. 관점(관심 대상이 되는 클래스)을 어떻게 보느냐에 따라 달라질 수 있는 여지가 없다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;최적비닝-수행&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;최적비닝 수행&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;dlookr에서는 최적 비닝에서 이진 클래스를 good(우량), bad(불량)으로 부르지 않고, positive와 negative로 칭한다. 그러므로 스코어카드에 익숙한 사용자는 positive를 good(우량)으로, negative를 bad(불량)으로 생각하면 될 것이다. 그래서 이 글에서는 편의상 &lt;code&gt;양성종양&lt;/code&gt;을 &lt;code&gt;우량&lt;/code&gt;으로, &lt;code&gt;악성종양&lt;/code&gt;은 &lt;code&gt;불량&lt;/code&gt;으로 부른다. 그러므로 양성종양을 관심 클래스로 보고, 양성종양을 positive, 악성종양을 negative로 클래스로 보자.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;스코어카드 개념을 살펴보기 위해서 먼저 dlookr 패키지로 유방암 데이터 중에서 종양의 반지름 평균인 &lt;code&gt;radius_mean&lt;/code&gt;을 최적비닝해 보자. 유방암 데이터는 여러 관측 측도로 악성 종양을 예측하는 사례용 데이터이므로 종속변수인 &lt;code&gt;diagnosis&lt;/code&gt;를 고려해서 예측변수 &lt;code&gt;radius_mean&lt;/code&gt;를 최적 비닝한다.&lt;/p&gt;
+&lt;p&gt;다음은 dlookr의 &lt;code&gt;binning_by()&lt;/code&gt; 함수로 최적비닝을 수행한다. dlookr의 &lt;code&gt;binning_by()&lt;/code&gt; 함수는 종속 변수가 0과 1의 두가지로 코딩된 경우에 동작한다. positive 클래스가 1, negative 클래스가 0이어야 한다. 그러나 factor일 경우에는 자동으로 변환하여 비닝을 수행한다. 메시지를 보면 악성종양(M)이 1, 양성종양(B)이 0으로 변환되었다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;breast_cancer %&amp;gt;% 
+  binning_by(diagnosis, radius_mean) -&amp;gt; bin_radius_mean&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in binning_by(., diagnosis, radius_mean): The character y has been changed to a numeric vector consisting of 0 and 1.
+## &amp;#39;M&amp;#39; changed to 1 (positive) and &amp;#39;B&amp;#39; changed to 0 (negative).&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;비닝을 통해서 연속형 변수가 5개 수준을 갖는 범주형 변수로 변환되었다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bin_radius_mean&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## binned type: optimal
+## number of bins: 5
+## x
+## [6.98,11.8] (11.8,13.1]   (13.1,15]   (15,16.8] (16.8,28.1] 
+##         150         115         132          54         118&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;분석하려는 관점이 다를 경우는 변수를 변환해서 사용해야 한다. 양성종양을 positive, 악성종양을 negative로 클래스로 보기로 했으므로, positive를 good(우량)으로, negative를 bad(불량)으로 정의하기 위해서 diagnosis_new이라는 파생변수를 만들어 최적 비닝을 수행한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;breast_cancer %&amp;gt;% 
+  mutate(diagnosis_new = ifelse(diagnosis == &amp;#39;M&amp;#39;, 0, 1)) %&amp;gt;% 
+    binning_by(diagnosis_new, radius_mean) -&amp;gt; bin_radius_mean&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;positive 클래스와 negative 클래스가 바뀌어도 결과는 동일하다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;최적비닝만을 목적으로 한다면, 굳이 클래스를 변환하지 않더라도 비닝된 결과는 동일하므로 이진 factor일 경우에는 함수가 자동으로 0과 1로 변환하도록 해도 무방하다. 즉, 최적 비닝을 수행하는 용도라면 positive 클래스와 negative 클래스를 고민할 필요가 없다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bin_radius_mean&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## binned type: optimal
+## number of bins: 5
+## x
+## [6.98,11.8] (11.8,13.1]   (13.1,15]   (15,16.8] (16.8,28.1] 
+##         150         115         132          54         118&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;비닝-결과의-요약&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;비닝 결과의 요약&lt;/h3&gt;
+&lt;p&gt;비닝 결과로 다음 분할표를 유추할 수 있다.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;center&#34;&gt;&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;우량(양성종양)&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;불량(악성종양)&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;합계&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;center&#34;&gt;[6.98,11.8]&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;a&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;b&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;a + b = 150&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;center&#34;&gt;(11.8,13.1]&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;c&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;d&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;c + d = 115&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;center&#34;&gt;(13.1,15]&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;e&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;f&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;e + f = 132&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;center&#34;&gt;(15,16.8]&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;g&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;h&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;g + h = 54&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;center&#34;&gt;(16.8,28.1]&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;i&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;j&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;i + j = 118&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;분할표의 각 셀의 분포를 알기 위해서는 다음의 명령을 수행한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;table(bin_radius_mean, breast_cancer$diagnosis)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##                
+## bin_radius_mean   B   M
+##     [6.98,11.8] 147   3
+##     (11.8,13.1] 105  10
+##     (13.1,15]    94  38
+##     (15,16.8]    10  44
+##     (16.8,28.1]   1 117&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;center&#34;&gt;&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;우량&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;불량&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;합계&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;center&#34;&gt;[6.98,11.8]&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;147&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;150&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;center&#34;&gt;(11.8,13.1]&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;105&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;10&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;115&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;center&#34;&gt;(13.1,15]&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;94&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;38&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;132&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;center&#34;&gt;(15,16.8]&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;10&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;44&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;54&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;center&#34;&gt;(16.8,28.1]&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;117&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;118&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;이제 비닝의 성능을 살펴볼 기초 자료(분할표)가 정리되었다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;비닝의-진단&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;비닝의 진단&lt;/h3&gt;
+&lt;p&gt;summary() 함수는 비닝된 결과에 대해서 비닝의 성능을 평가할 수 있는 여러 정보를 계산해 준다. 이번에 다룰 내용이 이 정보들에 대한 가벼운 소개다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(bin_radius_mean)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## ── Binning Table ──────────────────────── Several Metrics ──
+##           Bin CntRec CntPos CntNeg RatePos RateNeg     Odds      WoE      IV     JSD
+## 1 [6.98,11.8]    150    147      3 0.41176 0.01415 49.00000  3.37067 1.34023 0.11657
+## 2 (11.8,13.1]    115    105     10 0.29412 0.04717 10.50000  1.83023 0.45197 0.04973
+## 3   (13.1,15]    132     94     38 0.26331 0.17925  2.47368  0.38456 0.03233 0.00402
+## 4   (15,16.8]     54     10     44 0.02801 0.20755  0.22727 -2.00275 0.35957 0.03868
+## 5 (16.8,28.1]    118      1    117 0.00280 0.55189  0.00855 -5.28332 2.90100 0.18344
+## 6       Total    569    357    212 1.00000 1.00000  1.68396       NA 5.08509 0.39243
+##       AUC
+## 1 0.00291
+## 2 0.02636
+## 3 0.15012
+## 4 0.20406
+## 5 0.55111
+## 6 0.93457
+## 
+## ── General Metrics ─────────────────────────────────────────
+## ● Gini index                       :  0.86914
+## ● IV (Jeffrey)                     :  5.08509
+## ● JS (Jensen-Shannon) Divergence   :  0.39243
+## ● Kolmogorov-Smirnov Statistics    :  0.72862
+## ● HHI (Herfindahl-Hirschman Index) :  0.21617
+## ● HHI (normalized)                 :  0.02022
+## ● Cramer&amp;#39;s V                       :  0.79818
+## 
+## ── Significance Tests ──────────────────── Chisquare Test ──
+##         Bin A       Bin B statistics      p_value
+## 1 [6.98,11.8] (11.8,13.1]   6.255713 1.237934e-02
+## 2 (11.8,13.1]   (13.1,15]  15.846398 6.869719e-05
+## 3   (13.1,15]   (15,16.8]  43.166738 5.026802e-11
+## 4   (15,16.8] (16.8,28.1]  19.324617 1.102754e-05&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;비닝-결과의-활용&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;비닝 결과의 활용&lt;/h3&gt;
+&lt;p&gt;진단한 결과를 분석해서, 비닝된 변수를 사용하기로 결정되었다면 &lt;code&gt;extract()&lt;/code&gt; 함수로 비닝 결과를 추출한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;breast_cancer %&amp;gt;% 
+  mutate(bin_radius_mean = extract(bin_radius_mean)) %&amp;gt;% 
+  select(bin_radius_mean) %&amp;gt;% 
+  head(10)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    bin_radius_mean
+## 1      (16.8,28.1]
+## 2      (16.8,28.1]
+## 3      (16.8,28.1]
+## 4      [6.98,11.8]
+## 5      (16.8,28.1]
+## 6      (11.8,13.1]
+## 7      (16.8,28.1]
+## 8        (13.1,15]
+## 9      (11.8,13.1]
+## 10     (11.8,13.1]&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;비닝-성능-진단-메트릭&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;비닝 성능 진단 메트릭&lt;/h2&gt;
+&lt;p&gt;최적 비닝의 성능은 최적 비능의 알고리즘보다는 데이터의 분포에 영향을 받는다. 비닝하려는 연속형 변수의 크기가 이진 클래스의 종속변수와 관계가 없다면, 최적 비닝 알고리즘은 비닝을 수행하지 않는다. 예를 들어 나이(나이는 이산형 변수이지만, 년단위가 아닌 시간이나 일 단위의 나이로 확장해 보자.)와 성별의 관계를 보면, 나이가 많을수록(연속형 변수 값이 클수록) 남성이나 여성으로 분류되지는 않는다. 그러므로 성별이라는 종속변수를 대상으로 한 나이 변수의 비닝은 의미없다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;binning_by()&lt;/code&gt; 함수는 최적 비닝의 유의성을 검사한 후 의미있는 경우에만 최적 비닝을 수행한다. 다음 가상 데이터에 대한 최적 비닝은 수행되지 않는다. 변수의 비닝이 의미없기 때문이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;set.seed(10)
+x &amp;lt;- sample(100)
+
+set.seed(20)
+y &amp;lt;- sample(0:1, size = 100, replace = TRUE)
+
+data.frame(x, y) %&amp;gt;% 
+  binning_by(y, x) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in binning_by(., y, x): No significant splits&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;No significant splits&amp;quot;
+## attr(,&amp;quot;class&amp;quot;)
+## [1] &amp;quot;optimal_bins&amp;quot; &amp;quot;character&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;앞선 예제에서 &lt;code&gt;summary()&lt;/code&gt; 함수는 비닝된 결과의 성능을 진단하는 여러 지표를 요약하면 보여줌을 알았다. 그러나 다음에 보여주는 성능 지표에 대한 설명은 &lt;code&gt;summary()&lt;/code&gt; 함수의 결과를 해석하는 것이 아니라 최대한으로 이론적인 설명과 계산하는 방법에 초점을 맞춘다. 그러면, &lt;code&gt;binning_by()&lt;/code&gt; 함수로 만들어진 &lt;code&gt;optimal_bins&lt;/code&gt; 클래스 객체에 대한 이해가 필요하다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;class(bin_radius_mean)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;optimal_bins&amp;quot; &amp;quot;bins&amp;quot;         &amp;quot;ordered&amp;quot;      &amp;quot;factor&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;이 클래스 객체 여러 속성(attributes)을 가지고 있는데, 대표적인 속성이 &lt;code&gt;performance&lt;/code&gt;라는 성능 테이블이다. &lt;code&gt;performance&lt;/code&gt;을 이용해서 &lt;code&gt;summary()&lt;/code&gt; 함수를 구현한 것이다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;attributes(bin_radius_mean)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## $levels
+## [1] &amp;quot;[6.98,11.8]&amp;quot; &amp;quot;(11.8,13.1]&amp;quot; &amp;quot;(13.1,15]&amp;quot;   &amp;quot;(15,16.8]&amp;quot;   &amp;quot;(16.8,28.1]&amp;quot;
+## 
+## $class
+## [1] &amp;quot;optimal_bins&amp;quot; &amp;quot;bins&amp;quot;         &amp;quot;ordered&amp;quot;      &amp;quot;factor&amp;quot;      
+## 
+## $type
+## [1] &amp;quot;optimal&amp;quot;
+## 
+## $breaks
+## [1]  6.981 11.750 13.080 15.040 16.840 28.110
+## 
+## $raw
+##   [1] 17.990 20.570 19.690 11.420 20.290 12.450 18.250 13.710 13.000 12.460 16.020 15.780
+##  [13] 19.170 15.850 13.730 14.540 14.680 16.130 19.810 13.540 13.080  9.504 15.340 21.160
+##  [25] 16.650 17.140 14.580 18.610 15.300 17.570 18.630 11.840 17.020 19.270 16.130 16.740
+##  [37] 14.250 13.030 14.990 13.480 13.440 10.950 19.070 13.280 13.170 18.650  8.196 13.170
+##  [49] 12.050 13.490 11.760 13.640 11.940 18.220 15.100 11.520 19.210 14.710 13.050  8.618
+##  [61] 10.170  8.598 14.250  9.173 12.680 14.780  9.465 11.310  9.029 12.780 18.940  8.888
+##  [73] 17.200 13.800 12.310 16.070 13.530 18.050 20.180 12.860 11.450 13.340 25.220 19.100
+##  [85] 12.000 18.460 14.480 19.020 12.360 14.640 14.620 15.370 13.270 13.450 15.060 20.260
+##  [97] 12.180  9.787 11.600 14.420 13.610  6.981 12.180  9.876 10.490 13.110 11.640 12.360
+## [109] 22.270 11.340  9.777 12.630 14.260 10.510  8.726 11.930  8.950 14.870 15.780 17.950
+## [121] 11.410 18.660 24.250 14.500 13.370 13.850 13.610 19.000 15.100 19.790 12.190 15.460
+## [133] 16.160 15.710 18.450 12.770 11.710 11.430 14.950 11.280  9.738 16.110 11.430 12.900
+## [145] 10.750 11.900 11.800 14.950 14.440 13.740 13.000  8.219  9.731 11.150 13.150 12.250
+## [157] 17.680 16.840 12.060 10.900 11.750 19.190 19.590 12.340 23.270 14.970 10.800 16.780
+## [169] 17.470 14.970 12.320 13.430 15.460 11.080 10.660  8.671  9.904 16.460 13.010 12.810
+## [181] 27.220 21.090 15.700 11.410 15.280 10.080 18.310 11.710 11.810 12.300 14.220 12.770
+## [193]  9.720 12.340 14.860 12.910 13.770 18.080 19.180 14.450 12.230 17.540 23.290 13.810
+## [205] 12.470 15.120  9.876 17.010 13.110 15.270 20.580 11.840 28.110 17.420 14.190 13.860
+## [217] 11.890 10.200 19.800 19.530 13.650 13.560 10.180 15.750 13.270 14.340 10.440 15.000
+## [229] 12.620 12.830 17.050 11.320 11.220 20.510  9.567 14.030 23.210 20.480 14.220 17.460
+## [241] 13.640 12.420 11.300 13.750 19.400 10.480 13.200 12.890 10.650 11.520 20.940 11.500
+## [253] 19.730 17.300 19.450 13.960 19.550 15.320 15.660 15.530 20.310 17.350 17.290 15.610
+## [265] 17.190 20.730 10.600 13.590 12.870 10.710 14.290 11.290 21.750  9.742 17.930 11.890
+## [277] 11.330 18.810 13.590 13.850 19.160 11.740 19.400 16.240 12.890 12.580 11.940 12.890
+## [289] 11.260 11.370 14.410 14.960 12.950 11.850 12.720 13.770 10.910 11.760 14.260 10.510
+## [301] 19.530 12.460 20.090 10.490 11.460 11.600 13.200  9.000 13.500 13.050 11.700 14.610
+## [313] 12.760 11.540  8.597 12.490 12.180 18.220  9.042 12.430 10.250 20.160 12.860 20.340
+## [325] 12.200 12.670 14.110 12.030 16.270 16.260 16.030 12.980 11.220 11.250 12.300 17.060
+## [337] 12.990 18.770 10.050 23.510 14.420  9.606 11.060 19.680 11.710 10.260 12.060 14.760
+## [349] 11.470 11.950 11.660 15.750 25.730 15.080 11.140 12.560 13.050 13.870  8.878  9.436
+## [361] 12.540 13.300 12.760 16.500 13.400 20.440 20.200 12.210 21.710 22.010 16.350 15.190
+## [373] 21.370 20.640 13.690 16.170 10.570 13.460 13.660 11.080 11.270 11.040 12.050 12.390
+## [385] 13.280 14.600 12.210 13.880 11.270 19.550 10.260  8.734 15.490 21.610 12.100 14.060
+## [397] 13.510 12.800 11.060 11.800 17.910 11.930 12.960 12.940 12.340 10.940 16.140 12.850
+## [409] 17.990 12.270 11.360 11.040  9.397 14.990 15.130 11.890  9.405 15.500 12.700 11.160
+## [421] 11.570 14.690 11.610 13.660  9.742 10.030 10.480 10.800 11.130 12.720 14.900 12.400
+## [433] 20.180 18.820 14.860 13.980 12.870 14.040 13.850 14.020 10.970 17.270 13.780 10.570
+## [445] 18.030 11.990 17.750 14.800 14.530 21.100 11.870 19.590 12.000 14.530 12.620 13.380
+## [457] 11.630 13.210 13.000  9.755 17.080 27.420 14.400 11.600 13.170 13.240 13.140  9.668
+## [469] 17.600 11.620  9.667 12.040 14.920 12.270 10.880 12.830 14.200 13.900 11.490 16.250
+## [481] 12.160 13.900 13.470 13.700 15.730 12.450 14.640 19.440 11.680 16.690 12.250 17.850
+## [493] 18.010 12.460 13.160 14.870 12.650 12.470 18.490 20.590 15.040 13.820 12.540 23.090
+## [505]  9.268  9.676 12.220 11.060 16.300 15.460 11.740 14.810 13.400 14.580 15.050 11.340
+## [517] 18.310 19.890 12.880 12.750  9.295 24.630 11.260 13.710  9.847  8.571 13.460 12.340
+## [529] 13.940 12.070 11.750 11.670 13.680 20.470 10.960 20.550 14.270 11.690  7.729  7.691
+## [541] 11.540 14.470 14.740 13.210 13.870 13.620 10.320 10.260  9.683 10.820 10.860 11.130
+## [553] 12.770  9.333 12.880 10.290 10.160  9.423 14.590 11.510 14.050 11.200 15.220 20.920
+## [565] 21.560 20.130 16.600 20.600  7.760
+## 
+## $performance
+##           Bin CntRec CntPos CntNeg CntCumPos CntCumNeg RatePos RateNeg RateCumPos
+## 1 [6.98,11.8]    150    147      3       147         3 0.41176 0.01415    0.41176
+## 2 (11.8,13.1]    115    105     10       252        13 0.29412 0.04717    0.70588
+## 3   (13.1,15]    132     94     38       346        51 0.26331 0.17925    0.96919
+## 4   (15,16.8]     54     10     44       356        95 0.02801 0.20755    0.99720
+## 5 (16.8,28.1]    118      1    117       357       212 0.00280 0.55189    1.00000
+## 6       Total    569    357    212        NA        NA 1.00000 1.00000         NA
+##   RateCumNeg     Odds   LnOdds      WoE      IV     JSD     AUC
+## 1    0.01415 49.00000  3.89182  3.37067 1.34023 0.11657 0.00291
+## 2    0.06132 10.50000  2.35138  1.83023 0.45197 0.04973 0.02636
+## 3    0.24057  2.47368  0.90571  0.38456 0.03233 0.00402 0.15012
+## 4    0.44811  0.22727 -1.48160 -2.00275 0.35957 0.03868 0.20406
+## 5    1.00000  0.00855 -4.76217 -5.28332 2.90100 0.18344 0.55111
+## 6         NA  1.68396  0.52115       NA 5.08509 0.39243 0.93457
+## 
+## $target
+##   [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0
+##  [43] 0 0 0 0 1 0 1 1 1 1 1 0 0 1 0 0 1 1 1 1 0 1 0 0 1 1 1 1 0 1 0 0 1 0 1 0 0 1 1 1 0 0
+##  [85] 1 0 0 0 1 1 1 0 1 1 0 0 1 1 1 0 0 1 1 1 1 0 1 1 0 1 1 1 1 1 1 1 1 0 0 0 1 0 0 1 1 1
+## [127] 0 0 1 0 1 0 0 1 0 0 1 1 0 1 1 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 0 1 1 1 1 0 0 1 0 1 1 0
+## [169] 0 1 1 0 0 1 1 1 1 0 1 1 0 0 0 1 0 1 0 1 1 1 0 1 1 0 0 1 0 0 0 0 1 0 0 0 1 0 1 0 1 1
+## [211] 0 1 0 0 0 0 1 1 0 0 1 1 1 0 1 1 1 1 1 0 0 1 1 0 1 1 0 0 1 0 1 1 1 1 0 1 1 1 1 1 0 1
+## [253] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 1 1 1 1 1 1
+## [295] 1 1 1 0 1 1 0 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 0 1 0 1 1 1 1 0 0 0 1 1 1 1 0
+## [337] 1 0 1 0 1 1 1 0 1 1 1 1 1 1 1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 0 0 1 0 0 0 1 0 0 1 1 1 1
+## [379] 1 0 1 1 1 1 1 0 1 1 1 0 1 1 0 0 1 1 1 1 1 1 0 1 1 1 1 1 1 1 0 1 1 1 1 1 0 1 1 0 1 1
+## [421] 1 1 1 1 1 1 1 1 1 1 0 1 0 0 1 0 1 1 1 1 1 0 1 1 0 1 0 1 1 0 1 0 1 1 1 1 1 1 1 1 0 0
+## [463] 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 0 1 0 1 1 0 1 1 1 1 1 0 0 1 0 1 0
+## [505] 1 1 1 1 1 0 1 1 0 1 0 1 0 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 0 1 0 0 1 1 1 1 1 1 1 1 1
+## [547] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 1&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;오즈&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;오즈&lt;/h3&gt;
+&lt;p&gt;오즈(odds)는 해당 bins별 불량 1건당 우량이 몇 건인지를 나타내는 불량 클래스 대비 우량 클래스 비율을 나타낸다. 그러므로 오즈는 1을 기준으로 1을 초과하면 우량 비율이, 1 미만이면 불량 비율이 높다는 것을 의미한다. 그 값이 1에서 멀어질수록 해당 bins에서 우량 또는 불량의 구분이 명확하다는 것을 의미한다. n개의 bins에 대한 odds의 산식은 다음과 같다. &lt;span class=&#34;math inline&#34;&gt;\(Npos\)&lt;/span&gt;와 &lt;span class=&#34;math inline&#34;&gt;\(Nneg\)&lt;/span&gt;는 각각 우량 건수와 불량 건수를 의미한다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(odds_i = Npos_i / Nneg_i, i = 1, 2, \cdots, n\)&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;[6.98,11.8]에서의 오즈가 49로 가장 크다. 반대로 (16.8,28.1]에서의 오즈가 0에 가깝다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bin_radius_mean %&amp;gt;% 
+  attr(&amp;quot;performance&amp;quot;) %&amp;gt;% 
+  select(Bin, CntPos, CntNeg, Odds)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##           Bin CntPos CntNeg     Odds
+## 1 [6.98,11.8]    147      3 49.00000
+## 2 (11.8,13.1]    105     10 10.50000
+## 3   (13.1,15]     94     38  2.47368
+## 4   (15,16.8]     10     44  0.22727
+## 5 (16.8,28.1]      1    117  0.00855
+## 6       Total    357    212  1.68396&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;woe&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;WOE&lt;/h3&gt;
+&lt;p&gt;Weight of Evidence는 각 bins가 우량과 불량을 판별하는데 얼마나 많은 정보를 주고 있는가를 나타낸다. bins별 WOE의 값이 커지면 커질수록 해당 범주형 변수의 예측능력은 더욱더 높아짐을 의미한다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(WOE_i = log \left( \frac {Npos_i/\sum_{i=1}^N Npos_i}{Nneg_i / \sum_{i=1}^N Nneg_i} \right), i = 1, 2, \cdots, n\)&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bin_radius_mean %&amp;gt;% 
+  attr(&amp;quot;performance&amp;quot;) %&amp;gt;% 
+  select(Bin, CntPos, CntNeg, Odds, WoE)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##           Bin CntPos CntNeg     Odds      WoE
+## 1 [6.98,11.8]    147      3 49.00000  3.37067
+## 2 (11.8,13.1]    105     10 10.50000  1.83023
+## 3   (13.1,15]     94     38  2.47368  0.38456
+## 4   (15,16.8]     10     44  0.22727 -2.00275
+## 5 (16.8,28.1]      1    117  0.00855 -5.28332
+## 6       Total    357    212  1.68396       NA&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;비닝이 의미가 있기 위해서는 ordered factor로 표현된 bins의 순서대로 WOE는 단조증가 하거나 단조감소해야 한다. 이 최적 비닝 예제에서 bins의 순서대로 WOE 분포는 다음 플롯처럼 단조 감소한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(bin_radius_mean, type = &amp;quot;WoE&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-02/optimal_binning_files/figure-html/unnamed-chunk-19-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;information-value&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Information Value&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Information Value(IV)는 모형의 예측력에 변수가 기여하는 정도를 가늠하는 측도다.&lt;/strong&gt; 이 값은 bins별로 측정하는 것이 아닌, 변수 레벨로 측정하는 측도이므로 다음의 식으로 구한다. bins별로 계산후 합산하여 변수의 IV를 계산한다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(IV_i = \left( {Npos_i/\sum_{i=1}^N Npos_i} \right) - \left( {Nneg_i / \sum_{i=1}^N Nneg_i} \right) \times WOE_i ,i = 1, 2, \cdots, n\)&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(IV = \sum_{i=1}^NIV_i, i = 1, 2, \cdots, n\)&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;통상적으로 IV에 따른 변수의 예측력은 다음과 같다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(IV &amp;lt;= 0.02\)&lt;/span&gt; : 예측불능&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(0.02 &amp;lt; IV &amp;lt;= 0.1\)&lt;/span&gt; : 약한 예측력&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(0.1 &amp;lt; IV &amp;lt;= 0.3\)&lt;/span&gt; : 중간 예측력&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(0.3 &amp;lt; IV\)&lt;/span&gt; : 강한 예측력&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bin_radius_mean %&amp;gt;% 
+  attr(&amp;quot;performance&amp;quot;) %&amp;gt;% 
+  select(Bin, CntPos, CntNeg, Odds, WoE, IV)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##           Bin CntPos CntNeg     Odds      WoE      IV
+## 1 [6.98,11.8]    147      3 49.00000  3.37067 1.34023
+## 2 (11.8,13.1]    105     10 10.50000  1.83023 0.45197
+## 3   (13.1,15]     94     38  2.47368  0.38456 0.03233
+## 4   (15,16.8]     10     44  0.22727 -2.00275 0.35957
+## 5 (16.8,28.1]      1    117  0.00855 -5.28332 2.90100
+## 6       Total    357    212  1.68396       NA 5.08509&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;kolmogorov-smirnov-statisticsk-s-통계량&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Kolmogorov-Smirnov statistics(K-S 통계량)&lt;/h3&gt;
+&lt;p&gt;스코어 카드 모델의 변별력을 나타내는 지표로서 구간별 우량 누적비율에서 불량 누적비율을 뺀 값 중 가장 큰 값을 의미한다. 비닝된 변수의 변별력을 평가할 수도 있다. K-S 통계량이 클수록 우량 혹은 negative를 판별하는 모형으로서 의미가 있으며, 다음 수식으로 구한다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;K-S 통계량 = &lt;span class=&#34;math inline&#34;&gt;\(max |우량 누적비율_i - 불량 누적비율_i|, i = 1, 2, \cdots, n\)&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;다음처럼 K-S 통계량이 0.2 이상일 경우에 모형(혹은 비닝된 변수)의 변별력이 확보되는 것으로 판단한다.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;center&#34;&gt;모형 변별력&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;K-S 통계량&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;center&#34;&gt;Minimum&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0.2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;center&#34;&gt;Average&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0.3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;center&#34;&gt;Very Good&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0.4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;center&#34;&gt;Excellent&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0.5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bin_radius_mean %&amp;gt;% 
+  attr(&amp;quot;performance&amp;quot;) %&amp;gt;% 
+  filter(Bin != &amp;quot;Total&amp;quot;) %&amp;gt;% 
+  summarise(KS = max(abs(RateCumPos - RateCumNeg)))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##        KS
+## 1 0.72862&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;roc-곡선과-auc&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;ROC 곡선과 AUC&lt;/h3&gt;
+&lt;p&gt;ROC(Receiver Operating Characteristic) 곡선은 수평축(x-축)에 우량 누적구성비, 수직축(y-축)에는 불량 누적구성비를 나타낸 곡선으로서 우량과 불량의 Trade-Off 관계를 보여주기 때문에 Trade-Off 곡선이라고도 한다. 모형의 변별력을 나타내는 지표로 사용하며, ROC 곡선 아래의 면적(AUC; Area Under Roc)이 넓을수록 모형의 변별력이 높다. (비닝된 변수의 성능이 높다.)&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;AUC는 ROC 곡선의 아래쪽 영역으로 이 값이 클수록 모형의 변별력이 큰 것을 의미한다. 다음 플롯으로 AUC의 규모를 파악할 수 있지만, 각 bins별 AUC의 합으로 계산할 수도 있다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(ggplot2)
+
+#  시작점이 원점(RateCumNeg = 0, RateCumPos = 0)을 추가하여 그린다.
+data.frame(RateCumNeg = 0, RateCumPos = 0) %&amp;gt;% 
+  bind_rows(bin_radius_mean %&amp;gt;% 
+              attr(&amp;quot;performance&amp;quot;) %&amp;gt;% 
+              filter(Bin != &amp;quot;Total&amp;quot;) %&amp;gt;% 
+              select(RateCumNeg, RateCumPos)) %&amp;gt;% 
+  ggplot(aes(x = RateCumNeg, y = RateCumPos)) +
+  geom_point(color = &amp;quot;red&amp;quot;) +
+  geom_line(color = &amp;quot;red&amp;quot;) +
+  ylim(0, 1)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-02/optimal_binning_files/figure-html/unnamed-chunk-22-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;bins별 AUC의 합은 다음과 같이 계산한다. 아니면 &lt;code&gt;Total&lt;/code&gt; 레코드의 값을 가져와도 된다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bin_radius_mean %&amp;gt;% 
+  attr(&amp;quot;performance&amp;quot;) %&amp;gt;% 
+  filter(Bin != &amp;quot;Total&amp;quot;) %&amp;gt;% 
+  summarise(sum(AUC)) %&amp;gt;% 
+  pull&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 0.93456&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;로렌츠-곡선과-지니계수&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;로렌츠 곡선과 지니계수&lt;/h3&gt;
+&lt;p&gt;로렌츠(Lorenz) 곡선은 수평축(x-축)에 불량 누적구성비, 수직축(y-축)에는 우량 누적구성비를 나타낸 곡선이다. 로렌츠 곡선은 동일한 불량누적 구성비에서 해당 우량 누적구성비가 낮으면 모형의 변별력이 높다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#  시작점이 원점(RateCumNeg = 0, RateCumPos = 0)을 추가하여 그린다.
+data.frame(RateCumNeg = 0, RateCumPos = 0) %&amp;gt;% 
+  bind_rows(bin_radius_mean %&amp;gt;% 
+              attr(&amp;quot;performance&amp;quot;) %&amp;gt;% 
+              filter(Bin != &amp;quot;Total&amp;quot;) %&amp;gt;% 
+              select(RateCumNeg, RateCumPos)) %&amp;gt;% 
+  ggplot(aes(y = RateCumNeg, x = RateCumPos)) +
+  geom_point(color = &amp;quot;red&amp;quot;) +
+  geom_line(color = &amp;quot;red&amp;quot;) +
+  geom_abline(intercept = 0, slope = 1) +
+  annotate(&amp;quot;text&amp;quot;, x = 0.625, y = 0.375, label = &amp;quot;A&amp;quot;, size = 7) + 
+  annotate(&amp;quot;text&amp;quot;, x = 0.875, y = 0.063, label = &amp;quot;B&amp;quot;, size = 7) + 
+  xlim(0, 1)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2021-02/optimal_binning_files/figure-html/unnamed-chunk-24-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;선형직선과 로렌츠 곡선 사이의 면적을 이용해서 지니계수(Gini Coefficient)를 구한다. 그림에서 선형직선과 로렌츠 곡선 사이의 면적 A, 지니계수 아래의 면적을 B라고 하면 지니계수는 &lt;span class=&#34;math inline&#34;&gt;\(\frac{A}{A + B}\)&lt;/span&gt; 인데 &lt;span class=&#34;math inline&#34;&gt;\(2 \times AUC - 1\)&lt;/span&gt;로 구한다. 그림에서 면적 A가 넓으면 지니계수도 커지는데 면적 A가 넓다는 것은 불량누적비가 높아질 때, 우량누적비의 증가량은 낮게 증가한다는 의미다.&lt;/p&gt;
+&lt;p&gt;다음처럼 지니계수가 0.25 이상일 경우에 모형(혹은 비닝된 변수)의 변별력이 확보되는 것으로 판단한다.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;center&#34;&gt;모형 변별력&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;지니계수&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;center&#34;&gt;Minimum&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0.25&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;center&#34;&gt;Average&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0.35&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;center&#34;&gt;Very Good&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0.5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;center&#34;&gt;Excellent&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0.6&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div id=&#34;카이스퀘어-통계량&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;카이스퀘어 통계량&lt;/h3&gt;
+&lt;p&gt;예제의 bins의개수는 &lt;span class=&#34;math inline&#34;&gt;\(bin_1, bin_2, \cdots, bin_5\)&lt;/span&gt; 5개다. 이것을 순차적으로 2개의 bins로 카이스퀘어 검정을 수행할 수 있다.
+즉, 4개의 쌍&lt;span class=&#34;math inline&#34;&gt;\((bin_1, bin_2), (bin_2, bin_3), (bin_3, bin_4), (bin_4, bin_5)\)&lt;/span&gt;에 대해서 다음의 가설을 수립한다.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(H_0\)&lt;/span&gt; : &lt;span class=&#34;math inline&#34;&gt;\((bin_i, bin_{i+1})\)&lt;/span&gt; 변수와 종속변수(악성종양 여부)와는 독립이다.&lt;br /&gt;
+&lt;span class=&#34;math inline&#34;&gt;\(H_1\)&lt;/span&gt; : &lt;span class=&#34;math inline&#34;&gt;\((bin_i, bin_{i+1})\)&lt;/span&gt; 변수와 종속변수(악성종양 여부)와는 독립이 아니다.&lt;/p&gt;
+&lt;p&gt;앞의 &lt;code&gt;summary()&lt;/code&gt; 함수의 결과를 보면 네 개 검정의 p-value가 모두 0.05보다 작았다. 즉, 나누어진 bins들은 유의하게 비닝된 것이다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;결언&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;결언&lt;/h2&gt;
+&lt;p&gt;스코어카드를 만들 때 사용하는 최적 비닝 방법과 대표적인 스코어카드의 성능 지표에 대해서 살펴 보았다. 스코어카드를 개발하거나, 비닝 필요한 경우 dlookr의 최적 비닝을 활용해 보기 바란다.&lt;/p&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
     <item>
       <title>비닝(Binning)</title>
       <link>/post/2021-02/binning/</link>
@@ -131,29 +787,29 @@ dim(carseats)&lt;/code&gt;&lt;/pre&gt;
 carseats[sample(seq(NROW(carseats)), 5), &amp;quot;Urban&amp;quot;] &amp;lt;- NA
 
 carseats$Income&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;##   [1]  73  48  35 100  64 113 105  81 110 113  78  94  35  28  NA  95  32  74
+&lt;pre&gt;&lt;code&gt;##   [1]  73  48  35  NA  64 113 105  81 110 113  78  94  35  28 117  95  32  74
 ##  [19] 110  76  90  29  46  31 119  32 115 118  74  99  94  58  32  38  54  84
-##  [37]  76  41  73  60  98  53  69  42  79  63  90  98  52  93  32  90  40  64
-##  [55] 103  81  82  91  93  71 102  32  45  88  67  NA  92  61  69  59  81  51
-##  [73]  45  90  68 111  87  NA  48  NA 100  72  83  36  25 103  84  67  42  66
-##  [91]  22  46 113  30  97  25  42  82  77  47  69  93  22  91  96 100  33 107
-## [109]  79  65  62 118  99  29  87  35  75  53  88  94 105  NA 100 103 113  78
-## [127]  NA  48 100 120  84  69  87  98  31  94  75  42 103  62  60  42  84  88
-## [145]  68  NA  83  54 119 120  84  58  78  36  69  72  34  58  90  60  28  21
-## [163]  74  64  64  58  67  73  89  41  39 106  NA  91  24  89 107  72  71  NA
-## [181] 112  83  60  74  33 100  51  32  37 117  37  42  NA  70  98  93  28  61
-## [199]  80  88  92  83  78  82  80  22  67 105  54  21  41 118  69  84 115  83
+##  [37]  76  41  73  60  98  53  69  42  NA  63  90  98  52  93  32  90  40  64
+##  [55] 103  81  NA  91  93  71 102  32  45  88  67  26  92  61  69  59  81  51
+##  [73]  45  90  68 111  87  71  48  67 100  72  83  36  25 103  84  67  42  66
+##  [91]  NA  46 113  30  97  25  42  82  77  47  69  93  22  91  96 100  33 107
+## [109]  79  65  62 118  99  29  87  35  75  53  88  94 105  89 100 103 113  78
+## [127]  68  48 100 120  84  69  87  98  31  94  75  42 103  62  60  42  84  88
+## [145]  68  63  83  54 119  NA  84  58  78  36  69  72  34  58  NA  60  28  21
+## [163]  74  64  NA  58  67  73  89  41  39 106 102  91  24  NA 107  72  71  25
+## [181] 112  NA  60  74  33 100  51  32  37 117  37  42  26  70  98  NA  28  61
+## [199]  80  88  92  83  78  82  80  22  NA 105  NA  21  41 118  69  84 115  83
 ## [217]  33  44  61  79 120  44 119  45  82  25  33  64  73 104  60  69  80  76
-## [235]  62  32  34  28  24 105  80  63  NA  25  30  43  56 114  52  NA 105 111
-## [253]  97  NA 104  81  40  62  38  36 117  42  77  26  29  35  93  82  57  69
+## [235]  62  32  34  28  24 105  80  63  46  25  30  43  56  NA  52  67 105 111
+## [253]  97  24 104  NA  40  62  NA  36 117  NA  77  26  29  35  93  82  57  69
 ## [271]  26  56  33 106  93 119  69  48 113  57  86  69  96 110  46  26 118  44
 ## [289]  40  77 111  70  66  84  76  35  44  83  63  40  78  93  77  52  98  29
-## [307]  32  92  80 111  65  68 117  81  NA  21  36  30  72  45  70  39  50  NA
-## [325]  NA  69  30  38  66  54  59  63  33  60 117  70  35  NA  24  44  29 120
-## [343] 102  NA  80  68 107  39 102  27 101 115 103  67  31 100 109  73  96  62
-## [361]  86  25  55  75  21  30  56 106  22 100  41  81  50  71  47  46  NA  61
-## [379]  88  NA  64  65  28 117  37  73 116  73  89  42  75  63  42  51  58 108
-## [397]  23  26  79  37&lt;/code&gt;&lt;/pre&gt;
+## [307]  32  92  80 111  65  68 117  81  33  21  36  NA  72  45  70  39  50 105
+## [325]  65  69  30  38  66  54  59  63  33  60 117  NA  35  38  24  44  29 120
+## [343] 102  42  80  68 107  39 102  27 101 115  NA  67  31 100 109  73  96  62
+## [361]  86  25  55  75  21  30  56 106  22 100  41  81  50  71  47  46  60  61
+## [379]  88 111  64  65  28 117  37  73 116  73  89  42  75  63  42  51  58 108
+## [397]  23  26  79  NA&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;비닝하기&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;비닝하기&lt;/h3&gt;
@@ -166,21 +822,21 @@ bin&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## binned type: quantile
 ## number of bins: 10
 ## x
-##    [21,31]  (31,39.4]  (39.4,50]    (50,62]    (62,69]    (69,78]    (78,86] 
-##         40         36         39         40         37         39         36 
-##  (86,96.6] (96.6,107]  (107,120]       &amp;lt;NA&amp;gt; 
+##    [21,30]    (30,39]    (39,48]    (48,61]    (61,69]  (69,76.5]  (76.5,84] 
+##         39         39         38         37         45         30         39 
+##  (84,96.6] (96.6,107]  (107,120]       &amp;lt;NA&amp;gt; 
 ##         37         39         37         20&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;code&gt;summary()&lt;/code&gt; 함수는 범주화된 구간의 도수분포표(frequency table)를 구해준다.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(bin)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##        levels freq   rate
-## 1     [21,31]   40 0.1000
-## 2   (31,39.4]   36 0.0900
-## 3   (39.4,50]   39 0.0975
-## 4     (50,62]   40 0.1000
-## 5     (62,69]   37 0.0925
-## 6     (69,78]   39 0.0975
-## 7     (78,86]   36 0.0900
-## 8   (86,96.6]   37 0.0925
+## 1     [21,30]   39 0.0975
+## 2     (30,39]   39 0.0975
+## 3     (39,48]   38 0.0950
+## 4     (48,61]   37 0.0925
+## 5     (61,69]   45 0.1125
+## 6   (69,76.5]   30 0.0750
+## 7   (76.5,84]   39 0.0975
+## 8   (84,96.6]   37 0.0925
 ## 9  (96.6,107]   39 0.0975
 ## 10  (107,120]   37 0.0925
 ## 11       &amp;lt;NA&amp;gt;   20 0.0500&lt;/code&gt;&lt;/pre&gt;
@@ -197,20 +853,20 @@ bin_equal&lt;/code&gt;&lt;/pre&gt;
 ## number of bins: 10
 ## x
 ##   [21,30.9] (30.9,40.8] (40.8,50.7] (50.7,60.6] (60.6,70.5] (70.5,80.4] 
-##          37          43          35          31          50          45 
+##          39          43          36          31          52          45 
 ## (80.4,90.3]  (90.3,100]   (100,110]   (110,120]        &amp;lt;NA&amp;gt; 
-##          42          38          27          32          20&lt;/code&gt;&lt;/pre&gt;
+##          38          36          28          32          20&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(bin_equal)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##         levels freq   rate
-## 1    [21,30.9]   37 0.0925
+## 1    [21,30.9]   39 0.0975
 ## 2  (30.9,40.8]   43 0.1075
-## 3  (40.8,50.7]   35 0.0875
+## 3  (40.8,50.7]   36 0.0900
 ## 4  (50.7,60.6]   31 0.0775
-## 5  (60.6,70.5]   50 0.1250
+## 5  (60.6,70.5]   52 0.1300
 ## 6  (70.5,80.4]   45 0.1125
-## 7  (80.4,90.3]   42 0.1050
-## 8   (90.3,100]   38 0.0950
-## 9    (100,110]   27 0.0675
+## 7  (80.4,90.3]   38 0.0950
+## 8   (90.3,100]   36 0.0900
+## 9    (100,110]   28 0.0700
 ## 10   (110,120]   32 0.0800
 ## 11        &amp;lt;NA&amp;gt;   20 0.0500&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(bin_equal)&lt;/code&gt;&lt;/pre&gt;
@@ -223,20 +879,20 @@ bin_equal&lt;/code&gt;&lt;/pre&gt;
 ## number of bins: 10
 ## x
 ##   [21,30.9] (30.9,40.8] (40.8,50.7] (50.7,60.6] (60.6,70.5] (70.5,80.4] 
-##          37          43          35          31          50          45 
+##          39          43          36          31          52          45 
 ## (80.4,90.3]  (90.3,100]   (100,110]   (110,120]        &amp;lt;NA&amp;gt; 
-##          42          38          27          32          20&lt;/code&gt;&lt;/pre&gt;
+##          38          36          28          32          20&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(bin_equal)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##         levels freq   rate
-## 1    [21,30.9]   37 0.0925
+## 1    [21,30.9]   39 0.0975
 ## 2  (30.9,40.8]   43 0.1075
-## 3  (40.8,50.7]   35 0.0875
+## 3  (40.8,50.7]   36 0.0900
 ## 4  (50.7,60.6]   31 0.0775
-## 5  (60.6,70.5]   50 0.1250
+## 5  (60.6,70.5]   52 0.1300
 ## 6  (70.5,80.4]   45 0.1125
-## 7  (80.4,90.3]   42 0.1050
-## 8   (90.3,100]   38 0.0950
-## 9    (100,110]   27 0.0675
+## 7  (80.4,90.3]   38 0.0950
+## 8   (90.3,100]   36 0.0900
+## 9    (100,110]   28 0.0700
 ## 10   (110,120]   32 0.0800
 ## 11        &amp;lt;NA&amp;gt;   20 0.0500&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(bin_equal)&lt;/code&gt;&lt;/pre&gt;
@@ -249,20 +905,20 @@ bin_pretty&lt;/code&gt;&lt;/pre&gt;
 ## number of bins: 10
 ## x
 ##   [20,30]   (30,40]   (40,50]   (50,60]   (60,70]   (70,80]   (80,90]  (90,100] 
-##        37        43        35        31        50        45        42        38 
+##        39        43        36        31        52        45        38        36 
 ## (100,110] (110,120]      &amp;lt;NA&amp;gt; 
-##        27        32        20&lt;/code&gt;&lt;/pre&gt;
+##        28        32        20&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(bin_pretty)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##       levels freq   rate
-## 1    [20,30]   37 0.0925
+## 1    [20,30]   39 0.0975
 ## 2    (30,40]   43 0.1075
-## 3    (40,50]   35 0.0875
+## 3    (40,50]   36 0.0900
 ## 4    (50,60]   31 0.0775
-## 5    (60,70]   50 0.1250
+## 5    (60,70]   52 0.1300
 ## 6    (70,80]   45 0.1125
-## 7    (80,90]   42 0.1050
-## 8   (90,100]   38 0.0950
-## 9  (100,110]   27 0.0675
+## 7    (80,90]   38 0.0950
+## 8   (90,100]   36 0.0900
+## 9  (100,110]   28 0.0700
 ## 10 (110,120]   32 0.0800
 ## 11      &amp;lt;NA&amp;gt;   20 0.0500&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(bin_pretty)&lt;/code&gt;&lt;/pre&gt;
@@ -274,22 +930,22 @@ bin_kmeans&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## binned type: kmeans
 ## number of bins: 10
 ## x
-##   [21,35.5]   (35.5,49]   (49,61.5] (61.5,70.5] (70.5,78.5]   (78.5,85] 
-##          62          51          37          46          35          34 
-##   (85,92.5] (92.5,99.5]  (99.5,110]   (110,120]        &amp;lt;NA&amp;gt; 
-##          24          24          35          32          20&lt;/code&gt;&lt;/pre&gt;
+##   [21,28.5] (28.5,37.5] (37.5,47.5] (47.5,56.5] (56.5,65.5] (65.5,74.5] 
+##          30          42          40          21          40          47 
+##   (74.5,85]   (85,96.5]  (96.5,108]   (108,120]        &amp;lt;NA&amp;gt; 
+##          47          37          40          36          20&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(bin_kmeans)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##         levels freq   rate
-## 1    [21,35.5]   62 0.1550
-## 2    (35.5,49]   51 0.1275
-## 3    (49,61.5]   37 0.0925
-## 4  (61.5,70.5]   46 0.1150
-## 5  (70.5,78.5]   35 0.0875
-## 6    (78.5,85]   34 0.0850
-## 7    (85,92.5]   24 0.0600
-## 8  (92.5,99.5]   24 0.0600
-## 9   (99.5,110]   35 0.0875
-## 10   (110,120]   32 0.0800
+## 1    [21,28.5]   30 0.0750
+## 2  (28.5,37.5]   42 0.1050
+## 3  (37.5,47.5]   40 0.1000
+## 4  (47.5,56.5]   21 0.0525
+## 5  (56.5,65.5]   40 0.1000
+## 6  (65.5,74.5]   47 0.1175
+## 7    (74.5,85]   47 0.1175
+## 8    (85,96.5]   37 0.0925
+## 9   (96.5,108]   40 0.1000
+## 10   (108,120]   36 0.0900
 ## 11        &amp;lt;NA&amp;gt;   20 0.0500&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(bin_kmeans)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2021-02/binning_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;75%&#34; /&gt;&lt;/p&gt;
@@ -300,22 +956,22 @@ bin_bclust&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## binned type: bclust
 ## number of bins: 10
 ## x
-##   [21,29.5] (29.5,37.5] (37.5,47.5] (47.5,55.5] (55.5,61.5] (61.5,71.5] 
-##          32          38          39          19          22          49 
-##   (71.5,85]   (85,98.5]  (98.5,108]   (108,120]        &amp;lt;NA&amp;gt; 
-##          66          46          33          36          20&lt;/code&gt;&lt;/pre&gt;
+##   [21,30.5] (30.5,39.5]   (39.5,49]   (49,58.5] (58.5,65.5] (65.5,79.5] 
+##          39          39          38          24          33          67 
+## (79.5,86.5] (86.5,96.5]  (96.5,110]   (110,120]        &amp;lt;NA&amp;gt; 
+##          29          35          44          32          20&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(bin_bclust)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##         levels freq   rate
-## 1    [21,29.5]   32 0.0800
-## 2  (29.5,37.5]   38 0.0950
-## 3  (37.5,47.5]   39 0.0975
-## 4  (47.5,55.5]   19 0.0475
-## 5  (55.5,61.5]   22 0.0550
-## 6  (61.5,71.5]   49 0.1225
-## 7    (71.5,85]   66 0.1650
-## 8    (85,98.5]   46 0.1150
-## 9   (98.5,108]   33 0.0825
-## 10   (108,120]   36 0.0900
+## 1    [21,30.5]   39 0.0975
+## 2  (30.5,39.5]   39 0.0975
+## 3    (39.5,49]   38 0.0950
+## 4    (49,58.5]   24 0.0600
+## 5  (58.5,65.5]   33 0.0825
+## 6  (65.5,79.5]   67 0.1675
+## 7  (79.5,86.5]   29 0.0725
+## 8  (86.5,96.5]   35 0.0875
+## 9   (96.5,110]   44 0.1100
+## 10   (110,120]   32 0.0800
 ## 11        &amp;lt;NA&amp;gt;   20 0.0500&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(bin_bclust)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2021-02/binning_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;75%&#34; /&gt;&lt;/p&gt;
@@ -326,9 +982,9 @@ bin_bclust&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;carseats$Income_bin &amp;lt;- extract(bin_bclust)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;비닝된 모든 관측치를 살펴보기에는 건수가 크니 앞의 20건만 살펴보자.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;head(carseats$Income_bin, n = 10)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;##  [1] (71.5,85]   (47.5,55.5] (29.5,37.5] (98.5,108]  (61.5,71.5] (108,120]  
-##  [7] (98.5,108]  (71.5,85]   (108,120]   (108,120]  
-## 10 Levels: [21,29.5] &amp;lt; (29.5,37.5] &amp;lt; (37.5,47.5] &amp;lt; ... &amp;lt; (108,120]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  [1] (65.5,79.5] (39.5,49]   (30.5,39.5] &amp;lt;NA&amp;gt;        (58.5,65.5] (110,120]  
+##  [7] (96.5,110]  (79.5,86.5] (96.5,110]  (110,120]  
+## 10 Levels: [21,30.5] &amp;lt; (30.5,39.5] &amp;lt; (39.5,49] &amp;lt; (49,58.5] &amp;lt; ... &amp;lt; (110,120]&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;dplyr-패키지와의-협업&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;dplyr 패키지와의 협업&lt;/h3&gt;
@@ -345,16 +1001,16 @@ carseats %&amp;gt;%
 ## # Groups:   ShelveLoc [3]
 ##    ShelveLoc Income_bin  freq
 ##    &amp;lt;fct&amp;gt;     &amp;lt;ord&amp;gt;      &amp;lt;int&amp;gt;
-##  1 Bad       (50,62]       13
-##  2 Bad       (107,120]     11
-##  3 Bad       (78,86]       10
-##  4 Bad       (96.6,107]    10
-##  5 Bad       (39.4,50]      9
-##  6 Bad       (86,96.6]      9
-##  7 Bad       (69,78]        8
-##  8 Bad       (31,39.4]      7
-##  9 Bad       (62,69]        7
-## 10 Bad       [21,31]        6
+##  1 Bad       (48,61]       11
+##  2 Bad       (61,69]       11
+##  3 Bad       (76.5,84]     11
+##  4 Bad       (107,120]     11
+##  5 Bad       (39,48]       10
+##  6 Bad       (84,96.6]     10
+##  7 Bad       (96.6,107]    10
+##  8 Bad       [21,30]        6
+##  9 Bad       (30,39]        6
+## 10 Bad       (69,76.5]      5
 ## # … with 23 more rows&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;code&gt;dlookr&lt;/code&gt; 패키지의 &lt;code&gt;target_by()&lt;/code&gt;, &lt;code&gt;relate()&lt;/code&gt;, &lt;code&gt;plot.relate()&lt;/code&gt; 함수를 이용하면, dplyr 구문 형태로 쉽게 그 분포를 시각화 할 수 있다.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;carseats %&amp;gt;%
@@ -377,14 +1033,14 @@ bin_bclust&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## binned type: bclust
 ## number of bins: 5
 ## x
-##   [21,39.5] (39.5,64.5] (64.5,79.5] (79.5,95.5]  (95.5,120]        &amp;lt;NA&amp;gt; 
-##          76          90          69          66          79          20&lt;/code&gt;&lt;/pre&gt;
+##     [21,49]   (49,64.5] (64.5,78.5] (78.5,95.5]  (95.5,120]        &amp;lt;NA&amp;gt; 
+##         116          53          68          64          79          20&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(bin_bclust)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##        levels freq   rate
-## 1   [21,39.5]   76 0.1900
-## 2 (39.5,64.5]   90 0.2250
-## 3 (64.5,79.5]   69 0.1725
-## 4 (79.5,95.5]   66 0.1650
+## 1     [21,49]  116 0.2900
+## 2   (49,64.5]   53 0.1325
+## 3 (64.5,78.5]   68 0.1700
+## 4 (78.5,95.5]   64 0.1600
 ## 5  (95.5,120]   79 0.1975
 ## 6        &amp;lt;NA&amp;gt;   20 0.0500&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(bin_bclust)&lt;/code&gt;&lt;/pre&gt;
@@ -397,14 +1053,14 @@ bin_bclust&lt;/code&gt;&lt;/pre&gt;
 
 extract(bin_bclust) %&amp;gt;% 
   head()&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## [1] (71.5,86.5] (47.5,55.5] (26.5,39.5] (96.5,108]  (61.5,71.5] (108,120]  
-## 10 Levels: [21,26.5] &amp;lt; (26.5,39.5] &amp;lt; (39.5,47.5] &amp;lt; ... &amp;lt; (108,120]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] (67.5,74.5] (38.5,49]   (29.5,38.5] &amp;lt;NA&amp;gt;        (54.5,67.5] (110,120]  
+## 10 Levels: [21,29.5] &amp;lt; (29.5,38.5] &amp;lt; (38.5,49] &amp;lt; (49,54.5] &amp;lt; ... &amp;lt; (110,120]&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bin_bclust &amp;lt;- binning(carseats$Income, type = &amp;quot;bclust&amp;quot;, ordered = FALSE)
 
 extract(bin_bclust) %&amp;gt;% 
   head()&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## [1] (66.5,79.5] (37.5,49]   (27.5,37.5] (85,102]    (58.5,66.5] (108,120]  
-## 10 Levels: [21,27.5] (27.5,37.5] (37.5,49] (49,58.5] ... (108,120]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] (64.5,78.5] (37.5,53.5] (30.5,37.5] &amp;lt;NA&amp;gt;        (53.5,64.5] (104,114]  
+## 10 Levels: [21,30.5] (30.5,37.5] (37.5,53.5] (53.5,64.5] ... (114,120]&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;범주-라벨-지정하기&#34; class=&#34;section level4&#34;&gt;
 &lt;h4&gt;범주 라벨 지정하기&lt;/h4&gt;
@@ -415,37 +1071,39 @@ bin&lt;/code&gt;&lt;/pre&gt;
 ## number of bins: 3
 ## x
 ##    Low Middle   High   &amp;lt;NA&amp;gt; 
-##    127    131    122     20&lt;/code&gt;&lt;/pre&gt;
+##    129    126    125     20&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(bin)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##   levels freq   rate
-## 1    Low  127 0.3175
-## 2 Middle  131 0.3275
-## 3   High  122 0.3050
+## 1    Low  129 0.3225
+## 2 Middle  126 0.3150
+## 3   High  125 0.3125
 ## 4   &amp;lt;NA&amp;gt;   20 0.0500&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(bin)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2021-02/binning_files/figure-html/unnamed-chunk-21-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;breaks를-이쁘게-다듬기&#34; class=&#34;section level4&#34;&gt;
 &lt;h4&gt;Breaks를 이쁘게 다듬기&lt;/h4&gt;
-&lt;p&gt;연속형 변수에서 breaks는 일반적으로 소수점으로 만들어진다. 이 경우에는 개별 breaks의 소수점 아래 자리수가 다를 수 있다. 다른 자리수로 만든 범주는 시각적으로 해석하기에 거추장스럽다. 이 경우에는 &lt;code&gt;approxy.lab&lt;/code&gt; 인수를 TRUE로 지정하면 깔끔한 형태로 바꿔준다. 기본값이 TRUE이기 때문에 별도로 지정하지 않아도 된다.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bin &amp;lt;- binning(carseats$Income, approxy.lab = FALSE)
+&lt;p&gt;연속형 변수에서 breaks는 일반적으로 소수점으로 만들어진다. 이 경우에는 개별 breaks의 소수점 아래 자리수가 다를 수 있다. 다른 자리수로 만든 범주는 시각적으로 해석하기에 거추장스럽다. 이 경우에는 &lt;code&gt;approxy.lab&lt;/code&gt; 인수를 TRUE로 지정하면 비닝 breaks를 근사치로 변환해서 깔끔한 형태로 바꿔준다. 기본값이 TRUE이기 때문에 별도로 지정하지 않아도 된다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bin &amp;lt;- binning(carseats$Income, type = &amp;quot;bclust&amp;quot;, approxy.lab = FALSE)
 bin&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## binned type: quantile
+&lt;pre&gt;&lt;code&gt;## binned type: bclust
 ## number of bins: 10
 ## x
-##    [21,31]  (31,39.4]  (39.4,50]    (50,62]    (62,69]    (69,78]    (78,86] 
-##         40         36         39         40         37         39         36 
-##  (86,96.6] (96.6,107]  (107,120]       &amp;lt;NA&amp;gt; 
-##         37         39         37         20&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bin &amp;lt;- binning(carseats$Income, approxy.lab = TRUE)
+##     [21,32.5]   (32.5,37.5]     (37.5,49]     (49,62.5]   (62.5,70.5] 
+##            50            22            44            42            43 
+##   (70.5,86.5]   (86.5,95.5]  (95.5,100.5] (100.5,112.5]   (112.5,120] 
+##            68            32            19            34            26 
+##          &amp;lt;NA&amp;gt; 
+##            20&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bin &amp;lt;- binning(carseats$Income, type = &amp;quot;bclust&amp;quot;, approxy.lab = TRUE)
 bin&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## binned type: quantile
+&lt;pre&gt;&lt;code&gt;## binned type: bclust
 ## number of bins: 10
 ## x
-##    [21,31]  (31,39.4]  (39.4,50]    (50,62]    (62,69]    (69,78]    (78,86] 
-##         40         36         39         40         37         39         36 
-##  (86,96.6] (96.6,107]  (107,120]       &amp;lt;NA&amp;gt; 
-##         37         39         37         20&lt;/code&gt;&lt;/pre&gt;
+##   [21,34.5]   (34.5,49]   (49,54.5] (54.5,64.5] (64.5,77.5]   (77.5,85] 
+##          59          57          13          40          63          35 
+##   (85,94.5]  (94.5,102]   (102,110]   (110,120]        &amp;lt;NA&amp;gt; 
+##          33          25          23          32          20&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;

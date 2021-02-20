@@ -1,0 +1,1428 @@
+
+<!DOCTYPE html>
+<html lang="en" data-figures="" class="page">
+  <head>
+<title>스코어카드와 최적 비닝 | Dataholic</title>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.79.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-118779401-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-118779401-1');
+</script>
+<meta property="og:locale" content="en" />
+
+<meta property="og:type" content="article">
+<meta name="description" content="다룰 이야기 앞서 비닝에 대해서 다루었다. 특히 dlookr 패키지로 연속형 변수를 비닝하는 여러 솔루션을 다루었다.
+금융권에서 사용하는 스코어카드(scorecard) 기법에서는 연속형 변수를 범주형 변수로 변환하는 작업을 빈번히 사용한다. 이번에는 일반적인 비닝 방법이 아닌 최적 비 …">
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:creator" content="">
+<meta name="twitter:title" content="스코어카드와 최적 비닝" />
+<meta property="og:url" content="/post/2021-02/optimal_binning/" />
+<meta property="og:title" content="스코어카드와 최적 비닝" />
+<meta property="og:description" content="다룰 이야기 앞서 비닝에 대해서 다루었다. 특히 dlookr 패키지로 연속형 변수를 비닝하는 여러 솔루션을 다루었다.
+금융권에서 사용하는 스코어카드(scorecard) 기법에서는 연속형 변수를 범주형 변수로 변환하는 작업을 빈번히 사용한다. 이번에는 일반적인 비닝 방법이 아닌 최적 비 …" />
+<meta property="og:image" content="/" />
+<link rel="apple-touch-icon" sizes="180x180" href='/icons/apple-touch-icon.png'>
+<link rel="icon" type="image/png" sizes="32x32" href='/icons/favicon-32x32.png'>
+<link rel="manifest" href='/icons/site.webmanifest'>
+<link rel="mask-icon" href='/safari-pinned-tab.svg' color="#002538">
+<meta name="msapplication-TileColor" content="#002538">
+<meta name="theme-color" content="#002538">
+
+<link rel="canonical" href="/post/2021-02/optimal_binning/">
+
+    
+
+    
+    
+    <link rel="preload" href="/css/styles.2b3290fc6e94839826981c23ed76e1831472bd3f8af68332da00b97d9430b56bfb7e9394d5c09aca633c093c621709cdd745eec940be733933ac5d876223de52.css" integrity = "sha512-KzKQ/G6Ug5gmmBwj7XbhgxRyvT&#43;K9oMy2gC5fZQwtWv7fpOU1cCaymM8CTxiFwnN10XuyUC&#43;czkzrF2HYiPeUg==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="/js/bundle.min.03f1cc201c9efa18e14550bff374f58e89f1e6b2a30a0e22f84c87f6eb766e419bd6569c3a60846ea3e65816112dfa454f4785d306d024b6ef2616d067862a7a.js" as="script" integrity=
+    "sha512-A/HMIBye&#43;hjhRVC/83T1jonx5rKjCg4i&#43;EyH9ut2bkGb1lacOmCEbqPmWBYRLfpFT0eF0wbQJLbvJhbQZ4Yqeg==" crossorigin="anonymous">
+
+    
+    <link rel="stylesheet" type="text/css" href="/css/styles.2b3290fc6e94839826981c23ed76e1831472bd3f8af68332da00b97d9430b56bfb7e9394d5c09aca633c093c621709cdd745eec940be733933ac5d876223de52.css" integrity="sha512-KzKQ/G6Ug5gmmBwj7XbhgxRyvT&#43;K9oMy2gC5fZQwtWv7fpOU1cCaymM8CTxiFwnN10XuyUC&#43;czkzrF2HYiPeUg==" crossorigin="anonymous">
+    
+  </head>
+  
+  
+    
+  
+  <body data-code="7" data-lines="false" id="documentTop">
+
+<header class="nav_header" >
+  <nav class="nav">
+    <a href='/' class="nav_brand nav_item">
+      <img src="/logos/logo.png" class="logo">
+      <div class="nav_close">
+        <div>
+          <svg class="icon">
+  <use xlink:href="#open-menu"></use>
+</svg>
+          <svg class="icon">
+  <use xlink:href="#closeme"></use>
+</svg>
+        </div>
+      </div>
+    </a>
+    <div class='nav_body nav_body_left'>
+      
+      
+      
+        
+
+  <div class="nav_parent">
+    <a href="/" class="nav_item">Home </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/post/" class="nav_item">R </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/gallery/" class="nav_item">Gellary </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/moment/" class="nav_item">Moment </a>
+  </div>
+  <div class="nav_parent">
+    <a href="/about/" class="nav_item">About </a>
+  </div>
+      
+      <div class="nav_parent">
+        <a href="#" class="nav_item"></a>
+        <div class="nav_sub">
+          <span class="nav_child"></span>
+          
+          <a href="/" class="nav_child nav_item">English</a>
+          
+          <a href="/kr/" class="nav_child nav_item">Korean</a>
+          
+        </div>
+      </div>
+      
+<div class='follow'>
+  <a href="https://github.com/choonghyunryu">
+    <svg class="icon">
+  <use xlink:href="#github"></use>
+</svg>
+  </a>
+  <a href="https://www.facebook.com/choonghyun.ryu">
+    <svg class="icon">
+  <use xlink:href="#facebook"></use>
+</svg>
+  </a>
+  <a href="https://www.linkedin.com/in/choonghyun-ryu-10a95726/">
+    <svg class="icon">
+  <use xlink:href="#linkedin"></use>
+</svg>
+  </a>
+    
+  <a href="/index.xml">
+    <svg class="icon">
+  <use xlink:href="#rss"></use>
+</svg>
+  </a>
+<div class="color_mode">
+  <input type="checkbox" class="color_choice" id="mode">
+</div>
+
+</div>
+
+    </div>
+  </nav>
+</header>
+
+    <main>
+  
+<div class="grid-inverse wrap content">
+  <article class="post_content">
+    <h1 class="post_title">스코어카드와 최적 비닝</h1><div class="post_meta">
+  
+    <svg class="icon">
+  <use xlink:href="#calendar"></use>
+</svg>
+    <span class="post_date">
+      2021-02-07</span>
+      <a href='/tags/binning' class="post_tag button button_translucent">Binning
+      </a>
+      <a href='/tags/transformation' class="post_tag button button_translucent">Transformation
+      </a>
+      <a href='/tags/dlookr' class="post_tag button button_translucent">dlookr
+      </a>
+      <a href='/tags/scorecard' class="post_tag button button_translucent">Scorecard
+      </a>
+</div>
+
+    
+  <div class="post_share">
+    Share on:
+    <a href="https://twitter.com/intent/tweet?text=%ec%8a%a4%ec%bd%94%ec%96%b4%ec%b9%b4%eb%93%9c%ec%99%80%20%ec%b5%9c%ec%a0%81%20%eb%b9%84%eb%8b%9d&url=%2fpost%2f2021-02%2foptimal_binning%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#twitter"></use>
+</svg>
+    </a>
+    <a href="https://www.facebook.com/sharer.php?u=%2fpost%2f2021-02%2foptimal_binning%2f&t=%ec%8a%a4%ec%bd%94%ec%96%b4%ec%b9%b4%eb%93%9c%ec%99%80%20%ec%b5%9c%ec%a0%81%20%eb%b9%84%eb%8b%9d" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#facebook"></use>
+</svg>
+    </a>
+    <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#linkedin"></use>
+</svg>
+    </a>
+    <a href="/post/2021-02/optimal_binning/" title="Copy Link" class="link link_yank">
+      <svg class="icon">
+  <use xlink:href="#copy"></use>
+</svg>
+    </a>
+  </div>
+
+    
+    
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<div id="다룰-이야기" class="section level2">
+<h2>다룰 이야기</h2>
+<p>앞서 비닝에 대해서 다루었다. 특히 dlookr 패키지로 연속형 변수를 비닝하는 여러 솔루션을 다루었다.</p>
+<p>금융권에서 사용하는 스코어카드(scorecard) 기법에서는 연속형 변수를 범주형 변수로 변환하는 작업을 빈번히 사용한다. 이번에는 일반적인 비닝 방법이 아닌 최적 비닝(optimal binning) 방법을 사용한다.</p>
+<blockquote>
+<p>dlookr 패키지에는 일반적인 비닝과 스코어카드 모델(scoreCard modeling)을 위한 최적 비닝 기능을 지원한다. 여기서는 최적 비닝의 개념과 최적 비닝을 수행하고, 비닝 결과의 성능을 검증하는 방법을 다룬다.</p>
+</blockquote>
+</div>
+<div id="최적-비닝optimal-binning" class="section level2">
+<h2>최적 비닝(optimal binning)</h2>
+<p>최적 비닝은 비닝하고자 하는 연속형 변수(indicator)를 비닝할 때, 이진 클래스(binary class)의 종속 변수(target variable)를 고려한다. 즉, 이진분류(binary classification predict) 모델을 적용한다. 쉽게 말하자면 종속 변수의 positive 클래스의 예측력이 높은 수준(levels, 범주)과 그렇지 않은 수준으로 비닝한다. 이때 범주화(이산화)된 결과는 순서형 범주, 즉 ordered factor가 된다.</p>
+<p>이산화된 범주의 수준(여기서는 bins)의 positive 클래스 예측력은 단조 증감 추세(monotonic trend)를 가져야 한다. 즉, ordered factor로 표현된 bins의 순서대로 예측력이 단조증가(monotonic increase) 하거나 단조감소(monotonic decrease)해야 한다. 정확히 말하자면 뒤에서 다룰 WoE가 단조 중감추세를 가져야 한다.</p>
+<ul>
+<li>단조 증가 사례</li>
+</ul>
+<p><img src="../img/increase.png" width="65%" /></p>
+<ul>
+<li>단조 감소 사례</li>
+</ul>
+<p><img src="../img/decrease.png" width="65%" /></p>
+</div>
+<div id="데이터" class="section level2">
+<h2>데이터</h2>
+<div id="데이터-준비" class="section level3">
+<h3>데이터 준비</h3>
+<p>kaggle의 <a href="https://www.kaggle.com/tug004/breast-cancer-dataset에" class="uri">https://www.kaggle.com/tug004/breast-cancer-dataset에</a> <code>breast_cancer.csv</code>는 유방암 진단 데이터를 제공한다. 이 데이터로 Scorecard의 기초 측도(measures)와 최적 비닝을 살펴 본다.</p>
+<p>먼저 데이터를 다운로드한 후 R로 가져오자.</p>
+<pre class="r"><code>library(dplyr)
+library(dlookr)
+
+fname &lt;- &quot;breast_cancer.csv&quot;
+
+read.csv(fname) %&gt;% 
+  select(-X) -&gt; breast_cancer </code></pre>
+</div>
+<div id="데이터-진단" class="section level3">
+<h3>데이터 진단</h3>
+<pre class="r"><code>breast_cancer %&gt;% 
+  diagnose() %&gt;% 
+  as.data.frame()</code></pre>
+<pre><code>##                  variables     types missing_count missing_percent unique_count
+## 1                       id   integer             0               0          569
+## 2                diagnosis character             0               0            2
+## 3              radius_mean   numeric             0               0          456
+## 4             texture_mean   numeric             0               0          479
+## 5           perimeter_mean   numeric             0               0          522
+## 6                area_mean   numeric             0               0          539
+## 7          smoothness_mean   numeric             0               0          474
+## 8         compactness_mean   numeric             0               0          537
+## 9           concavity_mean   numeric             0               0          537
+## 10     concave.points_mean   numeric             0               0          542
+## 11           symmetry_mean   numeric             0               0          432
+## 12  fractal_dimension_mean   numeric             0               0          499
+## 13               radius_se   numeric             0               0          540
+## 14              texture_se   numeric             0               0          519
+## 15            perimeter_se   numeric             0               0          533
+## 16                 area_se   numeric             0               0          528
+## 17           smoothness_se   numeric             0               0          547
+## 18          compactness_se   numeric             0               0          541
+## 19            concavity_se   numeric             0               0          533
+## 20       concave.points_se   numeric             0               0          507
+## 21             symmetry_se   numeric             0               0          498
+## 22    fractal_dimension_se   numeric             0               0          545
+## 23            radius_worst   numeric             0               0          457
+## 24           texture_worst   numeric             0               0          511
+## 25         perimeter_worst   numeric             0               0          514
+## 26              area_worst   numeric             0               0          544
+## 27        smoothness_worst   numeric             0               0          411
+## 28       compactness_worst   numeric             0               0          529
+## 29         concavity_worst   numeric             0               0          539
+## 30    concave.points_worst   numeric             0               0          492
+## 31          symmetry_worst   numeric             0               0          500
+## 32 fractal_dimension_worst   numeric             0               0          535
+##    unique_rate
+## 1  1.000000000
+## 2  0.003514938
+## 3  0.801405975
+## 4  0.841827768
+## 5  0.917398946
+## 6  0.947275923
+## 7  0.833040422
+## 8  0.943760984
+## 9  0.943760984
+## 10 0.952548330
+## 11 0.759226714
+## 12 0.876977153
+## 13 0.949033392
+## 14 0.912126538
+## 15 0.936731107
+## 16 0.927943761
+## 17 0.961335677
+## 18 0.950790861
+## 19 0.936731107
+## 20 0.891036907
+## 21 0.875219684
+## 22 0.957820738
+## 23 0.803163445
+## 24 0.898066784
+## 25 0.903339192
+## 26 0.956063269
+## 27 0.722319859
+## 28 0.929701230
+## 29 0.947275923
+## 30 0.864674868
+## 31 0.878734622
+## 32 0.940246046</code></pre>
+<p>데이터를 진단할 결과를 보면 결측치도 없고, 연속형 변수의 중복값도 많지 않고, 대체적으로 양호하다.</p>
+</div>
+<div id="종속변수" class="section level3">
+<h3>종속변수</h3>
+<p><code>diagnosis</code>는 종속변수다. <code>B</code>는 <code>benign(양성 종양)</code>, <code>M</code>는 <code>malignant(악성 종양)</code>을 의미한다. positive를 <code>malignant(악성 종양)</code>인 <code>M</code>으로 negative를 <code>benign(양성 종양)</code>인 <code>B</code>로 정의하고 이야기를 풀어 나간다.</p>
+<pre class="r"><code>table(breast_cancer$diagnosis)</code></pre>
+<pre><code>## 
+##   B   M 
+## 357 212</code></pre>
+</div>
+</div>
+<div id="스코어카드-개념" class="section level2">
+<h2>스코어카드 개념</h2>
+<p>스코어카드 모델에서는 모델링으로 만들어진 최종 스코어를 비닝한 등급으로 모델의 성능을 평가한다. 이 과정이 최적 비닝과 유사하고, 그 성능 평가 지표도 동일하기에 모델의 성능을 평가하는 방법에 국한해서 설명한다. (스코어카드 모델링을 다루지는 않는다.)</p>
+<div id="준비" class="section level3">
+<h3>준비</h3>
+<p>먼저 관점의 정리가 필요하다. 역학 분석에 응용되는 사례-대조 연구(case-control studies)에서 사례군(case)은 보통 환자를 의미한다. 대조군은 환자가 아닌 군을 의미한다. 흡연이 폐암에 미치는 영향을 분석할 때 다음과 같은 분할표를 만들 수 있다.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"></th>
+<th align="center">폐암발생</th>
+<th align="center">폐암 미발생</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">흡연</td>
+<td align="center">a</td>
+<td align="center">b</td>
+</tr>
+<tr class="even">
+<td align="center">비흡연</td>
+<td align="center">c</td>
+<td align="center">d</td>
+</tr>
+</tbody>
+</table>
+<p>이것을 이진분류로 바라보면 폐암 발생여부는 예측하려는 변수인 종속변수(target variable)고, 흡연 여부는 종속변수를 설명하는 예측변수(predictor variable)다. 폐암발생 여부가 관심사이고, 이를 예측하려는 모델이므로 폐암발생은 positive, 폐암 미발생은 negative 클래스다. 즉, <strong>관심 대상이 되는 클래스가 positive 클래스다.</strong></p>
+<p>만약 환경과 질병의 인과관계를 규명하는 연구에서는 <code>질병발생</code>이 positive 클래스이고 <code>질병 미발생</code>이 negative 클래스일 것이다. 그러나 신약의 효과 규명하는 연구에서는 <code>완치</code>가 positive 클래스이고 <code>미완치</code>가 negative 클래스일 것이다. 즉, positive와 negative는 좋고 나쁨, 우열의 관계는 아니다. 간혹 positive와 negative를 양성과 음성으로 번역하여 표현하는 경우도 있으나, 개인적으로 마음에 들지 않아 그냥 포지티브(positive)와 네거티브(negative)라 칭하고 있다.</p>
+<p>연체여부, 부도여부 등을 설명하는 스코어카드도 종속변수와 예측변수로 일반화할 수 있다. 개념은 동일하다. 그러나 필드에서 부르는 클래스의 용어가 다르다. 그래서 용어가 어느 정도 혼란을 줄 수도 있겠다.</p>
+<p>질병 발생과 같은 의료분야 연구나, 연체, 부도와 같은 신용평점 모델에서의 종속변수의 클래스를 표현하는 용어는 positive 클래스, negative 클래스 보다는 good(우량), bad(불량)과 같은 표현을 한다. 폐암발생, 연체, 부도는 bad(불량)로 폐암 미발생, 연체 미발생은 good(우량)으로 표현한다. 관점(관심 대상이 되는 클래스)을 어떻게 보느냐에 따라 달라질 수 있는 여지가 없다.</p>
+</div>
+<div id="최적비닝-수행" class="section level3">
+<h3>최적비닝 수행</h3>
+<blockquote>
+<p>dlookr에서는 최적 비닝에서 이진 클래스를 good(우량), bad(불량)으로 부르지 않고, positive와 negative로 칭한다. 그러므로 스코어카드에 익숙한 사용자는 positive를 good(우량)으로, negative를 bad(불량)으로 생각하면 될 것이다. 그래서 이 글에서는 편의상 <code>양성종양</code>을 <code>우량</code>으로, <code>악성종양</code>은 <code>불량</code>으로 부른다. 그러므로 양성종양을 관심 클래스로 보고, 양성종양을 positive, 악성종양을 negative로 클래스로 보자.</p>
+</blockquote>
+<p>스코어카드 개념을 살펴보기 위해서 먼저 dlookr 패키지로 유방암 데이터 중에서 종양의 반지름 평균인 <code>radius_mean</code>을 최적비닝해 보자. 유방암 데이터는 여러 관측 측도로 악성 종양을 예측하는 사례용 데이터이므로 종속변수인 <code>diagnosis</code>를 고려해서 예측변수 <code>radius_mean</code>를 최적 비닝한다.</p>
+<p>다음은 dlookr의 <code>binning_by()</code> 함수로 최적비닝을 수행한다. dlookr의 <code>binning_by()</code> 함수는 종속 변수가 0과 1의 두가지로 코딩된 경우에 동작한다. positive 클래스가 1, negative 클래스가 0이어야 한다. 그러나 factor일 경우에는 자동으로 변환하여 비닝을 수행한다. 메시지를 보면 악성종양(M)이 1, 양성종양(B)이 0으로 변환되었다.</p>
+<pre class="r"><code>breast_cancer %&gt;% 
+  binning_by(diagnosis, radius_mean) -&gt; bin_radius_mean</code></pre>
+<pre><code>## Warning in binning_by(., diagnosis, radius_mean): The character y has been changed to a numeric vector consisting of 0 and 1.
+## &#39;M&#39; changed to 1 (positive) and &#39;B&#39; changed to 0 (negative).</code></pre>
+<p>비닝을 통해서 연속형 변수가 5개 수준을 갖는 범주형 변수로 변환되었다.</p>
+<pre class="r"><code>bin_radius_mean</code></pre>
+<pre><code>## binned type: optimal
+## number of bins: 5
+## x
+## [6.98,11.8] (11.8,13.1]   (13.1,15]   (15,16.8] (16.8,28.1] 
+##         150         115         132          54         118</code></pre>
+<p>분석하려는 관점이 다를 경우는 변수를 변환해서 사용해야 한다. 양성종양을 positive, 악성종양을 negative로 클래스로 보기로 했으므로, positive를 good(우량)으로, negative를 bad(불량)으로 정의하기 위해서 diagnosis_new이라는 파생변수를 만들어 최적 비닝을 수행한다.</p>
+<pre class="r"><code>breast_cancer %&gt;% 
+  mutate(diagnosis_new = ifelse(diagnosis == &#39;M&#39;, 0, 1)) %&gt;% 
+    binning_by(diagnosis_new, radius_mean) -&gt; bin_radius_mean</code></pre>
+<p>positive 클래스와 negative 클래스가 바뀌어도 결과는 동일하다.</p>
+<blockquote>
+<p>최적비닝만을 목적으로 한다면, 굳이 클래스를 변환하지 않더라도 비닝된 결과는 동일하므로 이진 factor일 경우에는 함수가 자동으로 0과 1로 변환하도록 해도 무방하다. 즉, 최적 비닝을 수행하는 용도라면 positive 클래스와 negative 클래스를 고민할 필요가 없다.</p>
+</blockquote>
+<pre class="r"><code>bin_radius_mean</code></pre>
+<pre><code>## binned type: optimal
+## number of bins: 5
+## x
+## [6.98,11.8] (11.8,13.1]   (13.1,15]   (15,16.8] (16.8,28.1] 
+##         150         115         132          54         118</code></pre>
+</div>
+<div id="비닝-결과의-요약" class="section level3">
+<h3>비닝 결과의 요약</h3>
+<p>비닝 결과로 다음 분할표를 유추할 수 있다.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"></th>
+<th align="center">우량(양성종양)</th>
+<th align="center">불량(악성종양)</th>
+<th align="center">합계</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">[6.98,11.8]</td>
+<td align="center">a</td>
+<td align="center">b</td>
+<td align="center">a + b = 150</td>
+</tr>
+<tr class="even">
+<td align="center">(11.8,13.1]</td>
+<td align="center">c</td>
+<td align="center">d</td>
+<td align="center">c + d = 115</td>
+</tr>
+<tr class="odd">
+<td align="center">(13.1,15]</td>
+<td align="center">e</td>
+<td align="center">f</td>
+<td align="center">e + f = 132</td>
+</tr>
+<tr class="even">
+<td align="center">(15,16.8]</td>
+<td align="center">g</td>
+<td align="center">h</td>
+<td align="center">g + h = 54</td>
+</tr>
+<tr class="odd">
+<td align="center">(16.8,28.1]</td>
+<td align="center">i</td>
+<td align="center">j</td>
+<td align="center">i + j = 118</td>
+</tr>
+</tbody>
+</table>
+<p>분할표의 각 셀의 분포를 알기 위해서는 다음의 명령을 수행한다.</p>
+<pre class="r"><code>table(bin_radius_mean, breast_cancer$diagnosis)</code></pre>
+<pre><code>##                
+## bin_radius_mean   B   M
+##     [6.98,11.8] 147   3
+##     (11.8,13.1] 105  10
+##     (13.1,15]    94  38
+##     (15,16.8]    10  44
+##     (16.8,28.1]   1 117</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="center"></th>
+<th align="center">우량</th>
+<th align="center">불량</th>
+<th align="center">합계</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">[6.98,11.8]</td>
+<td align="center">147</td>
+<td align="center">3</td>
+<td align="center">150</td>
+</tr>
+<tr class="even">
+<td align="center">(11.8,13.1]</td>
+<td align="center">105</td>
+<td align="center">10</td>
+<td align="center">115</td>
+</tr>
+<tr class="odd">
+<td align="center">(13.1,15]</td>
+<td align="center">94</td>
+<td align="center">38</td>
+<td align="center">132</td>
+</tr>
+<tr class="even">
+<td align="center">(15,16.8]</td>
+<td align="center">10</td>
+<td align="center">44</td>
+<td align="center">54</td>
+</tr>
+<tr class="odd">
+<td align="center">(16.8,28.1]</td>
+<td align="center">1</td>
+<td align="center">117</td>
+<td align="center">118</td>
+</tr>
+</tbody>
+</table>
+<p>이제 비닝의 성능을 살펴볼 기초 자료(분할표)가 정리되었다.</p>
+</div>
+<div id="비닝의-진단" class="section level3">
+<h3>비닝의 진단</h3>
+<p>summary() 함수는 비닝된 결과에 대해서 비닝의 성능을 평가할 수 있는 여러 정보를 계산해 준다. 이번에 다룰 내용이 이 정보들에 대한 가벼운 소개다.</p>
+<pre class="r"><code>summary(bin_radius_mean)</code></pre>
+<pre><code>## ── Binning Table ──────────────────────── Several Metrics ──
+##           Bin CntRec CntPos CntNeg RatePos RateNeg     Odds      WoE      IV     JSD
+## 1 [6.98,11.8]    150    147      3 0.41176 0.01415 49.00000  3.37067 1.34023 0.11657
+## 2 (11.8,13.1]    115    105     10 0.29412 0.04717 10.50000  1.83023 0.45197 0.04973
+## 3   (13.1,15]    132     94     38 0.26331 0.17925  2.47368  0.38456 0.03233 0.00402
+## 4   (15,16.8]     54     10     44 0.02801 0.20755  0.22727 -2.00275 0.35957 0.03868
+## 5 (16.8,28.1]    118      1    117 0.00280 0.55189  0.00855 -5.28332 2.90100 0.18344
+## 6       Total    569    357    212 1.00000 1.00000  1.68396       NA 5.08509 0.39243
+##       AUC
+## 1 0.00291
+## 2 0.02636
+## 3 0.15012
+## 4 0.20406
+## 5 0.55111
+## 6 0.93457
+## 
+## ── General Metrics ─────────────────────────────────────────
+## ● Gini index                       :  0.86914
+## ● IV (Jeffrey)                     :  5.08509
+## ● JS (Jensen-Shannon) Divergence   :  0.39243
+## ● Kolmogorov-Smirnov Statistics    :  0.72862
+## ● HHI (Herfindahl-Hirschman Index) :  0.21617
+## ● HHI (normalized)                 :  0.02022
+## ● Cramer&#39;s V                       :  0.79818
+## 
+## ── Significance Tests ──────────────────── Chisquare Test ──
+##         Bin A       Bin B statistics      p_value
+## 1 [6.98,11.8] (11.8,13.1]   6.255713 1.237934e-02
+## 2 (11.8,13.1]   (13.1,15]  15.846398 6.869719e-05
+## 3   (13.1,15]   (15,16.8]  43.166738 5.026802e-11
+## 4   (15,16.8] (16.8,28.1]  19.324617 1.102754e-05</code></pre>
+</div>
+<div id="비닝-결과의-활용" class="section level3">
+<h3>비닝 결과의 활용</h3>
+<p>진단한 결과를 분석해서, 비닝된 변수를 사용하기로 결정되었다면 <code>extract()</code> 함수로 비닝 결과를 추출한다.</p>
+<pre class="r"><code>breast_cancer %&gt;% 
+  mutate(bin_radius_mean = extract(bin_radius_mean)) %&gt;% 
+  select(bin_radius_mean) %&gt;% 
+  head(10)</code></pre>
+<pre><code>##    bin_radius_mean
+## 1      (16.8,28.1]
+## 2      (16.8,28.1]
+## 3      (16.8,28.1]
+## 4      [6.98,11.8]
+## 5      (16.8,28.1]
+## 6      (11.8,13.1]
+## 7      (16.8,28.1]
+## 8        (13.1,15]
+## 9      (11.8,13.1]
+## 10     (11.8,13.1]</code></pre>
+</div>
+</div>
+<div id="비닝-성능-진단-메트릭" class="section level2">
+<h2>비닝 성능 진단 메트릭</h2>
+<p>최적 비닝의 성능은 최적 비능의 알고리즘보다는 데이터의 분포에 영향을 받는다. 비닝하려는 연속형 변수의 크기가 이진 클래스의 종속변수와 관계가 없다면, 최적 비닝 알고리즘은 비닝을 수행하지 않는다. 예를 들어 나이(나이는 이산형 변수이지만, 년단위가 아닌 시간이나 일 단위의 나이로 확장해 보자.)와 성별의 관계를 보면, 나이가 많을수록(연속형 변수 값이 클수록) 남성이나 여성으로 분류되지는 않는다. 그러므로 성별이라는 종속변수를 대상으로 한 나이 변수의 비닝은 의미없다.</p>
+<p><code>binning_by()</code> 함수는 최적 비닝의 유의성을 검사한 후 의미있는 경우에만 최적 비닝을 수행한다. 다음 가상 데이터에 대한 최적 비닝은 수행되지 않는다. 변수의 비닝이 의미없기 때문이다.</p>
+<pre class="r"><code>set.seed(10)
+x &lt;- sample(100)
+
+set.seed(20)
+y &lt;- sample(0:1, size = 100, replace = TRUE)
+
+data.frame(x, y) %&gt;% 
+  binning_by(y, x) </code></pre>
+<pre><code>## Warning in binning_by(., y, x): No significant splits</code></pre>
+<pre><code>## [1] &quot;No significant splits&quot;
+## attr(,&quot;class&quot;)
+## [1] &quot;optimal_bins&quot; &quot;character&quot;</code></pre>
+<p>앞선 예제에서 <code>summary()</code> 함수는 비닝된 결과의 성능을 진단하는 여러 지표를 요약하면 보여줌을 알았다. 그러나 다음에 보여주는 성능 지표에 대한 설명은 <code>summary()</code> 함수의 결과를 해석하는 것이 아니라 최대한으로 이론적인 설명과 계산하는 방법에 초점을 맞춘다. 그러면, <code>binning_by()</code> 함수로 만들어진 <code>optimal_bins</code> 클래스 객체에 대한 이해가 필요하다.</p>
+<pre class="r"><code>class(bin_radius_mean)</code></pre>
+<pre><code>## [1] &quot;optimal_bins&quot; &quot;bins&quot;         &quot;ordered&quot;      &quot;factor&quot;</code></pre>
+<p>이 클래스 객체 여러 속성(attributes)을 가지고 있는데, 대표적인 속성이 <code>performance</code>라는 성능 테이블이다. <code>performance</code>을 이용해서 <code>summary()</code> 함수를 구현한 것이다.</p>
+<pre class="r"><code>attributes(bin_radius_mean)</code></pre>
+<pre><code>## $levels
+## [1] &quot;[6.98,11.8]&quot; &quot;(11.8,13.1]&quot; &quot;(13.1,15]&quot;   &quot;(15,16.8]&quot;   &quot;(16.8,28.1]&quot;
+## 
+## $class
+## [1] &quot;optimal_bins&quot; &quot;bins&quot;         &quot;ordered&quot;      &quot;factor&quot;      
+## 
+## $type
+## [1] &quot;optimal&quot;
+## 
+## $breaks
+## [1]  6.981 11.750 13.080 15.040 16.840 28.110
+## 
+## $raw
+##   [1] 17.990 20.570 19.690 11.420 20.290 12.450 18.250 13.710 13.000 12.460 16.020 15.780
+##  [13] 19.170 15.850 13.730 14.540 14.680 16.130 19.810 13.540 13.080  9.504 15.340 21.160
+##  [25] 16.650 17.140 14.580 18.610 15.300 17.570 18.630 11.840 17.020 19.270 16.130 16.740
+##  [37] 14.250 13.030 14.990 13.480 13.440 10.950 19.070 13.280 13.170 18.650  8.196 13.170
+##  [49] 12.050 13.490 11.760 13.640 11.940 18.220 15.100 11.520 19.210 14.710 13.050  8.618
+##  [61] 10.170  8.598 14.250  9.173 12.680 14.780  9.465 11.310  9.029 12.780 18.940  8.888
+##  [73] 17.200 13.800 12.310 16.070 13.530 18.050 20.180 12.860 11.450 13.340 25.220 19.100
+##  [85] 12.000 18.460 14.480 19.020 12.360 14.640 14.620 15.370 13.270 13.450 15.060 20.260
+##  [97] 12.180  9.787 11.600 14.420 13.610  6.981 12.180  9.876 10.490 13.110 11.640 12.360
+## [109] 22.270 11.340  9.777 12.630 14.260 10.510  8.726 11.930  8.950 14.870 15.780 17.950
+## [121] 11.410 18.660 24.250 14.500 13.370 13.850 13.610 19.000 15.100 19.790 12.190 15.460
+## [133] 16.160 15.710 18.450 12.770 11.710 11.430 14.950 11.280  9.738 16.110 11.430 12.900
+## [145] 10.750 11.900 11.800 14.950 14.440 13.740 13.000  8.219  9.731 11.150 13.150 12.250
+## [157] 17.680 16.840 12.060 10.900 11.750 19.190 19.590 12.340 23.270 14.970 10.800 16.780
+## [169] 17.470 14.970 12.320 13.430 15.460 11.080 10.660  8.671  9.904 16.460 13.010 12.810
+## [181] 27.220 21.090 15.700 11.410 15.280 10.080 18.310 11.710 11.810 12.300 14.220 12.770
+## [193]  9.720 12.340 14.860 12.910 13.770 18.080 19.180 14.450 12.230 17.540 23.290 13.810
+## [205] 12.470 15.120  9.876 17.010 13.110 15.270 20.580 11.840 28.110 17.420 14.190 13.860
+## [217] 11.890 10.200 19.800 19.530 13.650 13.560 10.180 15.750 13.270 14.340 10.440 15.000
+## [229] 12.620 12.830 17.050 11.320 11.220 20.510  9.567 14.030 23.210 20.480 14.220 17.460
+## [241] 13.640 12.420 11.300 13.750 19.400 10.480 13.200 12.890 10.650 11.520 20.940 11.500
+## [253] 19.730 17.300 19.450 13.960 19.550 15.320 15.660 15.530 20.310 17.350 17.290 15.610
+## [265] 17.190 20.730 10.600 13.590 12.870 10.710 14.290 11.290 21.750  9.742 17.930 11.890
+## [277] 11.330 18.810 13.590 13.850 19.160 11.740 19.400 16.240 12.890 12.580 11.940 12.890
+## [289] 11.260 11.370 14.410 14.960 12.950 11.850 12.720 13.770 10.910 11.760 14.260 10.510
+## [301] 19.530 12.460 20.090 10.490 11.460 11.600 13.200  9.000 13.500 13.050 11.700 14.610
+## [313] 12.760 11.540  8.597 12.490 12.180 18.220  9.042 12.430 10.250 20.160 12.860 20.340
+## [325] 12.200 12.670 14.110 12.030 16.270 16.260 16.030 12.980 11.220 11.250 12.300 17.060
+## [337] 12.990 18.770 10.050 23.510 14.420  9.606 11.060 19.680 11.710 10.260 12.060 14.760
+## [349] 11.470 11.950 11.660 15.750 25.730 15.080 11.140 12.560 13.050 13.870  8.878  9.436
+## [361] 12.540 13.300 12.760 16.500 13.400 20.440 20.200 12.210 21.710 22.010 16.350 15.190
+## [373] 21.370 20.640 13.690 16.170 10.570 13.460 13.660 11.080 11.270 11.040 12.050 12.390
+## [385] 13.280 14.600 12.210 13.880 11.270 19.550 10.260  8.734 15.490 21.610 12.100 14.060
+## [397] 13.510 12.800 11.060 11.800 17.910 11.930 12.960 12.940 12.340 10.940 16.140 12.850
+## [409] 17.990 12.270 11.360 11.040  9.397 14.990 15.130 11.890  9.405 15.500 12.700 11.160
+## [421] 11.570 14.690 11.610 13.660  9.742 10.030 10.480 10.800 11.130 12.720 14.900 12.400
+## [433] 20.180 18.820 14.860 13.980 12.870 14.040 13.850 14.020 10.970 17.270 13.780 10.570
+## [445] 18.030 11.990 17.750 14.800 14.530 21.100 11.870 19.590 12.000 14.530 12.620 13.380
+## [457] 11.630 13.210 13.000  9.755 17.080 27.420 14.400 11.600 13.170 13.240 13.140  9.668
+## [469] 17.600 11.620  9.667 12.040 14.920 12.270 10.880 12.830 14.200 13.900 11.490 16.250
+## [481] 12.160 13.900 13.470 13.700 15.730 12.450 14.640 19.440 11.680 16.690 12.250 17.850
+## [493] 18.010 12.460 13.160 14.870 12.650 12.470 18.490 20.590 15.040 13.820 12.540 23.090
+## [505]  9.268  9.676 12.220 11.060 16.300 15.460 11.740 14.810 13.400 14.580 15.050 11.340
+## [517] 18.310 19.890 12.880 12.750  9.295 24.630 11.260 13.710  9.847  8.571 13.460 12.340
+## [529] 13.940 12.070 11.750 11.670 13.680 20.470 10.960 20.550 14.270 11.690  7.729  7.691
+## [541] 11.540 14.470 14.740 13.210 13.870 13.620 10.320 10.260  9.683 10.820 10.860 11.130
+## [553] 12.770  9.333 12.880 10.290 10.160  9.423 14.590 11.510 14.050 11.200 15.220 20.920
+## [565] 21.560 20.130 16.600 20.600  7.760
+## 
+## $performance
+##           Bin CntRec CntPos CntNeg CntCumPos CntCumNeg RatePos RateNeg RateCumPos
+## 1 [6.98,11.8]    150    147      3       147         3 0.41176 0.01415    0.41176
+## 2 (11.8,13.1]    115    105     10       252        13 0.29412 0.04717    0.70588
+## 3   (13.1,15]    132     94     38       346        51 0.26331 0.17925    0.96919
+## 4   (15,16.8]     54     10     44       356        95 0.02801 0.20755    0.99720
+## 5 (16.8,28.1]    118      1    117       357       212 0.00280 0.55189    1.00000
+## 6       Total    569    357    212        NA        NA 1.00000 1.00000         NA
+##   RateCumNeg     Odds   LnOdds      WoE      IV     JSD     AUC
+## 1    0.01415 49.00000  3.89182  3.37067 1.34023 0.11657 0.00291
+## 2    0.06132 10.50000  2.35138  1.83023 0.45197 0.04973 0.02636
+## 3    0.24057  2.47368  0.90571  0.38456 0.03233 0.00402 0.15012
+## 4    0.44811  0.22727 -1.48160 -2.00275 0.35957 0.03868 0.20406
+## 5    1.00000  0.00855 -4.76217 -5.28332 2.90100 0.18344 0.55111
+## 6         NA  1.68396  0.52115       NA 5.08509 0.39243 0.93457
+## 
+## $target
+##   [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0
+##  [43] 0 0 0 0 1 0 1 1 1 1 1 0 0 1 0 0 1 1 1 1 0 1 0 0 1 1 1 1 0 1 0 0 1 0 1 0 0 1 1 1 0 0
+##  [85] 1 0 0 0 1 1 1 0 1 1 0 0 1 1 1 0 0 1 1 1 1 0 1 1 0 1 1 1 1 1 1 1 1 0 0 0 1 0 0 1 1 1
+## [127] 0 0 1 0 1 0 0 1 0 0 1 1 0 1 1 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 0 1 1 1 1 0 0 1 0 1 1 0
+## [169] 0 1 1 0 0 1 1 1 1 0 1 1 0 0 0 1 0 1 0 1 1 1 0 1 1 0 0 1 0 0 0 0 1 0 0 0 1 0 1 0 1 1
+## [211] 0 1 0 0 0 0 1 1 0 0 1 1 1 0 1 1 1 1 1 0 0 1 1 0 1 1 0 0 1 0 1 1 1 1 0 1 1 1 1 1 0 1
+## [253] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 1 1 1 1 1 1
+## [295] 1 1 1 0 1 1 0 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 0 1 0 1 1 1 1 0 0 0 1 1 1 1 0
+## [337] 1 0 1 0 1 1 1 0 1 1 1 1 1 1 1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 0 0 1 0 0 0 1 0 0 1 1 1 1
+## [379] 1 0 1 1 1 1 1 0 1 1 1 0 1 1 0 0 1 1 1 1 1 1 0 1 1 1 1 1 1 1 0 1 1 1 1 1 0 1 1 0 1 1
+## [421] 1 1 1 1 1 1 1 1 1 1 0 1 0 0 1 0 1 1 1 1 1 0 1 1 0 1 0 1 1 0 1 0 1 1 1 1 1 1 1 1 0 0
+## [463] 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 0 1 0 1 1 0 1 1 1 1 1 0 0 1 0 1 0
+## [505] 1 1 1 1 1 0 1 1 0 1 0 1 0 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 0 1 0 0 1 1 1 1 1 1 1 1 1
+## [547] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 1</code></pre>
+<div id="오즈" class="section level3">
+<h3>오즈</h3>
+<p>오즈(odds)는 해당 bins별 불량 1건당 우량이 몇 건인지를 나타내는 불량 클래스 대비 우량 클래스 비율을 나타낸다. 그러므로 오즈는 1을 기준으로 1을 초과하면 우량 비율이, 1 미만이면 불량 비율이 높다는 것을 의미한다. 그 값이 1에서 멀어질수록 해당 bins에서 우량 또는 불량의 구분이 명확하다는 것을 의미한다. n개의 bins에 대한 odds의 산식은 다음과 같다. <span class="math inline">\(Npos\)</span>와 <span class="math inline">\(Nneg\)</span>는 각각 우량 건수와 불량 건수를 의미한다.</p>
+<ul>
+<li><span class="math inline">\(odds_i = Npos_i / Nneg_i, i = 1, 2, \cdots, n\)</span></li>
+</ul>
+<p>[6.98,11.8]에서의 오즈가 49로 가장 크다. 반대로 (16.8,28.1]에서의 오즈가 0에 가깝다.</p>
+<pre class="r"><code>bin_radius_mean %&gt;% 
+  attr(&quot;performance&quot;) %&gt;% 
+  select(Bin, CntPos, CntNeg, Odds)</code></pre>
+<pre><code>##           Bin CntPos CntNeg     Odds
+## 1 [6.98,11.8]    147      3 49.00000
+## 2 (11.8,13.1]    105     10 10.50000
+## 3   (13.1,15]     94     38  2.47368
+## 4   (15,16.8]     10     44  0.22727
+## 5 (16.8,28.1]      1    117  0.00855
+## 6       Total    357    212  1.68396</code></pre>
+</div>
+<div id="woe" class="section level3">
+<h3>WOE</h3>
+<p>Weight of Evidence는 각 bins가 우량과 불량을 판별하는데 얼마나 많은 정보를 주고 있는가를 나타낸다. bins별 WOE의 값이 커지면 커질수록 해당 범주형 변수의 예측능력은 더욱더 높아짐을 의미한다.</p>
+<ul>
+<li><span class="math inline">\(WOE_i = log \left( \frac {Npos_i/\sum_{i=1}^N Npos_i}{Nneg_i / \sum_{i=1}^N Nneg_i} \right), i = 1, 2, \cdots, n\)</span></li>
+</ul>
+<pre class="r"><code>bin_radius_mean %&gt;% 
+  attr(&quot;performance&quot;) %&gt;% 
+  select(Bin, CntPos, CntNeg, Odds, WoE)</code></pre>
+<pre><code>##           Bin CntPos CntNeg     Odds      WoE
+## 1 [6.98,11.8]    147      3 49.00000  3.37067
+## 2 (11.8,13.1]    105     10 10.50000  1.83023
+## 3   (13.1,15]     94     38  2.47368  0.38456
+## 4   (15,16.8]     10     44  0.22727 -2.00275
+## 5 (16.8,28.1]      1    117  0.00855 -5.28332
+## 6       Total    357    212  1.68396       NA</code></pre>
+<p>비닝이 의미가 있기 위해서는 ordered factor로 표현된 bins의 순서대로 WOE는 단조증가 하거나 단조감소해야 한다. 이 최적 비닝 예제에서 bins의 순서대로 WOE 분포는 다음 플롯처럼 단조 감소한다.</p>
+<pre class="r"><code>plot(bin_radius_mean, type = &quot;WoE&quot;)</code></pre>
+<p><img src="/post/2021-02/optimal_binning_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+</div>
+<div id="information-value" class="section level3">
+<h3>Information Value</h3>
+<p><strong>Information Value(IV)는 모형의 예측력에 변수가 기여하는 정도를 가늠하는 측도다.</strong> 이 값은 bins별로 측정하는 것이 아닌, 변수 레벨로 측정하는 측도이므로 다음의 식으로 구한다. bins별로 계산후 합산하여 변수의 IV를 계산한다.</p>
+<ul>
+<li><span class="math inline">\(IV_i = \left( {Npos_i/\sum_{i=1}^N Npos_i} \right) - \left( {Nneg_i / \sum_{i=1}^N Nneg_i} \right) \times WOE_i ,i = 1, 2, \cdots, n\)</span></li>
+<li><span class="math inline">\(IV = \sum_{i=1}^NIV_i, i = 1, 2, \cdots, n\)</span></li>
+</ul>
+<p>통상적으로 IV에 따른 변수의 예측력은 다음과 같다.</p>
+<ul>
+<li><span class="math inline">\(IV &lt;= 0.02\)</span> : 예측불능</li>
+<li><span class="math inline">\(0.02 &lt; IV &lt;= 0.1\)</span> : 약한 예측력</li>
+<li><span class="math inline">\(0.1 &lt; IV &lt;= 0.3\)</span> : 중간 예측력</li>
+<li><span class="math inline">\(0.3 &lt; IV\)</span> : 강한 예측력</li>
+</ul>
+<pre class="r"><code>bin_radius_mean %&gt;% 
+  attr(&quot;performance&quot;) %&gt;% 
+  select(Bin, CntPos, CntNeg, Odds, WoE, IV)</code></pre>
+<pre><code>##           Bin CntPos CntNeg     Odds      WoE      IV
+## 1 [6.98,11.8]    147      3 49.00000  3.37067 1.34023
+## 2 (11.8,13.1]    105     10 10.50000  1.83023 0.45197
+## 3   (13.1,15]     94     38  2.47368  0.38456 0.03233
+## 4   (15,16.8]     10     44  0.22727 -2.00275 0.35957
+## 5 (16.8,28.1]      1    117  0.00855 -5.28332 2.90100
+## 6       Total    357    212  1.68396       NA 5.08509</code></pre>
+</div>
+<div id="kolmogorov-smirnov-statisticsk-s-통계량" class="section level3">
+<h3>Kolmogorov-Smirnov statistics(K-S 통계량)</h3>
+<p>스코어 카드 모델의 변별력을 나타내는 지표로서 구간별 우량 누적비율에서 불량 누적비율을 뺀 값 중 가장 큰 값을 의미한다. 비닝된 변수의 변별력을 평가할 수도 있다. K-S 통계량이 클수록 우량 혹은 negative를 판별하는 모형으로서 의미가 있으며, 다음 수식으로 구한다.</p>
+<ul>
+<li>K-S 통계량 = <span class="math inline">\(max |우량 누적비율_i - 불량 누적비율_i|, i = 1, 2, \cdots, n\)</span></li>
+</ul>
+<p>다음처럼 K-S 통계량이 0.2 이상일 경우에 모형(혹은 비닝된 변수)의 변별력이 확보되는 것으로 판단한다.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center">모형 변별력</th>
+<th align="center">K-S 통계량</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Minimum</td>
+<td align="center">0.2</td>
+</tr>
+<tr class="even">
+<td align="center">Average</td>
+<td align="center">0.3</td>
+</tr>
+<tr class="odd">
+<td align="center">Very Good</td>
+<td align="center">0.4</td>
+</tr>
+<tr class="even">
+<td align="center">Excellent</td>
+<td align="center">0.5</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>bin_radius_mean %&gt;% 
+  attr(&quot;performance&quot;) %&gt;% 
+  filter(Bin != &quot;Total&quot;) %&gt;% 
+  summarise(KS = max(abs(RateCumPos - RateCumNeg)))</code></pre>
+<pre><code>##        KS
+## 1 0.72862</code></pre>
+</div>
+<div id="roc-곡선과-auc" class="section level3">
+<h3>ROC 곡선과 AUC</h3>
+<p>ROC(Receiver Operating Characteristic) 곡선은 수평축(x-축)에 우량 누적구성비, 수직축(y-축)에는 불량 누적구성비를 나타낸 곡선으로서 우량과 불량의 Trade-Off 관계를 보여주기 때문에 Trade-Off 곡선이라고도 한다. 모형의 변별력을 나타내는 지표로 사용하며, ROC 곡선 아래의 면적(AUC; Area Under Roc)이 넓을수록 모형의 변별력이 높다. (비닝된 변수의 성능이 높다.)</p>
+<blockquote>
+<p>AUC는 ROC 곡선의 아래쪽 영역으로 이 값이 클수록 모형의 변별력이 큰 것을 의미한다. 다음 플롯으로 AUC의 규모를 파악할 수 있지만, 각 bins별 AUC의 합으로 계산할 수도 있다.</p>
+</blockquote>
+<pre class="r"><code>library(ggplot2)
+
+#  시작점이 원점(RateCumNeg = 0, RateCumPos = 0)을 추가하여 그린다.
+data.frame(RateCumNeg = 0, RateCumPos = 0) %&gt;% 
+  bind_rows(bin_radius_mean %&gt;% 
+              attr(&quot;performance&quot;) %&gt;% 
+              filter(Bin != &quot;Total&quot;) %&gt;% 
+              select(RateCumNeg, RateCumPos)) %&gt;% 
+  ggplot(aes(x = RateCumNeg, y = RateCumPos)) +
+  geom_point(color = &quot;red&quot;) +
+  geom_line(color = &quot;red&quot;) +
+  ylim(0, 1)</code></pre>
+<p><img src="/post/2021-02/optimal_binning_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p>bins별 AUC의 합은 다음과 같이 계산한다. 아니면 <code>Total</code> 레코드의 값을 가져와도 된다.</p>
+<pre class="r"><code>bin_radius_mean %&gt;% 
+  attr(&quot;performance&quot;) %&gt;% 
+  filter(Bin != &quot;Total&quot;) %&gt;% 
+  summarise(sum(AUC)) %&gt;% 
+  pull</code></pre>
+<pre><code>## [1] 0.93456</code></pre>
+</div>
+<div id="로렌츠-곡선과-지니계수" class="section level3">
+<h3>로렌츠 곡선과 지니계수</h3>
+<p>로렌츠(Lorenz) 곡선은 수평축(x-축)에 불량 누적구성비, 수직축(y-축)에는 우량 누적구성비를 나타낸 곡선이다. 로렌츠 곡선은 동일한 불량누적 구성비에서 해당 우량 누적구성비가 낮으면 모형의 변별력이 높다.</p>
+<pre class="r"><code>#  시작점이 원점(RateCumNeg = 0, RateCumPos = 0)을 추가하여 그린다.
+data.frame(RateCumNeg = 0, RateCumPos = 0) %&gt;% 
+  bind_rows(bin_radius_mean %&gt;% 
+              attr(&quot;performance&quot;) %&gt;% 
+              filter(Bin != &quot;Total&quot;) %&gt;% 
+              select(RateCumNeg, RateCumPos)) %&gt;% 
+  ggplot(aes(y = RateCumNeg, x = RateCumPos)) +
+  geom_point(color = &quot;red&quot;) +
+  geom_line(color = &quot;red&quot;) +
+  geom_abline(intercept = 0, slope = 1) +
+  annotate(&quot;text&quot;, x = 0.625, y = 0.375, label = &quot;A&quot;, size = 7) + 
+  annotate(&quot;text&quot;, x = 0.875, y = 0.063, label = &quot;B&quot;, size = 7) + 
+  xlim(0, 1)</code></pre>
+<p><img src="/post/2021-02/optimal_binning_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p>선형직선과 로렌츠 곡선 사이의 면적을 이용해서 지니계수(Gini Coefficient)를 구한다. 그림에서 선형직선과 로렌츠 곡선 사이의 면적 A, 지니계수 아래의 면적을 B라고 하면 지니계수는 <span class="math inline">\(\frac{A}{A + B}\)</span> 인데 <span class="math inline">\(2 \times AUC - 1\)</span>로 구한다. 그림에서 면적 A가 넓으면 지니계수도 커지는데 면적 A가 넓다는 것은 불량누적비가 높아질 때, 우량누적비의 증가량은 낮게 증가한다는 의미다.</p>
+<p>다음처럼 지니계수가 0.25 이상일 경우에 모형(혹은 비닝된 변수)의 변별력이 확보되는 것으로 판단한다.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center">모형 변별력</th>
+<th align="center">지니계수</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Minimum</td>
+<td align="center">0.25</td>
+</tr>
+<tr class="even">
+<td align="center">Average</td>
+<td align="center">0.35</td>
+</tr>
+<tr class="odd">
+<td align="center">Very Good</td>
+<td align="center">0.5</td>
+</tr>
+<tr class="even">
+<td align="center">Excellent</td>
+<td align="center">0.6</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="카이스퀘어-통계량" class="section level3">
+<h3>카이스퀘어 통계량</h3>
+<p>예제의 bins의개수는 <span class="math inline">\(bin_1, bin_2, \cdots, bin_5\)</span> 5개다. 이것을 순차적으로 2개의 bins로 카이스퀘어 검정을 수행할 수 있다.
+즉, 4개의 쌍<span class="math inline">\((bin_1, bin_2), (bin_2, bin_3), (bin_3, bin_4), (bin_4, bin_5)\)</span>에 대해서 다음의 가설을 수립한다.</p>
+<p><span class="math inline">\(H_0\)</span> : <span class="math inline">\((bin_i, bin_{i+1})\)</span> 변수와 종속변수(악성종양 여부)와는 독립이다.<br />
+<span class="math inline">\(H_1\)</span> : <span class="math inline">\((bin_i, bin_{i+1})\)</span> 변수와 종속변수(악성종양 여부)와는 독립이 아니다.</p>
+<p>앞의 <code>summary()</code> 함수의 결과를 보면 네 개 검정의 p-value가 모두 0.05보다 작았다. 즉, 나누어진 bins들은 유의하게 비닝된 것이다.</p>
+</div>
+</div>
+<div id="결언" class="section level2">
+<h2>결언</h2>
+<p>스코어카드를 만들 때 사용하는 최적 비닝 방법과 대표적인 스코어카드의 성능 지표에 대해서 살펴 보았다. 스코어카드를 개발하거나, 비닝 필요한 경우 dlookr의 최적 비닝을 활용해 보기 바란다.</p>
+</div>
+
+    
+      
+    
+  </article>
+<aside class="sidebar">
+  <section class="sidebar_inner">
+    
+      <h2>Choonghyun Ryu</h2>
+      <div>
+        Scientist with data, take one more step today.
+      </div>
+      <a href='/about/' class="button mt-1" role="button">Read More</a>
+    <h2 class="mt-4">Recent Posts</h2>
+    <ul class="flex-column">
+      <li>
+        <a href="/post/2021-02/binning/" class="nav-link">비닝(Binning)</a>
+      </li>
+      <li>
+        <a href="/post/2021-01/rfonts/" class="nav-link">추가 폰트 사용하기</a>
+      </li>
+      <li>
+        <a href="/post/2021-01/morpheme/" class="nav-link">Mecab으로 한글 띄어쓰기 검사기 만들기</a>
+      </li>
+      <li>
+        <a href="/gallery/2021-01/reaction_diffusion/" class="nav-link">Reaction Diffusion</a>
+      </li>
+      <li>
+        <a href="/gallery/2020-12/woolsan/" class="nav-link">겸제 정선의 울산바위</a>
+      </li>
+    </ul>
+    <div>
+      <h2 class="mt-4 taxonomy" id="categories-section">Categories</h2>
+      <nav class="tags_nav">
+        <a href='/categories/%EC%98%9B-%EC%9D%B4%EC%95%BC%EA%B8%B0-%ED%95%98%EB%82%98/' class="post_tag button button_translucent">
+          옛-이야기-하나
+          <span class="button_tally">120</span>
+        </a>
+        
+        <a href='/categories/r-analytics/' class="post_tag button button_translucent">
+          R-ANALYTICS
+          <span class="button_tally">22</span>
+        </a>
+        
+        <a href='/categories/gallery/' class="post_tag button button_translucent">
+          GALLERY
+          <span class="button_tally">10</span>
+        </a>
+        
+        <a href='/categories/visualization/' class="post_tag button button_translucent">
+          VISUALIZATION
+          <span class="button_tally">8</span>
+        </a>
+        
+        <a href='/categories/tidyverse/' class="post_tag button button_translucent">
+          TIDYVERSE
+          <span class="button_tally">6</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+    <div>
+      <h2 class="mt-4 taxonomy" id="series-section">Series</h2>
+      <nav class="tags_nav">
+        <a href='/series/drawing/' class="post_tag button button_translucent">
+          DRAWING
+          <span class="button_tally">8</span>
+        </a>
+        
+        <a href='/series/photo/' class="post_tag button button_translucent">
+          PHOTO
+          <span class="button_tally">2</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+    <div>
+      <h2 class="mt-4 taxonomy" id="tags-section">Tags</h2>
+      <nav class="tags_nav">
+        <a href='/tags/dlookr/' class="post_tag button button_translucent">
+          DLOOKR
+          <span class="button_tally">8</span>
+        </a>
+        
+        <a href='/tags/plot/' class="post_tag button button_translucent">
+          PLOT
+          <span class="button_tally">6</span>
+        </a>
+        
+        <a href='/tags/graphics/' class="post_tag button button_translucent">
+          GRAPHICS
+          <span class="button_tally">4</span>
+        </a>
+        
+        <a href='/tags/mathematics/' class="post_tag button button_translucent">
+          MATHEMATICS
+          <span class="button_tally">4</span>
+        </a>
+        
+        <a href='/tags/distribution/' class="post_tag button button_translucent">
+          DISTRIBUTION
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/dplyr/' class="post_tag button button_translucent">
+          DPLYR
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/eda/' class="post_tag button button_translucent">
+          EDA
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/ggplot2/' class="post_tag button button_translucent">
+          GGPLOT2
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/grid/' class="post_tag button button_translucent">
+          GRID
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/nlp/' class="post_tag button button_translucent">
+          NLP
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/text-analytics/' class="post_tag button button_translucent">
+          TEXT-ANALYTICS
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B3%80%ED%99%98/' class="post_tag button button_translucent">
+          데이터-변환
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A7%84%EB%8B%A8/' class="post_tag button button_translucent">
+          데이터-진단
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='/tags/binning/' class="post_tag button button_translucent">
+          BINNING
+          <span class="button_tally">2</span>
+        </a>
+        
+        
+        <br>
+        <div class="post_tags_toggle button">All Tags</div>
+        <div class="post_tags">
+          <div class="tags_list">
+            
+            <a href='/tags/alookr/' class=" post_tag button button_translucent" data-position=1>ALOOKR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/association-ruls/' class=" post_tag button button_translucent" data-position=1>ASSOCIATION-RULS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/asynchronous/' class=" post_tag button button_translucent" data-position=1>ASYNCHRONOUS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/binary-classification/' class=" post_tag button button_translucent" data-position=1>BINARY-CLASSIFICATION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/binning/' class=" post_tag button button_translucent" data-position=2>BINNING<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/circle/' class=" post_tag button button_translucent" data-position=1>CIRCLE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/clustering/' class=" post_tag button button_translucent" data-position=1>CLUSTERING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/complex/' class=" post_tag button button_translucent" data-position=1>COMPLEX<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/crawling/' class=" post_tag button button_translucent" data-position=1>CRAWLING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/data-acqusition/' class=" post_tag button button_translucent" data-position=1>DATA-ACQUSITION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/dbplyr/' class=" post_tag button button_translucent" data-position=1>DBPLYR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/deep-learning/' class=" post_tag button button_translucent" data-position=2>DEEP-LEARNING<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/development/' class=" post_tag button button_translucent" data-position=2>DEVELOPMENT<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/distribution/' class=" post_tag button button_translucent" data-position=3>DISTRIBUTION<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/dlookr/' class=" post_tag button button_translucent" data-position=8>DLOOKR<span class="button_tally">8</span>
+            </a>
+            
+            
+            <a href='/tags/documents-taxonomy/' class=" post_tag button button_translucent" data-position=1>DOCUMENTS-TAXONOMY<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/dplyr/' class=" post_tag button button_translucent" data-position=3>DPLYR<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/eda/' class=" post_tag button button_translucent" data-position=3>EDA<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/extract/' class=" post_tag button button_translucent" data-position=1>EXTRACT<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/extrafont/' class=" post_tag button button_translucent" data-position=1>EXTRAFONT<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/factor/' class=" post_tag button button_translucent" data-position=1>FACTOR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/finance/' class=" post_tag button button_translucent" data-position=2>FINANCE<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/fonts/' class=" post_tag button button_translucent" data-position=1>FONTS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/foodfact/' class=" post_tag button button_translucent" data-position=1>FOODFACT<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/forcats/' class=" post_tag button button_translucent" data-position=1>FORCATS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/fractal/' class=" post_tag button button_translucent" data-position=1>FRACTAL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/fuction/' class=" post_tag button button_translucent" data-position=1>FUCTION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/future/' class=" post_tag button button_translucent" data-position=1>FUTURE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/ggplot2/' class=" post_tag button button_translucent" data-position=3>GGPLOT2<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/google-trends/' class=" post_tag button button_translucent" data-position=1>GOOGLE-TRENDS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/graphics/' class=" post_tag button button_translucent" data-position=4>GRAPHICS<span class="button_tally">4</span>
+            </a>
+            
+            
+            <a href='/tags/gray-scott/' class=" post_tag button button_translucent" data-position=1>GRAY-SCOTT<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/grid/' class=" post_tag button button_translucent" data-position=3>GRID<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/gtrendsr/' class=" post_tag button button_translucent" data-position=1>GTRENDSR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/lasso/' class=" post_tag button button_translucent" data-position=2>LASSO<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/legend/' class=" post_tag button button_translucent" data-position=1>LEGEND<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/magrittr/' class=" post_tag button button_translucent" data-position=2>MAGRITTR<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/mathematics/' class=" post_tag button button_translucent" data-position=4>MATHEMATICS<span class="button_tally">4</span>
+            </a>
+            
+            
+            <a href='/tags/matrix/' class=" post_tag button button_translucent" data-position=2>MATRIX<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/mecab/' class=" post_tag button button_translucent" data-position=1>MECAB<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/morpheme/' class=" post_tag button button_translucent" data-position=1>MORPHEME<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/network-analysis/' class=" post_tag button button_translucent" data-position=1>NETWORK-ANALYSIS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/neural-network/' class=" post_tag button button_translucent" data-position=2>NEURAL-NETWORK<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/nlp/' class=" post_tag button button_translucent" data-position=3>NLP<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/nyc-taxi-data/' class=" post_tag button button_translucent" data-position=1>NYC-TAXI-DATA<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/operator/' class=" post_tag button button_translucent" data-position=1>OPERATOR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/packages/' class=" post_tag button button_translucent" data-position=1>PACKAGES<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/par/' class=" post_tag button button_translucent" data-position=1>PAR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/parallel/' class=" post_tag button button_translucent" data-position=1>PARALLEL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/pictures/' class=" post_tag button button_translucent" data-position=2>PICTURES<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/pipe/' class=" post_tag button button_translucent" data-position=1>PIPE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/plot/' class=" post_tag button button_translucent" data-position=6>PLOT<span class="button_tally">6</span>
+            </a>
+            
+            
+            <a href='/tags/plot-region/' class=" post_tag button button_translucent" data-position=1>PLOT-REGION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/postgresql/' class=" post_tag button button_translucent" data-position=1>POSTGRESQL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/probability/' class=" post_tag button button_translucent" data-position=1>PROBABILITY<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/promises/' class=" post_tag button button_translucent" data-position=1>PROMISES<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/quandl/' class=" post_tag button button_translucent" data-position=1>QUANDL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/r_tips/' class=" post_tag button button_translucent" data-position=1>R_TIPS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/reaction-diffusion/' class=" post_tag button button_translucent" data-position=1>REACTION-DIFFUSION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/readr/' class=" post_tag button button_translucent" data-position=2>READR<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/regression/' class=" post_tag button button_translucent" data-position=1>REGRESSION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/replace/' class=" post_tag button button_translucent" data-position=1>REPLACE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/rmecab/' class=" post_tag button button_translucent" data-position=1>RMECAB<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/rserve/' class=" post_tag button button_translucent" data-position=1>RSERVE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/scorecard/' class=" post_tag button button_translucent" data-position=1>SCORECARD<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/scraping/' class=" post_tag button button_translucent" data-position=1>SCRAPING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/set/' class=" post_tag button button_translucent" data-position=1>SET<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/sqldf/' class=" post_tag button button_translucent" data-position=1>SQLDF<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/statistics/' class=" post_tag button button_translucent" data-position=2>STATISTICS<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/stock/' class=" post_tag button button_translucent" data-position=1>STOCK<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/stock-data/' class=" post_tag button button_translucent" data-position=1>STOCK-DATA<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/synchronous/' class=" post_tag button button_translucent" data-position=1>SYNCHRONOUS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/taxonomy/' class=" post_tag button button_translucent" data-position=1>TAXONOMY<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/text-analytics/' class=" post_tag button button_translucent" data-position=3>TEXT-ANALYTICS<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/text2vec/' class=" post_tag button button_translucent" data-position=1>TEXT2VEC<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/tidyr/' class=" post_tag button button_translucent" data-position=1>TIDYR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/tidyverse/' class=" post_tag button button_translucent" data-position=1>TIDYVERSE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/topic-analysis/' class=" post_tag button button_translucent" data-position=1>TOPIC-ANALYSIS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/traffic/' class=" post_tag button button_translucent" data-position=1>TRAFFIC<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/transformation/' class=" post_tag button button_translucent" data-position=2>TRANSFORMATION<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='/tags/vector/' class=" post_tag button button_translucent" data-position=1>VECTOR<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/web-application/' class=" post_tag button button_translucent" data-position=1>WEB-APPLICATION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/window-function/' class=" post_tag button button_translucent" data-position=1>WINDOW-FUNCTION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/zoo/' class=" post_tag button button_translucent" data-position=1>ZOO<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B3%80%ED%99%98/' class=" post_tag button button_translucent" data-position=3>데이터-변환<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%95%EC%A0%9C/' class=" post_tag button button_translucent" data-position=1>데이터-정제<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A7%84%EB%8B%A8/' class=" post_tag button button_translucent" data-position=3>데이터-진단<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%AA%A8%EB%8D%B8-%EC%A0%81%ED%95%A9/' class=" post_tag button button_translucent" data-position=1>모델-적합<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EB%AA%A8%EB%8D%B8-%EC%A7%84%EB%8B%A8/' class=" post_tag button button_translucent" data-position=1>모델-진단<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/%EC%97%AC%ED%96%89/' class=" post_tag button button_translucent" data-position=2>여행<span class="button_tally">2</span>
+            </a>
+            
+            <div class="tags_sort"><span title="sort alphabetically">[A~Z]</span><span title="sort by count">[0~9]</span>
+            </div>
+            <span class="tags_hide"><svg class="icon">
+            <use xlink:href="#closeme"></use>
+          </svg></span>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </section>
+</aside>
+
+</div>
+    </main><svg width="0" height="0" class="hidden">
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18.001 18.001" id="twitter">
+    <path d="M15.891 4.013c.808-.496 1.343-1.173 1.605-2.034a8.68 8.68 0 0 1-2.351.861c-.703-.756-1.593-1.14-2.66-1.14-1.043 0-1.924.366-2.643 1.078a3.56 3.56 0 0 0-1.076 2.605c0 .309.039.585.117.819-3.076-.105-5.622-1.381-7.628-3.837-.34.601-.51 1.213-.51 1.846 0 1.301.549 2.332 1.645 3.089-.625-.053-1.176-.211-1.645-.47 0 .929.273 1.705.82 2.388a3.623 3.623 0 0 0 2.115 1.291c-.312.08-.641.118-.979.118-.312 0-.533-.026-.664-.083.23.757.664 1.371 1.291 1.841a3.652 3.652 0 0 0 2.152.743C4.148 14.173 2.625 14.69.902 14.69c-.422 0-.721-.006-.902-.038 1.697 1.102 3.586 1.649 5.676 1.649 2.139 0 4.029-.542 5.674-1.626 1.645-1.078 2.859-2.408 3.639-3.974a10.77 10.77 0 0 0 1.172-4.892v-.468a7.788 7.788 0 0 0 1.84-1.921 8.142 8.142 0 0 1-2.11.593z"
+      ></path>
+  </symbol>
+  <symbol aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="mail">
+    <path  d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="calendar">
+    <path d="M452 40h-24V0h-40v40H124V0H84v40H60C26.916 40 0 66.916 0 100v352c0 33.084 26.916 60 60 60h392c33.084 0 60-26.916 60-60V100c0-33.084-26.916-60-60-60zm20 412c0 11.028-8.972 20-20 20H60c-11.028 0-20-8.972-20-20V188h432v264zm0-304H40v-48c0-11.028 8.972-20 20-20h24v40h40V80h264v40h40V80h24c11.028 0 20 8.972 20 20v48z"></path>
+    <path d="M76 230h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 310h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 390h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80-80h40v40h-40z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="github">
+    <path d="M255.968 5.329C114.624 5.329 0 120.401 0 262.353c0 113.536 73.344 209.856 175.104 243.872 12.8 2.368 17.472-5.568 17.472-12.384 0-6.112-.224-22.272-.352-43.712-71.2 15.52-86.24-34.464-86.24-34.464-11.616-29.696-28.416-37.6-28.416-37.6-23.264-15.936 1.728-15.616 1.728-15.616 25.696 1.824 39.2 26.496 39.2 26.496 22.848 39.264 59.936 27.936 74.528 21.344 2.304-16.608 8.928-27.936 16.256-34.368-56.832-6.496-116.608-28.544-116.608-127.008 0-28.064 9.984-51.008 26.368-68.992-2.656-6.496-11.424-32.64 2.496-68 0 0 21.504-6.912 70.4 26.336 20.416-5.696 42.304-8.544 64.096-8.64 21.728.128 43.648 2.944 64.096 8.672 48.864-33.248 70.336-26.336 70.336-26.336 13.952 35.392 5.184 61.504 2.56 68 16.416 17.984 26.304 40.928 26.304 68.992 0 98.72-59.84 120.448-116.864 126.816 9.184 7.936 17.376 23.616 17.376 47.584 0 34.368-.32 62.08-.32 70.496 0 6.88 4.608 14.88 17.6 12.352C438.72 472.145 512 375.857 512 262.353 512 120.401 397.376 5.329 255.968 5.329z"></path>
+  </symbol>
+  <symbol viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="rss">
+    <circle cx="3.429" cy="20.571" r="3.429"></circle>
+    <path d="M11.429 24h4.57C15.999 15.179 8.821 8.001 0 8v4.572c6.302.001 11.429 5.126 11.429 11.428z"></path>
+    <path d="M24 24C24 10.766 13.234 0 0 0v4.571c10.714 0 19.43 8.714 19.43 19.429z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="linkedin">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h362c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zM181 406h-60V196h60zm0-240h-60v-60h60zm210 240h-60V286c0-16.54-13.46-30-30-30s-30 13.46-30 30v120h-60V196h60v11.309C286.719 202.422 296.93 196 316 196c40.691.043 75 36.547 75 79.688zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="arrow">
+    <path d="M604.501 440.509L325.398 134.956c-5.331-5.357-12.423-7.627-19.386-7.27-6.989-.357-14.056 1.913-19.387 7.27L7.499 440.509c-9.999 10.024-9.999 26.298 0 36.323s26.223 10.024 36.222 0l262.293-287.164L568.28 476.832c9.999 10.024 26.222 10.024 36.221 0 9.999-10.023 9.999-26.298 0-36.323z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="carly">
+    <path d="M504.971 239.029L448 182.059V84c0-46.317-37.682-84-84-84h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c19.851 0 36 16.149 36 36v108c0 6.365 2.529 12.47 7.029 16.971L454.059 256l-47.029 47.029A24.002 24.002 0 0 0 400 320v108c0 19.851-16.149 36-36 36h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c46.318 0 84-37.683 84-84v-98.059l56.971-56.971c9.372-9.372 9.372-24.568 0-33.941zM112 192V84c0-19.851 16.149-36 36-36h44c13.255 0 24-10.745 24-24S205.255 0 192 0h-44c-46.318 0-84 37.683-84 84v98.059l-56.971 56.97c-9.373 9.373-9.373 24.568 0 33.941L64 329.941V428c0 46.317 37.682 84 84 84h44c13.255 0 24-10.745 24-24s-10.745-24-24-24h-44c-19.851 0-36-16.149-36-36V320c0-6.365-2.529-12.47-7.029-16.971L57.941 256l47.029-47.029A24.002 24.002 0 0 0 112 192z"></path>
+  </symbol>
+  <symbol viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="copy">
+    <path d="M23 2.75A2.75 2.75 0 0 0 20.25 0H8.75A2.75 2.75 0 0 0 6 2.75v13.5A2.75 2.75 0 0 0 8.75 19h11.5A2.75 2.75 0 0 0 23 16.25zM18.25 14.5h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5zm0-3h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5zm0-3h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5z"></path>
+    <path d="M8.75 20.5a4.255 4.255 0 0 1-4.25-4.25V2.75c0-.086.02-.166.025-.25H3.75A2.752 2.752 0 0 0 1 5.25v16A2.752 2.752 0 0 0 3.75 24h12a2.752 2.752 0 0 0 2.75-2.75v-.75z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001" id="closeme">
+    <path d="M284.286 256.002L506.143 34.144c7.811-7.811 7.811-20.475 0-28.285-7.811-7.81-20.475-7.811-28.285 0L256 227.717 34.143 5.859c-7.811-7.811-20.475-7.811-28.285 0-7.81 7.811-7.811 20.475 0 28.285l221.857 221.857L5.858 477.859c-7.811 7.811-7.811 20.475 0 28.285a19.938 19.938 0 0 0 14.143 5.857 19.94 19.94 0 0 0 14.143-5.857L256 284.287l221.857 221.857c3.905 3.905 9.024 5.857 14.143 5.857s10.237-1.952 14.143-5.857c7.811-7.811 7.811-20.475 0-28.285L284.286 256.002z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="open-menu">
+    <path d="M492 236H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0-160H20C8.954 76 0 84.954 0 96s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0 320H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="instagram">
+    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id=youtube>
+    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="stackoverflow">
+    <path d="M21 27v-8h3v11H0V19h3v8h18z"></path><path d="M17.1.2L15 1.8l7.9 10.6 2.1-1.6L17.1.2zm3.7 14.7L10.6 6.4l1.7-2 10.2 8.5-1.7 2zM7.2 12.3l12 5.6 1.1-2.4-12-5.6-1.1 2.4zm-1.8 6.8l13.56 1.96.17-2.38-13.26-2.55-.47 2.97zM19 25H5v-3h14v3z"></path>
+  </symbol>
+</svg>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+<footer class="footer">
+  <div class="footer_inner wrap pale">
+    <img src='/logos/logo.png' class="icon icon_2 transparent">
+    <p>Copyright<span class="year"></span> DATAHOLIC. All Rights Reserved</p><a class="to_top" href="#documentTop">
+  <svg class="icon">
+  <use xlink:href="#arrow"></use>
+</svg>
+</a>
+
+  </div>
+</footer>
+    <script type="text/javascript" src="/js/bundle.min.03f1cc201c9efa18e14550bff374f58e89f1e6b2a30a0e22f84c87f6eb766e419bd6569c3a60846ea3e65816112dfa454f4785d306d024b6ef2616d067862a7a.js" integrity="sha512-A/HMIBye&#43;hjhRVC/83T1jonx5rKjCg4i&#43;EyH9ut2bkGb1lacOmCEbqPmWBYRLfpFT0eF0wbQJLbvJhbQZ4Yqeg==" crossorigin="anonymous"></script>
+    
+  </body>
+</html>
