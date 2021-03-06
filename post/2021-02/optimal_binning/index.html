@@ -188,16 +188,16 @@
 
 <div id="다룰-이야기" class="section level2">
 <h2>다룰 이야기</h2>
-<p>앞서 비닝에 대해서 다루었다. 특히 dlookr 패키지로 연속형 변수를 비닝하는 여러 솔루션을 다루었다.</p>
+<p>앞서 비닝에 대해서 다루었다. 특히 <code>dlookr</code> 패키지로 연속형 변수를 비닝하는 여러 솔루션을 다루었다.</p>
 <p>금융권에서 사용하는 스코어카드(scorecard) 기법에서는 연속형 변수를 범주형 변수로 변환하는 작업을 빈번히 사용한다. 이번에는 일반적인 비닝 방법이 아닌 최적 비닝(optimal binning) 방법을 사용한다.</p>
 <blockquote>
-<p>dlookr 패키지에는 일반적인 비닝과 스코어카드 모델(scoreCard modeling)을 위한 최적 비닝 기능을 지원한다. 여기서는 최적 비닝의 개념과 최적 비닝을 수행하고, 비닝 결과의 성능을 검증하는 방법을 다룬다.</p>
+<p>dlookr 패키지에는 일반적인 비닝과 스코어카드 모델(Scorecard modeling)을 위한 최적 비닝 기능을 지원한다. 여기서는 최적 비닝의 개념과 최적 비닝을 수행하고, 비닝 결과의 성능을 검증하는 방법을 다룬다.</p>
 </blockquote>
 </div>
 <div id="최적-비닝optimal-binning" class="section level2">
 <h2>최적 비닝(optimal binning)</h2>
 <p>최적 비닝은 비닝하고자 하는 연속형 변수(indicator)를 비닝할 때, 이진 클래스(binary class)의 종속 변수(target variable)를 고려한다. 즉, 이진분류(binary classification predict) 모델을 적용한다. 쉽게 말하자면 종속 변수의 positive 클래스의 예측력이 높은 수준(levels, 범주)과 그렇지 않은 수준으로 비닝한다. 이때 범주화(이산화)된 결과는 순서형 범주, 즉 ordered factor가 된다.</p>
-<p>이산화된 범주의 수준(여기서는 bins)의 positive 클래스 예측력은 단조 증감 추세(monotonic trend)를 가져야 한다. 즉, ordered factor로 표현된 bins의 순서대로 예측력이 단조증가(monotonic increase) 하거나 단조감소(monotonic decrease)해야 한다. 정확히 말하자면 뒤에서 다룰 WoE가 단조 중감추세를 가져야 한다.</p>
+<p>이산화된 범주의 수준(여기서는 bins)의 positive 클래스 예측력은 단조 증감 추세(monotonic trend)를 가져야 한다. 즉, ordered factor로 표현된 bins의 순서대로 예측력이 단조증가(monotonic increase) 하거나 단조감소(monotonic decrease)해야 한다. 정확히 말하자면 뒤에서 다룰 WoE가 단조 증감추세를 가져야 한다.</p>
 <ul>
 <li>단조 증가 사례</li>
 </ul>
@@ -211,7 +211,7 @@
 <h2>데이터</h2>
 <div id="데이터-준비" class="section level3">
 <h3>데이터 준비</h3>
-<p>kaggle의 <a href="https://www.kaggle.com/tug004/breast-cancer-dataset에" class="uri">https://www.kaggle.com/tug004/breast-cancer-dataset에</a> <code>breast_cancer.csv</code>는 유방암 진단 데이터를 제공한다. 이 데이터로 Scorecard의 기초 측도(measures)와 최적 비닝을 살펴 본다.</p>
+<p>kaggle의 <a href="https://www.kaggle.com/tug004/breast-cancer-dataset에" class="uri">https://www.kaggle.com/tug004/breast-cancer-dataset에</a> <code>breast_cancer.csv</code>는 유방암 진단 데이터를 제공한다. 이 데이터로 스코어카드의 기초 측도(measures)와 최적 비닝을 살펴 본다.</p>
 <p>먼저 데이터를 다운로드한 후 R로 가져오자.</p>
 <pre class="r"><code>library(dplyr)
 library(dlookr)
@@ -305,7 +305,7 @@ read.csv(fname) %&gt;%
 </div>
 <div id="스코어카드-개념" class="section level2">
 <h2>스코어카드 개념</h2>
-<p>스코어카드 모델에서는 모델링으로 만들어진 최종 스코어를 비닝한 등급으로 모델의 성능을 평가한다. 이 과정이 최적 비닝과 유사하고, 그 성능 평가 지표도 동일하기에 모델의 성능을 평가하는 방법에 국한해서 설명한다. (스코어카드 모델링을 다루지는 않는다.)</p>
+<p>스코어카드 모델에서는 모델링으로 만들어진 최종 스코어를 비닝한 등급으로 모델의 성능을 평가한다. 이 과정이 최적 비닝과 유사하고, 그 성능 평가 지표도 동일하기에 모델의 성능을 평가하는 방법에 국한해서 설명한다. (스코어카드 모델링은 다루지는 않는다.)</p>
 <div id="준비" class="section level3">
 <h3>준비</h3>
 <p>먼저 관점의 정리가 필요하다. 역학 분석에 응용되는 사례-대조 연구(case-control studies)에서 사례군(case)은 보통 환자를 의미한다. 대조군은 환자가 아닌 군을 의미한다. 흡연이 폐암에 미치는 영향을 분석할 때 다음과 같은 분할표를 만들 수 있다.</p>
@@ -340,8 +340,8 @@ read.csv(fname) %&gt;%
 <blockquote>
 <p>dlookr에서는 최적 비닝에서 이진 클래스를 good(우량), bad(불량)으로 부르지 않고, positive와 negative로 칭한다. 그러므로 스코어카드에 익숙한 사용자는 positive를 good(우량)으로, negative를 bad(불량)으로 생각하면 될 것이다. 그래서 이 글에서는 편의상 <code>양성종양</code>을 <code>우량</code>으로, <code>악성종양</code>은 <code>불량</code>으로 부른다. 그러므로 양성종양을 관심 클래스로 보고, 양성종양을 positive, 악성종양을 negative로 클래스로 보자.</p>
 </blockquote>
-<p>스코어카드 개념을 살펴보기 위해서 먼저 dlookr 패키지로 유방암 데이터 중에서 종양의 반지름 평균인 <code>radius_mean</code>을 최적비닝해 보자. 유방암 데이터는 여러 관측 측도로 악성 종양을 예측하는 사례용 데이터이므로 종속변수인 <code>diagnosis</code>를 고려해서 예측변수 <code>radius_mean</code>를 최적 비닝한다.</p>
-<p>다음은 dlookr의 <code>binning_by()</code> 함수로 최적비닝을 수행한다. dlookr의 <code>binning_by()</code> 함수는 종속 변수가 0과 1의 두가지로 코딩된 경우에 동작한다. positive 클래스가 1, negative 클래스가 0이어야 한다. 그러나 factor일 경우에는 자동으로 변환하여 비닝을 수행한다. 메시지를 보면 악성종양(M)이 1, 양성종양(B)이 0으로 변환되었다.</p>
+<p>스코어카드 개념을 살펴보기 위해서 먼저 <code>dlookr</code> 패키지로 유방암 데이터 중에서 종양의 반지름 평균인 <code>radius_mean</code> 변수를 최적비닝해 보자. 유방암 데이터는 여러 관측 측도로 악성 종양을 예측하는 사례의 데이터이므로 종속변수인 <code>diagnosis</code>를 고려해서 예측변수 <code>radius_mean</code>를 최적 비닝한다.</p>
+<p>다음은 <code>dlookr</code>의 <code>binning_by()</code> 함수로 최적비닝을 수행한다. dlookr의 <code>binning_by()</code> 함수는 종속 변수가 0과 1의 두가지로 코딩된 경우에 동작한다. positive 클래스가 1, negative 클래스가 0이어야 한다. 그러나 factor일 경우에는 자동으로 변환하여 비닝을 수행한다. 메시지를 보면 악성종양(M)이 1, 양성종양(B)이 0으로 변환되었다.</p>
 <pre class="r"><code>breast_cancer %&gt;% 
   binning_by(diagnosis, radius_mean) -&gt; bin_radius_mean</code></pre>
 <pre><code>## Warning in binning_by(., diagnosis, radius_mean): The character y has been changed to a numeric vector consisting of 0 and 1.
@@ -468,7 +468,7 @@ read.csv(fname) %&gt;%
 </div>
 <div id="비닝의-진단" class="section level3">
 <h3>비닝의 진단</h3>
-<p>summary() 함수는 비닝된 결과에 대해서 비닝의 성능을 평가할 수 있는 여러 정보를 계산해 준다. 이번에 다룰 내용이 이 정보들에 대한 가벼운 소개다.</p>
+<p><code>summary()</code> 함수는 비닝된 결과에 대해서 비닝의 성능을 평가할 수 있는 여러 정보를 계산해 준다. 이번에 다룰 내용이 이 정보들에 대한 가벼운 소개다.</p>
 <pre class="r"><code>summary(bin_radius_mean)</code></pre>
 <pre><code>## ── Binning Table ──────────────────────── Several Metrics ──
 ##           Bin CntRec CntPos CntNeg RatePos RateNeg     Odds      WoE      IV     JSD
@@ -538,7 +538,7 @@ data.frame(x, y) %&gt;%
 <pre><code>## [1] &quot;No significant splits&quot;
 ## attr(,&quot;class&quot;)
 ## [1] &quot;optimal_bins&quot; &quot;character&quot;</code></pre>
-<p>앞선 예제에서 <code>summary()</code> 함수는 비닝된 결과의 성능을 진단하는 여러 지표를 요약하면 보여줌을 알았다. 그러나 다음에 보여주는 성능 지표에 대한 설명은 <code>summary()</code> 함수의 결과를 해석하는 것이 아니라 최대한으로 이론적인 설명과 계산하는 방법에 초점을 맞춘다. 그러면, <code>binning_by()</code> 함수로 만들어진 <code>optimal_bins</code> 클래스 객체에 대한 이해가 필요하다.</p>
+<p>앞선 예제에서 <code>summary()</code> 함수는 비닝된 결과의 성능을 진단하는 여러 지표를 요약함을 알았다. 그러나 다음에 보여주는 성능 지표에 대한 설명은 <code>summary()</code> 함수의 결과를 해석하는 것이 아니라 최대한으로 이론적인 설명과 계산하는 방법에 초점을 맞춘다. 그러면, <code>binning_by()</code> 함수로 만들어진 <code>optimal_bins</code> 클래스 객체에 대한 이해가 필요하다.</p>
 <pre class="r"><code>class(bin_radius_mean)</code></pre>
 <pre><code>## [1] &quot;optimal_bins&quot; &quot;bins&quot;         &quot;ordered&quot;      &quot;factor&quot;</code></pre>
 <p>이 클래스 객체 여러 속성(attributes)을 가지고 있는데, 대표적인 속성이 <code>performance</code>라는 성능 테이블이다. <code>performance</code>을 이용해서 <code>summary()</code> 함수를 구현한 것이다.</p>
@@ -701,7 +701,7 @@ data.frame(x, y) %&gt;%
 </div>
 <div id="kolmogorov-smirnov-statisticsk-s-통계량" class="section level3">
 <h3>Kolmogorov-Smirnov statistics(K-S 통계량)</h3>
-<p>스코어 카드 모델의 변별력을 나타내는 지표로서 구간별 우량 누적비율에서 불량 누적비율을 뺀 값 중 가장 큰 값을 의미한다. 비닝된 변수의 변별력을 평가할 수도 있다. K-S 통계량이 클수록 우량 혹은 negative를 판별하는 모형으로서 의미가 있으며, 다음 수식으로 구한다.</p>
+<p>스코어카드 모델의 변별력을 나타내는 지표로서 구간별 우량 누적비율에서 불량 누적비율을 뺀 값 중 가장 큰 값을 의미한다. 비닝된 변수의 변별력을 평가할 수도 있다. K-S 통계량이 클수록 우량 혹은 negative를 판별하는 모형으로서 의미가 있으며, 다음 수식으로 구한다.</p>
 <ul>
 <li>K-S 통계량 = <span class="math inline">\(max |우량 누적비율_i - 불량 누적비율_i|, i = 1, 2, \cdots, n\)</span></li>
 </ul>
@@ -747,7 +747,7 @@ data.frame(x, y) %&gt;%
 </blockquote>
 <pre class="r"><code>library(ggplot2)
 
-#  시작점이 원점(RateCumNeg = 0, RateCumPos = 0)을 추가하여 그린다.
+#  시작점인 원점(RateCumNeg = 0, RateCumPos = 0)을 추가하여 그린다.
 data.frame(RateCumNeg = 0, RateCumPos = 0) %&gt;% 
   bind_rows(bin_radius_mean %&gt;% 
               attr(&quot;performance&quot;) %&gt;% 
@@ -769,7 +769,7 @@ data.frame(RateCumNeg = 0, RateCumPos = 0) %&gt;%
 <div id="로렌츠-곡선과-지니계수" class="section level3">
 <h3>로렌츠 곡선과 지니계수</h3>
 <p>로렌츠(Lorenz) 곡선은 수평축(x-축)에 불량 누적구성비, 수직축(y-축)에는 우량 누적구성비를 나타낸 곡선이다. 로렌츠 곡선은 동일한 불량누적 구성비에서 해당 우량 누적구성비가 낮으면 모형의 변별력이 높다.</p>
-<pre class="r"><code>#  시작점이 원점(RateCumNeg = 0, RateCumPos = 0)을 추가하여 그린다.
+<pre class="r"><code>#  시작점인 원점(RateCumNeg = 0, RateCumPos = 0)을 추가하여 그린다.
 data.frame(RateCumNeg = 0, RateCumPos = 0) %&gt;% 
   bind_rows(bin_radius_mean %&gt;% 
               attr(&quot;performance&quot;) %&gt;% 
