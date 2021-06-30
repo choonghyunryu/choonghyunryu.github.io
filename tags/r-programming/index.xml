@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>R-programming on Dataholic</title>
+    <link>/tags/r-programming/</link>
+    <description>Recent content in R-programming on Dataholic</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 30 Jun 2021 01:05:12 +0800</lastBuildDate><atom:link href="/tags/r-programming/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>수치 정밀도에 대해서</title>
+      <link>/post/2021-06/numeric_precision/</link>
+      <pubDate>Wed, 30 Jun 2021 01:05:12 +0800</pubDate>
+      
+      <guid>/post/2021-06/numeric_precision/</guid>
+      <description>
+        
+          
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;r의-수치정밀도&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;R의 수치정밀도&lt;/h2&gt;
+&lt;p&gt;R의 수치연산에서 32-비트의 정수와 IEC 60559 스팩의 부동 소수점(배정밀도)의 산술연산을 사용한다. R이 설치된 모든 머신에서 공통적으로 적용된다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;machine&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;.Machine&lt;/h2&gt;
+&lt;p&gt;.Machine은 R이 설치된 머신에서의 수치 정밀도에 대한 정보를 제공해 준다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(dplyr)
+
+.Machine %&amp;gt;% 
+  unlist %&amp;gt;% 
+  prettyNum()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##                double.eps            double.neg.eps               double.xmin 
+##            &amp;quot;2.220446e-16&amp;quot;            &amp;quot;1.110223e-16&amp;quot;           &amp;quot;2.225074e-308&amp;quot; 
+##               double.xmax               double.base             double.digits 
+##           &amp;quot;1.797693e+308&amp;quot;                       &amp;quot;2&amp;quot;                      &amp;quot;53&amp;quot; 
+##           double.rounding              double.guard         double.ulp.digits 
+##                       &amp;quot;5&amp;quot;                       &amp;quot;0&amp;quot;                     &amp;quot;-52&amp;quot; 
+##     double.neg.ulp.digits           double.exponent            double.min.exp 
+##                     &amp;quot;-53&amp;quot;                      &amp;quot;11&amp;quot;                   &amp;quot;-1022&amp;quot; 
+##            double.max.exp               integer.max               sizeof.long 
+##                    &amp;quot;1024&amp;quot;              &amp;quot;2147483647&amp;quot;                       &amp;quot;8&amp;quot; 
+##           sizeof.longlong         sizeof.longdouble            sizeof.pointer 
+##                       &amp;quot;8&amp;quot;                      &amp;quot;16&amp;quot;                       &amp;quot;8&amp;quot; 
+##            longdouble.eps        longdouble.neg.eps         longdouble.digits 
+##            &amp;quot;1.084202e-19&amp;quot;            &amp;quot;5.421011e-20&amp;quot;                      &amp;quot;64&amp;quot; 
+##       longdouble.rounding          longdouble.guard     longdouble.ulp.digits 
+##                       &amp;quot;5&amp;quot;                       &amp;quot;0&amp;quot;                     &amp;quot;-63&amp;quot; 
+## longdouble.neg.ulp.digits       longdouble.exponent        longdouble.min.exp 
+##                     &amp;quot;-64&amp;quot;                      &amp;quot;15&amp;quot;                  &amp;quot;-16382&amp;quot; 
+##        longdouble.max.exp 
+##                   &amp;quot;16384&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;정수&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;정수&lt;/h3&gt;
+&lt;p&gt;정수는 0과 음수 및 양수로 구성된다. 그러므로 32-비트로 표현할 수 있는 정수의 범위는 &lt;span class=&#34;math inline&#34;&gt;\(-2 ^ {31} \sim 2 ^ {31} - 1\)&lt;/span&gt;이다.&lt;/p&gt;
+&lt;p&gt;정수의 최대값은 “integer.max”으로 표현된다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 정수 최대값
+.Machine[[&amp;quot;integer.max&amp;quot;]]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 2147483647&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 정수 최대값의 수식
+2 ^ 31 - 1&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 2147483647&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;정수의 최대값을 초과하는 2147483648는 실수인 “numeric”으로 형변환되어 처리된다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;2147483647L %&amp;gt;% 
+  is()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;integer&amp;quot;             &amp;quot;double&amp;quot;              &amp;quot;numeric&amp;quot;            
+## [4] &amp;quot;vector&amp;quot;              &amp;quot;data.frameRowLabels&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;2147483648L %&amp;gt;% 
+  is()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;numeric&amp;quot; &amp;quot;vector&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;부동-소수점&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;부동 소수점&lt;/h3&gt;
+&lt;p&gt;부동 소수점의 최소값과 최대값의 범위는 각각 “double.xmin”와 “double.xmax”에 정의되어 있다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 부동 소수점 최소값
+.Machine[[&amp;quot;double.xmin&amp;quot;]]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 2.225074e-308&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 부동 소수점 최대값
+.Machine[[&amp;quot;double.xmax&amp;quot;]]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 1.797693e+308&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;R은 부동 소수점의 최소값과 최대값의 범위를 초과하는 값은 수학에서의 무한대와는 다르지만, 무한대인 Inf(Infinite)로 표현한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;1.797693e+308&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 1.797693e+308&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;1.797693e+308 &amp;lt; Inf&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] TRUE&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;1.797694e+308 &amp;lt; Inf&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] FALSE&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;1.797694e+308&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] Inf&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;round-off-에러&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Round-Off 에러&lt;/h3&gt;
+&lt;p&gt;컴퓨터는 수치를 이진수로 표현한다. 그래서 10진수의 소수점 이하의 자리수가 이진수로 컴퓨터에서 유효자리수로 처리될때, Round-Off 에러가 발생한다.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(\sqrt4\)&lt;/span&gt;는 2이지만, &lt;span class=&#34;math inline&#34;&gt;\(\sqrt5\)&lt;/span&gt;는 소수점으로 제한된 비트 안에 채우기 위해서 오차가 발생한다. 그래서 예제의 &lt;span class=&#34;math inline&#34;&gt;\(\sqrt5 ^ 2\)&lt;/span&gt;이 정확한 5로 인식되지 않는다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sqrt(4)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 2&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sqrt(4) ^ 2&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 4&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sqrt(4) ^ 2 == 4&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] TRUE&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;4 - sqrt(4) ^ 2 &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 0&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sqrt(5)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 2.236068&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sqrt(5) ^ 2 &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 5&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sqrt(5) ^ 2 == 5&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] FALSE&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;5 - sqrt(5) ^ 2 &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] -8.881784e-16&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;R에서 컴퓨터로 정확하게 표현할 수 있는 부동 소수점은 “double.eps”에 정의되어 있다. 이것은 &lt;span class=&#34;math inline&#34;&gt;\((1 + \epsilon) \ne 1\)&lt;/span&gt;을 만족하는 가장 작은 양의 부동소수점 &lt;span class=&#34;math inline&#34;&gt;\(\epsilon\)&lt;/span&gt;을 의미한다.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;.Machine[[&amp;quot;double.eps&amp;quot;]]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 2.220446e-16&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;.Machine[[&amp;quot;double.eps&amp;quot;]] + 1 != 1&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] TRUE&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;2.220446e-17 + 1 != 1&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] FALSE&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

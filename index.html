@@ -147,6 +147,41 @@
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
+        <a href="/post/2021-06/numeric_precision/">수치 정밀도에 대해서</a>
+      </h3>
+      <div class="post_meta">
+  
+    <svg class="icon">
+  <use xlink:href="#calendar"></use>
+</svg>
+    <span class="post_date">
+      2021-06-30</span>
+      <a href='/tags/mathematics' class="post_tag button button_translucent">mathematics
+      </a>
+      <a href='/tags/r-programming' class="post_tag button button_translucent">R-programming
+      </a>
+</div>
+
+    </div>
+      <div class="excerpt_footer">
+        <div>
+          <p class="pale">
+            
+              R의 수치정밀도 R의 수치연산에서 32-비트의 정수와 IEC 60559 스팩의 부동 소수점(배정밀도)의 산술연산을 사용한다. R이 설치된 모든 머신에서 공통적으로 적용된다.
+ .Machine .Machine은 R이 설치된 머신에서의 수치 정밀도에 대한 정보를 제공해 준다.
+library(dplyr) .Machine %&gt;% unlist %&gt;% prettyNum() ## double.eps double.neg.eps double.xmin ## &quot;2.220446e-16&quot; &quot;1.110223e-16&quot; …
+            
+          </p>
+          <a href="/post/2021-06/numeric_precision/" class="excerpt_more button">Read More</a>
+        </div>
+      </div>
+    </div>
+  </li>
+
+      <li class="post_item">
+  <div class="excerpt">
+    <div class="excerpt_header">
+      <h3 class="post_link">
         <a href="/post/2021-02/optimal_binning/">스코어카드와 최적 비닝</a>
       </h3>
       <div class="post_meta">
@@ -479,41 +514,6 @@ DBMS에서는 SQL(Structured Query Language)을 이용해서 데이 …
     </div>
   </li>
 
-      <li class="post_item">
-  <div class="excerpt">
-    <div class="excerpt_header">
-      <h3 class="post_link">
-        <a href="/post/2020-02/r_web_application/">R 웹 어플리케이션 개발에 대한 연구</a>
-      </h3>
-      <div class="post_meta">
-  
-    <svg class="icon">
-  <use xlink:href="#calendar"></use>
-</svg>
-    <span class="post_date">
-      2020-02-26</span>
-      <a href='/tags/packages' class="post_tag button button_translucent">packages
-      </a>
-      <a href='/tags/web-application' class="post_tag button button_translucent">web application
-      </a>
-      <a href='/tags/rserve' class="post_tag button button_translucent">Rserve
-      </a>
-</div>
-
-    </div>
-      <div class="excerpt_footer">
-        <div>
-          <p class="pale">
-            
-              들어가기  그 시절은 국내에서 R을 사용하는 R 유저가 많지 않을 때 였다. S-PLUS로 데이터분석 프로젝트를 수행하던 시절, MathSoft라는 회사에서 Linux/UNIX에서는 S-PLUS Analytic Server, MS-Windows에서는 StatServer라는 이름의 상용 웹 어플리케이션을 판매하던 시절이었다. S-PLUS라는 통계 소프트웨어(R의 Commercial Version)를 연동하여 웹 어플리케이션을 개발하는 기능을 구현한 제품이었다. 지금의 R Shiny Server 정도로 이해하면 된다. 2006년이던가? 야심차게 R과 연동하는 웹 어플리케 …
-            
-          </p>
-          <a href="/post/2020-02/r_web_application/" class="excerpt_more button">Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-
     <li>
 <ul class="pagination">
   <li class="page-item">
@@ -559,6 +559,9 @@ DBMS에서는 SQL(Structured Query Language)을 이용해서 데이 …
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
       <li>
+        <a href="/post/2021-06/numeric_precision/" class="nav-link">수치 정밀도에 대해서</a>
+      </li>
+      <li>
         <a href="/post/2021-02/optimal_binning/" class="nav-link">스코어카드와 최적 비닝</a>
       </li>
       <li>
@@ -569,9 +572,6 @@ DBMS에서는 SQL(Structured Query Language)을 이용해서 데이 …
       </li>
       <li>
         <a href="/post/2021-01/morpheme/" class="nav-link">Mecab으로 한글 띄어쓰기 검사기 만들기</a>
-      </li>
-      <li>
-        <a href="/gallery/2021-01/reaction_diffusion/" class="nav-link">Reaction Diffusion</a>
       </li>
     </ul>
     <div>
@@ -600,6 +600,11 @@ DBMS에서는 SQL(Structured Query Language)을 이용해서 데이 …
         <a href='/categories/tidyverse/' class="post_tag button button_translucent">
           TIDYVERSE
           <span class="button_tally">6</span>
+        </a>
+        
+        <a href='/categories/r-programming/' class="post_tag button button_translucent">
+          R-PROGRAMMING
+          <span class="button_tally">1</span>
         </a>
         
         
@@ -634,13 +639,13 @@ DBMS에서는 SQL(Structured Query Language)을 이용해서 데이 …
           <span class="button_tally">6</span>
         </a>
         
-        <a href='/tags/graphics/' class="post_tag button button_translucent">
-          GRAPHICS
-          <span class="button_tally">4</span>
-        </a>
-        
         <a href='/tags/mathematics/' class="post_tag button button_translucent">
           MATHEMATICS
+          <span class="button_tally">5</span>
+        </a>
+        
+        <a href='/tags/graphics/' class="post_tag button button_translucent">
+          GRAPHICS
           <span class="button_tally">4</span>
         </a>
         
@@ -848,7 +853,7 @@ DBMS에서는 SQL(Structured Query Language)을 이용해서 데이 …
             </a>
             
             
-            <a href='/tags/mathematics/' class=" post_tag button button_translucent" data-position=4>MATHEMATICS<span class="button_tally">4</span>
+            <a href='/tags/mathematics/' class=" post_tag button button_translucent" data-position=5>MATHEMATICS<span class="button_tally">5</span>
             </a>
             
             
@@ -925,6 +930,10 @@ DBMS에서는 SQL(Structured Query Language)을 이용해서 데이 …
             
             
             <a href='/tags/quandl/' class=" post_tag button button_translucent" data-position=1>QUANDL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='/tags/r-programming/' class=" post_tag button button_translucent" data-position=1>R-PROGRAMMING<span class="button_tally">1</span>
             </a>
             
             
