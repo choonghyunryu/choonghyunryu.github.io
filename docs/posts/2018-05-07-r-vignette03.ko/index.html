@@ -1,0 +1,3614 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #20794d; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007ba5; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #007ba5; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #007ba5; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #20794d; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+  <!--radix_placeholder_meta_tags-->
+<title>Dataholic: dlookr -  데이터 변환</title>
+
+<meta property="description" itemprop="description" content="이 문서는 dlookr 기능 중에서 **데이터 변환** 기능을 소개한다. 여러분은 dlookr에서 제공하는 함수로 데이터 프레임과 데이터 프레임을 상속한 tbl_df 데이터의 데이터 변환을 수행하는 방법을 일힐 수 있을 것이다."/>
+
+
+<!--  https://schema.org/Article -->
+<meta property="article:published" itemprop="datePublished" content="2018-05-07"/>
+<meta property="article:created" itemprop="dateCreated" content="2018-05-07"/>
+<meta name="article:author" content="유충현"/>
+
+<!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+<meta property="og:title" content="Dataholic: dlookr -  데이터 변환"/>
+<meta property="og:type" content="article"/>
+<meta property="og:description" content="이 문서는 dlookr 기능 중에서 **데이터 변환** 기능을 소개한다. 여러분은 dlookr에서 제공하는 함수로 데이터 프레임과 데이터 프레임을 상속한 tbl_df 데이터의 데이터 변환을 수행하는 방법을 일힐 수 있을 것이다."/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Dataholic"/>
+
+<!--  https://dev.twitter.com/cards/types/summary -->
+<meta property="twitter:card" content="summary"/>
+<meta property="twitter:title" content="Dataholic: dlookr -  데이터 변환"/>
+<meta property="twitter:description" content="이 문서는 dlookr 기능 중에서 **데이터 변환** 기능을 소개한다. 여러분은 dlookr에서 제공하는 함수로 데이터 프레임과 데이터 프레임을 상속한 tbl_df 데이터의 데이터 변환을 수행하는 방법을 일힐 수 있을 것이다."/>
+
+<!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+<script type="text/json" id="radix-rmarkdown-metadata">
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","categories","tags","output"]}},"value":[{"type":"character","attributes":{},"value":["dlookr -  데이터 변환"]},{"type":"character","attributes":{},"value":["이 문서는 dlookr 기능 중에서 **데이터 변환** 기능을 소개한다. 여러분은 dlookr에서 제공하는 함수로 데이터 프레임과 데이터 프레임을 상속한 tbl_df 데이터의 데이터 변환을 수행하는 방법을 일힐 수 있을 것이다."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["유충현"]}]}]},{"type":"character","attributes":{},"value":["2018-05-07"]},{"type":"character","attributes":{},"value":["R Analytics"]},{"type":"character","attributes":{},"value":["dlookr","데이터 변환"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_depth"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]}]}]}]}
+</script>
+<!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["2018-05-07-r-vignette03.ko_files/figure-html5/binning_by-1.png","2018-05-07-r-vignette03.ko_files/figure-html5/binning-1.png","2018-05-07-r-vignette03.ko_files/figure-html5/imputate_na-1.png","2018-05-07-r-vignette03.ko_files/figure-html5/imputate_na2-1.png","2018-05-07-r-vignette03.ko_files/figure-html5/imputate_outlier-1.png","2018-05-07-r-vignette03.ko_files/figure-html5/resolving2-1.png","2018-05-07-r-vignette03.ko_files/figure-html5/resolving3-1.png","2018-05-07-r-vignette03.ko_files/figure-html5/standardization-1.png","img/diag_agenda_html.png","img/diag_intro_pdf.png","img/diag_outlier_html.png","img/diag_outlier_pdf.png","img/diag_table_html.png","img/diagn_agenda_pdf.png","img/diagn_title_pdf.png","img/eda_agenda_html.png","img/eda_agenda_pdf.png","img/eda_anova_pdf.png","img/eda_correlation_pdf.png","img/eda_intro_pdf.png","img/eda_lm_pdf.png","img/eda_normality_html.png","img/eda_normality_pdf.png","img/eda_table_html.png","img/eda_title_pdf.png","img/R_Async.png","img/trans_agenda_html.png","img/trans_agenda_pdf.png","img/trans_content_pdf.png","img/trans_table_html.png","img/trans_title_pdf.png","img/trans_viz_html.png"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+<meta name="distill:offset" content="../.."/>
+
+<script type="application/javascript">
+
+  window.headroom_prevent_pin = false;
+
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+
+    // initialize headroom for banner
+    var header = $('header').get(0);
+    var headerHeight = header.offsetHeight;
+    var headroom = new Headroom(header, {
+      tolerance: 5,
+      onPin : function() {
+        if (window.headroom_prevent_pin) {
+          window.headroom_prevent_pin = false;
+          headroom.unpin();
+        }
+      }
+    });
+    headroom.init();
+    if(window.location.hash)
+      headroom.unpin();
+    $(header).addClass('headroom--transition');
+
+    // offset scroll location for banner on hash change
+    // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+    window.addEventListener("hashchange", function(event) {
+      window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+    });
+
+    // responsive menu
+    $('.distill-site-header').each(function(i, val) {
+      var topnav = $(this);
+      var toggle = topnav.find('.nav-toggle');
+      toggle.on('click', function() {
+        topnav.toggleClass('responsive');
+      });
+    });
+
+    // nav dropdowns
+    $('.nav-dropbtn').click(function(e) {
+      $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+      $(this).parent().siblings('.nav-dropdown')
+         .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $("body").click(function(e){
+      $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $(".nav-dropdown").click(function(e){
+      e.stopPropagation();
+    });
+  });
+</script>
+
+<style type="text/css">
+
+/* Theme (user-documented overrideables for nav appearance) */
+
+.distill-site-nav {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: #0F2E3D;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.distill-site-nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.distill-site-nav a:hover {
+  color: white;
+}
+
+@media print {
+  .distill-site-nav {
+    display: none;
+  }
+}
+
+.distill-site-header {
+
+}
+
+.distill-site-footer {
+
+}
+
+
+/* Site Header */
+
+.distill-site-header {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.distill-site-header .nav-left {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header .nav-left {
+    margin-left: 0;
+  }
+}
+
+
+.distill-site-header .nav-right {
+  float: right;
+  margin-right: 8px;
+}
+
+.distill-site-header a,
+.distill-site-header .title {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 10px 14px 10px;
+}
+
+.distill-site-header .title {
+  font-size: 18px;
+  min-width: 150px;
+}
+
+.distill-site-header .logo {
+  padding: 0;
+}
+
+.distill-site-header .logo img {
+  display: none;
+  max-height: 20px;
+  width: auto;
+  margin-bottom: -4px;
+}
+
+.distill-site-header .nav-image img {
+  max-height: 18px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: -3px;
+}
+
+
+
+@media screen and (min-width: 1000px) {
+  .distill-site-header .logo img {
+    display: inline-block;
+  }
+  .distill-site-header .nav-left {
+    margin-left: 20px;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 20px;
+  }
+  .distill-site-header .title {
+    padding-left: 12px;
+  }
+}
+
+
+.distill-site-header .nav-toggle {
+  display: none;
+}
+
+.nav-dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.nav-dropdown .nav-dropbtn {
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 10px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  margin-top: 1px;
+  z-index: 2;
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+  z-index: 1;
+  margin-top: 2px;
+  white-space: nowrap;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.nav-dropdown-content hr {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-dropdown-active {
+  display: block;
+}
+
+.nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
+  color: black;
+  padding: 6px 24px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.nav-dropdown-content .nav-dropdown-header {
+  display: block;
+  padding: 5px 24px;
+  padding-bottom: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999;
+  white-space: nowrap;
+}
+
+.nav-dropdown:hover .nav-dropbtn {
+  color: white;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.nav-right .nav-dropdown-content {
+  margin-left: -45%;
+  right: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
+  .distill-site-header a.nav-toggle {
+    float: right;
+    display: block;
+  }
+  .distill-site-header .title {
+    margin-left: 0;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 0;
+  }
+  .distill-site-header {
+    overflow: hidden;
+  }
+  .nav-right .nav-dropdown-content {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-header.responsive {position: relative; min-height: 500px; }
+  .distill-site-header.responsive a.nav-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .distill-site-header.responsive a,
+  .distill-site-header.responsive .nav-dropdown {
+    display: block;
+    text-align: left;
+  }
+  .distill-site-header.responsive .nav-left,
+  .distill-site-header.responsive .nav-right {
+    width: 100%;
+  }
+  .distill-site-header.responsive .nav-dropdown {float: none;}
+  .distill-site-header.responsive .nav-dropdown-content {position: relative;}
+  .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Site Footer */
+
+.distill-site-footer {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 3;
+  margin-top: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+/* Headroom */
+
+d-title {
+  padding-top: 6rem;
+}
+
+@media print {
+  d-title {
+    padding-top: 4rem;
+  }
+}
+
+.headroom {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.headroom--transition {
+  transition: all .4s ease-in-out;
+}
+
+.headroom--unpinned {
+  top: -100px;
+}
+
+.headroom--pinned {
+  top: 0;
+}
+
+/* adjust viewport for navbar height */
+/* helps vertically center bootstrap (non-distill) content */
+.min-vh-100 {
+  min-height: calc(100vh - 100px) !important;
+}
+
+</style>
+
+<script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+<link href="../../site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
+<link href="../../site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
+<script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
+<script src="../../site_libs/autocomplete-0.37.1/autocomplete.min.js"></script>
+<script src="../../site_libs/fuse-6.4.1/fuse.min.js"></script>
+
+<script type="application/javascript">
+
+function getMeta(metaName) {
+  var metas = document.getElementsByTagName('meta');
+  for (let i = 0; i < metas.length; i++) {
+    if (metas[i].getAttribute('name') === metaName) {
+      return metas[i].getAttribute('content');
+    }
+  }
+  return '';
+}
+
+function offsetURL(url) {
+  var offset = getMeta('distill:offset');
+  return offset ? offset + '/' + url : url;
+}
+
+function createFuseIndex() {
+
+  // create fuse index
+  var options = {
+    keys: [
+      { name: 'title', weight: 20 },
+      { name: 'categories', weight: 15 },
+      { name: 'description', weight: 10 },
+      { name: 'contents', weight: 5 },
+    ],
+    ignoreLocation: true,
+    threshold: 0
+  };
+  var fuse = new window.Fuse([], options);
+
+  // fetch the main search.json
+  return fetch(offsetURL('search.json'))
+    .then(function(response) {
+      if (response.status == 200) {
+        return response.json().then(function(json) {
+          // index main articles
+          json.articles.forEach(function(article) {
+            fuse.add(article);
+          });
+          // download collections and index their articles
+          return Promise.all(json.collections.map(function(collection) {
+            return fetch(offsetURL(collection)).then(function(response) {
+              if (response.status === 200) {
+                return response.json().then(function(articles) {
+                  articles.forEach(function(article) {
+                    fuse.add(article);
+                  });
+                })
+              } else {
+                return Promise.reject(
+                  new Error('Unexpected status from search index request: ' +
+                            response.status)
+                );
+              }
+            });
+          })).then(function() {
+            return fuse;
+          });
+        });
+
+      } else {
+        return Promise.reject(
+          new Error('Unexpected status from search index request: ' +
+                      response.status)
+        );
+      }
+    });
+}
+
+window.document.addEventListener("DOMContentLoaded", function (event) {
+
+  // get search element (bail if we don't have one)
+  var searchEl = window.document.getElementById('distill-search');
+  if (!searchEl)
+    return;
+
+  createFuseIndex()
+    .then(function(fuse) {
+
+      // make search box visible
+      searchEl.classList.remove('hidden');
+
+      // initialize autocomplete
+      var options = {
+        autoselect: true,
+        hint: false,
+        minLength: 2,
+      };
+      window.autocomplete(searchEl, options, [{
+        source: function(query, callback) {
+          const searchOptions = {
+            isCaseSensitive: false,
+            shouldSort: true,
+            minMatchCharLength: 2,
+            limit: 10,
+          };
+          var results = fuse.search(query, searchOptions);
+          callback(results
+            .map(function(result) { return result.item; })
+          );
+        },
+        templates: {
+          suggestion: function(suggestion) {
+            var img = suggestion.preview && Object.keys(suggestion.preview).length > 0
+              ? `<img src="${offsetURL(suggestion.preview)}"</img>`
+              : '';
+            var html = `
+              <div class="search-item">
+                <h3>${suggestion.title}</h3>
+                <div class="search-item-description">
+                  ${suggestion.description || ''}
+                </div>
+                <div class="search-item-preview">
+                  ${img}
+                </div>
+              </div>
+            `;
+            return html;
+          }
+        }
+      }]).on('autocomplete:selected', function(event, suggestion) {
+        window.location.href = offsetURL(suggestion.path);
+      });
+      // remove inline display style on autocompleter (we want to
+      // manage responsive display via css)
+      $('.algolia-autocomplete').css("display", "");
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+
+});
+
+</script>
+
+<style type="text/css">
+
+.nav-search {
+  font-size: x-small;
+}
+
+/* Algolioa Autocomplete */
+
+.algolia-autocomplete {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: sub;
+  background-color: white;
+  color: black;
+  padding: 6px;
+  padding-top: 8px;
+  padding-bottom: 0;
+  border-radius: 6px;
+  border: 1px #0F2E3D solid;
+  width: 180px;
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-nav .algolia-autocomplete {
+    display: none;
+    visibility: hidden;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete {
+    display: inline-block;
+    visibility: visible;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete .aa-dropdown-menu {
+    margin-left: 0;
+    width: 400px;
+    max-height: 400px;
+  }
+}
+
+.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+  width: 90%;
+  outline: none;
+  border: none;
+}
+
+.algolia-autocomplete .aa-hint {
+  color: #999;
+}
+.algolia-autocomplete .aa-dropdown-menu {
+  width: 550px;
+  max-height: 70vh;
+  overflow-x: visible;
+  overflow-y: scroll;
+  padding: 5px;
+  margin-top: 3px;
+  margin-left: -150px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #999;
+  border-top: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+  cursor: pointer;
+  padding: 5px 4px;
+  border-bottom: 1px solid #eee;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion:last-of-type {
+  border-bottom: none;
+  margin-bottom: 2px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item {
+  overflow: hidden;
+  font-size: 0.8em;
+  line-height: 1.4em;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item h3 {
+  font-size: 1rem;
+  margin-block-start: 0;
+  margin-block-end: 5px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-description {
+  display: inline-block;
+  overflow: hidden;
+  height: 2.8em;
+  width: 80%;
+  margin-right: 4%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview {
+  display: inline-block;
+  width: 15%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img {
+  height: 3em;
+  width: auto;
+  display: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img[src] {
+  display: initial;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+  background-color: #eee;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+  font-weight: bold;
+  font-style: normal;
+}
+
+</style>
+
+
+<!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+<style type="text/css">
+
+body {
+  background-color: white;
+}
+
+.pandoc-table {
+  width: 100%;
+}
+
+.pandoc-table>caption {
+  margin-bottom: 10px;
+}
+
+.pandoc-table th:not([align]) {
+  text-align: left;
+}
+
+.pagedtable-footer {
+  font-size: 15px;
+}
+
+d-byline .byline {
+  grid-template-columns: 2fr 2fr;
+}
+
+d-byline .byline h3 {
+  margin-block-start: 1.5em;
+}
+
+d-byline .byline .authors-affiliations h3 {
+  margin-block-start: 0.5em;
+}
+
+.authors-affiliations .orcid-id {
+  width: 16px;
+  height:16px;
+  margin-left: 4px;
+  margin-right: 4px;
+  vertical-align: middle;
+  padding-bottom: 2px;
+}
+
+d-title .dt-tags {
+  margin-top: 1em;
+  grid-column: text;
+}
+
+.dt-tags .dt-tag {
+  text-decoration: none;
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0em 0.4em;
+  margin-right: 0.5em;
+  margin-bottom: 0.4em;
+  font-size: 70%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+d-article table.gt_table td,
+d-article table.gt_table th {
+  border-bottom: none;
+}
+
+.html-widget {
+  margin-bottom: 2.0em;
+}
+
+.l-screen-inset {
+  padding-right: 16px;
+}
+
+.l-screen .caption {
+  margin-left: 10px;
+}
+
+.shaded {
+  background: rgb(247, 247, 247);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .html-widget {
+  margin-bottom: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .shaded-content {
+  background: white;
+}
+
+.text-output {
+  margin-top: 0;
+  line-height: 1.5em;
+}
+
+.hidden {
+  display: none !important;
+}
+
+d-article {
+  padding-top: 2.5rem;
+  padding-bottom: 30px;
+}
+
+d-appendix {
+  padding-top: 30px;
+}
+
+d-article>p>img {
+  width: 100%;
+}
+
+d-article h2 {
+  margin: 1rem 0 1.5rem 0;
+}
+
+d-article h3 {
+  margin-top: 1.5rem;
+}
+
+d-article iframe {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 2.0em;
+  width: 100%;
+}
+
+/* Tweak code blocks */
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: auto;
+}
+
+d-article div.sourceCode {
+  background-color: white;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 10px;
+  font-size: 12px;
+  border-left: 2px solid rgba(0,0,0,0.1);
+}
+
+d-article pre {
+  font-size: 12px;
+  color: black;
+  background: none;
+  margin-top: 0;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+d-article pre a {
+  border-bottom: none;
+}
+
+d-article pre a:hover {
+  border-bottom: none;
+  text-decoration: underline;
+}
+
+d-article details {
+  grid-column: text;
+  margin-bottom: 0.8em;
+}
+
+@media(min-width: 768px) {
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: visible !important;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 18px;
+  font-size: 14px;
+}
+
+d-article pre {
+  font-size: 14px;
+}
+
+}
+
+figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+/* CSS for d-contents */
+
+.d-contents {
+  grid-column: text;
+  color: rgba(0,0,0,0.8);
+  font-size: 0.9em;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+  padding-bottom: 0.5em;
+  margin-bottom: 1em;
+  padding-left: 0.25em;
+  justify-self: start;
+}
+
+@media(min-width: 1000px) {
+  .d-contents.d-contents-float {
+    height: 0;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    justify-self: center;
+    padding-right: 3em;
+    padding-left: 2em;
+  }
+}
+
+.d-contents nav h3 {
+  font-size: 18px;
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+.d-contents li {
+  list-style-type: none
+}
+
+.d-contents nav > ul {
+  padding-left: 0;
+}
+
+.d-contents ul {
+  padding-left: 1em
+}
+
+.d-contents nav ul li {
+  margin-top: 0.6em;
+  margin-bottom: 0.2em;
+}
+
+.d-contents nav a {
+  font-size: 13px;
+  border-bottom: none;
+  text-decoration: none
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.d-contents nav a:hover {
+  text-decoration: underline solid rgba(0, 0, 0, 0.6)
+}
+
+.d-contents nav > ul > li > a {
+  font-weight: 600;
+}
+
+.d-contents nav > ul > li > ul {
+  font-weight: inherit;
+}
+
+.d-contents nav > ul > li > ul > li {
+  margin-top: 0.2em;
+}
+
+
+.d-contents nav ul {
+  margin-top: 0;
+  margin-bottom: 0.25em;
+}
+
+.d-article-with-toc h2:nth-child(2) {
+  margin-top: 0;
+}
+
+
+/* Figure */
+
+.figure {
+  position: relative;
+  margin-bottom: 2.5em;
+  margin-top: 1.5em;
+}
+
+.figure img {
+  width: 100%;
+}
+
+.figure .caption {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  line-height: 1.5em;
+}
+
+.figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.figure .caption a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.figure .caption b,
+.figure .caption strong, {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1.0);
+}
+
+/* Citations */
+
+d-article .citation {
+  color: inherit;
+  cursor: inherit;
+}
+
+div.hanging-indent{
+  margin-left: 1em; text-indent: -1em;
+}
+
+/* Citation hover box */
+
+.tippy-box[data-theme~=light-border] {
+  background-color: rgba(250, 250, 250, 0.95);
+}
+
+.tippy-content > p {
+  margin-bottom: 0;
+  padding: 2px;
+}
+
+
+/* Tweak 1000px media break to show more text */
+
+@media(min-width: 1000px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 16px;
+  }
+
+  .grid {
+    grid-column-gap: 16px;
+  }
+
+  d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+  }
+  figure .caption, .figure .caption, figure figcaption {
+    font-size: 13px;
+  }
+}
+
+@media(min-width: 1180px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 32px;
+  }
+
+  .grid {
+    grid-column-gap: 32px;
+  }
+}
+
+
+/* Get the citation styles for the appendix (not auto-injected on render since
+   we do our own rendering of the citation appendix) */
+
+d-appendix .citation-appendix,
+.d-appendix .citation-appendix {
+  font-size: 11px;
+  line-height: 15px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 18px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.02);
+  padding: 10px 18px;
+  border-radius: 3px;
+  color: rgba(150, 150, 150, 1);
+  overflow: hidden;
+  margin-top: -12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Include appendix styles here so they can be overridden */
+
+d-appendix {
+  contain: layout style;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-top: 60px;
+  margin-bottom: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  color: rgba(0,0,0,0.5);
+  padding-top: 60px;
+  padding-bottom: 48px;
+}
+
+d-appendix h3 {
+  grid-column: page-start / text-start;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 1em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.65);
+}
+
+d-appendix h3 + * {
+  margin-top: 1em;
+}
+
+d-appendix ol {
+  padding: 0 0 0 15px;
+}
+
+@media (min-width: 768px) {
+  d-appendix ol {
+    padding: 0 0 0 30px;
+    margin-left: -30px;
+  }
+}
+
+d-appendix li {
+  margin-bottom: 1em;
+}
+
+d-appendix a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+d-appendix > * {
+  grid-column: text;
+}
+
+d-appendix > d-footnote-list,
+d-appendix > d-citation-list,
+d-appendix > distill-appendix {
+  grid-column: screen;
+}
+
+/* Include footnote styles here so they can be overridden */
+
+d-footnote-list {
+  contain: layout style;
+}
+
+d-footnote-list > * {
+  grid-column: text;
+}
+
+d-footnote-list a.footnote-backlink {
+  color: rgba(0,0,0,0.3);
+  padding-left: 0.5em;
+}
+
+
+
+/* Anchor.js */
+
+.anchorjs-link {
+  /*transition: all .25s linear; */
+  text-decoration: none;
+  border-bottom: none;
+}
+*:hover > .anchorjs-link {
+  margin-left: -1.125em !important;
+  text-decoration: none;
+  border-bottom: none;
+}
+
+/* Social footer */
+
+.social_footer {
+  margin-top: 30px;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.67);
+}
+
+.disqus-comments {
+  margin-right: 30px;
+}
+
+.disqus-comment-count {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+#disqus_thread {
+  margin-top: 30px;
+}
+
+.article-sharing a {
+  border-bottom: none;
+  margin-right: 8px;
+}
+
+.article-sharing a:hover {
+  border-bottom: none;
+}
+
+.sidebar-section.subscribe {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.subscribe p {
+  margin-bottom: 0.5em;
+}
+
+
+.article-footer .subscribe {
+  font-size: 15px;
+  margin-top: 45px;
+}
+
+
+.sidebar-section.custom {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.custom p {
+  margin-bottom: 0.5em;
+}
+
+/* Styles for listing layout (hide title) */
+.layout-listing d-title, .layout-listing .d-title {
+  display: none;
+}
+
+/* Styles for posts lists (not auto-injected) */
+
+
+.posts-with-sidebar {
+  padding-left: 45px;
+  padding-right: 45px;
+}
+
+.posts-list .description h2,
+.posts-list .description p {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+.posts-list .description h2 {
+  font-weight: 700;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.posts-list h2.post-tag {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding-bottom: 12px;
+}
+.posts-list {
+  margin-top: 60px;
+  margin-bottom: 24px;
+}
+
+.posts-list .post-preview {
+  text-decoration: none;
+  overflow: hidden;
+  display: block;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 24px 0;
+}
+
+.post-preview-last {
+  border-bottom: none !important;
+}
+
+.posts-list .posts-list-caption {
+  grid-column: screen;
+  font-weight: 400;
+}
+
+.posts-list .post-preview h2 {
+  margin: 0 0 6px 0;
+  line-height: 1.2em;
+  font-style: normal;
+  font-size: 24px;
+}
+
+.posts-list .post-preview p {
+  margin: 0 0 12px 0;
+  line-height: 1.4em;
+  font-size: 16px;
+}
+
+.posts-list .post-preview .thumbnail {
+  box-sizing: border-box;
+  margin-bottom: 24px;
+  position: relative;
+  max-width: 500px;
+}
+.posts-list .post-preview img {
+  width: 100%;
+  display: block;
+}
+
+.posts-list .metadata {
+  font-size: 12px;
+  line-height: 1.4em;
+  margin-bottom: 18px;
+}
+
+.posts-list .metadata > * {
+  display: inline-block;
+}
+
+.posts-list .metadata .publishedDate {
+  margin-right: 2em;
+}
+
+.posts-list .metadata .dt-authors {
+  display: block;
+  margin-top: 0.3em;
+  margin-right: 2em;
+}
+
+.posts-list .dt-tags {
+  display: block;
+  line-height: 1em;
+}
+
+.posts-list .dt-tags .dt-tag {
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0.3em 0.4em;
+  margin-right: 0.2em;
+  margin-bottom: 0.4em;
+  font-size: 60%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.posts-list img {
+  opacity: 1;
+}
+
+.posts-list img[data-src] {
+  opacity: 0;
+}
+
+.posts-more {
+  clear: both;
+}
+
+
+.posts-sidebar {
+  font-size: 16px;
+}
+
+.posts-sidebar h3 {
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.sidebar-section {
+  margin-bottom: 30px;
+}
+
+.categories ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.categories li {
+  color: rgba(0, 0, 0, 0.8);
+  margin-bottom: 0;
+}
+
+.categories li>a {
+  border-bottom: none;
+}
+
+.categories li>a:hover {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.categories .active {
+  font-weight: 600;
+}
+
+.categories .category-count {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+
+@media(min-width: 768px) {
+  .posts-list .post-preview h2 {
+    font-size: 26px;
+  }
+  .posts-list .post-preview .thumbnail {
+    float: right;
+    width: 30%;
+    margin-bottom: 0;
+  }
+  .posts-list .post-preview .description {
+    float: left;
+    width: 45%;
+  }
+  .posts-list .post-preview .metadata {
+    float: left;
+    width: 20%;
+    margin-top: 8px;
+  }
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.5em;
+    font-size: 16px;
+  }
+  .posts-with-sidebar .posts-list {
+    float: left;
+    width: 75%;
+  }
+  .posts-with-sidebar .posts-sidebar {
+    float: right;
+    width: 20%;
+    margin-top: 60px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+}
+
+
+/* Improve display for browsers without grid (IE/Edge <= 15) */
+
+.downlevel {
+  line-height: 1.6em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
+
+.downlevel .d-title {
+  padding-top: 6rem;
+  padding-bottom: 1.5rem;
+}
+
+.downlevel .d-title h1 {
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1.1em;
+  margin: 0 0 0.5rem;
+}
+
+.downlevel .d-title p {
+  font-weight: 300;
+  font-size: 1.2rem;
+  line-height: 1.55em;
+  margin-top: 0;
+}
+
+.downlevel .d-byline {
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  font-size: 0.8rem;
+  line-height: 1.8em;
+}
+
+.downlevel .section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.downlevel .d-article {
+  font-size: 1.06rem;
+  line-height: 1.7em;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+
+.downlevel .d-appendix {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.5);
+  padding-top: 40px;
+  padding-bottom: 48px;
+}
+
+.downlevel .footnotes ol {
+  padding-left: 13px;
+}
+
+.downlevel .base-grid,
+.downlevel .distill-header,
+.downlevel .d-title,
+.downlevel .d-abstract,
+.downlevel .d-article,
+.downlevel .d-appendix,
+.downlevel .distill-appendix,
+.downlevel .d-byline,
+.downlevel .d-footnote-list,
+.downlevel .d-citation-list,
+.downlevel .distill-footer,
+.downlevel .appendix-bottom,
+.downlevel .posts-container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+@media(min-width: 768px) {
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+  padding-left: 150px;
+  padding-right: 150px;
+  max-width: 900px;
+}
+}
+
+.downlevel pre code {
+  display: block;
+  border-left: 2px solid rgba(0, 0, 0, .1);
+  padding: 0 0 0 20px;
+  font-size: 14px;
+}
+
+.downlevel code, .downlevel pre {
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+.downlevel .posts-list .post-preview {
+  color: inherit;
+}
+
+
+
+</style>
+
+<script type="application/javascript">
+
+function is_downlevel_browser() {
+  if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                 window.navigator.userAgent)) {
+    return true;
+  } else {
+    return window.load_distill_framework === undefined;
+  }
+}
+
+// show body when load is complete
+function on_load_complete() {
+
+  // add anchors
+  if (window.anchors) {
+    window.anchors.options.placement = 'left';
+    window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+  }
+
+
+  // set body to visible
+  document.body.style.visibility = 'visible';
+
+  // force redraw for leaflet widgets
+  if (window.HTMLWidgets) {
+    var maps = window.HTMLWidgets.findAll(".leaflet");
+    $.each(maps, function(i, el) {
+      var map = this.getMap();
+      map.invalidateSize();
+      map.eachLayer(function(layer) {
+        if (layer instanceof L.TileLayer)
+          layer.redraw();
+      });
+    });
+  }
+
+  // trigger 'shown' so htmlwidgets resize
+  $('d-article').trigger('shown');
+}
+
+function init_distill() {
+
+  init_common();
+
+  // create front matter
+  var front_matter = $('<d-front-matter></d-front-matter>');
+  $('#distill-front-matter').wrap(front_matter);
+
+  // create d-title
+  $('.d-title').changeElementType('d-title');
+
+  // create d-byline
+  var byline = $('<d-byline></d-byline>');
+  $('.d-byline').replaceWith(byline);
+
+  // create d-article
+  var article = $('<d-article></d-article>');
+  $('.d-article').wrap(article).children().unwrap();
+
+  // move posts container into article
+  $('.posts-container').appendTo($('d-article'));
+
+  // create d-appendix
+  $('.d-appendix').changeElementType('d-appendix');
+
+  // flag indicating that we have appendix items
+  var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+  // replace footnotes with <d-footnote>
+  $('.footnote-ref').each(function(i, val) {
+    appendix = true;
+    var href = $(this).attr('href');
+    var id = href.replace('#', '');
+    var fn = $('#' + id);
+    var fn_p = $('#' + id + '>p');
+    fn_p.find('.footnote-back').remove();
+    var text = fn_p.html();
+    var dtfn = $('<d-footnote></d-footnote>');
+    dtfn.html(text);
+    $(this).replaceWith(dtfn);
+  });
+  // remove footnotes
+  $('.footnotes').remove();
+
+  // move refs into #references-listing
+  $('#references-listing').replaceWith($('#refs'));
+
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    var id = $(this).attr('id');
+    $('.d-contents a[href="#' + id + '"]').parent().remove();
+    appendix = true;
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+  });
+
+  // show d-appendix if we have appendix content
+  $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+  // localize layout chunks to just output
+  $('.layout-chunk').each(function(i, val) {
+
+    // capture layout
+    var layout = $(this).attr('data-layout');
+
+    // apply layout to markdown level block elements
+    var elements = $(this).children().not('details, div.sourceCode, pre, script');
+    elements.each(function(i, el) {
+      var layout_div = $('<div class="' + layout + '"></div>');
+      if (layout_div.hasClass('shaded')) {
+        var shaded_content = $('<div class="shaded-content"></div>');
+        $(this).wrap(shaded_content);
+        $(this).parent().wrap(layout_div);
+      } else {
+        $(this).wrap(layout_div);
+      }
+    });
+
+
+    // unwrap the layout-chunk div
+    $(this).children().unwrap();
+  });
+
+  // remove code block used to force  highlighting css
+  $('.distill-force-highlighting-css').parent().remove();
+
+  // remove empty line numbers inserted by pandoc when using a
+  // custom syntax highlighting theme
+  $('code.sourceCode a:empty').remove();
+
+  // load distill framework
+  load_distill_framework();
+
+  // wait for window.distillRunlevel == 4 to do post processing
+  function distill_post_process() {
+
+    if (!window.distillRunlevel || window.distillRunlevel < 4)
+      return;
+
+    // hide author/affiliations entirely if we have no authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+    if (!have_authors)
+      $('d-byline').addClass('hidden');
+
+    // article with toc class
+    $('.d-contents').parent().addClass('d-article-with-toc');
+
+    // strip links that point to #
+    $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+    // add orcid ids
+    $('.authors-affiliations').find('.author').each(function(i, el) {
+      var orcid_id = front_matter.authors[i].orcidID;
+      if (orcid_id) {
+        var a = $('<a></a>');
+        a.attr('href', 'https://orcid.org/' + orcid_id);
+        var img = $('<img></img>');
+        img.addClass('orcid-id');
+        img.attr('alt', 'ORCID ID');
+        img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+        a.append(img);
+        $(this).append(a);
+      }
+    });
+
+    // hide elements of author/affiliations grid that have no value
+    function hide_byline_column(caption) {
+      $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+    }
+
+    // affiliations
+    var have_affiliations = false;
+    for (var i = 0; i<front_matter.authors.length; ++i) {
+      var author = front_matter.authors[i];
+      if (author.affiliation !== "&nbsp;") {
+        have_affiliations = true;
+        break;
+      }
+    }
+    if (!have_affiliations)
+      $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+    // published date
+    if (!front_matter.publishedDate)
+      hide_byline_column("Published");
+
+    // document object identifier
+    var doi = $('d-byline').find('h3:contains("DOI")');
+    var doi_p = doi.next().empty();
+    if (!front_matter.doi) {
+      // if we have a citation and valid citationText then link to that
+      if ($('#citation').length > 0 && front_matter.citationText) {
+        doi.html('Citation');
+        $('<a href="#citation"></a>')
+          .text(front_matter.citationText)
+          .appendTo(doi_p);
+      } else {
+        hide_byline_column("DOI");
+      }
+    } else {
+      $('<a></a>')
+         .attr('href', "https://doi.org/" + front_matter.doi)
+         .html(front_matter.doi)
+         .appendTo(doi_p);
+    }
+
+     // change plural form of authors/affiliations
+    if (front_matter.authors.length === 1) {
+      var grid = $('.authors-affiliations');
+      grid.children('h3:contains("Authors")').text('Author');
+      grid.children('h3:contains("Affiliations")').text('Affiliation');
+    }
+
+    // remove d-appendix and d-footnote-list local styles
+    $('d-appendix > style:first-child').remove();
+    $('d-footnote-list > style:first-child').remove();
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // hoverable references
+    $('span.citation[data-cites]').each(function() {
+      var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+      window.tippy(this, {
+        allowHTML: true,
+        content: refHtml,
+        maxWidth: 500,
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start'
+      });
+    });
+
+    // clear polling timer
+    clearInterval(tid);
+
+    // show body now that everything is ready
+    on_load_complete();
+  }
+
+  var tid = setInterval(distill_post_process, 50);
+  distill_post_process();
+
+}
+
+function init_downlevel() {
+
+  init_common();
+
+   // insert hr after d-title
+  $('.d-title').after($('<hr class="section-separator"/>'));
+
+  // check if we have authors
+  var front_matter = JSON.parse($("#distill-front-matter").html());
+  var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+  // manage byline/border
+  if (!have_authors)
+    $('.d-byline').remove();
+  $('.d-byline').after($('<hr class="section-separator"/>'));
+  $('.d-byline a').remove();
+
+  // remove toc
+  $('.d-contents').remove();
+
+  // move appendix elements
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+  });
+
+
+  // inject headers into references and footnotes
+  var refs_header = $('<h3></h3>');
+  refs_header.text('References');
+  $('#refs').prepend(refs_header);
+
+  var footnotes_header = $('<h3></h3');
+  footnotes_header.text('Footnotes');
+  $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+  // move appendix-bottom entries to the bottom
+  $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+  $('.appendix-bottom').remove();
+
+  // remove appendix if it's empty
+  if ($('.d-appendix').children().length === 0)
+    $('.d-appendix').remove();
+
+  // prepend separator above appendix
+  $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+  // trim code
+  $('pre>code').each(function(i, val) {
+    $(this).html($.trim($(this).html()));
+  });
+
+  // move posts-container right before article
+  $('.posts-container').insertBefore($('.d-article'));
+
+  $('body').addClass('downlevel');
+
+  on_load_complete();
+}
+
+
+function init_common() {
+
+  // jquery plugin to change element types
+  (function($) {
+    $.fn.changeElementType = function(newType) {
+      var attrs = {};
+
+      $.each(this[0].attributes, function(idx, attr) {
+        attrs[attr.nodeName] = attr.nodeValue;
+      });
+
+      this.replaceWith(function() {
+        return $("<" + newType + "/>", attrs).append($(this).contents());
+      });
+    };
+  })(jQuery);
+
+  // prevent underline for linked images
+  $('a > img').parent().css({'border-bottom' : 'none'});
+
+  // mark non-body figures created by knitr chunks as 100% width
+  $('.layout-chunk').each(function(i, val) {
+    var figures = $(this).find('img, .html-widget');
+    if ($(this).attr('data-layout') !== "l-body") {
+      figures.css('width', '100%');
+    } else {
+      figures.css('max-width', '100%');
+      figures.filter("[width]").each(function(i, val) {
+        var fig = $(this);
+        fig.css('width', fig.attr('width') + 'px');
+      });
+
+    }
+  });
+
+  // auto-append index.html to post-preview links in file: protocol
+  // and in rstudio ide preview
+  $('.post-preview').each(function(i, val) {
+    if (window.location.protocol === "file:")
+      $(this).attr('href', $(this).attr('href') + "index.html");
+  });
+
+  // get rid of index.html references in header
+  if (window.location.protocol !== "file:") {
+    $('.distill-site-header a[href]').each(function(i,val) {
+      $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+    });
+  }
+
+  // add class to pandoc style tables
+  $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+  $('.kable-table').children('table').addClass('pandoc-table');
+
+  // add figcaption style to table captions
+  $('caption').parent('table').addClass("figcaption");
+
+  // initialize posts list
+  if (window.init_posts_list)
+    window.init_posts_list();
+
+  // implmement disqus comment link
+  $('.disqus-comment-count').click(function() {
+    window.headroom_prevent_pin = true;
+    $('#disqus_thread').toggleClass('hidden');
+    if (!$('#disqus_thread').hasClass('hidden')) {
+      var offset = $(this).offset();
+      $(window).resize();
+      $('html, body').animate({
+        scrollTop: offset.top - 35
+      });
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (is_downlevel_browser())
+    init_downlevel();
+  else
+    window.addEventListener('WebComponentsReady', init_distill);
+});
+
+</script>
+
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+
+
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    sans-serif;
+  --mono-font:       monospace;
+  --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
+}
+
+/*-- ARTICLE METADATA --*/
+d-byline {
+  --heading-size:    0.6rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    18px;
+  --contents-size:   13px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       18px;
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+.distill-site-footer {
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+</style>
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+
+:root {
+  --custom-grey60: rgb(102, 102, 102);
+  --custom-grey20: rgb(204, 204, 204);
+  --custom-grey10: rgb(230, 230, 230);
+  --custom-blue: rgb(0, 114, 188);
+  --custom-lightblue: rgb(204, 227, 242);
+  --custom-orange: rgb(255, 127, 42); 
+  --custom-lightorange: rgb(255, 204, 170); 
+}
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    sans-serif;
+  --mono-font:       monospace;
+  --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
+}
+
+/*-- ARTICLE METADATA --*/
+d-byline {
+  --heading-size:    0.6rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    18px;
+  --contents-size:   13px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       18px;
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       var(--custom-blue);
+}
+
+.distill-site-footer {
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       var(--custom-blue);
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+
+.preface {
+  font-size: 11pt;
+  background-color: var(--custom-lightblue);
+  margin-top: 2em;
+  margin-bottom: 0.5em;  
+  padding: 1.5em;
+  padding-top: 1em;
+  border-color: DodgerBlue;
+}
+
+h1 {
+  font-size: 30px !important;  
+  color: var(--custom-blue) !important;
+  font-family: NanumSquare !important;
+  margin-top: 15px !important;
+  padding-top: 15px !important;  
+  margin-bottom: 15px !important;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 25px !important;  
+  color: var(--custom-blue) !important;  
+  font-family: NanumSquare !important;  
+  padding-top: 15px !important;  
+  margin-top: 15px !important;
+  padding-bottom: 10px !important;  
+  margin-bottom: 10px !important;    
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 20px !important;  
+  color: var(--custom-blue) !important;  
+  font-family: NanumSquare !important;  
+  margin-top: 10px !important;
+  margin-bottom: 10px !important; 
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;   
+  font-weight: bold;
+}
+
+d-byline h3 {
+  font-size: 0.6rem !important;   
+  font-weight: 400 !important;   
+  color: rgba(0, 0, 0, 0.5) !important;   
+  margin: 0 !important;   
+}
+    
+d-byline {
+  contain: content;
+  overflow: hidden;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 0.8rem;
+  line-height: 1.8em;
+  padding: 1.5rem 0;
+  min-height: 1.8em;
+} 
+
+.bg-blue,
+.bg-orange,
+.bg-grey {
+  padding: 1.6em;
+  margin-top: 1.0em;
+  margin-bottom: 1.0em;
+}
+.bg-blue {
+  background-color: var(--custom-lightblue);
+}
+.bg-orange {
+  background-color: var(--custom-lightorange);
+}
+.bg-grey {
+  background-color: var(--custom-grey20);
+}
+.bg-blue > *:last-child,
+.bg-orange > *:last-child,
+.bg-grey > *:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}</style>
+<style type="text/css">
+/* base style */
+
+/* FONT FAMILIES */
+
+:root {
+  --heading-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono-default: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  --body-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+body,
+.posts-list .post-preview p,
+.posts-list .description p {
+  font-family: var(--body-font), var(--body-default);
+}
+
+h1, h2, h3, h4, h5, h6,
+.posts-list .post-preview h2,
+.posts-list .description h2 {
+  font-family: var(--heading-font), var(--heading-default);
+}
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: var(--mono-font), var(--mono-default);
+}
+
+
+/*-- TITLE --*/
+d-title h1,
+.posts-list > h1 {
+  color: var(--title-color, black);
+}
+
+d-title h1 {
+  font-size: var(--title-size, 50px);
+}
+
+/*-- HEADERS --*/
+d-article h1,
+d-article h2,
+d-article h3,
+d-article h4,
+d-article h5,
+d-article h6 {
+  color: var(--header-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- BODY --*/
+d-article > p,  /* only text inside of <p> tags */
+d-article > ul, /* lists */
+d-article > ol {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+  font-size: var(--body-size, 1.06rem);
+}
+
+
+/*-- CODE --*/
+d-article div.sourceCode code,
+d-article pre code {
+  font-size: var(--code-size, 14px);
+}
+
+/*-- ASIDE --*/
+d-article aside {
+  font-size: var(--aside-size, 12px);
+  color: var(--aside-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- FIGURE CAPTIONS --*/
+figure .caption,
+figure figcaption,
+.figure .caption {
+  font-size: var(--fig-cap-size, 13px);
+  color: var(--fig-cap-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- METADATA --*/
+d-byline h3 {
+  font-size: var(--heading-size, 0.6rem);
+  color: var(--heading-color, rgba(0, 0, 0, 0.5));
+}
+
+d-byline {
+  font-size: var(--body-size, 0.8rem);
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+d-byline a,
+d-article d-byline a {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- TABLE OF CONTENTS --*/
+.d-contents nav h3 {
+  font-size: var(--heading-size, 18px);
+}
+
+.d-contents nav a {
+  font-size: var(--contents-size, 13px);
+}
+
+/*-- APPENDIX --*/
+d-appendix h3 {
+  font-size: var(--heading-size, 15px);
+  color: var(--heading-color, rgba(0, 0, 0, 0.65));
+}
+
+d-appendix {
+  font-size: var(--text-size, 0.8em);
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+d-appendix d-footnote-list a.footnote-backlink {
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+.distill-site-header .title {
+  font-size: var(--title-size, 18px);
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.distill-site-header a,
+.nav-dropdown .nav-dropbtn {
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.nav-dropdown .nav-dropbtn {
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  font-size: var(--text-size, 15px);
+}
+
+.distill-site-header a:hover,
+.nav-dropdown:hover .nav-dropbtn {
+  color: var(--hover-color, white);
+}
+
+.distill-site-header {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer a:hover {
+  color: var(--hover-color, white);
+}</style>
+<!--/radix_placeholder_distill-->
+  <script src="../../site_libs/header-attrs-2.8/header-attrs.js"></script>
+  <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
+  <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="../../site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="../../site_libs/tippy-6.2.7/tippy.umd.min.js"></script>
+  <script src="../../site_libs/anchor-4.2.2/anchor.min.js"></script>
+  <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
+  <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="../../site_libs/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+<!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"dlookr -  데이터 변환","description":"이 문서는 dlookr 기능 중에서 **데이터 변환** 기능을 소개한다. 여러분은 dlookr에서 제공하는 함수로 데이터 프레임과 데이터 프레임을 상속한 tbl_df 데이터의 데이터 변환을 수행하는 방법을 일힐 수 있을 것이다.","authors":[{"author":"유충현","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2018-05-07T00:00:00.000+00:00","citationText":"유충현, 2018"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="distill-site-nav distill-site-header">
+<div class="nav-left">
+<a class="logo">
+<img src="../../images/rubik-cube-white.png" alt="Logo"/>
+</a>
+<a href="../../index.html" class="title">Dataholic</a>
+<input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
+</div>
+<div class="nav-right">
+<a href="../../index.html">Home</a>
+<a href="../../mydev.html">MyDevs</a>
+<a href="../../gallery.html">Gallery</a>
+<a href="../../about.html">About</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>dlookr - 데이터 변환</h1>
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+  <a href="../../index.html#category:R_Analytics" class="dt-tag">R Analytics</a>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>이 문서는 dlookr 기능 중에서 <strong>데이터 변환</strong> 기능을 소개한다. 여러분은 dlookr에서 제공하는 함수로 데이터 프레임과 데이터 프레임을 상속한 tbl_df 데이터의 데이터 변환을 수행하는 방법을 일힐 수 있을 것이다.</p></p>
+</div>
+
+<div class="d-byline">
+  유충현  
+  
+<br/>2018-05-07
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#일러두기">일러두기</a></li>
+<li><a href="#데이터">데이터</a></li>
+<li><a href="#데이터-변환">데이터 변환</a></li>
+<li><a href="#결측치의-대체">결측치의 대체</a>
+<ul>
+<li><a href="#imputate_na을-이용한-결측치의-대체"><code>imputate_na()</code>을 이용한 결측치의 대체</a></li>
+<li><a href="#dplyr과의-협업">dplyr과의 협업</a></li>
+</ul></li>
+<li><a href="#이상치의-대체">이상치의 대체</a>
+<ul>
+<li><a href="#imputate_outlier을-이용한-이상치의-대체"><code>imputate_outlier()</code>을 이용한 이상치의 대체</a></li>
+<li><a href="#dplyr과의-협업-1">dplyr과의 협업</a></li>
+</ul></li>
+<li><a href="#표준화와-치우친-데이터의-보정">표준화와 치우친 데이터의 보정</a>
+<ul>
+<li><a href="#transform의-기능"><code>transform()</code>의 기능</a></li>
+<li><a href="#transform을-이용한-표준화"><code>transform()</code>을 이용한 표준화</a></li>
+<li><a href="#transform을-이용한-치우친-데이터의-보정"><code>transform()</code>을 이용한 치우친 데이터의 보정</a></li>
+</ul></li>
+<li><a href="#binning">Binning</a>
+<ul>
+<li><a href="#binning을-이용한-개별-변수의-binning"><code>binning()</code>을 이용한 개별 변수의 Binning</a></li>
+<li><a href="#binning_by을-이용한-optimal-binning"><code>binning_by()</code>을 이용한 Optimal Binning</a></li>
+</ul></li>
+<li><a href="#transformation_report를-이용한-데이터변환-보고서-작성"><code>transformation_report()</code>를 이용한 데이터변환 보고서 작성</a>
+<ul>
+<li><a href="#데이터변환-리포트-내용">데이터변환 리포트 내용</a></li>
+</ul></li>
+</ul>
+</nav>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
+<h2 id="일러두기">일러두기</h2>
+<p>분석을 위한 데이터를 획득한 후에는 다음을 수행해야 한다.:</p>
+<ul>
+<li>데이터의 품질을 진단한다.
+<ul>
+<li>만약 데이터 품질의 문제를 발견한다면,</li>
+<li>문제의 데이터를 보완하거나 경우에 따라서는 재획득을 수행햐야 한다.</li>
+</ul></li>
+<li><strong>데이터를 이해하기 위한 탐색을 수행하여, 분석의 전개 방향에 대한 시나리오를 수립한다.</strong></li>
+<li>분석에 효과적인 변수를 파생하거나 변수의 변환을 수행한다.</li>
+</ul>
+<p>dlookr 패키지는 다음의 과정을 빠르고 쉽게 수행하도록 도움을 준다.</p>
+<ul>
+<li>데이터의 진단을 수행하거나 데이터 품질 진단 리포트를 자동으로 생성한다.</li>
+<li>다양한 방법으로 데이터를 탐색하고 EDA(탐색적 데이터 분석) 보고서를 생성한다.</li>
+<li><strong>결측치와 이상치를 대체하고, 치우친 데이터를 보정하며, 연속형 변수를 비닝(binning)하여 범주형 변수로 만든다. 그리고 이를 지원하는 자동화된 리포트를 생성한다.</strong></li>
+</ul>
+<p>이 문서는 dlookr 기능 중에서 <strong>데이터 변환</strong> 기능을 소개한다. 여러분은 dlookr에서 제공하는 함수로 데이터 프레임과 데이터 프레임을 상속한 tbl_df 데이터의 데이터 변환을 수행하는 방법을 일힐 수 있을 것이다.</p>
+<p>dlookr 패키지는 <code>dplyr</code> 패키지와 함께 사용하면 시너지가 증가된다. 특히 데이터 변환에서 <code>tidyverse</code> 패키지 그룹의 효율성을 높여준다.</p>
+<h2 id="데이터">데이터</h2>
+<p>dlookr 패키지로 EDA를 수행하는 기초적인 사용 방법을 설명하기 위해서 <code>Carseats</code>를 사용한다. <code>ISLR</code> 패키지의 <code>Carseats</code>는 400개의 매장에서 아동용 카시트를 판매하는 시뮬레이션 데이터다. 이 데이터는 판매량을 예측하는 목적으로 생성한 데이터 프레임이다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://www.StatLearning.com'>ISLR</a></span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>Carseats</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>&#39;data.frame&#39;:   400 obs. of  11 variables:
+ $ Sales      : num  9.5 11.22 10.06 7.4 4.15 ...
+ $ CompPrice  : num  138 111 113 117 141 124 115 136 132 132 ...
+ $ Income     : num  73 48 35 100 64 113 105 81 110 113 ...
+ $ Advertising: num  11 16 10 4 3 13 0 15 0 0 ...
+ $ Population : num  276 260 269 466 340 501 45 425 108 131 ...
+ $ Price      : num  120 83 80 97 128 72 108 120 124 124 ...
+ $ ShelveLoc  : Factor w/ 3 levels &quot;Bad&quot;,&quot;Good&quot;,&quot;Medium&quot;: 1 2 3 3 1 1 3 2 3 3 ...
+ $ Age        : num  42 65 59 55 38 78 71 67 76 76 ...
+ $ Education  : num  17 10 12 14 13 16 15 10 10 17 ...
+ $ Urban      : Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 2 2 2 2 2 1 2 2 1 1 ...
+ $ US         : Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 2 2 2 2 1 2 1 2 1 2 ...</code></pre>
+</div>
+<p>개별 변수들의 의미는 다음과 같다. (ISLR::Carseats Man page 참고)</p>
+<ul>
+<li>Sales
+<ul>
+<li>지역의 단위 판매량 (단위: 천개)</li>
+</ul></li>
+<li>CompPrice
+<ul>
+<li>지역의 경쟁 업체가 부과하는 가격</li>
+</ul></li>
+<li>Income
+<ul>
+<li>지역 공동체 수입 수준 (단위: 천달러)</li>
+</ul></li>
+<li>Advertising
+<ul>
+<li>회사의 지역에 대한 광고 예산 (단위: 천달러)</li>
+</ul></li>
+<li>Population
+<ul>
+<li>지역의 인구 규모 (단위: 천명)</li>
+</ul></li>
+<li>Price
+<ul>
+<li>지역의 자동차 좌석 요금</li>
+</ul></li>
+<li>ShelveLoc
+<ul>
+<li>각 사이트에서 자동차 좌석의 선반 위치의 품질을 나타내는 수준. “Bad”, “Good”, “Medium”.</li>
+</ul></li>
+<li>Age
+<ul>
+<li>각 지역의 평균 연령</li>
+</ul></li>
+<li>Education
+<ul>
+<li>각 지역의 교육 수준</li>
+</ul></li>
+<li>Urban
+<ul>
+<li>점포의 도시 또는 농촌 소재 여부. Yes는 도시, No는 농촌.</li>
+</ul></li>
+<li>US
+<ul>
+<li>점포의 미국 소재 여부. Yes는 미국 소재, No는 미국 외 소재.</li>
+</ul></li>
+</ul>
+<p>데이터 분석을 수행할 때, 결측치가 포함된 데이터를 자주 접한다. 그러나 Carseats는 결측치가 없은 완전한 데이터다. 그래서 다음과 같이 결측치를 생성하였다. 그리고 carseats라는 이름의 데이터 프레임 객체를 생성한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>carseats</span> <span class='op'>&lt;-</span> <span class='fu'>ISLR</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/ISLR/man/Carseats.html'>Carseats</a></span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span>
+<span class='va'>carseats</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>NROW</a></span><span class='op'>(</span><span class='va'>carseats</span><span class='op'>)</span><span class='op'>)</span>, <span class='fl'>20</span><span class='op'>)</span>, <span class='st'>"Income"</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='cn'>NA</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>456</span><span class='op'>)</span>
+<span class='va'>carseats</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>NROW</a></span><span class='op'>(</span><span class='va'>carseats</span><span class='op'>)</span><span class='op'>)</span>, <span class='fl'>10</span><span class='op'>)</span>, <span class='st'>"Urban"</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='cn'>NA</span>
+</code></pre>
+</div>
+</div>
+<h2 id="데이터-변환">데이터 변환</h2>
+<p>dlookr은 결측치와 이상치의 대체, 치우친 데이터를 보정해준다. 또한 연속형 변수를 범주형 변수로 비닝하는 것을 도와준다.</p>
+<p>다음은 dlookr이 제공하는 데이터 변환 함수와 함수의 기능 목록이다.:</p>
+<ul>
+<li><code>find_na()</code>는 결측치가 포함된 변수를 찾아주고, <code>imputate_na()</code>는 결측치를 대체한다.</li>
+<li><code>find_outliers()</code>는 이상치가 포함된 변수를 찾아주고, <code>imputate_outlier()</code>는 이상치를 대체한다.</li>
+<li><code>summary.imputation()</code>와 <code>plot.imputation()</code>는 대체된 변수의 정보를 보혀주고 시각화를 제공한다.</li>
+<li><code>find_skewness()</code>는 치우친 데이터의 변수를 찾아주고, <code>transform()</code>는 치우친 데이터의 보정을 수행한다.</li>
+<li>또한 <code>transform()</code>는 수치형 변수의 표준화를 수행한다.</li>
+<li><code>summary.transform()</code>와 <code>plot.transform()</code>는 변환된 변수의 정보를 보혀주고 시각화를 제공한다.</li>
+<li><code>binning()</code>와 <code>binning_by()</code>는 수치 데이터를 비닝하여 범주형 데이터로 변환한다.</li>
+<li><code>print.bins()</code>와 <code>summary.bins()</code>는 비닝 결과를 보여주고 요약해 준다.</li>
+<li><code>plot.bins()</code>와 <code>plot.optimal_bins()</code>는 비닝 결과의 시각화를 제공한다.</li>
+<li><code>transformation_report()</code>는 데이터 변환을 수행한 후 그 결과를 보고서로 만들어 준다.</li>
+</ul>
+<h2 id="결측치의-대체">결측치의 대체</h2>
+<h3 id="imputate_na을-이용한-결측치의-대체"><code>imputate_na()</code>을 이용한 결측치의 대체</h3>
+<p><code>imputate_na()</code>는 변수에 포함된 결측치를 대체한다. 결측치가 포함된 예측변수(predictor)는 수치형 변수와 범주형 변수 모두 지원하며, 다음과 같은 method를 지원한다.</p>
+<ul>
+<li>predictor가 수치형 변수일 경우
+<ul>
+<li>“mean” : 산술평균으로 대체</li>
+<li>“median” : 중위수로 대체</li>
+<li>“mode” : 최빈수로 대체</li>
+<li>“knn” : K-nearest neighbors를 이용한 대체
+<ul>
+<li>target 변수를 지정해야 함</li>
+</ul></li>
+<li>“rpart” : Recursive Partitioning and Regression Trees를 이용한 대체
+<ul>
+<li>target 변수를 지정해야 함<br />
+</li>
+</ul></li>
+<li>“mice” : Multivariate Imputation by Chained Equations를 이용한 대체
+<ul>
+<li>target 변수를 지정해야 함</li>
+<li>random seed를 지정해야 함</li>
+</ul></li>
+</ul></li>
+<li>predictor가 범주형 변수일 경우
+<ul>
+<li>“mode” : 최빈수로 대체</li>
+<li>“rpart” : Recursive Partitioning and Regression Trees를 이용한 대체
+<ul>
+<li>target 변수를 지정해야 함<br />
+</li>
+</ul></li>
+<li>“mice” : Multivariate Imputation by Chained Equations를 이용한 대체
+<ul>
+<li>target 변수를 지정해야 함<br />
+</li>
+<li>random seed를 지정해야 함</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>다음처럼 <code>imputate_na()</code>는 <code>carseats</code>의 수치형 변수인 Income를 “rpart” 방법으로 결측치를 대체한다. <code>summary()</code>는 결측치 대체 정보를 요약하고, <code>plot()</code>은 결측정보를 시각화한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>income</span> <span class='op'>&lt;-</span> <span class='fu'>imputate_na</span><span class='op'>(</span><span class='va'>carseats</span>, <span class='va'>Income</span>, <span class='va'>US</span>, method <span class='op'>=</span> <span class='st'>"rpart"</span><span class='op'>)</span>
+
+<span class='co'># result of imputate</span>
+<span class='va'>income</span>
+</code></pre>
+</div>
+<pre><code>  [1]  73.00000  48.00000  35.00000 100.00000  64.00000 113.00000
+  [7] 105.00000  81.00000 110.00000 113.00000  78.00000  94.00000
+ [13]  35.00000  58.63636 117.00000  95.00000  32.00000  74.00000
+ [19] 110.00000  76.00000  90.00000  29.00000  46.00000  31.00000
+ [25] 119.00000  32.00000 115.00000 118.00000  74.00000  99.00000
+ [31]  94.00000  58.00000  32.00000  38.00000  54.00000  84.00000
+ [37]  76.00000  41.00000  73.00000  60.00000  98.00000  53.00000
+ [43]  69.00000  42.00000  79.00000  63.00000  90.00000  98.00000
+ [49]  52.00000  93.00000  32.00000  90.00000  40.00000  64.00000
+ [55] 103.00000  81.00000  82.00000  91.00000  93.00000  71.00000
+ [61] 102.00000  32.00000  45.00000  88.00000  67.00000  26.00000
+ [67]  92.00000  61.00000  69.00000  59.00000  81.00000  51.00000
+ [73]  45.00000  90.00000  68.00000 111.00000  87.00000  71.00000
+ [79]  48.00000  67.00000 100.00000  72.00000  83.00000  36.00000
+ [85]  25.00000 103.00000  84.00000  67.00000  42.00000  56.07143
+ [91]  67.14286  46.00000 113.00000  30.00000  97.00000  25.00000
+ [97]  42.00000  82.00000  77.00000  47.00000  69.00000  93.00000
+[103]  22.00000  91.00000  96.00000 100.00000  33.00000 107.00000
+[109]  79.00000  65.00000  62.00000 118.00000  99.00000  29.00000
+[115]  87.00000  35.00000  75.00000  75.34722  88.00000  94.00000
+[121] 105.00000  89.00000 100.00000 103.00000 113.00000  78.00000
+[127]  68.00000  48.00000 100.00000 120.00000  84.00000  69.00000
+[133]  87.00000  98.00000  31.00000  94.00000  68.81481  42.00000
+[139] 103.00000  62.00000  60.00000  42.00000  84.00000  88.00000
+[145]  68.00000  63.00000  83.00000  54.00000 119.00000 120.00000
+[151]  84.00000  58.00000  67.77778  36.00000  69.00000  72.00000
+[157]  34.00000  58.00000  90.00000  60.00000  28.00000  21.00000
+[163]  74.00000  64.00000  64.00000  58.00000  67.00000  73.00000
+[169]  89.00000  41.00000  39.00000 106.00000 102.00000  91.00000
+[175]  24.00000  89.00000 107.00000  72.00000  89.86364  25.00000
+[181] 112.00000  83.00000  60.00000  74.00000  33.00000 100.00000
+[187]  51.00000  32.00000  37.00000 117.00000  37.00000  42.00000
+[193]  26.00000  70.00000  56.07143  93.00000  65.50000  61.00000
+[199]  80.00000  88.00000  92.00000  83.00000  78.00000  82.00000
+[205]  80.00000  22.00000  67.00000 105.00000  54.00000  21.00000
+[211]  41.00000 118.00000  69.00000  84.00000 115.00000  83.00000
+[217]  33.00000  44.00000  61.00000  79.00000 120.00000  44.00000
+[223] 119.00000  45.00000  82.00000  25.00000  33.00000  64.00000
+[229]  67.50000 104.00000  60.00000  69.00000  80.00000  76.00000
+[235]  62.00000  32.00000  34.00000  28.00000  24.00000 105.00000
+[241]  80.00000  63.00000  46.00000  68.81481  30.00000  43.00000
+[247]  56.00000 114.00000  52.00000  67.00000 105.00000 111.00000
+[253]  97.00000  24.00000 104.00000  55.55556  40.00000  62.00000
+[259]  38.00000  36.00000 117.00000  42.00000  77.00000  26.00000
+[265]  29.00000  35.00000  93.00000  82.00000  57.00000  69.00000
+[271]  26.00000  56.00000  33.00000 106.00000  93.00000 119.00000
+[277]  69.00000  48.00000 113.00000  57.00000  86.00000  69.00000
+[283]  96.00000 110.00000  46.00000  26.00000 118.00000  44.00000
+[289]  40.00000  77.00000 111.00000  70.00000  66.00000  84.00000
+[295]  76.00000  35.00000  44.00000  83.00000  75.34722  40.00000
+[301]  78.00000  93.00000  77.00000  52.00000  98.00000  67.77778
+[307]  32.00000  92.00000  80.00000 111.00000  65.00000  68.00000
+[313] 117.00000  81.00000  33.00000  21.00000  36.00000  30.00000
+[319]  72.00000  45.00000  70.00000  39.00000  50.00000 105.00000
+[325]  65.00000  69.00000  30.00000  41.72727  66.00000  54.00000
+[331]  59.00000  63.00000  33.00000  60.00000 117.00000  70.00000
+[337]  35.00000  38.00000  24.00000  44.00000  29.00000 120.00000
+[343] 102.00000  42.00000  80.00000  68.00000 107.00000  31.85714
+[349] 102.00000  27.00000 101.00000 115.00000 103.00000  67.00000
+[355]  68.81481 100.00000 109.00000  73.00000  96.00000  62.00000
+[361]  86.00000  25.00000  55.00000  75.00000  21.00000  30.00000
+[367]  56.00000 106.00000  22.00000 100.00000  41.00000  81.00000
+[373]  50.00000  83.77778  47.00000  46.00000  60.00000  61.00000
+[379]  88.00000 111.00000  64.00000  65.00000  28.00000 117.00000
+[385]  37.00000  73.00000 116.00000  75.34722  89.00000  42.00000
+[391]  75.00000  63.00000  42.00000  51.00000  58.00000 108.00000
+[397]  23.00000  26.00000  47.50000  37.00000
+attr(,&quot;var_type&quot;)
+[1] &quot;numerical&quot;
+attr(,&quot;method&quot;)
+[1] &quot;rpart&quot;
+attr(,&quot;na_pos&quot;)
+ [1]  14  90  91 118 137 153 179 195 197 229 244 256 299 306 328 348
+[17] 355 374 388 399
+attr(,&quot;type&quot;)
+[1] &quot;missing values&quot;
+attr(,&quot;message&quot;)
+[1] &quot;complete imputation&quot;
+attr(,&quot;success&quot;)
+[1] TRUE
+attr(,&quot;class&quot;)
+[1] &quot;imputation&quot; &quot;numeric&quot;   </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># summary of imputate</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>income</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>* Impute missing values based on Recursive Partitioning and Regression Trees
+ - method : rpart
+
+* Information of Imputation (before vs after)
+             Original   Imputation
+n        380.00000000 400.00000000
+na        20.00000000   0.00000000
+mean      69.32105263  69.07811282
+sd        28.06686473  27.53886441
+se_mean    1.43979978   1.37694322
+IQR       48.00000000  45.50000000
+skewness   0.03601821   0.05313579
+kurtosis  -1.10286001  -1.04030028
+p00       21.00000000  21.00000000
+p01       21.79000000  21.99000000
+p05       26.00000000  26.00000000
+p10       31.90000000  32.00000000
+p20       40.00000000  41.00000000
+p25       44.00000000  44.75000000
+p30       50.00000000  51.00000000
+p40       62.00000000  62.00000000
+p50       69.00000000  69.00000000
+p60       78.00000000  77.00000000
+p70       87.30000000  84.60000000
+p75       92.00000000  90.25000000
+p80       98.00000000  96.00000000
+p90      108.10000000 107.00000000
+p95      115.05000000 115.00000000
+p99      119.21000000 119.01000000
+p100     120.00000000 120.00000000</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># viz of imputate</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>income</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="2018-05-07-r-vignette03.ko_files/figure-html5/imputate_na-1.png" width="672" /></p>
+</div>
+<p>다음은 범주형 변수인 urban을 “mice” 방법으로 결측치를 대체한다. <code>summary()</code>는 결측치 대체 정보를 요약하고, <code>plot()</code>은 결측정보를 시각화한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/amices/mice'>mice</a></span><span class='op'>)</span>
+
+<span class='va'>urban</span> <span class='op'>&lt;-</span> <span class='fu'>imputate_na</span><span class='op'>(</span><span class='va'>carseats</span>, <span class='va'>Urban</span>, <span class='va'>US</span>, method <span class='op'>=</span> <span class='st'>"mice"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>
+ iter imp variable
+  1   1  Income  Urban
+  1   2  Income  Urban
+  1   3  Income  Urban
+  1   4  Income  Urban
+  1   5  Income  Urban
+  2   1  Income  Urban
+  2   2  Income  Urban
+  2   3  Income  Urban
+  2   4  Income  Urban
+  2   5  Income  Urban
+  3   1  Income  Urban
+  3   2  Income  Urban
+  3   3  Income  Urban
+  3   4  Income  Urban
+  3   5  Income  Urban
+  4   1  Income  Urban
+  4   2  Income  Urban
+  4   3  Income  Urban
+  4   4  Income  Urban
+  4   5  Income  Urban
+  5   1  Income  Urban
+  5   2  Income  Urban
+  5   3  Income  Urban
+  5   4  Income  Urban
+  5   5  Income  Urban</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># result of imputate</span>
+<span class='va'>urban</span>
+</code></pre>
+</div>
+<pre><code>  [1] Yes Yes Yes Yes Yes No  Yes Yes No  No  No  Yes Yes Yes Yes No 
+ [17] Yes Yes No  Yes Yes No  Yes Yes Yes No  No  Yes Yes Yes Yes Yes
+ [33] No  Yes Yes No  No  No  Yes No  No  Yes Yes Yes Yes Yes No  Yes
+ [49] Yes Yes Yes Yes Yes Yes No  Yes Yes Yes Yes Yes Yes No  Yes Yes
+ [65] No  No  Yes Yes Yes Yes Yes No  Yes No  No  No  Yes No  Yes Yes
+ [81] Yes Yes Yes Yes No  No  Yes No  Yes Yes No  Yes Yes Yes Yes Yes
+ [97] No  Yes No  No  No  Yes No  Yes Yes Yes No  Yes Yes No  Yes Yes
+[113] Yes Yes Yes Yes No  Yes Yes Yes Yes Yes Yes No  Yes No  Yes Yes
+[129] Yes No  Yes Yes Yes Yes Yes No  No  Yes Yes No  Yes Yes Yes Yes
+[145] No  Yes Yes No  No  Yes No  No  No  No  No  Yes Yes No  Yes No 
+[161] No  No  Yes No  No  Yes Yes Yes Yes Yes Yes Yes Yes Yes No  Yes
+[177] No  Yes No  Yes Yes Yes Yes Yes No  Yes No  Yes Yes No  No  Yes
+[193] No  Yes Yes Yes Yes Yes Yes Yes No  Yes No  Yes Yes Yes Yes No 
+[209] Yes No  No  Yes Yes Yes Yes Yes Yes No  Yes Yes Yes Yes Yes Yes
+[225] No  Yes Yes Yes No  No  No  No  Yes No  No  Yes Yes Yes Yes Yes
+[241] Yes Yes No  Yes Yes No  Yes Yes Yes Yes Yes Yes Yes No  Yes Yes
+[257] Yes Yes No  No  Yes Yes Yes Yes Yes Yes No  No  Yes Yes Yes Yes
+[273] Yes Yes Yes Yes Yes Yes No  Yes Yes No  Yes No  No  Yes No  Yes
+[289] No  Yes No  Yes Yes Yes Yes No  Yes Yes Yes No  Yes Yes Yes Yes
+[305] Yes Yes Yes Yes Yes Yes Yes Yes Yes Yes Yes Yes Yes No  No  No 
+[321] Yes Yes Yes Yes Yes Yes Yes Yes Yes Yes No  Yes Yes Yes Yes Yes
+[337] Yes Yes Yes Yes Yes No  No  Yes No  Yes No  No  Yes No  No  No 
+[353] Yes No  Yes Yes Yes Yes Yes Yes No  No  Yes Yes Yes No  No  Yes
+[369] No  Yes Yes Yes No  Yes Yes Yes Yes No  Yes Yes Yes Yes Yes Yes
+[385] Yes Yes Yes No  Yes Yes Yes Yes Yes No  Yes Yes No  Yes Yes Yes
+attr(,&quot;var_type&quot;)
+[1] categorical
+attr(,&quot;method&quot;)
+[1] mice
+attr(,&quot;na_pos&quot;)
+ [1]  38  90 159 206 237 252 281 283 335 378
+attr(,&quot;seed&quot;)
+[1] 43320
+attr(,&quot;type&quot;)
+[1] missing values
+attr(,&quot;message&quot;)
+[1] complete imputation
+attr(,&quot;success&quot;)
+[1] TRUE
+Levels: No Yes</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># summary of imputate</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>urban</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>* Impute missing values based on Multivariate Imputation by Chained Equations
+ - method : mice
+ - random seed : 43320
+
+* Information of Imputation (before vs after)
+     original imputation original_percent imputation_percent
+No        115        117            28.75              29.25
+Yes       275        283            68.75              70.75
+&lt;NA&gt;       10          0             2.50               0.00</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># viz of imputate</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>urban</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="2018-05-07-r-vignette03.ko_files/figure-html5/imputate_na2-1.png" width="672" /></p>
+</div>
+<h3 id="dplyr과의-협업">dplyr과의 협업</h3>
+<p>다음은 dplyr를 이용해서 이상치를 대체한 <code>Income</code> 변수를 <code>US</code>의 수준별로 산술평균을 구하는 예제다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># The mean before and after the imputation of the Income variable</span>
+<span class='va'>carseats</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>Income_imp <span class='op'>=</span> <span class='fu'>imputate_na</span><span class='op'>(</span><span class='va'>carseats</span>, <span class='va'>Income</span>, <span class='va'>US</span>, method <span class='op'>=</span> <span class='st'>"knn"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>US</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>summarise</span><span class='op'>(</span>orig <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>Income</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
+    imputation <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>Income_imp</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 2 x 3
+  US     orig imputation
+  &lt;fct&gt; &lt;dbl&gt;      &lt;dbl&gt;
+1 No     65.7       65.5
+2 Yes    71.3       71.5</code></pre>
+</div>
+<h2 id="이상치의-대체">이상치의 대체</h2>
+<h3 id="imputate_outlier을-이용한-이상치의-대체"><code>imputate_outlier()</code>을 이용한 이상치의 대체</h3>
+<p><code>imputate_outlier()</code>는 변수에 포함된 이상치를 대체한다. 이상치가 포함된 예측변수(predictor)는 수치형 변수만 지원하며, 다음과 같은 method를 지원한다.</p>
+<ul>
+<li>predictor가 수치형 변수일 경우
+<ul>
+<li>“mean” : 산술평균으로 대체</li>
+<li>“median” : 중위수로 대체</li>
+<li>“mode” : 최빈수로 대체</li>
+<li>“capping” : 상위 이상치를 95/백분위수로 대체하고 하위 이상치를 5/백분위수로 대체</li>
+</ul></li>
+</ul>
+<p>다음처럼 <code>imputate_outlier()</code>는 <code>carseats</code>의 수치형 변수인 <code>Price</code>를 “capping” 방법으로 이상치를 대체한다. <code>summary()</code>는 이상치 대체 정보를 요약하고, <code>plot()</code>은 결측정보를 시각화한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>price</span> <span class='op'>&lt;-</span> <span class='fu'>imputate_outlier</span><span class='op'>(</span><span class='va'>carseats</span>, <span class='va'>Price</span>, method <span class='op'>=</span> <span class='st'>"capping"</span><span class='op'>)</span>
+
+<span class='co'># result of imputate</span>
+<span class='va'>price</span>
+</code></pre>
+</div>
+<pre><code>  [1] 120.00  83.00  80.00  97.00 128.00  72.00 108.00 120.00 124.00
+ [10] 124.00 100.00  94.00 136.00  86.00 118.00 144.00 110.00 131.00
+ [19]  68.00 121.00 131.00 109.00 138.00 109.00 113.00  82.00 131.00
+ [28] 107.00  97.00 102.00  89.00 131.00 137.00 128.00 128.00  96.00
+ [37] 100.00 110.00 102.00 138.00 126.00 124.00  77.00 134.00  95.00
+ [46] 135.00  70.00 108.00  98.00 149.00 108.00 108.00 129.00 119.00
+ [55] 144.00 154.00  84.00 117.00 103.00 114.00 123.00 107.00 133.00
+ [64] 101.00 104.00 128.00  91.00 115.00 134.00  99.00  99.00 150.00
+ [73] 116.00 104.00 136.00  92.00  70.00  89.00 145.00  90.00  79.00
+ [82] 128.00 139.00  94.00 121.00 112.00 134.00 126.00 111.00 119.00
+ [91] 103.00 107.00 125.00 104.00  84.00 148.00 132.00 129.00 127.00
+[100] 107.00 106.00 118.00  97.00  96.00 138.00  97.00 139.00 108.00
+[109] 103.00  90.00 116.00 151.00 125.00 127.00 106.00 129.00 128.00
+[118] 119.00  99.00 128.00 131.00  87.00 108.00 155.00 120.00  77.00
+[127] 133.00 116.00 126.00 147.00  77.00  94.00 136.00  97.00 131.00
+[136] 120.00 120.00 118.00 109.00  94.00 129.00 131.00 104.00 159.00
+[145] 123.00 117.00 131.00 119.00  97.00  87.00 114.00 103.00 128.00
+[154] 150.00 110.00  69.00 157.00  90.00 112.00  70.00 111.00 160.00
+[163] 149.00 106.00 141.00 155.05 137.00  93.00 117.00  77.00 118.00
+[172]  55.00 110.00 128.00 155.05 122.00 154.00  94.00  81.00 116.00
+[181] 149.00  91.00 140.00 102.00  97.00 107.00  86.00  96.00  90.00
+[190] 104.00 101.00 173.00  93.00  96.00 128.00 112.00 133.00 138.00
+[199] 128.00 126.00 146.00 134.00 130.00 157.00 124.00 132.00 160.00
+[208]  97.00  64.00  90.00 123.00 120.00 105.00 139.00 107.00 144.00
+[217] 144.00 111.00 120.00 116.00 124.00 107.00 145.00 125.00 141.00
+[226]  82.00 122.00 101.00 163.00  72.00 114.00 122.00 105.00 120.00
+[235] 129.00 132.00 108.00 135.00 133.00 118.00 121.00  94.00 135.00
+[244] 110.00 100.00  88.00  90.00 151.00 101.00 117.00 156.00 132.00
+[253] 117.00 122.00 129.00  81.00 144.00 112.00  81.00 100.00 101.00
+[262] 118.00 132.00 115.00 159.00 129.00 112.00 112.00 105.00 166.00
+[271]  89.00 110.00  63.00  86.00 119.00 132.00 130.00 125.00 151.00
+[280] 158.00 145.00 105.00 154.00 117.00  96.00 131.00 113.00  72.00
+[289]  97.00 156.00 103.00  89.00  74.00  89.00  99.00 137.00 123.00
+[298] 104.00 130.00  96.00  99.00  87.00 110.00  99.00 134.00 132.00
+[307] 133.00 120.00 126.00  80.00 166.00 132.00 135.00  54.00 129.00
+[316] 171.00  72.00 136.00 130.00 129.00 152.00  98.00 139.00 103.00
+[325] 150.00 104.00 122.00 104.00 111.00  89.00 112.00 134.00 104.00
+[334] 147.00  83.00 110.00 143.00 102.00 101.00 126.00  91.00  93.00
+[343] 118.00 121.00 126.00 149.00 125.00 112.00 107.00  96.00  91.00
+[352] 105.00 122.00  92.00 145.00 146.00 164.00  72.00 118.00 130.00
+[361] 114.00 104.00 110.00 108.00 131.00 162.00 134.00  77.00  79.00
+[370] 122.00 119.00 126.00  98.00 116.00 118.00 124.00  92.00 125.00
+[379] 119.00 107.00  89.00 151.00 121.00  68.00 112.00 132.00 160.00
+[388] 115.00  78.00 107.00 111.00 124.00 130.00 120.00 139.00 128.00
+[397] 120.00 159.00  95.00 120.00
+attr(,&quot;method&quot;)
+[1] &quot;capping&quot;
+attr(,&quot;var_type&quot;)
+[1] &quot;numerical&quot;
+attr(,&quot;outlier_pos&quot;)
+[1]  43 126 166 175 368
+attr(,&quot;outliers&quot;)
+[1]  24  49 191 185  53
+attr(,&quot;type&quot;)
+[1] &quot;outliers&quot;
+attr(,&quot;message&quot;)
+[1] &quot;complete imputation&quot;
+attr(,&quot;success&quot;)
+[1] TRUE
+attr(,&quot;class&quot;)
+[1] &quot;imputation&quot; &quot;numeric&quot;   </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># summary of imputate</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>price</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>Impute outliers with capping
+
+* Information of Imputation (before vs after)
+            Original  Imputation
+n        400.0000000 400.0000000
+na         0.0000000   0.0000000
+mean     115.7950000 115.8927500
+sd        23.6766644  22.6109187
+se_mean    1.1838332   1.1305459
+IQR       31.0000000  31.0000000
+skewness  -0.1252862  -0.0461621
+kurtosis   0.4518850  -0.3030578
+p00       24.0000000  54.0000000
+p01       54.9900000  67.9600000
+p05       77.0000000  77.0000000
+p10       87.0000000  87.0000000
+p20       96.8000000  96.8000000
+p25      100.0000000 100.0000000
+p30      104.0000000 104.0000000
+p40      110.0000000 110.0000000
+p50      117.0000000 117.0000000
+p60      122.0000000 122.0000000
+p70      128.3000000 128.3000000
+p75      131.0000000 131.0000000
+p80      134.0000000 134.0000000
+p90      146.0000000 146.0000000
+p95      155.0500000 155.0025000
+p99      166.0500000 164.0200000
+p100     191.0000000 173.0000000</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># viz of imputate</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>price</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="2018-05-07-r-vignette03.ko_files/figure-html5/imputate_outlier-1.png" width="672" /></p>
+</div>
+<h3 id="dplyr과의-협업-1">dplyr과의 협업</h3>
+<p>다음은 dplyr를 이용해서 이상치를 대체한 <code>Price</code> 변수를 <code>US</code>의 수준별로 산술평균을 구하는 예제다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># The mean before and after the imputation of the Price variable</span>
+<span class='va'>carseats</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>Price_imp <span class='op'>=</span> <span class='fu'>imputate_outlier</span><span class='op'>(</span><span class='va'>carseats</span>, <span class='va'>Price</span>, method <span class='op'>=</span> <span class='st'>"capping"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>US</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>summarise</span><span class='op'>(</span>orig <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>Price</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
+    imputation <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>Price_imp</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 2 x 3
+  US     orig imputation
+  &lt;fct&gt; &lt;dbl&gt;      &lt;dbl&gt;
+1 No     114.       114.
+2 Yes    117.       117.</code></pre>
+</div>
+<h2 id="표준화와-치우친-데이터의-보정">표준화와 치우친 데이터의 보정</h2>
+<h3 id="transform의-기능"><code>transform()</code>의 기능</h3>
+<p><code>transform()</code>는 변수를 변환한다. 수치형 변수만 지원하며, 다음과 같은 method를 제공한다.</p>
+<ul>
+<li>표준화
+<ul>
+<li>“zscore” : z-score 변환. (x - mu) / sigma</li>
+<li>“minmax” : minmax 변환. (x - min) / (max - min)</li>
+</ul></li>
+<li>치우침 보정
+<ul>
+<li>“log” : log 변환. log(x)</li>
+<li>“log+1” : log 변환. log(x + 1). 0을 포함한 값들이 많을 때 유용함.</li>
+<li>“sqrt” : 제곱근 변환</li>
+<li>“1/x” : 1 / x 변환</li>
+<li>“x^2” : 제곱 변환</li>
+<li>“x^3” : 세제곱 변환</li>
+</ul></li>
+</ul>
+<h3 id="transform을-이용한-표준화"><code>transform()</code>을 이용한 표준화</h3>
+<p>표준화를 수행하는 method “zscore”와 “minmax”를 이용한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>carseats</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>mutate</span><span class='op'>(</span>Income_minmax <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/transform.html'>transform</a></span><span class='op'>(</span><span class='va'>carseats</span><span class='op'>$</span><span class='va'>Income</span>, method <span class='op'>=</span> <span class='st'>"minmax"</span><span class='op'>)</span>,
+    Sales_minmax <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/transform.html'>transform</a></span><span class='op'>(</span><span class='va'>carseats</span><span class='op'>$</span><span class='va'>Sales</span>, method <span class='op'>=</span> <span class='st'>"minmax"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>select</span><span class='op'>(</span><span class='va'>Income_minmax</span>, <span class='va'>Sales_minmax</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/graphics/boxplot.html'>boxplot</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="2018-05-07-r-vignette03.ko_files/figure-html5/standardization-1.png" width="576" /></p>
+</div>
+<h3 id="transform을-이용한-치우친-데이터의-보정"><code>transform()</code>을 이용한 치우친 데이터의 보정</h3>
+<p><code>find_skewness()</code>는 치우친 데이터를 찾기 위해서 왜도를 구한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># find index of skewed variables</span>
+<span class='fu'>find_skewness</span><span class='op'>(</span><span class='va'>carseats</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] 4</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># find names of skewed variables</span>
+<span class='fu'>find_skewness</span><span class='op'>(</span><span class='va'>carseats</span>, index <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] &quot;Advertising&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># compute the skewness</span>
+<span class='fu'>find_skewness</span><span class='op'>(</span><span class='va'>carseats</span>, value <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>      Sales   CompPrice      Income Advertising  Population 
+      0.185      -0.043       0.036       0.637      -0.051 
+      Price         Age   Education 
+     -0.125      -0.077       0.044 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># compute the skewness &amp; filtering with threshold</span>
+<span class='fu'>find_skewness</span><span class='op'>(</span><span class='va'>carseats</span>, value <span class='op'>=</span> <span class='cn'>TRUE</span>, thres <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>      Sales Advertising       Price 
+      0.185       0.637      -0.125 </code></pre>
+</div>
+<p><code>Advertising</code>의 왜도가 0.637로 좌측으로 어느정도 기울어져 있어서 다음처럼 <code>transformation()</code>를 이용해서 “log” 방법으로 변환한다. <code>summary()</code>는 변환정보를 요약하고, <code>plot()</code>은 변환정보를 시각화한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>Advertising_log</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/transform.html'>transform</a></span><span class='op'>(</span><span class='va'>carseats</span><span class='op'>$</span><span class='va'>Advertising</span>, method <span class='op'>=</span> <span class='st'>"log"</span><span class='op'>)</span>
+
+<span class='co'># result of transformation</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>Advertising_log</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] 2.397895 2.772589 2.302585 1.386294 1.098612 2.564949</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># summary of transformation</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>Advertising_log</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>* Resolving Skewness with log
+
+* Information of Transformation (before vs after)
+            Original Transformation
+n        400.0000000    400.0000000
+na         0.0000000      0.0000000
+mean       6.6350000           -Inf
+sd         6.6503642            NaN
+se_mean    0.3325182            NaN
+IQR       12.0000000            Inf
+skewness   0.6395858            NaN
+kurtosis  -0.5451178            NaN
+p00        0.0000000           -Inf
+p01        0.0000000           -Inf
+p05        0.0000000           -Inf
+p10        0.0000000           -Inf
+p20        0.0000000           -Inf
+p25        0.0000000           -Inf
+p30        0.0000000           -Inf
+p40        2.0000000      0.6931472
+p50        5.0000000      1.6094379
+p60        8.4000000      2.1265548
+p70       11.0000000      2.3978953
+p75       12.0000000      2.4849066
+p80       13.0000000      2.5649494
+p90       16.0000000      2.7725887
+p95       19.0000000      2.9444390
+p99       23.0100000      3.1359198
+p100      29.0000000      3.3672958</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># viz of transformation</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>Advertising_log</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="2018-05-07-r-vignette03.ko_files/figure-html5/resolving2-1.png" width="672" /></p>
+</div>
+<p>log 변환된 값에 -Inf가 포함되어 있는 것으로 보아 원 데이터에 0이 포함되어 있는 듯하다. 그래서 이번에는 “log+1” 방법으로 변환한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>Advertising_log</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/transform.html'>transform</a></span><span class='op'>(</span><span class='va'>carseats</span><span class='op'>$</span><span class='va'>Advertising</span>, method <span class='op'>=</span> <span class='st'>"log+1"</span><span class='op'>)</span>
+
+<span class='co'># result of transformation</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>Advertising_log</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] 2.484907 2.833213 2.397895 1.609438 1.386294 2.639057</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># summary of transformation</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>Advertising_log</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>* Resolving Skewness with log+1
+
+* Information of Transformation (before vs after)
+            Original Transformation
+n        400.0000000   400.00000000
+na         0.0000000     0.00000000
+mean       6.6350000     1.46247709
+sd         6.6503642     1.19436323
+se_mean    0.3325182     0.05971816
+IQR       12.0000000     2.56494936
+skewness   0.6395858    -0.19852549
+kurtosis  -0.5451178    -1.66342876
+p00        0.0000000     0.00000000
+p01        0.0000000     0.00000000
+p05        0.0000000     0.00000000
+p10        0.0000000     0.00000000
+p20        0.0000000     0.00000000
+p25        0.0000000     0.00000000
+p30        0.0000000     0.00000000
+p40        2.0000000     1.09861229
+p50        5.0000000     1.79175947
+p60        8.4000000     2.23936878
+p70       11.0000000     2.48490665
+p75       12.0000000     2.56494936
+p80       13.0000000     2.63905733
+p90       16.0000000     2.83321334
+p95       19.0000000     2.99573227
+p99       23.0100000     3.17846205
+p100      29.0000000     3.40119738</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># viz of transformation</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>Advertising_log</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="2018-05-07-r-vignette03.ko_files/figure-html5/resolving3-1.png" width="672" /></p>
+</div>
+<h2 id="binning">Binning</h2>
+<h3 id="binning을-이용한-개별-변수의-binning"><code>binning()</code>을 이용한 개별 변수의 Binning</h3>
+<p><code>binning()</code>는 수치형 변수를 비닝하여 범주형 변수로 변환한다. 다음과 같은 type의 비닝을 지원한다.</p>
+<ul>
+<li>“quantile” : 동일한 돗수가 포함되도록 quantile을 이용하여 범주화</li>
+<li>“equal” : 동일한 길이의 구간을 갖도록 범주화</li>
+<li>“pretty” : 적당히 보기 좋은 구간으로 범주화</li>
+<li>“kmeans” : K-means clustering 기법을 이용한 범주화</li>
+<li>“bclust” : Bagged clustering 기법을 이용한 범주화</li>
+</ul>
+<p><code>binning()</code>을 이용하여 <code>Income</code>을 비닝하는 몇 가지의 방법을 예시한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Binning the carat variable. default type argument is "quantile"</span>
+<span class='va'>bin</span> <span class='op'>&lt;-</span> <span class='fu'>binning</span><span class='op'>(</span><span class='va'>carseats</span><span class='op'>$</span><span class='va'>Income</span><span class='op'>)</span>
+<span class='co'># Print bins class object</span>
+<span class='va'>bin</span>
+</code></pre>
+</div>
+<pre><code>binned type: quantile
+number of bins: 10
+x
+ [21,31.36667]  (31.36667,40]        (40,50]        (50,62] 
+            38             40             37             40 
+       (62,69]        (69,78]  (78,87.56667]  (87.56667,98] 
+            40             34             37             41 
+ (98,108.6333] (108.6333,120]           &lt;NA&gt; 
+            35             38             20 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Summarise bins class object</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>bin</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>           levels freq   rate
+1   [21,31.36667]   38 0.0950
+2   (31.36667,40]   40 0.1000
+3         (40,50]   37 0.0925
+4         (50,62]   40 0.1000
+5         (62,69]   40 0.1000
+6         (69,78]   34 0.0850
+7   (78,87.56667]   37 0.0925
+8   (87.56667,98]   41 0.1025
+9   (98,108.6333]   35 0.0875
+10 (108.6333,120]   38 0.0950
+11           &lt;NA&gt;   20 0.0500</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Plot bins class object</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>bin</span><span class='op'>)</span>
+</code></pre>
+</div>
+<img src="2018-05-07-r-vignette03.ko_files/figure-html5/binning-1.png" width="576" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Using labels argument</span>
+<span class='va'>bin</span> <span class='op'>&lt;-</span> <span class='fu'>binning</span><span class='op'>(</span><span class='va'>carseats</span><span class='op'>$</span><span class='va'>Income</span>, nbins <span class='op'>=</span> <span class='fl'>4</span>,
+              labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LQ1"</span>, <span class='st'>"UQ1"</span>, <span class='st'>"LQ3"</span>, <span class='st'>"UQ3"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>bin</span>
+</code></pre>
+</div>
+<pre><code>binned type: quantile
+number of bins: 4
+x
+ LQ1  UQ1  LQ3  UQ3 &lt;NA&gt; 
+  98   97   91   94   20 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Using another type argument</span>
+<span class='fu'>binning</span><span class='op'>(</span><span class='va'>carseats</span><span class='op'>$</span><span class='va'>Income</span>, nbins <span class='op'>=</span> <span class='fl'>5</span>, type <span class='op'>=</span> <span class='st'>"equal"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>binned type: equal
+number of bins: 5
+x
+   [21,40.8]  (40.8,60.6]  (60.6,80.4] (80.4,100.2]  (100.2,120] 
+          78           68           92           79           63 
+        &lt;NA&gt; 
+          20 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>binning</span><span class='op'>(</span><span class='va'>carseats</span><span class='op'>$</span><span class='va'>Income</span>, nbins <span class='op'>=</span> <span class='fl'>5</span>, type <span class='op'>=</span> <span class='st'>"pretty"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>binned type: pretty
+number of bins: 5
+x
+  [20,40]   (40,60]   (60,80]  (80,100] (100,120]      &lt;NA&gt; 
+       78        68        92        79        63        20 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>binning</span><span class='op'>(</span><span class='va'>carseats</span><span class='op'>$</span><span class='va'>Income</span>, nbins <span class='op'>=</span> <span class='fl'>5</span>, type <span class='op'>=</span> <span class='st'>"kmeans"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>binned type: kmeans
+number of bins: 5
+x
+  [21,38.5] (38.5,56.5] (56.5,75.5] (75.5,97.5]  (97.5,120] 
+         72          58          87          86          77 
+       &lt;NA&gt; 
+         20 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>binning</span><span class='op'>(</span><span class='va'>carseats</span><span class='op'>$</span><span class='va'>Income</span>, nbins <span class='op'>=</span> <span class='fl'>5</span>, type <span class='op'>=</span> <span class='st'>"bclust"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>binned type: bclust
+number of bins: 5
+x
+  [21,37.5] (37.5,55.5] (55.5,78.5] (78.5,95.5]  (95.5,120] 
+         69          58         102          69          82 
+       &lt;NA&gt; 
+         20 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># -------------------------</span>
+<span class='co'># Using pipes &amp; dplyr</span>
+<span class='co'># -------------------------</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+
+<span class='va'>carseats</span> <span class='op'>%&gt;%</span>
+ <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Income_bin <span class='op'>=</span> <span class='fu'>binning</span><span class='op'>(</span><span class='va'>carseats</span><span class='op'>$</span><span class='va'>Income</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+ <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>ShelveLoc</span>, <span class='va'>Income_bin</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+ <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='op'>(</span>freq <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+ <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>freq</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+ <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 10 x 3
+# Groups:   ShelveLoc [1]
+  ShelveLoc Income_bin     freq
+  &lt;fct&gt;     &lt;ord&gt;         &lt;int&gt;
+1 Medium    [21,31.36667]    25
+2 Medium    (62,69]          23
+3 Medium    (50,62]          22
+4 Medium    (31.36667,40]    21
+# … with 6 more rows</code></pre>
+</div>
+<h3 id="binning_by을-이용한-optimal-binning"><code>binning_by()</code>을 이용한 Optimal Binning</h3>
+<p><code>binning_by()</code>는 수치형 변수를 Optimal Binning하여 범주형 변수로 변환한다. 이 방법은 <code>스코어카드 모형</code>을 개발할때 자주 사용하는 방법이다.</p>
+<p>다음의 <code>binning_by()</code> 예제는 <code>US</code>가 binary class를 갖는 target 변수일 경우에 <code>Advertising</code>를 Optimal Binning하는 방법의 예시다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># optimal binning</span>
+<span class='va'>bin</span> <span class='op'>&lt;-</span> <span class='fu'>binning_by</span><span class='op'>(</span><span class='va'>carseats</span>, <span class='st'>"US"</span>, <span class='st'>"Advertising"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>` US ` ~ ` Advertising `
+&lt;environment: 0x7ff8ef6883d8&gt;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>bin</span>
+</code></pre>
+</div>
+<pre><code>binned type: optimal
+number of bins: 3
+x
+[-1,0]  (0,6] (6,29] 
+   144     69    187 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># summary optimal_bins class</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>bin</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>── Binning Table ──────────────────────── Several Metrics ── 
+     Bin CntRec CntPos CntNeg RatePos RateNeg    Odds      WoE
+1 [-1,0]    144     19    125 0.07364 0.88028  0.1520 -2.48101
+2  (0,6]     69     54     15 0.20930 0.10563  3.6000  0.68380
+3 (6,29]    187    185      2 0.71705 0.01408 92.5000  3.93008
+4  Total    400    258    142 1.00000 1.00000  1.8169       NA
+       IV     JSD     AUC
+1 2.00128 0.20093 0.03241
+2 0.07089 0.00869 0.01883
+3 2.76272 0.21861 0.00903
+4 4.83489 0.42823 0.06028
+
+── General Metrics ───────────────────────────────────────── 
+• Gini index                       :  -0.87944
+• IV (Jeffrey)                     :  4.83489
+• JS (Jensen-Shannon) Divergence   :  0.42823
+• Kolmogorov-Smirnov Statistics    :  0.80664
+• HHI (Herfindahl-Hirschman Index) :  0.37791
+• HHI (normalized)                 :  0.06687
+• Cramer&#39;s V                       :  0.81863 
+
+── Significance Tests ──────────────────── Chisquare Test ── 
+   Bin A  Bin B statistics      p_value
+1 [-1,0]  (0,6]   87.67064 7.731349e-21
+2  (0,6] (6,29]   34.73349 3.780706e-09</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># information value </span>
+<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>bin</span>, <span class='st'>"iv"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>NULL</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># information value table</span>
+<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>bin</span>, <span class='st'>"ivtable"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>NULL</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># visualize optimal_bins class</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>bin</span>, sub <span class='op'>=</span> <span class='st'>"bins of Advertising variable"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="2018-05-07-r-vignette03.ko_files/figure-html5/binning_by-1.png" width="576" /></p>
+</div>
+<h2 id="transformation_report를-이용한-데이터변환-보고서-작성"><code>transformation_report()</code>를 이용한 데이터변환 보고서 작성</h2>
+<p><code>transformation_report()</code>는 데이터 프레임이나 데이터 프레임을 상속받은 객체(<code>tbl_df</code>, <code>tbl</code> 등)의 모든 변수들에 대해서 데이터변환 보고서를 작성한다.</p>
+<p><code>transformation_report()</code>는 데이터변환 보고서를 다음과 같은 두 개의 형태로 작성한다.</p>
+<ul>
+<li>Latex에 기반한 pdf 파일</li>
+<li>html 파일</li>
+</ul>
+<p>보고서의 목차는 다음과 같다.</p>
+<ul>
+<li>값의 대체
+<ul>
+<li>결측치
+<ul>
+<li>결측치의 대체 정보</li>
+<li>(해당 변수들)</li>
+</ul></li>
+<li>이상치
+<ul>
+<li>이상치의 대체 정보</li>
+<li>(해당 변수들)</li>
+</ul></li>
+</ul></li>
+<li>치우침의 해결
+<ul>
+<li>치우친 변수들의 정보
+<ul>
+<li>(해당 변수들)</li>
+</ul></li>
+</ul></li>
+<li>비닝
+<ul>
+<li>비닝을 위한 수치형 변수들</li>
+<li>비닝
+<ul>
+<li>(해당 변수들)</li>
+</ul></li>
+<li>Optimal 비닝
+<ul>
+<li>(해당 변수들)</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>다음은 <code>carseats</code>의 데이터변환 보고서를 작성한다. 파일 형식은 pdf이며, 파일이름은 <code>Transformation_Report.pdf</code>다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>carseats</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>transformation_report</span><span class='op'>(</span>target <span class='op'>=</span> <span class='va'>US</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>다음은 <code>transformation.html</code>라는 이름의 html 형식의 보고서를 생성한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>carseats</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>transformation_report</span><span class='op'>(</span>target <span class='op'>=</span> <span class='va'>US</span>, output_format <span class='op'>=</span> <span class='st'>"html"</span>, 
+    output_file <span class='op'>=</span> <span class='st'>"transformation.html"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>데이터변환 보고서는 데이터 변환 과정에 도움을 주기 위한 자동화 보고서다. 보고서 결과를 참고하여 데이터 변환 시나리오를 설계한다.</p>
+<h3 id="데이터변환-리포트-내용">데이터변환 리포트 내용</h3>
+<h4 id="pdf-파일의-내용">pdf 파일의 내용</h4>
+<ul>
+<li>보고서의 표지는 다음 그림과 같다.</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-2"></span>
+<img src="img/trans_title_pdf.png" alt="데이터변환 보고서 표지" width="70%" />
+<p class="caption">
+Figure 1: 데이터변환 보고서 표지
+</p>
+</div>
+</div>
+<ul>
+<li>보고서의 차례는 다음 그림과 같다.</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-3"></span>
+<img src="img/trans_agenda_pdf.png" alt="데이터변환 보고서 차례" width="70%" />
+<p class="caption">
+Figure 2: 데이터변환 보고서 차례
+</p>
+</div>
+</div>
+<ul>
+<li>많은 정보는 보고서에서 표와 시각화 결과로 표현된다. 예시는 다음 그림과 같다.</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-4"></span>
+<img src="img/trans_content_pdf.png" alt="데이터변환 보고서 도표 및 시각화 예시" width="70%" />
+<p class="caption">
+Figure 3: 데이터변환 보고서 도표 및 시각화 예시
+</p>
+</div>
+</div>
+<h4 id="html-파일의-내용">html 파일의 내용</h4>
+<ul>
+<li>보고서의 타이틀과 목차는 다음 그림과 같다.</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-5"></span>
+<img src="img/trans_agenda_html.png" alt="데이터변환 보고서 타이틀과 목차" width="80%" />
+<p class="caption">
+Figure 4: 데이터변환 보고서 타이틀과 목차
+</p>
+</div>
+</div>
+<ul>
+<li>많은 정보는 보고서에서 표로 표현된다. html 파일에서 표의 예시는 다음 그림과 같다.</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-6"></span>
+<img src="img/trans_table_html.png" alt="데이터변환 보고서 도표 예시 (웹)" width="50%" />
+<p class="caption">
+Figure 5: 데이터변환 보고서 도표 예시 (웹)
+</p>
+</div>
+</div>
+<ul>
+<li>데이터변환 보고서에서 Binning 정보는 시각화 결과를 포함한다. html 파일의 결과는 다음 그림과 같다.</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-7"></span>
+<img src="img/trans_viz_html.png" alt="데이터변환 보고서 Binning 정보 (웹)" width="75%" />
+<p class="caption">
+Figure 6: 데이터변환 보고서 Binning 정보 (웹)
+</p>
+</div>
+</div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<div class="distill-site-nav distill-site-footer">
+  <span>
+    Copyright 2021 DATAHOLIC. All Rights Reserved</p>
+  </span> 
+  <!--Licensed under the <a href="https://opensource.org/licenses/lgpl-3.0.html" target="_blank">GNU General Public License version 3.0</a-->
+<br>
+</div>
+
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

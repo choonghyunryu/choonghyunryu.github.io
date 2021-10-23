@@ -1,0 +1,3516 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #20794d; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007ba5; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #007ba5; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #007ba5; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #20794d; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+  <!--radix_placeholder_meta_tags-->
+<title>Dataholic: 추가 폰트 사용하기</title>
+
+<meta property="description" itemprop="description" content="R로 그린 플롯에서 우리는 기하학적인 요소로 데이터의 현황을 이해한다. 그런데 라벨이나 제목, 범례, 축의 구간 단위에 표현하는 텍스트도 데이터를 이해하는 데 중요한 역할을 한다. 플롯의 텍스트는 폰트로 그리는데, R에서의 폰트와  폰트를 시각화하는 매커니즘을 다룬다."/>
+
+
+<!--  https://schema.org/Article -->
+<meta property="article:published" itemprop="datePublished" content="2021-01-27"/>
+<meta property="article:created" itemprop="dateCreated" content="2021-01-27"/>
+<meta name="article:author" content="유충현"/>
+
+<!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+<meta property="og:title" content="Dataholic: 추가 폰트 사용하기"/>
+<meta property="og:type" content="article"/>
+<meta property="og:description" content="R로 그린 플롯에서 우리는 기하학적인 요소로 데이터의 현황을 이해한다. 그런데 라벨이나 제목, 범례, 축의 구간 단위에 표현하는 텍스트도 데이터를 이해하는 데 중요한 역할을 한다. 플롯의 텍스트는 폰트로 그리는데, R에서의 폰트와  폰트를 시각화하는 매커니즘을 다룬다."/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Dataholic"/>
+
+<!--  https://dev.twitter.com/cards/types/summary -->
+<meta property="twitter:card" content="summary"/>
+<meta property="twitter:title" content="Dataholic: 추가 폰트 사용하기"/>
+<meta property="twitter:description" content="R로 그린 플롯에서 우리는 기하학적인 요소로 데이터의 현황을 이해한다. 그런데 라벨이나 제목, 범례, 축의 구간 단위에 표현하는 텍스트도 데이터를 이해하는 데 중요한 역할을 한다. 플롯의 텍스트는 폰트로 그리는데, R에서의 폰트와  폰트를 시각화하는 매커니즘을 다룬다."/>
+
+<!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+<script type="text/json" id="radix-rmarkdown-metadata">
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","tags","categories","output"]}},"value":[{"type":"character","attributes":{},"value":["추가 폰트 사용하기"]},{"type":"character","attributes":{},"value":["R로 그린 플롯에서 우리는 기하학적인 요소로 데이터의 현황을 이해한다. 그런데 라벨이나 제목, 범례, 축의 구간 단위에 표현하는 텍스트도 데이터를 이해하는 데 중요한 역할을 한다. 플롯의 텍스트는 폰트로 그리는데, R에서의 폰트와  폰트를 시각화하는 매커니즘을 다룬다."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["유충현"]}]}]},{"type":"character","attributes":{},"value":["2021-01-27"]},{"type":"character","attributes":{},"value":["extrafont","ggplot2","Fonts","dlookr"]},{"type":"character","attributes":{},"value":["Visualization"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_depth"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]}]}]}]}
+</script>
+<!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["2021-01-27-rfonts_files/anchor-4.2.2/anchor.min.js","2021-01-27-rfonts_files/bowser-1.9.3/bowser.min.js","2021-01-27-rfonts_files/distill-2.2.21/template.v2.js","2021-01-27-rfonts_files/figure-html5/unnamed-chunk-21-1.png","2021-01-27-rfonts_files/figure-html5/unnamed-chunk-27-1.png","2021-01-27-rfonts_files/figure-html5/unnamed-chunk-28-1.png","2021-01-27-rfonts_files/figure-html5/unnamed-chunk-28-2.png","2021-01-27-rfonts_files/figure-html5/unnamed-chunk-30-1.png","2021-01-27-rfonts_files/figure-html5/unnamed-chunk-31-1.png","2021-01-27-rfonts_files/figure-html5/unnamed-chunk-32-1.png","2021-01-27-rfonts_files/figure-html5/unnamed-chunk-33-1.png","2021-01-27-rfonts_files/figure-html5/unnamed-chunk-34-1.png","2021-01-27-rfonts_files/figure-html5/unnamed-chunk-4-1.png","2021-01-27-rfonts_files/figure-html5/unnamed-chunk-42-1.png","2021-01-27-rfonts_files/figure-html5/unnamed-chunk-43-1.png","2021-01-27-rfonts_files/figure-html5/unnamed-chunk-8-1.png","2021-01-27-rfonts_files/header-attrs-2.8/header-attrs.js","2021-01-27-rfonts_files/jquery-1.11.3/jquery.min.js","2021-01-27-rfonts_files/popper-2.6.0/popper.min.js","2021-01-27-rfonts_files/tippy-6.2.7/tippy-bundle.umd.min.js","2021-01-27-rfonts_files/tippy-6.2.7/tippy-light-border.css","2021-01-27-rfonts_files/tippy-6.2.7/tippy.css","2021-01-27-rfonts_files/tippy-6.2.7/tippy.umd.min.js","2021-01-27-rfonts_files/webcomponents-2.0.0/webcomponents.js","ggplot_korean1.pdf","ggplot_korean2.pdf","ggplot_korean3.pdf","ggplot_korean4_emb.pdf","ggplot_korean4.pdf","img/arial_narrow.pdf.png","img/binning_by.png","img/cairo_arrial_narrow.pdf.png","img/default_linux.png","img/default_mac_2.png","img/default_mac.png","img/default_windows.png","img/fonts.png","img/ggplot_korean.png","img/pdf_korean.png","img/plot_outlier.png"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+<meta name="distill:offset" content="../.."/>
+
+<script type="application/javascript">
+
+  window.headroom_prevent_pin = false;
+
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+
+    // initialize headroom for banner
+    var header = $('header').get(0);
+    var headerHeight = header.offsetHeight;
+    var headroom = new Headroom(header, {
+      tolerance: 5,
+      onPin : function() {
+        if (window.headroom_prevent_pin) {
+          window.headroom_prevent_pin = false;
+          headroom.unpin();
+        }
+      }
+    });
+    headroom.init();
+    if(window.location.hash)
+      headroom.unpin();
+    $(header).addClass('headroom--transition');
+
+    // offset scroll location for banner on hash change
+    // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+    window.addEventListener("hashchange", function(event) {
+      window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+    });
+
+    // responsive menu
+    $('.distill-site-header').each(function(i, val) {
+      var topnav = $(this);
+      var toggle = topnav.find('.nav-toggle');
+      toggle.on('click', function() {
+        topnav.toggleClass('responsive');
+      });
+    });
+
+    // nav dropdowns
+    $('.nav-dropbtn').click(function(e) {
+      $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+      $(this).parent().siblings('.nav-dropdown')
+         .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $("body").click(function(e){
+      $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $(".nav-dropdown").click(function(e){
+      e.stopPropagation();
+    });
+  });
+</script>
+
+<style type="text/css">
+
+/* Theme (user-documented overrideables for nav appearance) */
+
+.distill-site-nav {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: #0F2E3D;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.distill-site-nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.distill-site-nav a:hover {
+  color: white;
+}
+
+@media print {
+  .distill-site-nav {
+    display: none;
+  }
+}
+
+.distill-site-header {
+
+}
+
+.distill-site-footer {
+
+}
+
+
+/* Site Header */
+
+.distill-site-header {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.distill-site-header .nav-left {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header .nav-left {
+    margin-left: 0;
+  }
+}
+
+
+.distill-site-header .nav-right {
+  float: right;
+  margin-right: 8px;
+}
+
+.distill-site-header a,
+.distill-site-header .title {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 10px 14px 10px;
+}
+
+.distill-site-header .title {
+  font-size: 18px;
+  min-width: 150px;
+}
+
+.distill-site-header .logo {
+  padding: 0;
+}
+
+.distill-site-header .logo img {
+  display: none;
+  max-height: 20px;
+  width: auto;
+  margin-bottom: -4px;
+}
+
+.distill-site-header .nav-image img {
+  max-height: 18px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: -3px;
+}
+
+
+
+@media screen and (min-width: 1000px) {
+  .distill-site-header .logo img {
+    display: inline-block;
+  }
+  .distill-site-header .nav-left {
+    margin-left: 20px;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 20px;
+  }
+  .distill-site-header .title {
+    padding-left: 12px;
+  }
+}
+
+
+.distill-site-header .nav-toggle {
+  display: none;
+}
+
+.nav-dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.nav-dropdown .nav-dropbtn {
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 10px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  margin-top: 1px;
+  z-index: 2;
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+  z-index: 1;
+  margin-top: 2px;
+  white-space: nowrap;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.nav-dropdown-content hr {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-dropdown-active {
+  display: block;
+}
+
+.nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
+  color: black;
+  padding: 6px 24px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.nav-dropdown-content .nav-dropdown-header {
+  display: block;
+  padding: 5px 24px;
+  padding-bottom: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999;
+  white-space: nowrap;
+}
+
+.nav-dropdown:hover .nav-dropbtn {
+  color: white;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.nav-right .nav-dropdown-content {
+  margin-left: -45%;
+  right: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
+  .distill-site-header a.nav-toggle {
+    float: right;
+    display: block;
+  }
+  .distill-site-header .title {
+    margin-left: 0;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 0;
+  }
+  .distill-site-header {
+    overflow: hidden;
+  }
+  .nav-right .nav-dropdown-content {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-header.responsive {position: relative; min-height: 500px; }
+  .distill-site-header.responsive a.nav-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .distill-site-header.responsive a,
+  .distill-site-header.responsive .nav-dropdown {
+    display: block;
+    text-align: left;
+  }
+  .distill-site-header.responsive .nav-left,
+  .distill-site-header.responsive .nav-right {
+    width: 100%;
+  }
+  .distill-site-header.responsive .nav-dropdown {float: none;}
+  .distill-site-header.responsive .nav-dropdown-content {position: relative;}
+  .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Site Footer */
+
+.distill-site-footer {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 3;
+  margin-top: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+/* Headroom */
+
+d-title {
+  padding-top: 6rem;
+}
+
+@media print {
+  d-title {
+    padding-top: 4rem;
+  }
+}
+
+.headroom {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.headroom--transition {
+  transition: all .4s ease-in-out;
+}
+
+.headroom--unpinned {
+  top: -100px;
+}
+
+.headroom--pinned {
+  top: 0;
+}
+
+/* adjust viewport for navbar height */
+/* helps vertically center bootstrap (non-distill) content */
+.min-vh-100 {
+  min-height: calc(100vh - 100px) !important;
+}
+
+</style>
+
+<script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+<link href="../../site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
+<link href="../../site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
+<script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
+<script src="../../site_libs/autocomplete-0.37.1/autocomplete.min.js"></script>
+<script src="../../site_libs/fuse-6.4.1/fuse.min.js"></script>
+
+<script type="application/javascript">
+
+function getMeta(metaName) {
+  var metas = document.getElementsByTagName('meta');
+  for (let i = 0; i < metas.length; i++) {
+    if (metas[i].getAttribute('name') === metaName) {
+      return metas[i].getAttribute('content');
+    }
+  }
+  return '';
+}
+
+function offsetURL(url) {
+  var offset = getMeta('distill:offset');
+  return offset ? offset + '/' + url : url;
+}
+
+function createFuseIndex() {
+
+  // create fuse index
+  var options = {
+    keys: [
+      { name: 'title', weight: 20 },
+      { name: 'categories', weight: 15 },
+      { name: 'description', weight: 10 },
+      { name: 'contents', weight: 5 },
+    ],
+    ignoreLocation: true,
+    threshold: 0
+  };
+  var fuse = new window.Fuse([], options);
+
+  // fetch the main search.json
+  return fetch(offsetURL('search.json'))
+    .then(function(response) {
+      if (response.status == 200) {
+        return response.json().then(function(json) {
+          // index main articles
+          json.articles.forEach(function(article) {
+            fuse.add(article);
+          });
+          // download collections and index their articles
+          return Promise.all(json.collections.map(function(collection) {
+            return fetch(offsetURL(collection)).then(function(response) {
+              if (response.status === 200) {
+                return response.json().then(function(articles) {
+                  articles.forEach(function(article) {
+                    fuse.add(article);
+                  });
+                })
+              } else {
+                return Promise.reject(
+                  new Error('Unexpected status from search index request: ' +
+                            response.status)
+                );
+              }
+            });
+          })).then(function() {
+            return fuse;
+          });
+        });
+
+      } else {
+        return Promise.reject(
+          new Error('Unexpected status from search index request: ' +
+                      response.status)
+        );
+      }
+    });
+}
+
+window.document.addEventListener("DOMContentLoaded", function (event) {
+
+  // get search element (bail if we don't have one)
+  var searchEl = window.document.getElementById('distill-search');
+  if (!searchEl)
+    return;
+
+  createFuseIndex()
+    .then(function(fuse) {
+
+      // make search box visible
+      searchEl.classList.remove('hidden');
+
+      // initialize autocomplete
+      var options = {
+        autoselect: true,
+        hint: false,
+        minLength: 2,
+      };
+      window.autocomplete(searchEl, options, [{
+        source: function(query, callback) {
+          const searchOptions = {
+            isCaseSensitive: false,
+            shouldSort: true,
+            minMatchCharLength: 2,
+            limit: 10,
+          };
+          var results = fuse.search(query, searchOptions);
+          callback(results
+            .map(function(result) { return result.item; })
+          );
+        },
+        templates: {
+          suggestion: function(suggestion) {
+            var img = suggestion.preview && Object.keys(suggestion.preview).length > 0
+              ? `<img src="${offsetURL(suggestion.preview)}"</img>`
+              : '';
+            var html = `
+              <div class="search-item">
+                <h3>${suggestion.title}</h3>
+                <div class="search-item-description">
+                  ${suggestion.description || ''}
+                </div>
+                <div class="search-item-preview">
+                  ${img}
+                </div>
+              </div>
+            `;
+            return html;
+          }
+        }
+      }]).on('autocomplete:selected', function(event, suggestion) {
+        window.location.href = offsetURL(suggestion.path);
+      });
+      // remove inline display style on autocompleter (we want to
+      // manage responsive display via css)
+      $('.algolia-autocomplete').css("display", "");
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+
+});
+
+</script>
+
+<style type="text/css">
+
+.nav-search {
+  font-size: x-small;
+}
+
+/* Algolioa Autocomplete */
+
+.algolia-autocomplete {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: sub;
+  background-color: white;
+  color: black;
+  padding: 6px;
+  padding-top: 8px;
+  padding-bottom: 0;
+  border-radius: 6px;
+  border: 1px #0F2E3D solid;
+  width: 180px;
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-nav .algolia-autocomplete {
+    display: none;
+    visibility: hidden;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete {
+    display: inline-block;
+    visibility: visible;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete .aa-dropdown-menu {
+    margin-left: 0;
+    width: 400px;
+    max-height: 400px;
+  }
+}
+
+.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+  width: 90%;
+  outline: none;
+  border: none;
+}
+
+.algolia-autocomplete .aa-hint {
+  color: #999;
+}
+.algolia-autocomplete .aa-dropdown-menu {
+  width: 550px;
+  max-height: 70vh;
+  overflow-x: visible;
+  overflow-y: scroll;
+  padding: 5px;
+  margin-top: 3px;
+  margin-left: -150px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #999;
+  border-top: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+  cursor: pointer;
+  padding: 5px 4px;
+  border-bottom: 1px solid #eee;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion:last-of-type {
+  border-bottom: none;
+  margin-bottom: 2px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item {
+  overflow: hidden;
+  font-size: 0.8em;
+  line-height: 1.4em;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item h3 {
+  font-size: 1rem;
+  margin-block-start: 0;
+  margin-block-end: 5px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-description {
+  display: inline-block;
+  overflow: hidden;
+  height: 2.8em;
+  width: 80%;
+  margin-right: 4%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview {
+  display: inline-block;
+  width: 15%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img {
+  height: 3em;
+  width: auto;
+  display: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img[src] {
+  display: initial;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+  background-color: #eee;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+  font-weight: bold;
+  font-style: normal;
+}
+
+</style>
+
+
+<!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+<style type="text/css">
+
+body {
+  background-color: white;
+}
+
+.pandoc-table {
+  width: 100%;
+}
+
+.pandoc-table>caption {
+  margin-bottom: 10px;
+}
+
+.pandoc-table th:not([align]) {
+  text-align: left;
+}
+
+.pagedtable-footer {
+  font-size: 15px;
+}
+
+d-byline .byline {
+  grid-template-columns: 2fr 2fr;
+}
+
+d-byline .byline h3 {
+  margin-block-start: 1.5em;
+}
+
+d-byline .byline .authors-affiliations h3 {
+  margin-block-start: 0.5em;
+}
+
+.authors-affiliations .orcid-id {
+  width: 16px;
+  height:16px;
+  margin-left: 4px;
+  margin-right: 4px;
+  vertical-align: middle;
+  padding-bottom: 2px;
+}
+
+d-title .dt-tags {
+  margin-top: 1em;
+  grid-column: text;
+}
+
+.dt-tags .dt-tag {
+  text-decoration: none;
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0em 0.4em;
+  margin-right: 0.5em;
+  margin-bottom: 0.4em;
+  font-size: 70%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+d-article table.gt_table td,
+d-article table.gt_table th {
+  border-bottom: none;
+}
+
+.html-widget {
+  margin-bottom: 2.0em;
+}
+
+.l-screen-inset {
+  padding-right: 16px;
+}
+
+.l-screen .caption {
+  margin-left: 10px;
+}
+
+.shaded {
+  background: rgb(247, 247, 247);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .html-widget {
+  margin-bottom: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .shaded-content {
+  background: white;
+}
+
+.text-output {
+  margin-top: 0;
+  line-height: 1.5em;
+}
+
+.hidden {
+  display: none !important;
+}
+
+d-article {
+  padding-top: 2.5rem;
+  padding-bottom: 30px;
+}
+
+d-appendix {
+  padding-top: 30px;
+}
+
+d-article>p>img {
+  width: 100%;
+}
+
+d-article h2 {
+  margin: 1rem 0 1.5rem 0;
+}
+
+d-article h3 {
+  margin-top: 1.5rem;
+}
+
+d-article iframe {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 2.0em;
+  width: 100%;
+}
+
+/* Tweak code blocks */
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: auto;
+}
+
+d-article div.sourceCode {
+  background-color: white;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 10px;
+  font-size: 12px;
+  border-left: 2px solid rgba(0,0,0,0.1);
+}
+
+d-article pre {
+  font-size: 12px;
+  color: black;
+  background: none;
+  margin-top: 0;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+d-article pre a {
+  border-bottom: none;
+}
+
+d-article pre a:hover {
+  border-bottom: none;
+  text-decoration: underline;
+}
+
+d-article details {
+  grid-column: text;
+  margin-bottom: 0.8em;
+}
+
+@media(min-width: 768px) {
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: visible !important;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 18px;
+  font-size: 14px;
+}
+
+d-article pre {
+  font-size: 14px;
+}
+
+}
+
+figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+/* CSS for d-contents */
+
+.d-contents {
+  grid-column: text;
+  color: rgba(0,0,0,0.8);
+  font-size: 0.9em;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+  padding-bottom: 0.5em;
+  margin-bottom: 1em;
+  padding-left: 0.25em;
+  justify-self: start;
+}
+
+@media(min-width: 1000px) {
+  .d-contents.d-contents-float {
+    height: 0;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    justify-self: center;
+    padding-right: 3em;
+    padding-left: 2em;
+  }
+}
+
+.d-contents nav h3 {
+  font-size: 18px;
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+.d-contents li {
+  list-style-type: none
+}
+
+.d-contents nav > ul {
+  padding-left: 0;
+}
+
+.d-contents ul {
+  padding-left: 1em
+}
+
+.d-contents nav ul li {
+  margin-top: 0.6em;
+  margin-bottom: 0.2em;
+}
+
+.d-contents nav a {
+  font-size: 13px;
+  border-bottom: none;
+  text-decoration: none
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.d-contents nav a:hover {
+  text-decoration: underline solid rgba(0, 0, 0, 0.6)
+}
+
+.d-contents nav > ul > li > a {
+  font-weight: 600;
+}
+
+.d-contents nav > ul > li > ul {
+  font-weight: inherit;
+}
+
+.d-contents nav > ul > li > ul > li {
+  margin-top: 0.2em;
+}
+
+
+.d-contents nav ul {
+  margin-top: 0;
+  margin-bottom: 0.25em;
+}
+
+.d-article-with-toc h2:nth-child(2) {
+  margin-top: 0;
+}
+
+
+/* Figure */
+
+.figure {
+  position: relative;
+  margin-bottom: 2.5em;
+  margin-top: 1.5em;
+}
+
+.figure img {
+  width: 100%;
+}
+
+.figure .caption {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  line-height: 1.5em;
+}
+
+.figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.figure .caption a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.figure .caption b,
+.figure .caption strong, {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1.0);
+}
+
+/* Citations */
+
+d-article .citation {
+  color: inherit;
+  cursor: inherit;
+}
+
+div.hanging-indent{
+  margin-left: 1em; text-indent: -1em;
+}
+
+/* Citation hover box */
+
+.tippy-box[data-theme~=light-border] {
+  background-color: rgba(250, 250, 250, 0.95);
+}
+
+.tippy-content > p {
+  margin-bottom: 0;
+  padding: 2px;
+}
+
+
+/* Tweak 1000px media break to show more text */
+
+@media(min-width: 1000px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 16px;
+  }
+
+  .grid {
+    grid-column-gap: 16px;
+  }
+
+  d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+  }
+  figure .caption, .figure .caption, figure figcaption {
+    font-size: 13px;
+  }
+}
+
+@media(min-width: 1180px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 32px;
+  }
+
+  .grid {
+    grid-column-gap: 32px;
+  }
+}
+
+
+/* Get the citation styles for the appendix (not auto-injected on render since
+   we do our own rendering of the citation appendix) */
+
+d-appendix .citation-appendix,
+.d-appendix .citation-appendix {
+  font-size: 11px;
+  line-height: 15px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 18px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.02);
+  padding: 10px 18px;
+  border-radius: 3px;
+  color: rgba(150, 150, 150, 1);
+  overflow: hidden;
+  margin-top: -12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Include appendix styles here so they can be overridden */
+
+d-appendix {
+  contain: layout style;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-top: 60px;
+  margin-bottom: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  color: rgba(0,0,0,0.5);
+  padding-top: 60px;
+  padding-bottom: 48px;
+}
+
+d-appendix h3 {
+  grid-column: page-start / text-start;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 1em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.65);
+}
+
+d-appendix h3 + * {
+  margin-top: 1em;
+}
+
+d-appendix ol {
+  padding: 0 0 0 15px;
+}
+
+@media (min-width: 768px) {
+  d-appendix ol {
+    padding: 0 0 0 30px;
+    margin-left: -30px;
+  }
+}
+
+d-appendix li {
+  margin-bottom: 1em;
+}
+
+d-appendix a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+d-appendix > * {
+  grid-column: text;
+}
+
+d-appendix > d-footnote-list,
+d-appendix > d-citation-list,
+d-appendix > distill-appendix {
+  grid-column: screen;
+}
+
+/* Include footnote styles here so they can be overridden */
+
+d-footnote-list {
+  contain: layout style;
+}
+
+d-footnote-list > * {
+  grid-column: text;
+}
+
+d-footnote-list a.footnote-backlink {
+  color: rgba(0,0,0,0.3);
+  padding-left: 0.5em;
+}
+
+
+
+/* Anchor.js */
+
+.anchorjs-link {
+  /*transition: all .25s linear; */
+  text-decoration: none;
+  border-bottom: none;
+}
+*:hover > .anchorjs-link {
+  margin-left: -1.125em !important;
+  text-decoration: none;
+  border-bottom: none;
+}
+
+/* Social footer */
+
+.social_footer {
+  margin-top: 30px;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.67);
+}
+
+.disqus-comments {
+  margin-right: 30px;
+}
+
+.disqus-comment-count {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+#disqus_thread {
+  margin-top: 30px;
+}
+
+.article-sharing a {
+  border-bottom: none;
+  margin-right: 8px;
+}
+
+.article-sharing a:hover {
+  border-bottom: none;
+}
+
+.sidebar-section.subscribe {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.subscribe p {
+  margin-bottom: 0.5em;
+}
+
+
+.article-footer .subscribe {
+  font-size: 15px;
+  margin-top: 45px;
+}
+
+
+.sidebar-section.custom {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.custom p {
+  margin-bottom: 0.5em;
+}
+
+/* Styles for listing layout (hide title) */
+.layout-listing d-title, .layout-listing .d-title {
+  display: none;
+}
+
+/* Styles for posts lists (not auto-injected) */
+
+
+.posts-with-sidebar {
+  padding-left: 45px;
+  padding-right: 45px;
+}
+
+.posts-list .description h2,
+.posts-list .description p {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+.posts-list .description h2 {
+  font-weight: 700;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.posts-list h2.post-tag {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding-bottom: 12px;
+}
+.posts-list {
+  margin-top: 60px;
+  margin-bottom: 24px;
+}
+
+.posts-list .post-preview {
+  text-decoration: none;
+  overflow: hidden;
+  display: block;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 24px 0;
+}
+
+.post-preview-last {
+  border-bottom: none !important;
+}
+
+.posts-list .posts-list-caption {
+  grid-column: screen;
+  font-weight: 400;
+}
+
+.posts-list .post-preview h2 {
+  margin: 0 0 6px 0;
+  line-height: 1.2em;
+  font-style: normal;
+  font-size: 24px;
+}
+
+.posts-list .post-preview p {
+  margin: 0 0 12px 0;
+  line-height: 1.4em;
+  font-size: 16px;
+}
+
+.posts-list .post-preview .thumbnail {
+  box-sizing: border-box;
+  margin-bottom: 24px;
+  position: relative;
+  max-width: 500px;
+}
+.posts-list .post-preview img {
+  width: 100%;
+  display: block;
+}
+
+.posts-list .metadata {
+  font-size: 12px;
+  line-height: 1.4em;
+  margin-bottom: 18px;
+}
+
+.posts-list .metadata > * {
+  display: inline-block;
+}
+
+.posts-list .metadata .publishedDate {
+  margin-right: 2em;
+}
+
+.posts-list .metadata .dt-authors {
+  display: block;
+  margin-top: 0.3em;
+  margin-right: 2em;
+}
+
+.posts-list .dt-tags {
+  display: block;
+  line-height: 1em;
+}
+
+.posts-list .dt-tags .dt-tag {
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0.3em 0.4em;
+  margin-right: 0.2em;
+  margin-bottom: 0.4em;
+  font-size: 60%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.posts-list img {
+  opacity: 1;
+}
+
+.posts-list img[data-src] {
+  opacity: 0;
+}
+
+.posts-more {
+  clear: both;
+}
+
+
+.posts-sidebar {
+  font-size: 16px;
+}
+
+.posts-sidebar h3 {
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.sidebar-section {
+  margin-bottom: 30px;
+}
+
+.categories ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.categories li {
+  color: rgba(0, 0, 0, 0.8);
+  margin-bottom: 0;
+}
+
+.categories li>a {
+  border-bottom: none;
+}
+
+.categories li>a:hover {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.categories .active {
+  font-weight: 600;
+}
+
+.categories .category-count {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+
+@media(min-width: 768px) {
+  .posts-list .post-preview h2 {
+    font-size: 26px;
+  }
+  .posts-list .post-preview .thumbnail {
+    float: right;
+    width: 30%;
+    margin-bottom: 0;
+  }
+  .posts-list .post-preview .description {
+    float: left;
+    width: 45%;
+  }
+  .posts-list .post-preview .metadata {
+    float: left;
+    width: 20%;
+    margin-top: 8px;
+  }
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.5em;
+    font-size: 16px;
+  }
+  .posts-with-sidebar .posts-list {
+    float: left;
+    width: 75%;
+  }
+  .posts-with-sidebar .posts-sidebar {
+    float: right;
+    width: 20%;
+    margin-top: 60px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+}
+
+
+/* Improve display for browsers without grid (IE/Edge <= 15) */
+
+.downlevel {
+  line-height: 1.6em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
+
+.downlevel .d-title {
+  padding-top: 6rem;
+  padding-bottom: 1.5rem;
+}
+
+.downlevel .d-title h1 {
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1.1em;
+  margin: 0 0 0.5rem;
+}
+
+.downlevel .d-title p {
+  font-weight: 300;
+  font-size: 1.2rem;
+  line-height: 1.55em;
+  margin-top: 0;
+}
+
+.downlevel .d-byline {
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  font-size: 0.8rem;
+  line-height: 1.8em;
+}
+
+.downlevel .section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.downlevel .d-article {
+  font-size: 1.06rem;
+  line-height: 1.7em;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+
+.downlevel .d-appendix {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.5);
+  padding-top: 40px;
+  padding-bottom: 48px;
+}
+
+.downlevel .footnotes ol {
+  padding-left: 13px;
+}
+
+.downlevel .base-grid,
+.downlevel .distill-header,
+.downlevel .d-title,
+.downlevel .d-abstract,
+.downlevel .d-article,
+.downlevel .d-appendix,
+.downlevel .distill-appendix,
+.downlevel .d-byline,
+.downlevel .d-footnote-list,
+.downlevel .d-citation-list,
+.downlevel .distill-footer,
+.downlevel .appendix-bottom,
+.downlevel .posts-container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+@media(min-width: 768px) {
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+  padding-left: 150px;
+  padding-right: 150px;
+  max-width: 900px;
+}
+}
+
+.downlevel pre code {
+  display: block;
+  border-left: 2px solid rgba(0, 0, 0, .1);
+  padding: 0 0 0 20px;
+  font-size: 14px;
+}
+
+.downlevel code, .downlevel pre {
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+.downlevel .posts-list .post-preview {
+  color: inherit;
+}
+
+
+
+</style>
+
+<script type="application/javascript">
+
+function is_downlevel_browser() {
+  if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                 window.navigator.userAgent)) {
+    return true;
+  } else {
+    return window.load_distill_framework === undefined;
+  }
+}
+
+// show body when load is complete
+function on_load_complete() {
+
+  // add anchors
+  if (window.anchors) {
+    window.anchors.options.placement = 'left';
+    window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+  }
+
+
+  // set body to visible
+  document.body.style.visibility = 'visible';
+
+  // force redraw for leaflet widgets
+  if (window.HTMLWidgets) {
+    var maps = window.HTMLWidgets.findAll(".leaflet");
+    $.each(maps, function(i, el) {
+      var map = this.getMap();
+      map.invalidateSize();
+      map.eachLayer(function(layer) {
+        if (layer instanceof L.TileLayer)
+          layer.redraw();
+      });
+    });
+  }
+
+  // trigger 'shown' so htmlwidgets resize
+  $('d-article').trigger('shown');
+}
+
+function init_distill() {
+
+  init_common();
+
+  // create front matter
+  var front_matter = $('<d-front-matter></d-front-matter>');
+  $('#distill-front-matter').wrap(front_matter);
+
+  // create d-title
+  $('.d-title').changeElementType('d-title');
+
+  // create d-byline
+  var byline = $('<d-byline></d-byline>');
+  $('.d-byline').replaceWith(byline);
+
+  // create d-article
+  var article = $('<d-article></d-article>');
+  $('.d-article').wrap(article).children().unwrap();
+
+  // move posts container into article
+  $('.posts-container').appendTo($('d-article'));
+
+  // create d-appendix
+  $('.d-appendix').changeElementType('d-appendix');
+
+  // flag indicating that we have appendix items
+  var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+  // replace footnotes with <d-footnote>
+  $('.footnote-ref').each(function(i, val) {
+    appendix = true;
+    var href = $(this).attr('href');
+    var id = href.replace('#', '');
+    var fn = $('#' + id);
+    var fn_p = $('#' + id + '>p');
+    fn_p.find('.footnote-back').remove();
+    var text = fn_p.html();
+    var dtfn = $('<d-footnote></d-footnote>');
+    dtfn.html(text);
+    $(this).replaceWith(dtfn);
+  });
+  // remove footnotes
+  $('.footnotes').remove();
+
+  // move refs into #references-listing
+  $('#references-listing').replaceWith($('#refs'));
+
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    var id = $(this).attr('id');
+    $('.d-contents a[href="#' + id + '"]').parent().remove();
+    appendix = true;
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+  });
+
+  // show d-appendix if we have appendix content
+  $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+  // localize layout chunks to just output
+  $('.layout-chunk').each(function(i, val) {
+
+    // capture layout
+    var layout = $(this).attr('data-layout');
+
+    // apply layout to markdown level block elements
+    var elements = $(this).children().not('details, div.sourceCode, pre, script');
+    elements.each(function(i, el) {
+      var layout_div = $('<div class="' + layout + '"></div>');
+      if (layout_div.hasClass('shaded')) {
+        var shaded_content = $('<div class="shaded-content"></div>');
+        $(this).wrap(shaded_content);
+        $(this).parent().wrap(layout_div);
+      } else {
+        $(this).wrap(layout_div);
+      }
+    });
+
+
+    // unwrap the layout-chunk div
+    $(this).children().unwrap();
+  });
+
+  // remove code block used to force  highlighting css
+  $('.distill-force-highlighting-css').parent().remove();
+
+  // remove empty line numbers inserted by pandoc when using a
+  // custom syntax highlighting theme
+  $('code.sourceCode a:empty').remove();
+
+  // load distill framework
+  load_distill_framework();
+
+  // wait for window.distillRunlevel == 4 to do post processing
+  function distill_post_process() {
+
+    if (!window.distillRunlevel || window.distillRunlevel < 4)
+      return;
+
+    // hide author/affiliations entirely if we have no authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+    if (!have_authors)
+      $('d-byline').addClass('hidden');
+
+    // article with toc class
+    $('.d-contents').parent().addClass('d-article-with-toc');
+
+    // strip links that point to #
+    $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+    // add orcid ids
+    $('.authors-affiliations').find('.author').each(function(i, el) {
+      var orcid_id = front_matter.authors[i].orcidID;
+      if (orcid_id) {
+        var a = $('<a></a>');
+        a.attr('href', 'https://orcid.org/' + orcid_id);
+        var img = $('<img></img>');
+        img.addClass('orcid-id');
+        img.attr('alt', 'ORCID ID');
+        img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+        a.append(img);
+        $(this).append(a);
+      }
+    });
+
+    // hide elements of author/affiliations grid that have no value
+    function hide_byline_column(caption) {
+      $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+    }
+
+    // affiliations
+    var have_affiliations = false;
+    for (var i = 0; i<front_matter.authors.length; ++i) {
+      var author = front_matter.authors[i];
+      if (author.affiliation !== "&nbsp;") {
+        have_affiliations = true;
+        break;
+      }
+    }
+    if (!have_affiliations)
+      $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+    // published date
+    if (!front_matter.publishedDate)
+      hide_byline_column("Published");
+
+    // document object identifier
+    var doi = $('d-byline').find('h3:contains("DOI")');
+    var doi_p = doi.next().empty();
+    if (!front_matter.doi) {
+      // if we have a citation and valid citationText then link to that
+      if ($('#citation').length > 0 && front_matter.citationText) {
+        doi.html('Citation');
+        $('<a href="#citation"></a>')
+          .text(front_matter.citationText)
+          .appendTo(doi_p);
+      } else {
+        hide_byline_column("DOI");
+      }
+    } else {
+      $('<a></a>')
+         .attr('href', "https://doi.org/" + front_matter.doi)
+         .html(front_matter.doi)
+         .appendTo(doi_p);
+    }
+
+     // change plural form of authors/affiliations
+    if (front_matter.authors.length === 1) {
+      var grid = $('.authors-affiliations');
+      grid.children('h3:contains("Authors")').text('Author');
+      grid.children('h3:contains("Affiliations")').text('Affiliation');
+    }
+
+    // remove d-appendix and d-footnote-list local styles
+    $('d-appendix > style:first-child').remove();
+    $('d-footnote-list > style:first-child').remove();
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // hoverable references
+    $('span.citation[data-cites]').each(function() {
+      var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+      window.tippy(this, {
+        allowHTML: true,
+        content: refHtml,
+        maxWidth: 500,
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start'
+      });
+    });
+
+    // clear polling timer
+    clearInterval(tid);
+
+    // show body now that everything is ready
+    on_load_complete();
+  }
+
+  var tid = setInterval(distill_post_process, 50);
+  distill_post_process();
+
+}
+
+function init_downlevel() {
+
+  init_common();
+
+   // insert hr after d-title
+  $('.d-title').after($('<hr class="section-separator"/>'));
+
+  // check if we have authors
+  var front_matter = JSON.parse($("#distill-front-matter").html());
+  var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+  // manage byline/border
+  if (!have_authors)
+    $('.d-byline').remove();
+  $('.d-byline').after($('<hr class="section-separator"/>'));
+  $('.d-byline a').remove();
+
+  // remove toc
+  $('.d-contents').remove();
+
+  // move appendix elements
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+  });
+
+
+  // inject headers into references and footnotes
+  var refs_header = $('<h3></h3>');
+  refs_header.text('References');
+  $('#refs').prepend(refs_header);
+
+  var footnotes_header = $('<h3></h3');
+  footnotes_header.text('Footnotes');
+  $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+  // move appendix-bottom entries to the bottom
+  $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+  $('.appendix-bottom').remove();
+
+  // remove appendix if it's empty
+  if ($('.d-appendix').children().length === 0)
+    $('.d-appendix').remove();
+
+  // prepend separator above appendix
+  $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+  // trim code
+  $('pre>code').each(function(i, val) {
+    $(this).html($.trim($(this).html()));
+  });
+
+  // move posts-container right before article
+  $('.posts-container').insertBefore($('.d-article'));
+
+  $('body').addClass('downlevel');
+
+  on_load_complete();
+}
+
+
+function init_common() {
+
+  // jquery plugin to change element types
+  (function($) {
+    $.fn.changeElementType = function(newType) {
+      var attrs = {};
+
+      $.each(this[0].attributes, function(idx, attr) {
+        attrs[attr.nodeName] = attr.nodeValue;
+      });
+
+      this.replaceWith(function() {
+        return $("<" + newType + "/>", attrs).append($(this).contents());
+      });
+    };
+  })(jQuery);
+
+  // prevent underline for linked images
+  $('a > img').parent().css({'border-bottom' : 'none'});
+
+  // mark non-body figures created by knitr chunks as 100% width
+  $('.layout-chunk').each(function(i, val) {
+    var figures = $(this).find('img, .html-widget');
+    if ($(this).attr('data-layout') !== "l-body") {
+      figures.css('width', '100%');
+    } else {
+      figures.css('max-width', '100%');
+      figures.filter("[width]").each(function(i, val) {
+        var fig = $(this);
+        fig.css('width', fig.attr('width') + 'px');
+      });
+
+    }
+  });
+
+  // auto-append index.html to post-preview links in file: protocol
+  // and in rstudio ide preview
+  $('.post-preview').each(function(i, val) {
+    if (window.location.protocol === "file:")
+      $(this).attr('href', $(this).attr('href') + "index.html");
+  });
+
+  // get rid of index.html references in header
+  if (window.location.protocol !== "file:") {
+    $('.distill-site-header a[href]').each(function(i,val) {
+      $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+    });
+  }
+
+  // add class to pandoc style tables
+  $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+  $('.kable-table').children('table').addClass('pandoc-table');
+
+  // add figcaption style to table captions
+  $('caption').parent('table').addClass("figcaption");
+
+  // initialize posts list
+  if (window.init_posts_list)
+    window.init_posts_list();
+
+  // implmement disqus comment link
+  $('.disqus-comment-count').click(function() {
+    window.headroom_prevent_pin = true;
+    $('#disqus_thread').toggleClass('hidden');
+    if (!$('#disqus_thread').hasClass('hidden')) {
+      var offset = $(this).offset();
+      $(window).resize();
+      $('html, body').animate({
+        scrollTop: offset.top - 35
+      });
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (is_downlevel_browser())
+    init_downlevel();
+  else
+    window.addEventListener('WebComponentsReady', init_distill);
+});
+
+</script>
+
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+
+
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    sans-serif;
+  --mono-font:       monospace;
+  --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
+}
+
+/*-- ARTICLE METADATA --*/
+d-byline {
+  --heading-size:    0.6rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    18px;
+  --contents-size:   13px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       18px;
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+.distill-site-footer {
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+</style>
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+
+:root {
+  --custom-grey60: rgb(102, 102, 102);
+  --custom-grey20: rgb(204, 204, 204);
+  --custom-grey10: rgb(230, 230, 230);
+  --custom-blue: rgb(0, 114, 188);
+  --custom-lightblue: rgb(204, 227, 242);
+  --custom-orange: rgb(255, 127, 42); 
+  --custom-lightorange: rgb(255, 204, 170); 
+}
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    sans-serif;
+  --mono-font:       monospace;
+  --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
+}
+
+/*-- ARTICLE METADATA --*/
+d-byline {
+  --heading-size:    0.6rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    18px;
+  --contents-size:   13px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       18px;
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       var(--custom-blue);
+}
+
+.distill-site-footer {
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       var(--custom-blue);
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+
+.preface {
+  font-size: 11pt;
+  background-color: var(--custom-lightblue);
+  margin-top: 2em;
+  margin-bottom: 0.5em;  
+  padding: 1.5em;
+  padding-top: 1em;
+  border-color: DodgerBlue;
+}
+
+h1 {
+  font-size: 30px !important;  
+  color: var(--custom-blue) !important;
+  font-family: NanumSquare !important;
+  margin-top: 15px !important;
+  padding-top: 15px !important;  
+  margin-bottom: 15px !important;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 25px !important;  
+  color: var(--custom-blue) !important;  
+  font-family: NanumSquare !important;  
+  padding-top: 15px !important;  
+  margin-top: 15px !important;
+  padding-bottom: 10px !important;  
+  margin-bottom: 10px !important;    
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 20px !important;  
+  color: var(--custom-blue) !important;  
+  font-family: NanumSquare !important;  
+  margin-top: 10px !important;
+  margin-bottom: 10px !important; 
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;   
+  font-weight: bold;
+}
+
+d-byline h3 {
+  font-size: 0.6rem !important;   
+  font-weight: 400 !important;   
+  color: rgba(0, 0, 0, 0.5) !important;   
+  margin: 0 !important;   
+}
+    
+d-byline {
+  contain: content;
+  overflow: hidden;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 0.8rem;
+  line-height: 1.8em;
+  padding: 1.5rem 0;
+  min-height: 1.8em;
+} 
+
+.bg-blue,
+.bg-orange,
+.bg-grey {
+  padding: 1.6em;
+  margin-top: 1.0em;
+  margin-bottom: 1.0em;
+}
+.bg-blue {
+  background-color: var(--custom-lightblue);
+}
+.bg-orange {
+  background-color: var(--custom-lightorange);
+}
+.bg-grey {
+  background-color: var(--custom-grey20);
+}
+.bg-blue > *:last-child,
+.bg-orange > *:last-child,
+.bg-grey > *:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}</style>
+<style type="text/css">
+/* base style */
+
+/* FONT FAMILIES */
+
+:root {
+  --heading-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono-default: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  --body-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+body,
+.posts-list .post-preview p,
+.posts-list .description p {
+  font-family: var(--body-font), var(--body-default);
+}
+
+h1, h2, h3, h4, h5, h6,
+.posts-list .post-preview h2,
+.posts-list .description h2 {
+  font-family: var(--heading-font), var(--heading-default);
+}
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: var(--mono-font), var(--mono-default);
+}
+
+
+/*-- TITLE --*/
+d-title h1,
+.posts-list > h1 {
+  color: var(--title-color, black);
+}
+
+d-title h1 {
+  font-size: var(--title-size, 50px);
+}
+
+/*-- HEADERS --*/
+d-article h1,
+d-article h2,
+d-article h3,
+d-article h4,
+d-article h5,
+d-article h6 {
+  color: var(--header-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- BODY --*/
+d-article > p,  /* only text inside of <p> tags */
+d-article > ul, /* lists */
+d-article > ol {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+  font-size: var(--body-size, 1.06rem);
+}
+
+
+/*-- CODE --*/
+d-article div.sourceCode code,
+d-article pre code {
+  font-size: var(--code-size, 14px);
+}
+
+/*-- ASIDE --*/
+d-article aside {
+  font-size: var(--aside-size, 12px);
+  color: var(--aside-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- FIGURE CAPTIONS --*/
+figure .caption,
+figure figcaption,
+.figure .caption {
+  font-size: var(--fig-cap-size, 13px);
+  color: var(--fig-cap-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- METADATA --*/
+d-byline h3 {
+  font-size: var(--heading-size, 0.6rem);
+  color: var(--heading-color, rgba(0, 0, 0, 0.5));
+}
+
+d-byline {
+  font-size: var(--body-size, 0.8rem);
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+d-byline a,
+d-article d-byline a {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- TABLE OF CONTENTS --*/
+.d-contents nav h3 {
+  font-size: var(--heading-size, 18px);
+}
+
+.d-contents nav a {
+  font-size: var(--contents-size, 13px);
+}
+
+/*-- APPENDIX --*/
+d-appendix h3 {
+  font-size: var(--heading-size, 15px);
+  color: var(--heading-color, rgba(0, 0, 0, 0.65));
+}
+
+d-appendix {
+  font-size: var(--text-size, 0.8em);
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+d-appendix d-footnote-list a.footnote-backlink {
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+.distill-site-header .title {
+  font-size: var(--title-size, 18px);
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.distill-site-header a,
+.nav-dropdown .nav-dropbtn {
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.nav-dropdown .nav-dropbtn {
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  font-size: var(--text-size, 15px);
+}
+
+.distill-site-header a:hover,
+.nav-dropdown:hover .nav-dropbtn {
+  color: var(--hover-color, white);
+}
+
+.distill-site-header {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer a:hover {
+  color: var(--hover-color, white);
+}</style>
+<!--/radix_placeholder_distill-->
+  <script src="../../site_libs/header-attrs-2.8/header-attrs.js"></script>
+  <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
+  <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="../../site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="../../site_libs/tippy-6.2.7/tippy.umd.min.js"></script>
+  <script src="../../site_libs/anchor-4.2.2/anchor.min.js"></script>
+  <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
+  <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="../../site_libs/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+<!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"추가 폰트 사용하기","description":"R로 그린 플롯에서 우리는 기하학적인 요소로 데이터의 현황을 이해한다. 그런데 라벨이나 제목, 범례, 축의 구간 단위에 표현하는 텍스트도 데이터를 이해하는 데 중요한 역할을 한다. 플롯의 텍스트는 폰트로 그리는데, R에서의 폰트와  폰트를 시각화하는 매커니즘을 다룬다.","authors":[{"author":"유충현","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-01-27T00:00:00.000+00:00","citationText":"유충현, 2021"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="distill-site-nav distill-site-header">
+<div class="nav-left">
+<a class="logo">
+<img src="../../images/rubik-cube-white.png" alt="Logo"/>
+</a>
+<a href="../../index.html" class="title">Dataholic</a>
+<input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
+</div>
+<div class="nav-right">
+<a href="../../index.html">Home</a>
+<a href="../../mydev.html">MyDevs</a>
+<a href="../../gallery.html">Gallery</a>
+<a href="../../about.html">About</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>추가 폰트 사용하기</h1>
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+  <a href="../../index.html#category:Visualization" class="dt-tag">Visualization</a>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>R로 그린 플롯에서 우리는 기하학적인 요소로 데이터의 현황을 이해한다. 그런데 라벨이나 제목, 범례, 축의 구간 단위에 표현하는 텍스트도 데이터를 이해하는 데 중요한 역할을 한다. 플롯의 텍스트는 폰트로 그리는데, R에서의 폰트와 폰트를 시각화하는 매커니즘을 다룬다.</p></p>
+</div>
+
+<div class="d-byline">
+  유충현  
+  
+<br/>2021-01-27
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#다룰-이야기">다룰 이야기</a></li>
+<li><a href="#dlookr">dlookr</a>
+<ul>
+<li><a href="#dlookr-0.3.x-vs-0.4.0">dlookr 0.3.X vs 0.4.0</a></li>
+</ul></li>
+<li><a href="#r의-폰트-체계">R의 폰트 체계</a>
+<ul>
+<li><a href="#r의-기본-폰트">R의 기본 폰트</a></li>
+<li><a href="#폰트-패밀리와-폰트-페이스">폰트 패밀리와 폰트 페이스</a></li>
+<li><a href="#r에서-폰트-인식하기">R에서 폰트 인식하기</a></li>
+<li><a href="#그래픽-전역변수에-폰트-패밀리-지정하기">그래픽 전역변수에 폰트 패밀리 지정하기</a></li>
+</ul></li>
+<li><a href="#ggplot2에서의-폰트의-사용">ggplot2에서의 폰트의 사용</a></li>
+<li><a href="#pdf-디바이스">PDF 디바이스</a>
+<ul>
+<li><a href="#그래픽-디바이스">그래픽 디바이스</a></li>
+<li><a href="#pdf-파일로-플롯-내보내기">PDF 파일로 플롯 내보내기</a></li>
+<li><a href="#pdf-디바이스-기본-폰트">PDF 디바이스 기본 폰트</a></li>
+<li><a href="#pdf-디바이스에-폰트-출력하기">PDF 디바이스에 폰트 출력하기</a></li>
+<li><a href="#pdf-디바이스에-폰트-포함하기">PDF 디바이스에 폰트 포함하기</a></li>
+</ul></li>
+<li><a href="#마무리-하며">마무리 하며</a></li>
+</ul>
+</nav>
+</div>
+<h2 id="다룰-이야기">다룰 이야기</h2>
+<p>R로 그린 플롯에서 우리는 기하학적인 요소로 데이터의 현황을 이해한다. 그런데 라벨이나 제목, 범례, 축의 구간 단위에 표현하는 텍스트도 데이터를 이해하는 데 중요한 역할을 한다. 플롯의 텍스트는 폰트로 그리는데, R에서의 폰트와 폰트를 시각화하는 매커니즘을 다룬다.</p>
+<blockquote>
+<p>R로 데이터를 시각화하는 것은 참 쉽다. 영어를 사용하는 문화권의 분석가에 한해서다. 한글을 표현하고 싶거나, 한글이 포함된 플롯을 파일로 출력하는 것은 생각보다 쉽지 않다. 기본 폰트가 아닌 확장 폰트를 사용하는 것도 쉬운 작업은 아니다. 기본 환경 그대로 편하게 그릴 것이냐? 기본 환경을 확장해서 어렵게 그릴 것이냐?는 여러분의 수고가 확장된 플롯에서 얻는 효용보다 작을 때 고민하게 바란다.</p>
+</blockquote>
+<h2 id="dlookr">dlookr</h2>
+<p>나는 데이터 시각화에서 한글을 사용하지 않는다. 데이터 분석에서의 데코레이션은 사치이기 때문이다. 그러나 플롯을 분석가가 아닌 일반 대중에서 설명하기 위함이나 단행본을 집필할 경우에는 예외적이지만 그래서 한글의 사용을 제한적으로 사용한다.</p>
+<p>내가 개발한 dlook 패키지는 데이터의 진단과 EDA에 대한 전문 패키지라서 데이터의 시각화를 위한 여러 함수를 제공한다. 그러나 한글 지원에 인색하다. 국내 로컬용 패키지가 아닌 글로벌용 패키지인지라 한글에 대한 지원은 세 개의 레포트 출력 함수에 국한되어 있다.</p>
+<p><strong>“보기 좋은 떡이 먹기도 좋다.”</strong>라는 속담이 갑자기 생각난 것은 아니지만, 이제 dlookr 패키지로 생성한 플롯을 분석가가 아닌 일반 대중을 위한 플롯으로 확장할 때가 온 것 같다는 생각이 스쳤다. 그래서 기존 플롯을 ggplot2 패키지를 이용한 플롯으로 변경함과 동시에 출판을 염두에 둔 심미적인 요소를 가미하였다. 그리고 0.4.0 버전의 마이너 릴리즈로 배포하였다.</p>
+<h3 id="dlookr-0.3.x-vs-0.4.0">dlookr 0.3.X vs 0.4.0</h3>
+<p>dlookr 패키지의 0.3.14 버전과 0.4.0 버전의 몇 가지 시각화의 사례를 비교한다.</p>
+<h4 id="optimal-binning">optimal binning</h4>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>dlookr</span><span class='op'>)</span>
+
+<span class='co'># Generate data for the example</span>
+<span class='va'>carseats</span> <span class='op'>&lt;-</span> <span class='fu'>ISLR</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/ISLR/man/Carseats.html'>Carseats</a></span>
+<span class='va'>carseats</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>NROW</a></span><span class='op'>(</span><span class='va'>carseats</span><span class='op'>)</span><span class='op'>)</span>, <span class='fl'>20</span><span class='op'>)</span>, <span class='st'>"Income"</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='cn'>NA</span>
+<span class='va'>carseats</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>NROW</a></span><span class='op'>(</span><span class='va'>carseats</span><span class='op'>)</span><span class='op'>)</span>, <span class='fl'>5</span><span class='op'>)</span>, <span class='st'>"Urban"</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='cn'>NA</span>
+
+<span class='co'># optimal binning using name</span>
+<span class='va'>bin</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/dlookr/man/binning_by.html'>binning_by</a></span><span class='op'>(</span><span class='va'>carseats</span>, <span class='va'>US</span>, <span class='va'>Advertising</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>` US ` ~ ` Advertising `
+&lt;environment: 0x7f9b8fd6c2d0&gt;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>bin</span>
+</code></pre>
+</div>
+<pre><code>binned type: optimal
+number of bins: 3
+x
+[-1,0]  (0,6] (6,29] 
+   144     69    187 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># summary optimal_bins class</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>bin</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>── Binning Table ──────────────────────── Several Metrics ── 
+     Bin CntRec CntPos CntNeg RatePos RateNeg    Odds      WoE
+1 [-1,0]    144     19    125 0.07364 0.88028  0.1520 -2.48101
+2  (0,6]     69     54     15 0.20930 0.10563  3.6000  0.68380
+3 (6,29]    187    185      2 0.71705 0.01408 92.5000  3.93008
+4  Total    400    258    142 1.00000 1.00000  1.8169       NA
+       IV     JSD     AUC
+1 2.00128 0.20093 0.03241
+2 0.07089 0.00869 0.01883
+3 2.76272 0.21861 0.00903
+4 4.83489 0.42823 0.06028
+
+── General Metrics ───────────────────────────────────────── 
+• Gini index                       :  -0.87944
+• IV (Jeffrey)                     :  4.83489
+• JS (Jensen-Shannon) Divergence   :  0.42823
+• Kolmogorov-Smirnov Statistics    :  0.80664
+• HHI (Herfindahl-Hirschman Index) :  0.37791
+• HHI (normalized)                 :  0.06687
+• Cramer&#39;s V                       :  0.81863 
+
+── Significance Tests ──────────────────── Chisquare Test ── 
+   Bin A  Bin B statistics      p_value
+1 [-1,0]  (0,6]   87.67064 7.731349e-21
+2  (0,6] (6,29]   34.73349 3.780706e-09</code></pre>
+</div>
+<p>optimal binning 클래스 bin을 시각화 한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># visualize all information for optimal_bins class</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>bin</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>기존 0.3.14 버전에서는 다음과 같이 시각화된다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="img/binning_by.png" width="65%" /></p>
+</div>
+<p>그러나 0.4.0 버전에서는 좀 더 깨끗하게 출력된다. 왼쪽 아래의 barchart도 <code>Bad Rate</code>에서 <code>Percentage of Positive</code>로 마이너하게 바꿨다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="2021-01-27-rfonts_files/figure-html5/unnamed-chunk-4-1.png" width="624" /></p>
+</div>
+<h4 id="이상치-분석">이상치 분석</h4>
+<p>내친 김에 하나 더 비교해 보자.</p>
+<p>다음 예제에서는 이상치 비율이 5% 이상인 수치변수를 찾은 다음 이상치의 평균을 전체 평균으로 나눈 결과를 내림차순으로 반환한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://github.com/hadley/nycflights13'>nycflights13</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/pkg/dlookr/man/diagnose_outlier.data.frame.html'>diagnose_outlier</a></span><span class='op'>(</span><span class='va'>flights</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>outliers_ratio</span> <span class='op'>&gt;</span> <span class='fl'>5</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>rate <span class='op'>=</span> <span class='va'>outliers_mean</span> <span class='op'>/</span> <span class='va'>with_mean</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>rate</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>outliers_cnt</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 2 x 6
+  variables outliers_ratio outliers_mean with_mean without_mean  rate
+  &lt;chr&gt;              &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt; &lt;dbl&gt;
+1 arr_delay           8.28         121.       6.90       -3.69  17.5 
+2 dep_delay          12.8           93.1     12.6         0.444  7.37</code></pre>
+</div>
+<p>그리고 그중 하나를 시각화한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>flights</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/dlookr/man/plot_outlier.data.frame.html'>plot_outlier</a></span><span class='op'>(</span><span class='va'>arr_delay</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>기존 0.3.14 버전에서는 다음과 같이 시각화된다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="img/plot_outlier.png" width="65%" /></p>
+</div>
+<p>그러나 0.4.0 버전에서는 좀 더 깨끗하게 출력된다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="2021-01-27-rfonts_files/figure-html5/unnamed-chunk-8-1.png" width="624" /></p>
+</div>
+<p>어떤가? 기존 플롯보다 많이 깔끔해졌다. 어떤 것이 달라졌는가?</p>
+<p>내가 노안이 깊어진 것은 인정한다. 그래서 폰트의 크기를 키운 것은 아니다. 기하학의 도형 시각화 못지 않게 텍스트의 역할이 좀 더 커진 것이다. 상대적으로 기하학의 도형 시각화 공간이 줄어든 것은 사실이다.</p>
+<p>또 어떤 것이 달라졌는가? 폰트 패밀리(font family)를 <code>Arial Narrow</code>로 변경했다. 글자 크리가 커진 반면 <code>Arial Narrow</code> 폰트로 출력되는 텍스트의 폭을 좀더 줄이면서, 텍스트도 좀 더 이쁘게 출력했다.</p>
+<h2 id="r의-폰트-체계">R의 폰트 체계</h2>
+<p><code>Arial Narrow</code> 폰트로 시각화하는 것은 기존의 R 그래픽 환경을 수정해 주어야 한다. 이 작업은 R의 폰트 체계를 이해해야 한다.</p>
+<h3 id="r의-기본-폰트">R의 기본 폰트</h3>
+<blockquote>
+<p>세리프(serif)는 타이포그래피에서 글자의 획 일부 끝이 돌출된 모양을 의미한다. 그리고 세리프가 있는 글자체를 세리프체, 없는 글자체를 산세리프체(sans-serif)라 한다. <code>sans</code>는 없음을 뜻하는 프랑스어의 접두어다. 세리프체는 명조체, 산세리프체는 고딕체(돋움체)를 연상하면 이해하기 쉽다.</p>
+</blockquote>
+<p>R의 폰트 중에서 “sans”, “serif”, “mono”는 시스템(Windows, Linix, macOS) 독립적이라, 공통적으로 사용할 수 있다. 그 중 <code>산세리프체</code>인 “sans”가 기본 폰트다. “serif”는 <code>세리프체</code>이며, “mono”는 <code>모노스페이스(monospace)</code>체다. 이 폰트체는 모든 공백문자를 포함한 모든 글자/문자의 너비가 같다. 즉, 알파벳 i와 G의 너비가 같은 고정폭 폰트체다.</p>
+<p>엄밀하게 말하자면, “sans”, “serif”, “mono”는 폰트가 아니라 폰트 유형을 의미한다. <code>고딕</code>, <code>명조</code>, <code>고정폭</code> 폰트며, 크로스플랫폼(cross-platform) 하에서 운용하기 위해 추상화 해 놓은 폰트 이름이다. 실제로는 운영체제(operating system)에서 추상화한 폰트 이름에 매핑된 실제 폰트가 사용된다. 그러므로 시각화에 표현되는 텍스트의 모양은 운영체제와 사용자의 환경에 따라 다를 수 있다.</p>
+<p>다음의 명령을 MS Windows, Linix, macOS 환경에서 수행해 보았다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span>, type <span class='op'>=</span> <span class='st'>"n"</span>, bty <span class='op'>=</span> <span class='st'>"n"</span>, xaxt <span class='op'>=</span> <span class='st'>"n"</span>, yaxt <span class='op'>=</span> <span class='st'>"n"</span>, 
+     xlab <span class='op'>=</span> <span class='st'>""</span>, ylab <span class='op'>=</span> <span class='st'>""</span>, pty <span class='op'>=</span> <span class='st'>"s"</span>, mar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>7</span>, <span class='st'>"Font Test : English, sans"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>,  family <span class='op'>=</span> <span class='st'>"sans"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>6</span>, <span class='st'>"Font Test : English, serif"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, family <span class='op'>=</span> <span class='st'>"serif"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>5</span>, <span class='st'>"Font Test : English, mono"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, family <span class='op'>=</span> <span class='st'>"mono"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>4</span>, <span class='st'>"폰트 테스트 : 한글, sans"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, family <span class='op'>=</span> <span class='st'>"sans"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>3</span>, <span class='st'>"폰트 테스트 : 한글, serif"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, family <span class='op'>=</span> <span class='st'>"serif"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>2</span>, <span class='st'>"폰트 테스트 : 한글, mono"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, family <span class='op'>=</span> <span class='st'>"mono"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>MS Windows에서는 다음과 같은 결과를 얻는다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="img/default_windows.png" width="65%" /></p>
+</div>
+<p>결과를 보면, 한글의 경우에는 “sans”, “serif”, “mono”가 같은 폰트로 보인다. 버전에 따라 차이가 있지만, 최근에 사용되는 버전의 MS Windows에서는 영문 폰트로 지정한 한글의 경우 <code>맑은 고딕</code>이 기본으로 설정되어 출력된다.</p>
+<p>MS Windows에서만 지원하는 windowsFonts() 함수로 R에서 사용할 수 있는 기본 폰트를 조회했다. “sans”는 <code>Arial</code>, “serif”는 <code>Times New Roman</code>, “mono”는 <code>Courier New</code> 폰트로 매핑되어 있음을 알 수 있다. 그러므로 넷째 줄에 출력된 한글 폰트 테스트는 “sans”에 해당하는 <code>Arial</code> 폰트를 사용하는데, <code>Arial</code> 폰트는 영문 폰트라 한글 글리프(Glyph)가 정의되어 있지 않다. 그러므로 <code>맑은 고딕</code> 폰트의 글리프를 가져다 출력하는 것이다.</p>
+<blockquote>
+<p>글리프(Glyph)는 폰트에서 글자나 문자 한 자 한 자의 모양을 정의한 자형(字形)을 의미한다. 즉, 시각적인 문자의 표현이다.</p>
+</blockquote>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">windowsFonts</span>()</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span>serif</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;TT Times New Roman&quot;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span>sans</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;TT Arial&quot;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span>mono</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;TT Courier New&quot;</span></span></code></pre></div>
+</div>
+<p>Linux에서는 다음과 같은 결과를 얻는다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="img/default_linux.png" width="65%" /></p>
+</div>
+<p>얼핏 보아도 세리프와 산세리프의 모양이 다른 것을 알 수 있다. 나의 CentOS Linux 도커 환경에서, X11Fonts() 함수로 R에서 사용할 수 있는 기본 폰트를 조회했다. “sans”는 <code>helvetica</code>, “serif”는 <code>times</code>, “mono”는 <code>courier</code> 폰트로 매핑되어 있음을 알 수 있다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">X11Fonts</span>()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span>serif</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;-*-times-%s-%s-*-*-%d-*-*-*-*-*-*-*&quot;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span>sans</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;-*-helvetica-%s-%s-*-*-%d-*-*-*-*-*-*-*&quot;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span>mono</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;-*-courier-%s-%s-*-*-%d-*-*-*-*-*-*-*&quot;</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span>Times</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;-adobe-times-%s-%s-*-*-%d-*-*-*-*-*-*-*&quot;</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span>Helvetica</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;-adobe-helvetica-%s-%s-*-*-%d-*-*-*-*-*-*-*&quot;</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span>CyrTimes</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;-cronyx-times-%s-%s-*-*-%d-*-*-*-*-*-*-*&quot;</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span>CyrHelvetica</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;-cronyx-helvetica-%s-%s-*-*-%d-*-*-*-*-*-*-*&quot;</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span>Arial</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;-monotype-arial-%s-%s-*-*-%d-*-*-*-*-*-*-*&quot;</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span>Mincho</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;-*-mincho-%s-%s-*-*-%d-*-*-*-*-*-*-*&quot;</span></span></code></pre></div>
+</div>
+<p>“sans”, “serif”, “mono”별로 어떤 한글 폰트가 매핑되어 있는지 살펴본다.</p>
+<p>/etc/fonts/conf.d 디렉토리의 40-nonlatin.conf, 65-nonlatin.conf 파일에는 라틴계열이 언어가 아닌 비영어권의 폰트 설정이 정의되어 있다. 65-nonlatin.conf 파일을 열어 “sans”, “serif”, “mono”별로 매핑된 한글 폰트 목록을 조회해 보았다. “serif”는 <code>NanumMyeongjo</code>, <code>UnBatang</code>, <code>Baekmuk Batang</code>, 즉, <code>나눔명조</code>, <code>은바탕</code>, <code>백묵바탕</code> 순으로 매핑되어 있다. 그러므로 <code>나눔명조</code> 폰트가 출력된 것이다. “sans”는 <code>NanumGothic</code>, <code>UnDotum</code>, <code>Baekmuk Gulim</code>, 즉, <code>나눔고딕</code>, <code>은돋움</code>, <code>백묵돋움</code>, <code>백묵굴림</code> 순으로 매핑되어 있다. 그러므로 <code>나눔고딕</code> 폰트가 출력된 것이다. 마찬가지로 “mono”는 <code>나눔고딕코딩</code> 폰트가 출력되었다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>[root<span class="sc">@</span>9ead55835a3e conf.d]<span class="co"># pwd</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="sc">/</span>etc<span class="sc">/</span>fonts<span class="sc">/</span>conf.d</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>[root<span class="sc">@</span>9ead55835a3e conf.d]<span class="co"># grep &quot;serif\|mono\|ko&quot; 65-nonlatin.conf</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="sc">&lt;</span>family<span class="sc">&gt;</span>serif<span class="sc">&lt;</span><span class="er">/</span>family<span class="sc">&gt;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>            <span class="er">&lt;</span>family<span class="sc">&gt;</span>NanumMyeongjo<span class="sc">&lt;</span><span class="er">/</span>family<span class="sc">&gt;</span> <span class="er">&lt;</span><span class="sc">!--</span> <span class="fu">hangul</span> (ko) <span class="sc">-</span><span class="ot">-&gt;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>            <span class="er">&lt;</span>family<span class="sc">&gt;</span>UnBatang<span class="sc">&lt;</span><span class="er">/</span>family<span class="sc">&gt;</span> <span class="er">&lt;</span><span class="sc">!--</span> <span class="fu">hangul</span> (ko) <span class="sc">-</span><span class="ot">-&gt;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>            <span class="er">&lt;</span>family<span class="sc">&gt;</span>Baekmuk Batang<span class="sc">&lt;</span><span class="er">/</span>family<span class="sc">&gt;</span> <span class="er">&lt;</span><span class="sc">!--</span> <span class="fu">hangul</span> (ko) <span class="sc">-</span><span class="ot">-&gt;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        <span class="er">&lt;</span>family<span class="sc">&gt;</span>sans<span class="sc">-</span>serif<span class="sc">&lt;</span><span class="er">/</span>family<span class="sc">&gt;</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>            <span class="er">&lt;</span>family<span class="sc">&gt;</span>NanumGothic<span class="sc">&lt;</span><span class="er">/</span>family<span class="sc">&gt;</span> <span class="er">&lt;</span><span class="sc">!--</span> <span class="fu">hangul</span> (ko) <span class="sc">-</span><span class="ot">-&gt;</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>            <span class="er">&lt;</span>family<span class="sc">&gt;</span>UnDotum<span class="sc">&lt;</span><span class="er">/</span>family<span class="sc">&gt;</span> <span class="er">&lt;</span><span class="sc">!--</span> <span class="fu">hangul</span> (ko) <span class="sc">-</span><span class="ot">-&gt;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>            <span class="er">&lt;</span>family<span class="sc">&gt;</span>Baekmuk Dotum<span class="sc">&lt;</span><span class="er">/</span>family<span class="sc">&gt;</span> <span class="er">&lt;</span><span class="sc">!--</span> <span class="fu">hangul</span> (ko) <span class="sc">-</span><span class="ot">-&gt;</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>            <span class="er">&lt;</span>family<span class="sc">&gt;</span>Baekmuk Gulim<span class="sc">&lt;</span><span class="er">/</span>family<span class="sc">&gt;</span> <span class="er">&lt;</span><span class="sc">!--</span> <span class="fu">hangul</span> (ko) <span class="sc">-</span><span class="ot">-&gt;</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>        <span class="er">&lt;</span>family<span class="sc">&gt;</span>monospace<span class="sc">&lt;</span><span class="er">/</span>family<span class="sc">&gt;</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>            <span class="er">&lt;</span>family<span class="sc">&gt;</span>NanumGothicCoding<span class="sc">&lt;</span><span class="er">/</span>family<span class="sc">&gt;</span> <span class="er">&lt;</span><span class="sc">!--</span> <span class="fu">hangul</span> (ko) <span class="sc">-</span><span class="ot">-&gt;</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>            <span class="er">&lt;</span>family<span class="sc">&gt;</span>NanumGothic<span class="sc">&lt;</span><span class="er">/</span>family<span class="sc">&gt;</span> <span class="er">&lt;</span><span class="sc">!--</span> <span class="fu">hangul</span> (ko) <span class="sc">-</span><span class="ot">-&gt;</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>            <span class="er">&lt;</span>family<span class="sc">&gt;</span>UnDotum<span class="sc">&lt;</span><span class="er">/</span>family<span class="sc">&gt;</span> <span class="er">&lt;</span><span class="sc">!--</span> <span class="fu">hangul</span> (ko) <span class="sc">-</span><span class="ot">-&gt;</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>            <span class="er">&lt;</span>family<span class="sc">&gt;</span>Baekmuk Dotum<span class="sc">&lt;</span><span class="er">/</span>family<span class="sc">&gt;</span> <span class="er">&lt;</span><span class="sc">!--</span> <span class="fu">hangul</span> (ko) <span class="sc">-</span><span class="ot">-&gt;</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>            <span class="er">&lt;</span>family<span class="sc">&gt;</span>Baekmuk Gulim<span class="sc">&lt;</span><span class="er">/</span>family<span class="sc">&gt;</span> <span class="er">&lt;</span><span class="sc">!--</span> <span class="fu">hangul</span> (ko) <span class="sc">-</span><span class="ot">-&gt;</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>[root<span class="sc">@</span>9ead55835a3e conf.d]<span class="co">#     </span></span></code></pre></div>
+</div>
+<p>macOS에서는 다음과 같은 결과를 얻는다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="img/default_mac.png" width="65%" /></p>
+</div>
+<p><strong>다른 운영체제와 달리 macOS에서는 한글이 출력되지 않았다. 이것이 다른 운영체제와 다른 macOS 운영체제에서의 R의 특징이다.</strong> 그러나 quartzFonts() 함수로 영문의 경우에는 “sans”는 <code>Helvetica</code>, “serif”는 <code>Times-Roman</code>, “mono”는 <code>Courier</code> 폰트로 매핑되어 있음을 알 수 있다.</p>
+<p><strong>주) 이 글은 일부 Linux와 MS Windows 환경에서 실행한 결과를 포함하지만, 전체적으로는 macOS 운영체제에서 테스트되고 기술하였음을 미리 알려 둔다. 그러나 다른 운영체제에서도 어렵지 않게 수행할 수 있을 것이다.</strong></p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">quartzFonts</span>()</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span>serif</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;Times-Roman&quot;</span>      <span class="st">&quot;Times-Bold&quot;</span>       <span class="st">&quot;Times-Italic&quot;</span>     <span class="st">&quot;Times-BoldItalic&quot;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span>sans</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;Helvetica&quot;</span>             <span class="st">&quot;Helvetica-Bold&quot;</span>        <span class="st">&quot;Helvetica-Oblique&quot;</span>     <span class="st">&quot;Helvetica-BoldOblique&quot;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span>mono</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;Courier&quot;</span>             <span class="st">&quot;Courier-Bold&quot;</span>        <span class="st">&quot;Courier-Oblique&quot;</span>     <span class="st">&quot;Courier-BoldOblique&quot;</span></span></code></pre></div>
+</div>
+<p>macOS에서는 한글 기본 폰트를 설정하기 위해서는 다음처럼 quartzFont(), quartzFonts() 함수를 사용한다. 물론 다른 운영체제에서도 가능하다. 다만, MS Windows에서는 windowsFont(), windowsFonts() 함수를, Linux에서는 X11Font(), X11Fonts() 함수를 이용하면 된다.</p>
+<p>다음 예제는 “sans”, “serif”, “mono”별로 <code>애플고딕</code>, <code>애플명조</code>, <code>나눔고딕코딩</code> 폰트를 매핑한다. 그런데 이번에는 영문 폰트가 기존의 것과 다르다. 그 이유는 한글 폰트는 영문 글리프도 정의했기 때문이다. 영문 글리프의 개수는 한글에 비에 매우 적기 때문에, 대부분의 한글 폰트는 영문 글리프도 함께 정의한다. 그 이유는 한글과 영문을 혼용할 때 좀더 잘 어울리도록 영문 글리프를 새로이 정의하기 때문이다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/grDevices/quartzFonts.html'>quartzFonts</a></span><span class='op'>(</span>sans <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/quartzFonts.html'>quartzFont</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"AppleGothic"</span>, <span class='fl'>4</span><span class='op'>)</span><span class='op'>)</span>,
+            serif <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/quartzFonts.html'>quartzFont</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"AppleMyungjo"</span>, <span class='fl'>4</span><span class='op'>)</span><span class='op'>)</span>,
+            mono <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/quartzFonts.html'>quartzFont</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"D2Coding"</span>, <span class='st'>"D2CodingBold"</span>, <span class='st'>"D2Coding"</span>, <span class='st'>"D2CodingBold"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span>, type <span class='op'>=</span> <span class='st'>"n"</span>, bty <span class='op'>=</span> <span class='st'>"n"</span>, xaxt <span class='op'>=</span> <span class='st'>"n"</span>, yaxt <span class='op'>=</span> <span class='st'>"n"</span>, 
+     xlab <span class='op'>=</span> <span class='st'>""</span>, ylab <span class='op'>=</span> <span class='st'>""</span>, pty <span class='op'>=</span> <span class='st'>"s"</span>, mar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>7</span>, <span class='st'>"Font Test : English, sans"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>,  family <span class='op'>=</span> <span class='st'>"sans"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>6</span>, <span class='st'>"Font Test : English, serif"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, family <span class='op'>=</span> <span class='st'>"serif"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>5</span>, <span class='st'>"Font Test : English, mono"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, family <span class='op'>=</span> <span class='st'>"mono"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>4</span>, <span class='st'>"폰트 테스트 : 한글, sans"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, family <span class='op'>=</span> <span class='st'>"sans"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>3</span>, <span class='st'>"폰트 테스트 : 한글, serif"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, family <span class='op'>=</span> <span class='st'>"serif"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>2</span>, <span class='st'>"폰트 테스트 : 한글, mono"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, family <span class='op'>=</span> <span class='st'>"mono"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>폰트의 매핑을 변경하고 출력한 결과를 보니, 한글이 정상적으로 출력되었다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="img/default_mac_2.png" width="65%" /></p>
+</div>
+<blockquote>
+<p>예제에서는 폰트 매커니즘을 설명하기 위해서 기본 폰트인 “sans”, “serif”, “mono”를 변경하였다. 그러나 이를 변경할 경우에 어떤 side-effect를 발생할 지 모르니 수정하지 않는 것을 권장한다. 그래서 앞서 바꾼 설정을 다시 돌려 놓아야 한다.</p>
+</blockquote>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/grDevices/quartzFonts.html'>quartzFonts</a></span><span class='op'>(</span>sans <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/quartzFonts.html'>quartzFont</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Helvetica"</span>, <span class='st'>"Helvetica-Bold"</span>, <span class='st'>"Helvetica-Oblique"</span>, <span class='st'>"Helvetica-BoldOblique"</span><span class='op'>)</span><span class='op'>)</span>,
+            serif <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/quartzFonts.html'>quartzFont</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Times-Roman"</span>, <span class='st'>"Times-Bold"</span>, <span class='st'>"Times-Italic"</span>, <span class='st'>"Times-BoldItalic"</span><span class='op'>)</span><span class='op'>)</span>,
+            mono <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/quartzFonts.html'>quartzFont</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Courier"</span>, <span class='st'>"Courier-Bold"</span>, <span class='st'>"Courier-Oblique"</span>, <span class='st'>"Courier-BoldOblique"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h3 id="폰트-패밀리와-폰트-페이스">폰트 패밀리와 폰트 페이스</h3>
+<blockquote>
+<p>폰트 패밀리(font family)는 폰트의 고유한 특징을 유지하면서 파생된 폰트들의 집합이다. 대표적으로 글자의 굵기에 따라 기본체(Regular), 굵은체(Bold), 가는체(Light)로 나눌 수 있으며, 기울어진 모양의 이탤릭체(Italic) 등이 폰트 패밀리다.</p>
+</blockquote>
+<p>배포되는 폰트에 따라서 여러 유형의 폰트를 정의한다. 그러나 <strong>R은 폰트 패밀리에 다음과 같은 4개의 폰트만 지원한다. 그러므로 4개를 초과하는 폰트를 가진 폰트 패밀리라도 오직 4가지만 사용할 수 있다. </strong> 그리고 이것을 폰트 페이스(font faces)라 부른다.</p>
+<ul>
+<li>Regular : 기본 폰트체</li>
+<li>Bold : 굵은체</li>
+<li>Italic : 이탤릭체</li>
+<li>BoldItalic : 굵은 이탤릭체</li>
+</ul>
+<p>quartzFont() 함수에서 인수로 사용한 4개의 텍스트가 바로 <code>Regular</code>, <code>Bold</code>, <code>Italic</code>, <code>BoldItalic</code>을 의미한다. <code>애플고딕</code> 폰트는 오직 기본 폰트체만 배포하기 때문에 모두 동일한 폰트를 지정했다. 그리고 <code>D2Coding</code> 폰트는 기본체와 굵은체 두 가지만 배포하기 때문에 이탤릭체에 두 개를 반복 지정한 것이다.</p>
+<p>다음의 Raleway 폰트 패밀리는 18개의 폰트를 포함하고 있다. 그러나 이 폰트 패밀리도 R에서는 4개 밖에 사용할 수 없다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="img/fonts.png" width="65%" /></p>
+</div>
+<p><code>Raleway</code> 폰트 패밀리의 폰트들은 572개 혹은 672개의 글리프로 정의되어 있는 반면에, <code>나눔고딕</code> Bold는 20,452개의 글리프로 구성되어 있다. 글리프의 개수가 적은 라틴문자 계열의 폰트는 이처럼 많은 유형의 폰트를 개발할 수 있는 여력이 있다는 장점이 있다.</p>
+<blockquote>
+<p>대부분의 한글 폰트 패밀리는 이탤릭체나 굵은이탤릭체를 정의하지 않는다. 그 이유는 이탤릭체의 사용 빈도가 그리 높지 않기 때문이다. 경제성의 논리다. MS 오피스에서는 기본체(Regular)만 있더라도 애뮬레이터하여, 굵은체, 이탤릭체, 굵은이탤릭체를 표현하지만, R에서는 폰트 패밀리에서 제공하는 폰트 페이스(스타일)만 지원한다.</p>
+</blockquote>
+<p><strong>폰트 패밀리에서 제공하는 여러 폰트 페이스를 사용하기 위해서는 운영체제별로 quartzFont(), quartzFonts() 함수, windowsFont(), windowsFonts() 함수, X11Font(), X11Fonts() 함수를 이용해서 폰트 패밀리와 폰트 페이스를 정의해야 한다. 그렇지 않으면 오직 기본체(Regular)만 사용할 수 있다.</strong></p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/grDevices/quartzFonts.html'>quartzFonts</a></span><span class='op'>(</span>d2code <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/quartzFonts.html'>quartzFont</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"D2Coding"</span>, <span class='st'>"D2CodingBold"</span>, <span class='st'>"D2Coding"</span>, <span class='st'>"D2CodingBold"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, type <span class='op'>=</span> <span class='st'>"n"</span>, bty <span class='op'>=</span> <span class='st'>"n"</span>, xaxt <span class='op'>=</span> <span class='st'>"n"</span>, yaxt <span class='op'>=</span> <span class='st'>"n"</span>, 
+     xlab <span class='op'>=</span> <span class='st'>""</span>, ylab <span class='op'>=</span> <span class='st'>""</span>, pty <span class='op'>=</span> <span class='st'>"s"</span>, mar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>9</span>, <span class='st'>"Font Test : English, regular"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>,  family <span class='op'>=</span> <span class='st'>"sans"</span>, font <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>8</span>, <span class='st'>"Font Test : English, bold"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, family <span class='op'>=</span> <span class='st'>"sans"</span>, font <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>7</span>, <span class='st'>"Font Test : English, italic"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, family <span class='op'>=</span> <span class='st'>"sans"</span>, font <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>6</span>, <span class='st'>"Font Test : English, bold italic"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, family <span class='op'>=</span> <span class='st'>"sans"</span>, font <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>5</span>, <span class='st'>"폰트 테스트 : 한글, regular"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, family <span class='op'>=</span> <span class='st'>"d2code"</span>, font <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>4</span>, <span class='st'>"폰트 테스트 : 한글, bold"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, family <span class='op'>=</span> <span class='st'>"d2code"</span>, font <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>3</span>, <span class='st'>"폰트 테스트 : 한글, italic"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, family <span class='op'>=</span> <span class='st'>"d2code"</span>, font <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>2</span>, <span class='st'>"폰트 테스트 : 한글, bold italic"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, family <span class='op'>=</span> <span class='st'>"d2code"</span>, font <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="2021-01-27-rfonts_files/figure-html5/unnamed-chunk-21-1.png" width="624" /></p>
+</div>
+<p>영문은 <code>sans</code> 폰트로 4개의 폰트 페이스를 표현하지만, 한글 <code>D2Coding</code>폰트는 이탤릭 계열의 페이스를 지원하지 못하였다. 그 이유는 <code>D2Coding</code> 폰트는 이탤릭 계열의 폰트를 배포하지 않았기 때문이다.</p>
+<h3 id="r에서-폰트-인식하기">R에서 폰트 인식하기</h3>
+<p>폰트와 폰트 패밀리의 이름을 알면 R에서 여러 서체로 텍스트를 꾸밀 수 있다. 그러나 우리는 폰트와 폰트 패밀리의 이름을 모두 외울 수도 없고, 정확한 이름을 찾기도 간단치 않다. 앞서 사용한 <code>애플고딕</code>, <code>애플명조</code>, <code>D2Coding</code>은 서체 관리자에서 조회해서 알아낸 것이다.</p>
+<p><code>extrafont</code> 패키지의 <code>font_import() 함수</code>는 사용자 시스템에 설치된 트루타입(TrueType) 폰트를 읽어서 R에서 사용할 수 있도록 폰트의 이름과 폰트의 페이스를 등록해 준다. <code>extrafont</code> 패키지는 폰트 정보를 읽어 <code>extrafontdb</code> 패키지에 폰트 데이터베이스를 생성한다. 그리고 폰트 데이터베이스를 통해서 폰트를 쉽게 가져다 쓸 수 있게 도와준다.</p>
+<p><code>나눔고딕</code> 폰트 정보를 가져오는 예제다. “NanumGothic”에 매치되는 폰트를 가져온다. 만약 pattern 인수를 사용하지 않으면 모든 트루타입 폰트를 가져오느라 시간이 걸릴 것이다. 그래서 <code>나눔고딕</code> 폰트만 가져오려는 것이다. 그런데 <code>font_import() 함수</code>가 정규표현식을 완전하게 지원하지 않아서, <code>나눔고딕코딩</code> 폰트를 제외하고 가져올 방법이 없었다.</p>
+<blockquote>
+<p><code>font_import() 함수</code>의 pattern 인수는 폰트 이름이 아니라, 폰트 파일 이름의 패턴을 검색한다. 예를 들면 MS Windows에서는 <code>Arial Narrow</code>는 검색되지 않을 것이다. 그 이유는 MS Windows에서는 <code>Arial Narrow</code> 폰트의 파일 이름은 “ARIALN”로 표현되기 때문이다. 그러므로 폰트의 파일 이름을 인지하는 것이 필요하다. 아니면 시간이 걸리더라도 pattern 인수를 사용하지 않고, 모든 폰트를 읽어들이는 방법도 고려할 수 있다.</p>
+</blockquote>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wch/extrafont'>extrafont</a></span><span class='op'>)</span>
+
+<span class='co'># 사용자 및 시스템 폰트 디렉토리에서 폰트 가져와 등록하기</span>
+<span class='fu'><a href='https://rdrr.io/pkg/extrafont/man/font_import.html'>font_import</a></span><span class='op'>(</span>pattern <span class='op'>=</span> <span class='st'>"NanumGothic"</span>, prompt <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p><code>extrafontdb</code> 패키지에 등록된 폰트 데이터베이스는 <code>extrafont</code> 패키지의 <code>fonttable() 함수</code>로 조회할 수 있다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wch/extrafont'>extrafont</a></span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/pkg/extrafont/man/fonttable.html'>fonttable</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_detect.html'>str_detect</a></span><span class='op'>(</span><span class='va'>FamilyName</span>, <span class='st'>"NanumGothic"</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>  package                       afmfile
+1      NA            NanumGothic.afm.gz
+2      NA        NanumGothicBold.afm.gz
+3      NA      NanumGothicCoding.afm.gz
+4      NA NanumGothicCoding-Bold.afm.gz
+5      NA       NanumGothicLight.afm.gz
+                                                       fontfile
+1            /Users/choonghyunryu/Library/Fonts/NanumGothic.ttf
+2        /Users/choonghyunryu/Library/Fonts/NanumGothicBold.ttf
+3      /Users/choonghyunryu/Library/Fonts/NanumGothicCoding.ttf
+4 /Users/choonghyunryu/Library/Fonts/NanumGothicCoding-Bold.ttf
+5       /Users/choonghyunryu/Library/Fonts/NanumGothicLight.ttf
+                FullName        FamilyName               FontName
+1            NanumGothic       NanumGothic            NanumGothic
+2        NanumGothicBold       NanumGothic        NanumGothicBold
+3      NanumGothicCoding NanumGothicCoding      NanumGothicCoding
+4 NanumGothicCoding Bold NanumGothicCoding NanumGothicCoding-Bold
+5      NanumGothic Light NanumGothic Light       NanumGothicLight
+   Bold Italic Symbol afmsymfile
+1 FALSE  FALSE  FALSE         NA
+2  TRUE  FALSE  FALSE         NA
+3 FALSE  FALSE  FALSE         NA
+4  TRUE  FALSE  FALSE         NA
+5 FALSE  FALSE  FALSE         NA</code></pre>
+</div>
+<p>역시 <code>나눔고딕코딩</code> 폰트 정보도 가져왔다. 그래서 정규표현이 잘 지원되는 <code>str_detect() 함수</code>로 나눔고딕 정보만 조회한다. R에서 지원하지 않는 폰트 페이스인 Light는 폰트이름과 같은 폰트 패밀리로 등록되었고, Regular와 Bold가 NanumGothic 폰트 패밀리도 등록되었다. Bold 변수, Italic 변수로 폰트 페이스를 구분한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/pkg/extrafont/man/fonttable.html'>fonttable</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_detect.html'>str_detect</a></span><span class='op'>(</span><span class='va'>FamilyName</span>, <span class='st'>"NanumGothic(?!Coding)"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>FamilyName</span><span class='op'>:</span><span class='va'>Italic</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>         FamilyName         FontName  Bold Italic
+1       NanumGothic      NanumGothic FALSE  FALSE
+2       NanumGothic  NanumGothicBold  TRUE  FALSE
+3 NanumGothic Light NanumGothicLight FALSE  FALSE</code></pre>
+</div>
+<p>이 결과는 다음 스크립트와 동일한 역할을 수행한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/grDevices/quartzFonts.html'>quartzFonts</a></span><span class='op'>(</span>NanumGothic <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/quartzFonts.html'>quartzFont</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"NanumGothic"</span>, <span class='st'>"NanumGothicBold"</span>, <span class='st'>"NanumGothic"</span>, <span class='st'>"NanumGothicBold"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p><strong>Linux와 macOS에서는 정확한 폰트의 이름만 알면, text() 함수의 family 인수처럼 기본 폰트를 변경할 수 있다. 그러나 MS Windows에서는 windowsFont(), windowsFonts() 함수로 Window 디바이스에서 폰트를 인식할 수 있도록 R에게 알려 주어야 한다. font_import() 함수가 모든 것을 해결해 주지 않는다.</strong></p>
+<p>비트맵 아키텍처를 사용하는 MS Windows 환경에서는 font_import() 함수를 수행한 후에, 추가로 다음 스크립트를 수행해야 해당 폰트를 사용할 수 있다. loadfonts() 함수는 windowsFont(), windowsFonts() 함수의 사용을 쉽게 해주는 역할을 한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/pkg/extrafont/man/loadfonts.html'>loadfonts</a></span><span class='op'>(</span>device <span class='op'>=</span> <span class='st'>"win"</span>, quiet <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<blockquote>
+<p>extrafont::font_import() 함수는 한번만 수행하면 해당 폰트가 등록되며, extrafont::loadfonts() 함수는 R 세션마다 매번 수행해야 한다. MS Windows 사용자는 주의해야 할 부분이다.</p>
+</blockquote>
+<h3 id="그래픽-전역변수에-폰트-패밀리-지정하기">그래픽 전역변수에 폰트 패밀리 지정하기</h3>
+<p>앞의 작업은 한글 출력을 위한 완벽한 작업은 아니다. 폰트 패밀리에 한글 폰트를 매핑한 것에 지나지 않는다. 그러므로 폰트를 사용하기 위해서는 <code>text()</code>와 같은 저수준 그래픽 함수(low level graphics function)를 사용할때마다 폰트 패밀리를 지정해야 한다. 매우 번거로운 작업이다. 그래서 <code>par() 함수</code>로 그래픽 전역변수에 폰트 패밀리를 등록한다.</p>
+<p>특히 macOS 환경에서 모든 한글이 포함되는 플롯을 그리는 작업에서 한글을 정상적으로 출력하기 위해서는 전역 그래픽 환경변수에 폰트 패밀리(font family)를 설정해 주어야 한다.</p>
+<p>애플명조를 사용하고 싶다면 다음처럼 <code>par() 함수</code>로 폰트 패밀리에 <code>AppleMyungjo</code>를 지정한다. <code>par() 함수</code>로 설정된 환경변수는 전역변수이기 때문에 R 세션이 종료될 때까지 설정이 유지된다. 즉, R을 종료할 때까지 모든 텍스트는 애플명조 폰트를 사용한다. 다만, 예제의 <code>text() 함수</code>처럼 폰트 패밀리를 지정할 수 있는 인수를 지원한다면, “Courier”나 “NanumGothic” 폰트를 사용할 수도 있다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>family <span class='op'>=</span> <span class='st'>"AppleMyungjo"</span>, mar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span>, type <span class='op'>=</span> <span class='st'>"n"</span>, bty <span class='op'>=</span> <span class='st'>"n"</span>, xaxt <span class='op'>=</span> <span class='st'>"n"</span>, yaxt <span class='op'>=</span> <span class='st'>"n"</span>, 
+     xlab <span class='op'>=</span> <span class='st'>""</span>, ylab <span class='op'>=</span> <span class='st'>""</span>, pty <span class='op'>=</span> <span class='st'>"s"</span>, mar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>7</span>, <span class='st'>"Font Test : English"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>6</span>, <span class='st'>"Font Test : English"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>5</span>, <span class='st'>"Font Test : English"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, family <span class='op'>=</span> <span class='st'>"Courier"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>4</span>, <span class='st'>"폰트 테스트 : 한글"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>3</span>, <span class='st'>"폰트 테스트 : 한글"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>2</span>, <span class='st'>"폰트 테스트 : 한글"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, family <span class='op'>=</span> <span class='st'>"NanumGothic"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="2021-01-27-rfonts_files/figure-html5/unnamed-chunk-27-1.png" width="624" /></p>
+</div>
+<p>다음은 시스템 폰트 디렉토리에 있는 사용자가 설치한 <code>나눔고딕</code> 폰트로 플롯을 출력한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 전역 그래픽 환경변수의 폰트 패밀리에 시스템 폰트 디렉토리에 있는 폰트 패밀리 지정</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>family <span class='op'>=</span> <span class='st'>"NanumGothic"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>"b"</span>, pch <span class='op'>=</span> <span class='fl'>16</span>, main <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"정규난수의 플로팅 Test"</span>, cex <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<img src="2021-01-27-rfonts_files/figure-html5/unnamed-chunk-28-1.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 전역 그래픽 환경변수의 폰트 패밀리에 시스템 폰트 디렉토리에 없는 폰트 패밀리 지정</span>
+<span class='co'># 폰트 패밀리 이름을 정확하게 입력해야 한다.</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>family <span class='op'>=</span> <span class='st'>"NanumGothic123"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>"b"</span>, pch <span class='op'>=</span> <span class='fl'>16</span>, main <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"정규난수의 플로팅 Test"</span>, cex <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="2021-01-27-rfonts_files/figure-html5/unnamed-chunk-28-2.png" width="624" /></p>
+</div>
+<p>마지막 예제처럼 폰트 혹은 폰트 패밀리의 이름을 오타로 잘못 기술하거나, 없는 폰트 패밀리의 이름을 기술하면 다음처럼 경고와 함께 모든 텍스트는 출력되지 않는다. 물론 “NanumGothic”라는 폰트 패밀리는 나의 macOS R 환경에는 존재하지 않는다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">warnings</span>() <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">3</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>Warning messages<span class="sc">:</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span> In <span class="fu">doTryCatch</span>(<span class="fu">return</span>(expr), name, parentenv, handler) <span class="sc">:</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  no font could be found <span class="cf">for</span> family <span class="st">&quot;NanumGothic123&quot;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">:</span> In <span class="fu">doTryCatch</span>(<span class="fu">return</span>(expr), name, parentenv, handler) <span class="sc">:</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  no font could be found <span class="cf">for</span> family <span class="st">&quot;NanumGothic123&quot;</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span><span class="sc">:</span> In <span class="fu">doTryCatch</span>(<span class="fu">return</span>(expr), name, parentenv, handler) <span class="sc">:</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  no font could be found <span class="cf">for</span> family <span class="st">&quot;NanumGothic123&quot;</span></span></code></pre></div>
+</div>
+<h2 id="ggplot2에서의-폰트의-사용">ggplot2에서의 폰트의 사용</h2>
+<p>ggplot2는 R 그래픽의 전역 변수와는 다른 매커니즘이다. 그 근간은 R 그래픽를 따르지만, 독립된 환경을 구사한다. 그러므로 <code>par() 함수</code>로 폰트 패밀리를 지원할 수 없다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>family <span class='op'>=</span> <span class='st'>"NanumGothic"</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>mpg</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>class</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"steelblue"</span>, alpha  <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"차량 클래스별 도수"</span>, y <span class='op'>=</span> <span class='st'>"도수"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>plot.title <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="2021-01-27-rfonts_files/figure-html5/unnamed-chunk-30-1.png" width="624" /></p>
+</div>
+<p>결과 플롯을 보면 한글 폰트인 나눔고딕 폰트가 적용되지 못했다. ggplot2 플롯은 테마에서 폰트 관련 설정을 정의한다. 그래서 ggplot의 기본 테마인 <code>theme_gray</code> 테마의 <code>base_family</code>로 폰트 패밀리를 지정해야 한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>mpg</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>class</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"steelblue"</span>, alpha  <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"차량 클래스별 도수"</span>, y <span class='op'>=</span> <span class='st'>"도수"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_gray</a></span><span class='op'>(</span>base_family <span class='op'>=</span> <span class='st'>"NanumGothic"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="2021-01-27-rfonts_files/figure-html5/unnamed-chunk-31-1.png" width="624" /></p>
+</div>
+<p><code>theme_gray</code> 테마의 <code>base_family</code> 설정은 모든 텍스트 요소에 일괄적으로 적용된다. 메인 타이틀과 y-축 라벨의 폰트 패밀리를 달리 지정할 수 있을까? 개별 텍스트 요소에 다른 설정을 적용하기 위해서는 <code>theme() 함수</code>를 사용한다.</p>
+<p>다음은 <code>theme() 함수</code>로 메인 타이틀은 앞에서 “mono”에 매핑한 <code>D2Coding</code> 폰트의 굵은 폰트를 y-축 라벨은 <code>나눔고딕</code> 폰트를 지정한다. 그리고 폰트의 크기도 기본 설정에서 변경하였다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>mpg</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>class</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"steelblue"</span>, alpha  <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"차량 클래스별 도수"</span>, y <span class='op'>=</span> <span class='st'>"도수"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>plot.title <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>family <span class='op'>=</span> <span class='st'>"d2code"</span>, size <span class='op'>=</span> <span class='fl'>20</span>, face <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>,
+        axis.title.y <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>family <span class='op'>=</span> <span class='st'>"NanumGothic"</span>, size <span class='op'>=</span> <span class='fl'>12</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="2021-01-27-rfonts_files/figure-html5/unnamed-chunk-32-1.png" width="624" /></p>
+</div>
+<p>ggplot에서도 <code>par() 함수</code>처럼 폰트 설정을 전역변수로 설정하는 방법이 없을까? 매번 플롯을 그릴 때마 폰트 패밀리를 지정해야 할까?</p>
+<p><code>theme_set() 함수</code>로 <code>par() 함수</code>처럼 ggplot의 그래픽 환경을 설정할 수 있다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme_get.html'>theme_set</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_gray</a></span><span class='op'>(</span>base_family <span class='op'>=</span> <span class='st'>"NanumGothic"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>mpg</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>class</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"steelblue"</span>, alpha  <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"차량 클래스별 도수"</span>, y <span class='op'>=</span> <span class='st'>"도수"</span><span class='op'>)</span> 
+</code></pre>
+</div>
+<p><img src="2021-01-27-rfonts_files/figure-html5/unnamed-chunk-33-1.png" width="624" /></p>
+</div>
+<p>이전에 <code>theme_set() 함수</code>로 폰트 패밀리를 지정했기 때문에 한글이 나눔고딕체로 정상 출력된다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>mpg</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>class</span>, <span class='va'>hwy</span>, fill <span class='op'>=</span> <span class='va'>class</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_boxplot.html'>geom_boxplot</a></span><span class='op'>(</span>alpha  <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"차량 클래스별 연비"</span>, y <span class='op'>=</span> <span class='st'>"연비 (highway miles per gallon)"</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='st'>"none"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="2021-01-27-rfonts_files/figure-html5/unnamed-chunk-34-1.png" width="624" /></p>
+</div>
+<h2 id="pdf-디바이스">PDF 디바이스</h2>
+<h3 id="그래픽-디바이스">그래픽 디바이스</h3>
+<p>R의 그래픽 디바이스(graphics devices)는 플롯이 출력되는 모든 대상을 의미한다. 앞에서 다룬 MS Windows의 <code>windows</code>, Linux(UNIX-like)의 <code>X11</code>, macOS의 <code>quartz</code>는 각각의 운영체제에서의 그래픽 윈도우를 의미한다. 즉, 기본적으로 플롯이 출력되는 화면이다. 이것은 R의 그래픽 디바이스다.</p>
+<p><code>프린터</code>나, <code>메타파일</code>, <code>PNG</code>, <code>JPEG</code>, <code>BMP</code>, <code>TIFF</code>와 같은 비트맵(bitmap) 포맷의 그래픽 파일도 그래픽 디바이스다. 또한 <code>SVG(Scalar Vector Graphics)</code>, <code>PDF</code>, <code>PostScript</code> 파일도 그래픽 디바이스다.</p>
+<h3 id="pdf-파일로-플롯-내보내기">PDF 파일로 플롯 내보내기</h3>
+<p><code>PNG</code>, <code>JPEG</code>, <code>BMP</code>, <code>TIFF</code>와 같은 비트맵 포맷의 파일로 윈도우에 표시된 플롯을 내보내는 방법은 쉽기도 하지만 텍스트 표현에 특별한 이슈가 없다. 그 이유는 윈도우에 표시된 플롯을 비트맵 형식으로 전환하기 때문에, 윈도우에 이상 없이 출력된 플롯은 모두 파일로 출력이 가능하다.</p>
+<p>그러나 PostScript 파일, 특히 PDF 파일의 매커니즘은 비트맵 형식의 그래픽 파일과는 다르다. 이 파일 포맷은 폰트로 텍스트를 표현하기 때문에 해당 그래픽 디바이스에 없는 폰트로 만들어진 플롯을 출력할 경우는 다음과 같은 에러가 발생한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/grDevices/pdf.html'>pdf</a></span><span class='op'>(</span><span class='st'>"mpg.pdf"</span><span class='op'>)</span>
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>mpg</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>class</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"steelblue"</span>, alpha  <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"차량 클래스별 도수"</span>, y <span class='op'>=</span> <span class='st'>"도수"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_gray</a></span><span class='op'>(</span>base_family <span class='op'>=</span> <span class='st'>"NanumGothic"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>Error <span class="cf">in</span> <span class="fu">grid.Call.graphics</span>(C_text, <span class="fu">as.graphicsAnnot</span>(x<span class="sc">$</span>label), x<span class="sc">$</span>x, x<span class="sc">$</span>y,  <span class="sc">:</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  invalid font type</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>In addition<span class="sc">:</span> There were <span class="dv">50</span> or more <span class="fu">warnings</span> (use <span class="fu">warnings</span>() to see the first <span class="dv">50</span>)</span></code></pre></div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">warnings</span>() <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">3</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>Warning messages<span class="sc">:</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span> In <span class="fu">grid.Call</span>(C_stringMetric, <span class="fu">as.graphicsAnnot</span>(x<span class="sc">$</span>label)) <span class="sc">:</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  font family <span class="st">&#39;NanumGothic&#39;</span> not found <span class="cf">in</span> PostScript font database</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">:</span> In <span class="fu">grid.Call</span>(C_stringMetric, <span class="fu">as.graphicsAnnot</span>(x<span class="sc">$</span>label)) <span class="sc">:</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  font family <span class="st">&#39;NanumGothic&#39;</span> not found <span class="cf">in</span> PostScript font database</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span><span class="sc">:</span> In <span class="fu">grid.Call</span>(C_stringMetric, <span class="fu">as.graphicsAnnot</span>(x<span class="sc">$</span>label)) <span class="sc">:</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  font family <span class="st">&#39;NanumGothic&#39;</span> not found <span class="cf">in</span> PostScript font database</span></code></pre></div>
+</div>
+<h3 id="pdf-디바이스-기본-폰트">PDF 디바이스 기본 폰트</h3>
+<p>PDF 디바이스의 기본 폰트는 다음과 같다. 여기서 한글은 <code>"Korea1"</code>과 <code>"Korea1deb"</code> 두 개다. 일본어 폰트와 중국어 폰트도 보인다. 또한 이들 폰트들은 비상업용 폰트로 폰트 라이선스에서 자유롭다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/grDevices/postscriptFonts.html'>pdfFonts</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>  [1] &quot;serif&quot;                       &quot;sans&quot;                       
+  [3] &quot;mono&quot;                        &quot;AvantGarde&quot;                 
+  [5] &quot;Bookman&quot;                     &quot;Courier&quot;                    
+  [7] &quot;Helvetica&quot;                   &quot;Helvetica-Narrow&quot;           
+  [9] &quot;NewCenturySchoolbook&quot;        &quot;Palatino&quot;                   
+ [11] &quot;Times&quot;                       &quot;URWGothic&quot;                  
+ [13] &quot;URWBookman&quot;                  &quot;NimbusMon&quot;                  
+ [15] &quot;NimbusSan&quot;                   &quot;URWHelvetica&quot;               
+ [17] &quot;NimbusSanCond&quot;               &quot;CenturySch&quot;                 
+ [19] &quot;URWPalladio&quot;                 &quot;NimbusRom&quot;                  
+ [21] &quot;URWTimes&quot;                    &quot;ArialMT&quot;                    
+ [23] &quot;Japan1&quot;                      &quot;Japan1HeiMin&quot;               
+ [25] &quot;Japan1GothicBBB&quot;             &quot;Japan1Ryumin&quot;               
+ [27] &quot;Korea1&quot;                      &quot;Korea1deb&quot;                  
+ [29] &quot;CNS1&quot;                        &quot;GB1&quot;                        
+ [31] &quot;Arial Narrow&quot;                &quot;NanumGothic&quot;                
+ [33] &quot;NanumGothicCoding&quot;           &quot;NanumGothic Light&quot;          
+ [35] &quot;Lato Black&quot;                  &quot;Lato&quot;                       
+ [37] &quot;Lato Hairline&quot;               &quot;Lato Heavy&quot;                 
+ [39] &quot;Lato Light&quot;                  &quot;Lato Medium&quot;                
+ [41] &quot;Lato Semibold&quot;               &quot;Lato Thin&quot;                  
+ [43] &quot;.SF Compact Rounded&quot;         &quot;.Keyboard&quot;                  
+ [45] &quot;.New York&quot;                   &quot;.SF Compact&quot;                
+ [47] &quot;System Font&quot;                 &quot;.SF NS Mono&quot;                
+ [49] &quot;.SF NS Rounded&quot;              &quot;Academy Engraved LET&quot;       
+ [51] &quot;Andale Mono&quot;                 &quot;AppleMyungjo&quot;               
+ [53] &quot;Arial Black&quot;                 &quot;Arial&quot;                      
+ [55] &quot;Arial Rounded MT Bold&quot;       &quot;Arial Unicode MS&quot;           
+ [57] &quot;Bodoni Ornaments&quot;            &quot;Bodoni 72 Smallcaps&quot;        
+ [59] &quot;Comic Sans MS&quot;               &quot;Courier New&quot;                
+ [61] &quot;Georgia&quot;                     &quot;IBM Plex Sans&quot;              
+ [63] &quot;IBM Plex Sans ExtraLight&quot;    &quot;IBM Plex Sans Light&quot;        
+ [65] &quot;IBM Plex Sans Medium&quot;        &quot;IBM Plex Sans SemiBold&quot;     
+ [67] &quot;IBM Plex Sans Thin&quot;          &quot;Impact&quot;                     
+ [69] &quot;Khmer Sangam MN&quot;             &quot;Komika Axis&quot;                
+ [71] &quot;Komika Title - Paint&quot;        &quot;Lao Sangam MN&quot;              
+ [73] &quot;LG Smart_H Light&quot;            &quot;LG Smart_H Regular&quot;         
+ [75] &quot;LG Smart_0521_HS98 Regular&quot;  &quot;LG Smart_H SemiBold&quot;        
+ [77] &quot;Liberation Sans Narrow&quot;      &quot;Luminari&quot;                   
+ [79] &quot;MARU Buri Beta&quot;              &quot;Microsoft Sans Serif&quot;       
+ [81] &quot;NanumBarunGothic&quot;            &quot;NanumBarunGothic Light&quot;     
+ [83] &quot;NanumBarunGothic UltraLight&quot; &quot;Nanum Brush Script&quot;         
+ [85] &quot;NanumSquare Bold&quot;            &quot;NanumSquare ExtraBold&quot;      
+ [87] &quot;NanumSquare Light&quot;           &quot;NanumSquare&quot;                
+ [89] &quot;NanumSquareRound Bold&quot;       &quot;NanumSquareRound ExtraBold&quot; 
+ [91] &quot;NanumSquareRound Light&quot;      &quot;NanumSquareRound Regular&quot;   
+ [93] &quot;Noto Sans Adlam&quot;             &quot;Noto Sans Avestan&quot;          
+ [95] &quot;Noto Sans Bamum&quot;             &quot;Noto Sans Bassa Vah&quot;        
+ [97] &quot;Noto Sans Batak&quot;             &quot;Noto Sans Bhaiksuki&quot;        
+ [99] &quot;Noto Sans Brahmi&quot;            &quot;Noto Sans Buginese&quot;         
+[101] &quot;Noto Sans Buhid&quot;             &quot;Noto Sans Carian&quot;           
+[103] &quot;Noto Sans CaucAlban&quot;         &quot;Noto Sans Chakma&quot;           
+[105] &quot;Noto Sans Cham&quot;              &quot;Noto Sans Coptic&quot;           
+[107] &quot;Noto Sans Cuneiform&quot;         &quot;Noto Sans Cypriot&quot;          
+[109] &quot;Noto Sans Duployan&quot;          &quot;Noto Sans EgyptHiero&quot;       
+[111] &quot;Noto Sans Elbasan&quot;           &quot;Noto Sans Glagolitic&quot;       
+[113] &quot;Noto Sans Gothic&quot;            &quot;Noto Sans HanifiRohg&quot;       
+[115] &quot;Noto Sans Hanunoo&quot;           &quot;Noto Sans Hatran&quot;           
+[117] &quot;Noto Sans ImpAramaic&quot;        &quot;Noto Sans InsPahlavi&quot;       
+[119] &quot;Noto Sans InsParthi&quot;         &quot;Noto Sans Kaithi&quot;           
+[121] &quot;Noto Sans Kayah Li&quot;          &quot;Noto Sans Kharoshthi&quot;       
+[123] &quot;Noto Sans Khojki&quot;            &quot;Noto Sans Khudawadi&quot;        
+[125] &quot;Noto Sans Lepcha&quot;            &quot;Noto Sans Limbu&quot;            
+[127] &quot;Noto Sans Linear A&quot;          &quot;Noto Sans Linear B&quot;         
+[129] &quot;Noto Sans Lisu&quot;              &quot;Noto Sans Lycian&quot;           
+[131] &quot;Noto Sans Lydian&quot;            &quot;Noto Sans Mahajani&quot;         
+[133] &quot;Noto Sans Mandaic&quot;           &quot;Noto Sans Manichaean&quot;       
+[135] &quot;Noto Sans Marchen&quot;           &quot;Noto Sans MeeteiMayek&quot;      
+[137] &quot;Noto Sans Mende Kikakui&quot;     &quot;Noto Sans Meroitic&quot;         
+[139] &quot;Noto Sans Miao&quot;              &quot;Noto Sans Modi&quot;             
+[141] &quot;Noto Sans Mongolian&quot;         &quot;Noto Sans Mro&quot;              
+[143] &quot;Noto Sans Multani&quot;           &quot;Noto Sans Nabataean&quot;        
+[145] &quot;Noto Sans Newa&quot;              &quot;Noto Sans NewTaiLue&quot;        
+[147] &quot;Noto Sans N&#39;Ko&quot;              &quot;Noto Sans Ogham&quot;            
+[149] &quot;Noto Sans Ol Chiki&quot;          &quot;Noto Sans OldHung&quot;          
+[151] &quot;Noto Sans OldNorArab&quot;        &quot;Noto Sans Old Permic&quot;       
+[153] &quot;Noto Sans OldPersian&quot;        &quot;Noto Sans OldSouArab&quot;       
+[155] &quot;Noto Sans Old Turkic&quot;        &quot;Noto Sans Osage&quot;            
+[157] &quot;Noto Sans Osmanya&quot;           &quot;Noto Sans Pahawh Hmong&quot;     
+[159] &quot;Noto Sans Palmyrene&quot;         &quot;Noto Sans PauCinHau&quot;        
+[161] &quot;Noto Sans PhagsPa&quot;           &quot;Noto Sans Phoenician&quot;       
+[163] &quot;Noto Sans PsaPahlavi&quot;        &quot;Noto Sans Rejang&quot;           
+[165] &quot;Noto Sans Runic&quot;             &quot;Noto Sans Samaritan&quot;        
+[167] &quot;Noto Sans Saurashtra&quot;        &quot;Noto Sans Sharada&quot;          
+[169] &quot;Noto Sans Shavian&quot;           &quot;Noto Sans Siddham&quot;          
+[171] &quot;Noto Sans SoraSomp&quot;          &quot;Noto Sans Sundanese&quot;        
+[173] &quot;Noto Sans Syloti Nagri&quot;      &quot;Noto Sans Syriac&quot;           
+[175] &quot;Noto Sans Tagalog&quot;           &quot;Noto Sans Tagbanwa&quot;         
+[177] &quot;Noto Sans Tai Le&quot;            &quot;Noto Sans Tai Tham&quot;         
+[179] &quot;Noto Sans Tai Viet&quot;          &quot;Noto Sans Takri&quot;            
+[181] &quot;Noto Sans Thaana&quot;            &quot;Noto Sans Tifinagh&quot;         
+[183] &quot;Noto Sans Tirhuta&quot;           &quot;Noto Sans Ugaritic&quot;         
+[185] &quot;Noto Sans Vai&quot;               &quot;Noto Sans Wancho&quot;           
+[187] &quot;Noto Sans WarangCiti&quot;        &quot;Noto Sans Yi&quot;               
+[189] &quot;Noto Serif Ahom&quot;             &quot;Noto Serif Balinese&quot;        
+[191] &quot;Party LET&quot;                   &quot;Public Sans Black&quot;          
+[193] &quot;Public Sans&quot;                 &quot;Public Sans ExtraBold&quot;      
+[195] &quot;Public Sans ExtraLight&quot;      &quot;Public Sans Light&quot;          
+[197] &quot;Public Sans Medium&quot;          &quot;Public Sans SemiBold&quot;       
+[199] &quot;Public Sans Thin&quot;            &quot;Raleway Black&quot;              
+[201] &quot;Raleway&quot;                     &quot;Raleway ExtraBold&quot;          
+[203] &quot;Raleway ExtraLight&quot;          &quot;Raleway Light&quot;              
+[205] &quot;Raleway Medium&quot;              &quot;Raleway SemiBold&quot;           
+[207] &quot;Raleway Thin&quot;                &quot;Roboto Condensed&quot;           
+[209] &quot;Roboto Condensed Light&quot;      &quot;Source Code Pro Black&quot;      
+[211] &quot;Source Code Pro&quot;             &quot;Source Code Pro ExtraLight&quot; 
+[213] &quot;Source Code Pro Light&quot;       &quot;Source Code Pro Medium&quot;     
+[215] &quot;Source Code Pro Semibold&quot;    &quot;Source Sans Pro Black&quot;      
+[217] &quot;Source Sans Pro&quot;             &quot;Source Sans Pro ExtraLight&quot; 
+[219] &quot;Source Sans Pro Light&quot;       &quot;Source Sans Pro SemiBold&quot;   
+[221] &quot;Tahoma&quot;                      &quot;Times New Roman&quot;            
+[223] &quot;Trattatello&quot;                 &quot;Trebuchet MS&quot;               
+[225] &quot;Verdana&quot;                     &quot;Webdings&quot;                   
+[227] &quot;Wingdings&quot;                   &quot;Wingdings 2&quot;                
+[229] &quot;Wingdings 3&quot;                 &quot;NanumMyeongjo YetHangul&quot;    </code></pre>
+</div>
+<p>한글 폰트인 <code>"Korea1"</code>는 <code>HY신명조</code>인 <code>HYSMyeongJoStd-Medium-Acro</code>, <code>"Korea1deb"</code>는 <code>HY중고딕</code>인 <code>HYGothic-Medium-Acro</code>에 매핑되어 있다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/grDevices/postscriptFonts.html'>pdfFonts</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Korea1"</span>, <span class='st'>"Korea1deb"</span><span class='op'>)</span><span class='op'>]</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>purrr</span><span class='fu'>::</span><span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_chr</a></span><span class='op'>(</span><span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='va'>x</span><span class='op'>[[</span><span class='st'>"family"</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>                      Korea1                    Korea1deb 
+&quot;HYSMyeongJoStd-Medium-Acro&quot;       &quot;HYGothic-Medium-Acro&quot; </code></pre>
+</div>
+<h3 id="pdf-디바이스에-폰트-출력하기">PDF 디바이스에 폰트 출력하기</h3>
+<p>PDF 디바이스에 기본 폰트가 아닌 다른 폰트를 설정하기 위해서는 다음처럼 <code>extrafont</code> 패키지의 <code>font_import() 함수</code>와 <code>loadfonts() 함수</code>를 사용해야 한다. 이 예제는 <code>나눔스퀘어</code> 폰트를 PDF 파일로 출력하기 위한 과정이다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 사용자 및 시스템 폰트 디렉토리에서 폰트 가져와 등록하기</span>
+<span class='fu'><a href='https://rdrr.io/pkg/extrafont/man/font_import.html'>font_import</a></span><span class='op'>(</span>pattern <span class='op'>=</span> <span class='st'>"NanumSquare"</span>, prompt <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+
+<span class='co'># 등록한 폰트를 PDF 디바이스에 로드하기</span>
+<span class='fu'><a href='https://rdrr.io/pkg/extrafont/man/loadfonts.html'>loadfonts</a></span><span class='op'>(</span><span class='st'>"pdf"</span>, quiet <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>일단, 원하는 폰트가 PDF 디바이스에 로드되었으면, PDF 디바이스에 폰트를 출력하는 것은 다음과 같이 두 가지 케이스로 분류해야 한다.</p>
+<ul>
+<li>기본 폰트
+<ul>
+<li>pdf() 함수로 PDF 디바이스에 플롯 내보내기</li>
+</ul></li>
+<li>추가 폰트
+<ul>
+<li>PDF 디바이스에 추가 폰트를 로드한 후,
+<ul>
+<li>폰트를 로드하지 않으면, 에러 발생</li>
+</ul></li>
+<li>cairo_pdf() 함수로 PDF 디바이스에 플롯 내보내기
+<ul>
+<li>pdf() 함수를 사용하면 추가 폰트가 아닌 대체 폰트가 출력될 수 있음</li>
+</ul></li>
+</ul></li>
+</ul>
+<h4 id="영문-추가-폰트-출력하기">영문 추가 폰트 출력하기</h4>
+<p>폰트 디렉토리에서 dlookr 패키지의 플롯에서 사용하고 있는 <code>Arial Narrow</code> 패키지 정보를 가져온다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 사용자 및 시스템 폰트 디렉토리에서 폰트 가져와 등록하기</span>
+<span class='fu'><a href='https://rdrr.io/pkg/extrafont/man/font_import.html'>font_import</a></span><span class='op'>(</span>pattern <span class='op'>=</span> <span class='st'>"Arial Narrow"</span>, prompt <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<blockquote>
+<p><code>Arial Narrow</code> 폰트는 MS Windows에는 설치되어 있다. 그러나 상업용 라이센스가 있는 폰트라 타 운영체제에서는 이 폰트와 유사한 Free 폰트인 <code>LiberationSansNarrow</code> 폰트 1.07.4 버전을 사용하면 된다.</p>
+</blockquote>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>p_arial_narrow</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>mpg</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>class</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"steelblue"</span>, alpha  <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Frequency by class of cars"</span>, y <span class='op'>=</span> <span class='st'>"Frequency"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>text<span class='op'>=</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>family <span class='op'>=</span> <span class='st'>"Arial Narrow"</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>p_arial_narrow</span>
+</code></pre>
+</div>
+<p><img src="2021-01-27-rfonts_files/figure-html5/unnamed-chunk-42-1.png" width="624" /></p>
+</div>
+<p>시각화 결과를 보면 <code>Arial Narrow</code> 폰트의 특징을 파악하기 어렵다. 그러나 다음 시각화의 결과를 보면 이름처럼 폭이 좁아진 모습을 판단할 수 있을 것이다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, type <span class='op'>=</span> <span class='st'>"n"</span>, bty <span class='op'>=</span> <span class='st'>"n"</span>, xaxt <span class='op'>=</span> <span class='st'>"n"</span>, yaxt <span class='op'>=</span> <span class='st'>"n"</span>, 
+     xlab <span class='op'>=</span> <span class='st'>""</span>, ylab <span class='op'>=</span> <span class='st'>""</span>, pty <span class='op'>=</span> <span class='st'>"s"</span>, mar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>9</span>, <span class='st'>"Font Test : regular - sans"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>,  
+     family <span class='op'>=</span> <span class='st'>"sans"</span>, font <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>8</span>, <span class='st'>"Font Test : regular - Arial Narrow"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, 
+     family <span class='op'>=</span> <span class='st'>"Arial Narrow"</span>, font <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>7</span>, <span class='st'>"Font Test : bold - sans"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, 
+     family <span class='op'>=</span> <span class='st'>"sans"</span>, font <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>6</span>, <span class='st'>"Font Test : bold - Arial Narrow"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, 
+     family <span class='op'>=</span> <span class='st'>"Arial Narrow"</span>, font <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>5</span>, <span class='st'>"Font Test : italic - sans"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, 
+     family <span class='op'>=</span> <span class='st'>"sans"</span>, font <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>4</span>, <span class='st'>"Font Test : italic - Arial Narrow"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, 
+     family <span class='op'>=</span> <span class='st'>"Arial Narrow"</span>, font <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>3</span>, <span class='st'>"Font Test : bold italic - sans"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, 
+     family <span class='op'>=</span> <span class='st'>"sans"</span>, font <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>2</span>, <span class='st'>"Font Test : bold italic - Arial Narrow"</span>, adj <span class='op'>=</span> <span class='fl'>0</span>, cex <span class='op'>=</span> <span class='fl'>2</span>, 
+     family <span class='op'>=</span> <span class='st'>"Arial Narrow"</span>, font <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="2021-01-27-rfonts_files/figure-html5/unnamed-chunk-43-1.png" width="624" /></p>
+</div>
+<p>extrafont 패키지의 font_import() 함수로 폰트 테이블 등록된 <code>Arial Narrow</code> 폰트는 윈도우(X11, Quartz) 디바이스에는 출력되지만 MS Windows의 윈도우 디바이스나 PDF 디바이스에도 등록해 주어야 사용이 가능하다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/pkg/extrafont/man/loadfonts.html'>loadfonts</a></span><span class='op'>(</span>device <span class='op'>=</span> <span class='st'>"pdf"</span>, quiet <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/grDevices/postscriptFonts.html'>pdfFonts</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grep</a></span><span class='op'>(</span><span class='st'>"Nanum|Arial"</span>, <span class='va'>.</span>, value <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code> [1] &quot;ArialMT&quot;                     &quot;Arial Narrow&quot;               
+ [3] &quot;NanumGothic&quot;                 &quot;NanumGothicCoding&quot;          
+ [5] &quot;NanumGothic Light&quot;           &quot;Arial Black&quot;                
+ [7] &quot;Arial&quot;                       &quot;Arial Rounded MT Bold&quot;      
+ [9] &quot;Arial Unicode MS&quot;            &quot;NanumBarunGothic&quot;           
+[11] &quot;NanumBarunGothic Light&quot;      &quot;NanumBarunGothic UltraLight&quot;
+[13] &quot;Nanum Brush Script&quot;          &quot;NanumSquare Bold&quot;           
+[15] &quot;NanumSquare ExtraBold&quot;       &quot;NanumSquare Light&quot;          
+[17] &quot;NanumSquare&quot;                 &quot;NanumSquareRound Bold&quot;      
+[19] &quot;NanumSquareRound ExtraBold&quot;  &quot;NanumSquareRound Light&quot;     
+[21] &quot;NanumSquareRound Regular&quot;    &quot;NanumMyeongjo YetHangul&quot;    </code></pre>
+</div>
+<p>그러나 pdf() 함수로 플롯을 PDF 디바이스로 내보낸 결과를 보면, <code>Arial Narrow</code> 폰트가 아니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/grDevices/pdf.html'>pdf</a></span><span class='op'>(</span><span class='st'>"arial_narrow.pdf"</span>, family <span class='op'>=</span> <span class='st'>"Arial Narrow"</span>, width <span class='op'>=</span> <span class='fl'>5</span>, height <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>$</span><span class='va'>mpg</span>, <span class='va'>mtcars</span><span class='op'>$</span><span class='va'>wt</span>, 
+     main <span class='op'>=</span> <span class='st'>"Fuel Efficiency of 32 Cars"</span>,
+     xlab <span class='op'>=</span> <span class='st'>"Weight (x1000 lb)"</span>,
+     ylab <span class='op'>=</span> <span class='st'>"Miles per Gallon"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="img/arial_narrow.pdf.png" width="65%" /></p>
+</div>
+<p>출력된 폰트는 PDF 디바이스 폰트에 등록된 첫번 째 폰트인 “serif”, 즉 실제로는 <code>Times Roman</code> 폰트다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/grDevices/postscriptFonts.html'>pdfFonts</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>3</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] &quot;serif&quot; &quot;sans&quot;  &quot;mono&quot; </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/grDevices/postscriptFonts.html'>pdfFonts</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>[</span><span class='st'>"serif"</span><span class='op'>]</span>
+</code></pre>
+</div>
+<pre><code>$serif
+$family
+[1] &quot;Times&quot;
+
+$metrics
+[1] &quot;Times-Roman.afm&quot;      &quot;Times-Bold.afm&quot;      
+[3] &quot;Times-Italic.afm&quot;     &quot;Times-BoldItalic.afm&quot;
+[5] &quot;Symbol.afm&quot;          
+
+$encoding
+[1] &quot;default&quot;
+
+attr(,&quot;class&quot;)
+[1] &quot;Type1Font&quot;</code></pre>
+</div>
+<p>PDF 디바이스에 추가 폰트를 출력하기 위해서는 반드시 <code>cariro_pdf() 함수</code>를 사용해야 한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/grDevices/cairo.html'>cairo_pdf</a></span><span class='op'>(</span><span class='st'>"cairo_arrial_narrow.pdf"</span>, family <span class='op'>=</span> <span class='st'>"Arial Narrow"</span>, width <span class='op'>=</span> <span class='fl'>5</span>, height <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>$</span><span class='va'>mpg</span>, <span class='va'>mtcars</span><span class='op'>$</span><span class='va'>wt</span>, 
+     main <span class='op'>=</span> <span class='st'>"Fuel Efficiency of 32 Cars"</span>,
+     xlab <span class='op'>=</span> <span class='st'>"Weight (x1000 lb)"</span>,
+     ylab <span class='op'>=</span> <span class='st'>"Miles per Gallon"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="img/cairo_arrial_narrow.pdf.png" width="65%" /></p>
+</div>
+<h4 id="한글-추가-폰트-출력하기">한글 추가 폰트 출력하기</h4>
+<p>한글이 포함된 플롯을 네 가지 방법으로 PDF 디바이스로 내보낸다.</p>
+<p>폰트 패밀리를 지정하지 않고, <code>pdf() 함수</code>를 사용하면 한글이 출력되지 않는다. 그러나 같은 방법으로 “Korea1deb” 폰트 패밀리를 지정하면 한글이 정상적으로 출력되지만 함께 출력되는 영문 문자의 배열이 흐트러져 이상하게 출력된다. <code>cairo_pdf() 함수</code>에서는 PDF 디바이스의 기본 폰트인 “Korea1deb” 폰트 패밀리를 인식하지 못한다. 그러나 추가 폰트인 “NanumGothic”는 정상적으로 잘 출력된다. 그러므로 추가 폰트를 사용한 경우에는 네번 째 방법을 이용한다. 플롯의 비교를 위해서 출력된 PDF 파일을 2 <span class="math inline">\(times\)</span> 2 구조로 배열 해 보았다.</p>
+<blockquote>
+<p>PDF 디바이스의 기본 폰트인 “Korea1deb” 폰트 패밀리가 Cairo PDF 디바이스에 적용되지 않는 것처럼, 윈도우 디바이스에서도 사용할 수 없다. 왜냐하면 PDF 디바이스 전용 폰트이기 때문이다.</p>
+</blockquote>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/grDevices/pdf.html'>pdf</a></span><span class='op'>(</span><span class='st'>"font_test1.pdf"</span>, width <span class='op'>=</span> <span class='fl'>5</span>, height <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>$</span><span class='va'>mpg</span>, <span class='va'>mtcars</span><span class='op'>$</span><span class='va'>wt</span>, 
+     main <span class='op'>=</span> <span class='st'>"pdf(), no font family\n 한글 출력 테스트"</span>,
+     xlab <span class='op'>=</span> <span class='st'>"Weight (x1000 lb)"</span>,
+     ylab <span class='op'>=</span> <span class='st'>"Miles per Gallon"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/grDevices/pdf.html'>pdf</a></span><span class='op'>(</span><span class='st'>"font_test2.pdf"</span>, family <span class='op'>=</span> <span class='st'>"Korea1deb"</span>, width <span class='op'>=</span> <span class='fl'>5</span>, height <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>$</span><span class='va'>mpg</span>, <span class='va'>mtcars</span><span class='op'>$</span><span class='va'>wt</span>, 
+     main <span class='op'>=</span> <span class='st'>"pdf(), Korea1deb font family\n 한글 출력 테스트"</span>,
+     xlab <span class='op'>=</span> <span class='st'>"Weight (x1000 lb)"</span>,
+     ylab <span class='op'>=</span> <span class='st'>"Miles per Gallon"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/grDevices/cairo.html'>cairo_pdf</a></span><span class='op'>(</span><span class='st'>"font_test3.pdf"</span>, family <span class='op'>=</span> <span class='st'>"Korea1deb"</span>, width <span class='op'>=</span> <span class='fl'>5</span>, height <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>$</span><span class='va'>mpg</span>, <span class='va'>mtcars</span><span class='op'>$</span><span class='va'>wt</span>, 
+     main <span class='op'>=</span> <span class='st'>"cairo_pdf(), Korea1deb font family\n 한글 출력 테스트"</span>,
+     xlab <span class='op'>=</span> <span class='st'>"Weight (x1000 lb)"</span>,
+     ylab <span class='op'>=</span> <span class='st'>"Miles per Gallon"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/grDevices/cairo.html'>cairo_pdf</a></span><span class='op'>(</span><span class='st'>"font_test4.pdf"</span>, family <span class='op'>=</span> <span class='st'>"NanumGothic"</span>, width <span class='op'>=</span> <span class='fl'>5</span>, height <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>$</span><span class='va'>mpg</span>, <span class='va'>mtcars</span><span class='op'>$</span><span class='va'>wt</span>, 
+     main <span class='op'>=</span> <span class='st'>"cairo_pdf(), Korea1deb font family\n 한글 출력 테스트"</span>,
+     xlab <span class='op'>=</span> <span class='st'>"Weight (x1000 lb)"</span>,
+     ylab <span class='op'>=</span> <span class='st'>"Miles per Gallon"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="img/pdf_korean.png" width="65%" /></p>
+</div>
+<p>ggplot2 플롯도 동일한 방법으로 비교해 본다. ggplot2 플롯 사례에서도 동일한 결과가 나타난다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>mpg</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>class</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"steelblue"</span>, alpha  <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"pdf(), no font family\n 한글 출력 테스트"</span>, y <span class='op'>=</span> <span class='st'>"Frequency"</span><span class='op'>)</span> 
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsave.html'>ggsave</a></span><span class='op'>(</span><span class='st'>"ggplot_korean1.pdf"</span>, <span class='va'>p</span>, width <span class='op'>=</span> <span class='fl'>5</span>, height <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
+
+<span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>mpg</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>class</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"steelblue"</span>, alpha  <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"pdf(), Korea1deb font family\n 한글 출력 테스트"</span>, y <span class='op'>=</span> <span class='st'>"Frequency"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>text<span class='op'>=</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>family <span class='op'>=</span> <span class='st'>"Korea1deb"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsave.html'>ggsave</a></span><span class='op'>(</span><span class='st'>"ggplot_korean2.pdf"</span>, <span class='va'>p</span>, width <span class='op'>=</span> <span class='fl'>5</span>, height <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
+
+<span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>mpg</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>class</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"steelblue"</span>, alpha  <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"cairo_pdf(), no font family\n 한글 출력 테스트"</span>, y <span class='op'>=</span> <span class='st'>"Frequency"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>text<span class='op'>=</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>family <span class='op'>=</span> <span class='st'>"Korea1deb"</span><span class='op'>)</span><span class='op'>)</span> 
+<span class='fu'><a href='https://rdrr.io/r/grDevices/cairo.html'>cairo_pdf</a></span><span class='op'>(</span><span class='st'>"ggplot_korean3.pdf"</span>, width <span class='op'>=</span> <span class='fl'>5</span>, height <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
+<span class='va'>p</span>
+<span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>quartz_off_screen 
+                2 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>mpg</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>class</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"steelblue"</span>, alpha  <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"cairo_pdf(), no font family\n 한글 출력 테스트"</span>, y <span class='op'>=</span> <span class='st'>"Frequency"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>text<span class='op'>=</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>family <span class='op'>=</span> <span class='st'>"NanumGothic"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/grDevices/cairo.html'>cairo_pdf</a></span><span class='op'>(</span><span class='st'>"ggplot_korean4.pdf"</span>, width <span class='op'>=</span> <span class='fl'>5</span>, height <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
+<span class='va'>p</span>
+<span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>quartz_off_screen 
+                2 </code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="img/ggplot_korean.png" width="65%" /></p>
+</div>
+<p>ggplot 플롯은 <code>ggsave() 함수</code>로 외부 파일로 내보낼 수 있다. 이중 PDF 디바이스로 내보내는 다음 예제도 <code>pdf() 함수</code>를 사용하는 것과 같은 결과를 얻는다. 그 이유는 <code>ggsave() 함수</code>가 <code>pdf() 함수</code>를 랩핑했기 때문이다. 그러므로 추가 폰트를 사용한 ggplot 플롯은 <code>ggsave() 함수</code>를 사용하지 말고 <code>cairo_pdf() 함수</code>를 사용해야 한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsave.html'>ggsave</a></span><span class='op'>(</span><span class='st'>"pmg_arrial_narrow.pdf"</span>, plot <span class='op'>=</span> <span class='va'>p_arial_narrow</span>,  family <span class='op'>=</span> <span class='st'>"Arial Narrow"</span>,
+       width <span class='op'>=</span> <span class='fl'>6</span>, height <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h3 id="pdf-디바이스에-폰트-포함하기">PDF 디바이스에 폰트 포함하기</h3>
+<p>만약에 PDF 디바이스로 출력된 폰트가 없는 사용자에게 PDF 파일을 공유하면, 파일을 공유받은 사용자의 환경에 해당 폰트가 없어서 파일의 출력에 문제가 발생할 수 있다. 그래서 다음처럼 PDF 디바이스 파일에 폰트를 포함하기도 한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/pkg/extrafont/man/embed_fonts.html'>embed_fonts</a></span><span class='op'>(</span><span class='st'>"ggplot_korean4.pdf"</span>, outfile <span class='op'>=</span> <span class='st'>"ggplot_korean4_emb.pdf"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>두 파일의 용량을 비교해보면 폰트를 포함한 PDF 파일의 용량이 다소 크다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/system.html'>system</a></span><span class='op'>(</span><span class='st'>"ls -al ggplot_korean4*"</span>, intern <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] &quot;-rw-r--r--  1 choonghyunryu  staff  13825 Oct 11 17:40 ggplot_korean4.pdf&quot;    
+[2] &quot;-rw-r--r--  1 choonghyunryu  staff  15348 Oct 11 17:40 ggplot_korean4_emb.pdf&quot;</code></pre>
+</div>
+<h2 id="마무리-하며">마무리 하며</h2>
+<p>dlookr 패키지의 최초 마이너 버전 업그레이드의 가장 큰 특징은 ggplot 플롯에 추가 폰트인 <code>Arial Narrow</code> 폰트를 사용한 점이다. 이 작업을 진행하면서 발생했던 이슈들을 정리해 보았다.</p>
+<p>혹자에게는 복잡한 작업이 필요치 않을 수 있지만, 한글을 사용하는 우리의 R 사용자는 반드시 한글 출력 문제에 부딪칠 수 밖에 없는 숙명이 있다. 어찌 정리하다보니 길어졌다. 많은 이야기를 쏟아내다보니 산만하고 복잡해진 감이 없지 않다. 그러나 이 기회에 한글 출력을 확실하게 해결하리라는 바램으로 글을 마친다.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!--radix_placeholder_site_after_body-->
+<div class="distill-site-nav distill-site-footer">
+  <span>
+    Copyright 2021 DATAHOLIC. All Rights Reserved</p>
+  </span> 
+  <!--Licensed under the <a href="https://opensource.org/licenses/lgpl-3.0.html" target="_blank">GNU General Public License version 3.0</a-->
+<br>
+</div>
+
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

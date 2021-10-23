@@ -1,0 +1,4259 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #20794d; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007ba5; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #007ba5; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #007ba5; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #20794d; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+  <!--radix_placeholder_meta_tags-->
+<title>Dataholic: alookr - Binary classification modeling</title>
+
+<meta property="description" itemprop="description" content="`alookr`은 이진분류 모델의 개발 과정에서 데이터 정제, 데이터의 traning set과 test set으로의 분리, 모델 적합, 적합된 모델의 평가 및 최적의 모델을 선정한다. 이 패키지는 `dplyr` 패키지와 협업하여 이진분류 데이터 분석 프로세스를 유연하게 처리해 준다."/>
+
+
+<!--  https://schema.org/Article -->
+<meta property="article:published" itemprop="datePublished" content="2020-03-27"/>
+<meta property="article:created" itemprop="dateCreated" content="2020-03-27"/>
+<meta name="article:author" content="유충현"/>
+
+<!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+<meta property="og:title" content="Dataholic: alookr - Binary classification modeling"/>
+<meta property="og:type" content="article"/>
+<meta property="og:description" content="`alookr`은 이진분류 모델의 개발 과정에서 데이터 정제, 데이터의 traning set과 test set으로의 분리, 모델 적합, 적합된 모델의 평가 및 최적의 모델을 선정한다. 이 패키지는 `dplyr` 패키지와 협업하여 이진분류 데이터 분석 프로세스를 유연하게 처리해 준다."/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Dataholic"/>
+
+<!--  https://dev.twitter.com/cards/types/summary -->
+<meta property="twitter:card" content="summary"/>
+<meta property="twitter:title" content="Dataholic: alookr - Binary classification modeling"/>
+<meta property="twitter:description" content="`alookr`은 이진분류 모델의 개발 과정에서 데이터 정제, 데이터의 traning set과 test set으로의 분리, 모델 적합, 적합된 모델의 평가 및 최적의 모델을 선정한다. 이 패키지는 `dplyr` 패키지와 협업하여 이진분류 데이터 분석 프로세스를 유연하게 처리해 준다."/>
+
+<!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+<script type="text/json" id="radix-rmarkdown-metadata">
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","categories","tags","output"]}},"value":[{"type":"character","attributes":{},"value":["alookr - Binary classification modeling"]},{"type":"character","attributes":{},"value":["`alookr`은 이진분류 모델의 개발 과정에서 데이터 정제, 데이터의 traning set과 test set으로의 분리, 모델 적합, 적합된 모델의 평가 및 최적의 모델을 선정한다. 이 패키지는 `dplyr` 패키지와 협업하여 이진분류 데이터 분석 프로세스를 유연하게 처리해 준다."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["유충현"]}]}]},{"type":"character","attributes":{},"value":["2020-03-27"]},{"type":"character","attributes":{},"value":["R Analytics"]},{"type":"character","attributes":{},"value":["alookr","Binary Classification","데이터 정제","모델 적합","모델 진단"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_depth"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]}]}]}]}
+</script>
+<!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["2020-03-27-r-alookr_files/figure-html5/model18-1.png","2020-03-27-r-alookr_files/figure-html5/model19-1.png","2020-03-27-r-alookr_files/figure-html5/model19-2.png","2020-03-27-r-alookr_files/figure-html5/model19-3.png","2020-03-27-r-alookr_files/figure-html5/split_data7_2-1.png","2020-03-27-r-alookr_files/figure-html5/split_data7_2-2.png","2020-03-27-r-alookr_files/figure-html5/split_data7_2-3.png","2020-03-27-r-alookr_files/figure-html5/split_data7_2-4.png","2020-03-27-r-alookr_files/figure-html5/split_data7-1.png"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+<meta name="distill:offset" content="../.."/>
+
+<script type="application/javascript">
+
+  window.headroom_prevent_pin = false;
+
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+
+    // initialize headroom for banner
+    var header = $('header').get(0);
+    var headerHeight = header.offsetHeight;
+    var headroom = new Headroom(header, {
+      tolerance: 5,
+      onPin : function() {
+        if (window.headroom_prevent_pin) {
+          window.headroom_prevent_pin = false;
+          headroom.unpin();
+        }
+      }
+    });
+    headroom.init();
+    if(window.location.hash)
+      headroom.unpin();
+    $(header).addClass('headroom--transition');
+
+    // offset scroll location for banner on hash change
+    // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+    window.addEventListener("hashchange", function(event) {
+      window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+    });
+
+    // responsive menu
+    $('.distill-site-header').each(function(i, val) {
+      var topnav = $(this);
+      var toggle = topnav.find('.nav-toggle');
+      toggle.on('click', function() {
+        topnav.toggleClass('responsive');
+      });
+    });
+
+    // nav dropdowns
+    $('.nav-dropbtn').click(function(e) {
+      $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+      $(this).parent().siblings('.nav-dropdown')
+         .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $("body").click(function(e){
+      $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $(".nav-dropdown").click(function(e){
+      e.stopPropagation();
+    });
+  });
+</script>
+
+<style type="text/css">
+
+/* Theme (user-documented overrideables for nav appearance) */
+
+.distill-site-nav {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: #0F2E3D;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.distill-site-nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.distill-site-nav a:hover {
+  color: white;
+}
+
+@media print {
+  .distill-site-nav {
+    display: none;
+  }
+}
+
+.distill-site-header {
+
+}
+
+.distill-site-footer {
+
+}
+
+
+/* Site Header */
+
+.distill-site-header {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.distill-site-header .nav-left {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header .nav-left {
+    margin-left: 0;
+  }
+}
+
+
+.distill-site-header .nav-right {
+  float: right;
+  margin-right: 8px;
+}
+
+.distill-site-header a,
+.distill-site-header .title {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 10px 14px 10px;
+}
+
+.distill-site-header .title {
+  font-size: 18px;
+  min-width: 150px;
+}
+
+.distill-site-header .logo {
+  padding: 0;
+}
+
+.distill-site-header .logo img {
+  display: none;
+  max-height: 20px;
+  width: auto;
+  margin-bottom: -4px;
+}
+
+.distill-site-header .nav-image img {
+  max-height: 18px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: -3px;
+}
+
+
+
+@media screen and (min-width: 1000px) {
+  .distill-site-header .logo img {
+    display: inline-block;
+  }
+  .distill-site-header .nav-left {
+    margin-left: 20px;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 20px;
+  }
+  .distill-site-header .title {
+    padding-left: 12px;
+  }
+}
+
+
+.distill-site-header .nav-toggle {
+  display: none;
+}
+
+.nav-dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.nav-dropdown .nav-dropbtn {
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 10px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  margin-top: 1px;
+  z-index: 2;
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+  z-index: 1;
+  margin-top: 2px;
+  white-space: nowrap;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.nav-dropdown-content hr {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-dropdown-active {
+  display: block;
+}
+
+.nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
+  color: black;
+  padding: 6px 24px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.nav-dropdown-content .nav-dropdown-header {
+  display: block;
+  padding: 5px 24px;
+  padding-bottom: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999;
+  white-space: nowrap;
+}
+
+.nav-dropdown:hover .nav-dropbtn {
+  color: white;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.nav-right .nav-dropdown-content {
+  margin-left: -45%;
+  right: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
+  .distill-site-header a.nav-toggle {
+    float: right;
+    display: block;
+  }
+  .distill-site-header .title {
+    margin-left: 0;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 0;
+  }
+  .distill-site-header {
+    overflow: hidden;
+  }
+  .nav-right .nav-dropdown-content {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-header.responsive {position: relative; min-height: 500px; }
+  .distill-site-header.responsive a.nav-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .distill-site-header.responsive a,
+  .distill-site-header.responsive .nav-dropdown {
+    display: block;
+    text-align: left;
+  }
+  .distill-site-header.responsive .nav-left,
+  .distill-site-header.responsive .nav-right {
+    width: 100%;
+  }
+  .distill-site-header.responsive .nav-dropdown {float: none;}
+  .distill-site-header.responsive .nav-dropdown-content {position: relative;}
+  .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Site Footer */
+
+.distill-site-footer {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 3;
+  margin-top: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+/* Headroom */
+
+d-title {
+  padding-top: 6rem;
+}
+
+@media print {
+  d-title {
+    padding-top: 4rem;
+  }
+}
+
+.headroom {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.headroom--transition {
+  transition: all .4s ease-in-out;
+}
+
+.headroom--unpinned {
+  top: -100px;
+}
+
+.headroom--pinned {
+  top: 0;
+}
+
+/* adjust viewport for navbar height */
+/* helps vertically center bootstrap (non-distill) content */
+.min-vh-100 {
+  min-height: calc(100vh - 100px) !important;
+}
+
+</style>
+
+<script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+<link href="../../site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
+<link href="../../site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
+<script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
+<script src="../../site_libs/autocomplete-0.37.1/autocomplete.min.js"></script>
+<script src="../../site_libs/fuse-6.4.1/fuse.min.js"></script>
+
+<script type="application/javascript">
+
+function getMeta(metaName) {
+  var metas = document.getElementsByTagName('meta');
+  for (let i = 0; i < metas.length; i++) {
+    if (metas[i].getAttribute('name') === metaName) {
+      return metas[i].getAttribute('content');
+    }
+  }
+  return '';
+}
+
+function offsetURL(url) {
+  var offset = getMeta('distill:offset');
+  return offset ? offset + '/' + url : url;
+}
+
+function createFuseIndex() {
+
+  // create fuse index
+  var options = {
+    keys: [
+      { name: 'title', weight: 20 },
+      { name: 'categories', weight: 15 },
+      { name: 'description', weight: 10 },
+      { name: 'contents', weight: 5 },
+    ],
+    ignoreLocation: true,
+    threshold: 0
+  };
+  var fuse = new window.Fuse([], options);
+
+  // fetch the main search.json
+  return fetch(offsetURL('search.json'))
+    .then(function(response) {
+      if (response.status == 200) {
+        return response.json().then(function(json) {
+          // index main articles
+          json.articles.forEach(function(article) {
+            fuse.add(article);
+          });
+          // download collections and index their articles
+          return Promise.all(json.collections.map(function(collection) {
+            return fetch(offsetURL(collection)).then(function(response) {
+              if (response.status === 200) {
+                return response.json().then(function(articles) {
+                  articles.forEach(function(article) {
+                    fuse.add(article);
+                  });
+                })
+              } else {
+                return Promise.reject(
+                  new Error('Unexpected status from search index request: ' +
+                            response.status)
+                );
+              }
+            });
+          })).then(function() {
+            return fuse;
+          });
+        });
+
+      } else {
+        return Promise.reject(
+          new Error('Unexpected status from search index request: ' +
+                      response.status)
+        );
+      }
+    });
+}
+
+window.document.addEventListener("DOMContentLoaded", function (event) {
+
+  // get search element (bail if we don't have one)
+  var searchEl = window.document.getElementById('distill-search');
+  if (!searchEl)
+    return;
+
+  createFuseIndex()
+    .then(function(fuse) {
+
+      // make search box visible
+      searchEl.classList.remove('hidden');
+
+      // initialize autocomplete
+      var options = {
+        autoselect: true,
+        hint: false,
+        minLength: 2,
+      };
+      window.autocomplete(searchEl, options, [{
+        source: function(query, callback) {
+          const searchOptions = {
+            isCaseSensitive: false,
+            shouldSort: true,
+            minMatchCharLength: 2,
+            limit: 10,
+          };
+          var results = fuse.search(query, searchOptions);
+          callback(results
+            .map(function(result) { return result.item; })
+          );
+        },
+        templates: {
+          suggestion: function(suggestion) {
+            var img = suggestion.preview && Object.keys(suggestion.preview).length > 0
+              ? `<img src="${offsetURL(suggestion.preview)}"</img>`
+              : '';
+            var html = `
+              <div class="search-item">
+                <h3>${suggestion.title}</h3>
+                <div class="search-item-description">
+                  ${suggestion.description || ''}
+                </div>
+                <div class="search-item-preview">
+                  ${img}
+                </div>
+              </div>
+            `;
+            return html;
+          }
+        }
+      }]).on('autocomplete:selected', function(event, suggestion) {
+        window.location.href = offsetURL(suggestion.path);
+      });
+      // remove inline display style on autocompleter (we want to
+      // manage responsive display via css)
+      $('.algolia-autocomplete').css("display", "");
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+
+});
+
+</script>
+
+<style type="text/css">
+
+.nav-search {
+  font-size: x-small;
+}
+
+/* Algolioa Autocomplete */
+
+.algolia-autocomplete {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: sub;
+  background-color: white;
+  color: black;
+  padding: 6px;
+  padding-top: 8px;
+  padding-bottom: 0;
+  border-radius: 6px;
+  border: 1px #0F2E3D solid;
+  width: 180px;
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-nav .algolia-autocomplete {
+    display: none;
+    visibility: hidden;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete {
+    display: inline-block;
+    visibility: visible;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete .aa-dropdown-menu {
+    margin-left: 0;
+    width: 400px;
+    max-height: 400px;
+  }
+}
+
+.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+  width: 90%;
+  outline: none;
+  border: none;
+}
+
+.algolia-autocomplete .aa-hint {
+  color: #999;
+}
+.algolia-autocomplete .aa-dropdown-menu {
+  width: 550px;
+  max-height: 70vh;
+  overflow-x: visible;
+  overflow-y: scroll;
+  padding: 5px;
+  margin-top: 3px;
+  margin-left: -150px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #999;
+  border-top: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+  cursor: pointer;
+  padding: 5px 4px;
+  border-bottom: 1px solid #eee;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion:last-of-type {
+  border-bottom: none;
+  margin-bottom: 2px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item {
+  overflow: hidden;
+  font-size: 0.8em;
+  line-height: 1.4em;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item h3 {
+  font-size: 1rem;
+  margin-block-start: 0;
+  margin-block-end: 5px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-description {
+  display: inline-block;
+  overflow: hidden;
+  height: 2.8em;
+  width: 80%;
+  margin-right: 4%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview {
+  display: inline-block;
+  width: 15%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img {
+  height: 3em;
+  width: auto;
+  display: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img[src] {
+  display: initial;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+  background-color: #eee;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+  font-weight: bold;
+  font-style: normal;
+}
+
+</style>
+
+
+<!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+<style type="text/css">
+
+body {
+  background-color: white;
+}
+
+.pandoc-table {
+  width: 100%;
+}
+
+.pandoc-table>caption {
+  margin-bottom: 10px;
+}
+
+.pandoc-table th:not([align]) {
+  text-align: left;
+}
+
+.pagedtable-footer {
+  font-size: 15px;
+}
+
+d-byline .byline {
+  grid-template-columns: 2fr 2fr;
+}
+
+d-byline .byline h3 {
+  margin-block-start: 1.5em;
+}
+
+d-byline .byline .authors-affiliations h3 {
+  margin-block-start: 0.5em;
+}
+
+.authors-affiliations .orcid-id {
+  width: 16px;
+  height:16px;
+  margin-left: 4px;
+  margin-right: 4px;
+  vertical-align: middle;
+  padding-bottom: 2px;
+}
+
+d-title .dt-tags {
+  margin-top: 1em;
+  grid-column: text;
+}
+
+.dt-tags .dt-tag {
+  text-decoration: none;
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0em 0.4em;
+  margin-right: 0.5em;
+  margin-bottom: 0.4em;
+  font-size: 70%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+d-article table.gt_table td,
+d-article table.gt_table th {
+  border-bottom: none;
+}
+
+.html-widget {
+  margin-bottom: 2.0em;
+}
+
+.l-screen-inset {
+  padding-right: 16px;
+}
+
+.l-screen .caption {
+  margin-left: 10px;
+}
+
+.shaded {
+  background: rgb(247, 247, 247);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .html-widget {
+  margin-bottom: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .shaded-content {
+  background: white;
+}
+
+.text-output {
+  margin-top: 0;
+  line-height: 1.5em;
+}
+
+.hidden {
+  display: none !important;
+}
+
+d-article {
+  padding-top: 2.5rem;
+  padding-bottom: 30px;
+}
+
+d-appendix {
+  padding-top: 30px;
+}
+
+d-article>p>img {
+  width: 100%;
+}
+
+d-article h2 {
+  margin: 1rem 0 1.5rem 0;
+}
+
+d-article h3 {
+  margin-top: 1.5rem;
+}
+
+d-article iframe {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 2.0em;
+  width: 100%;
+}
+
+/* Tweak code blocks */
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: auto;
+}
+
+d-article div.sourceCode {
+  background-color: white;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 10px;
+  font-size: 12px;
+  border-left: 2px solid rgba(0,0,0,0.1);
+}
+
+d-article pre {
+  font-size: 12px;
+  color: black;
+  background: none;
+  margin-top: 0;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+d-article pre a {
+  border-bottom: none;
+}
+
+d-article pre a:hover {
+  border-bottom: none;
+  text-decoration: underline;
+}
+
+d-article details {
+  grid-column: text;
+  margin-bottom: 0.8em;
+}
+
+@media(min-width: 768px) {
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: visible !important;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 18px;
+  font-size: 14px;
+}
+
+d-article pre {
+  font-size: 14px;
+}
+
+}
+
+figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+/* CSS for d-contents */
+
+.d-contents {
+  grid-column: text;
+  color: rgba(0,0,0,0.8);
+  font-size: 0.9em;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+  padding-bottom: 0.5em;
+  margin-bottom: 1em;
+  padding-left: 0.25em;
+  justify-self: start;
+}
+
+@media(min-width: 1000px) {
+  .d-contents.d-contents-float {
+    height: 0;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    justify-self: center;
+    padding-right: 3em;
+    padding-left: 2em;
+  }
+}
+
+.d-contents nav h3 {
+  font-size: 18px;
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+.d-contents li {
+  list-style-type: none
+}
+
+.d-contents nav > ul {
+  padding-left: 0;
+}
+
+.d-contents ul {
+  padding-left: 1em
+}
+
+.d-contents nav ul li {
+  margin-top: 0.6em;
+  margin-bottom: 0.2em;
+}
+
+.d-contents nav a {
+  font-size: 13px;
+  border-bottom: none;
+  text-decoration: none
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.d-contents nav a:hover {
+  text-decoration: underline solid rgba(0, 0, 0, 0.6)
+}
+
+.d-contents nav > ul > li > a {
+  font-weight: 600;
+}
+
+.d-contents nav > ul > li > ul {
+  font-weight: inherit;
+}
+
+.d-contents nav > ul > li > ul > li {
+  margin-top: 0.2em;
+}
+
+
+.d-contents nav ul {
+  margin-top: 0;
+  margin-bottom: 0.25em;
+}
+
+.d-article-with-toc h2:nth-child(2) {
+  margin-top: 0;
+}
+
+
+/* Figure */
+
+.figure {
+  position: relative;
+  margin-bottom: 2.5em;
+  margin-top: 1.5em;
+}
+
+.figure img {
+  width: 100%;
+}
+
+.figure .caption {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  line-height: 1.5em;
+}
+
+.figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.figure .caption a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.figure .caption b,
+.figure .caption strong, {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1.0);
+}
+
+/* Citations */
+
+d-article .citation {
+  color: inherit;
+  cursor: inherit;
+}
+
+div.hanging-indent{
+  margin-left: 1em; text-indent: -1em;
+}
+
+/* Citation hover box */
+
+.tippy-box[data-theme~=light-border] {
+  background-color: rgba(250, 250, 250, 0.95);
+}
+
+.tippy-content > p {
+  margin-bottom: 0;
+  padding: 2px;
+}
+
+
+/* Tweak 1000px media break to show more text */
+
+@media(min-width: 1000px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 16px;
+  }
+
+  .grid {
+    grid-column-gap: 16px;
+  }
+
+  d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+  }
+  figure .caption, .figure .caption, figure figcaption {
+    font-size: 13px;
+  }
+}
+
+@media(min-width: 1180px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 32px;
+  }
+
+  .grid {
+    grid-column-gap: 32px;
+  }
+}
+
+
+/* Get the citation styles for the appendix (not auto-injected on render since
+   we do our own rendering of the citation appendix) */
+
+d-appendix .citation-appendix,
+.d-appendix .citation-appendix {
+  font-size: 11px;
+  line-height: 15px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 18px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.02);
+  padding: 10px 18px;
+  border-radius: 3px;
+  color: rgba(150, 150, 150, 1);
+  overflow: hidden;
+  margin-top: -12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Include appendix styles here so they can be overridden */
+
+d-appendix {
+  contain: layout style;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-top: 60px;
+  margin-bottom: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  color: rgba(0,0,0,0.5);
+  padding-top: 60px;
+  padding-bottom: 48px;
+}
+
+d-appendix h3 {
+  grid-column: page-start / text-start;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 1em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.65);
+}
+
+d-appendix h3 + * {
+  margin-top: 1em;
+}
+
+d-appendix ol {
+  padding: 0 0 0 15px;
+}
+
+@media (min-width: 768px) {
+  d-appendix ol {
+    padding: 0 0 0 30px;
+    margin-left: -30px;
+  }
+}
+
+d-appendix li {
+  margin-bottom: 1em;
+}
+
+d-appendix a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+d-appendix > * {
+  grid-column: text;
+}
+
+d-appendix > d-footnote-list,
+d-appendix > d-citation-list,
+d-appendix > distill-appendix {
+  grid-column: screen;
+}
+
+/* Include footnote styles here so they can be overridden */
+
+d-footnote-list {
+  contain: layout style;
+}
+
+d-footnote-list > * {
+  grid-column: text;
+}
+
+d-footnote-list a.footnote-backlink {
+  color: rgba(0,0,0,0.3);
+  padding-left: 0.5em;
+}
+
+
+
+/* Anchor.js */
+
+.anchorjs-link {
+  /*transition: all .25s linear; */
+  text-decoration: none;
+  border-bottom: none;
+}
+*:hover > .anchorjs-link {
+  margin-left: -1.125em !important;
+  text-decoration: none;
+  border-bottom: none;
+}
+
+/* Social footer */
+
+.social_footer {
+  margin-top: 30px;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.67);
+}
+
+.disqus-comments {
+  margin-right: 30px;
+}
+
+.disqus-comment-count {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+#disqus_thread {
+  margin-top: 30px;
+}
+
+.article-sharing a {
+  border-bottom: none;
+  margin-right: 8px;
+}
+
+.article-sharing a:hover {
+  border-bottom: none;
+}
+
+.sidebar-section.subscribe {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.subscribe p {
+  margin-bottom: 0.5em;
+}
+
+
+.article-footer .subscribe {
+  font-size: 15px;
+  margin-top: 45px;
+}
+
+
+.sidebar-section.custom {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.custom p {
+  margin-bottom: 0.5em;
+}
+
+/* Styles for listing layout (hide title) */
+.layout-listing d-title, .layout-listing .d-title {
+  display: none;
+}
+
+/* Styles for posts lists (not auto-injected) */
+
+
+.posts-with-sidebar {
+  padding-left: 45px;
+  padding-right: 45px;
+}
+
+.posts-list .description h2,
+.posts-list .description p {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+.posts-list .description h2 {
+  font-weight: 700;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.posts-list h2.post-tag {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding-bottom: 12px;
+}
+.posts-list {
+  margin-top: 60px;
+  margin-bottom: 24px;
+}
+
+.posts-list .post-preview {
+  text-decoration: none;
+  overflow: hidden;
+  display: block;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 24px 0;
+}
+
+.post-preview-last {
+  border-bottom: none !important;
+}
+
+.posts-list .posts-list-caption {
+  grid-column: screen;
+  font-weight: 400;
+}
+
+.posts-list .post-preview h2 {
+  margin: 0 0 6px 0;
+  line-height: 1.2em;
+  font-style: normal;
+  font-size: 24px;
+}
+
+.posts-list .post-preview p {
+  margin: 0 0 12px 0;
+  line-height: 1.4em;
+  font-size: 16px;
+}
+
+.posts-list .post-preview .thumbnail {
+  box-sizing: border-box;
+  margin-bottom: 24px;
+  position: relative;
+  max-width: 500px;
+}
+.posts-list .post-preview img {
+  width: 100%;
+  display: block;
+}
+
+.posts-list .metadata {
+  font-size: 12px;
+  line-height: 1.4em;
+  margin-bottom: 18px;
+}
+
+.posts-list .metadata > * {
+  display: inline-block;
+}
+
+.posts-list .metadata .publishedDate {
+  margin-right: 2em;
+}
+
+.posts-list .metadata .dt-authors {
+  display: block;
+  margin-top: 0.3em;
+  margin-right: 2em;
+}
+
+.posts-list .dt-tags {
+  display: block;
+  line-height: 1em;
+}
+
+.posts-list .dt-tags .dt-tag {
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0.3em 0.4em;
+  margin-right: 0.2em;
+  margin-bottom: 0.4em;
+  font-size: 60%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.posts-list img {
+  opacity: 1;
+}
+
+.posts-list img[data-src] {
+  opacity: 0;
+}
+
+.posts-more {
+  clear: both;
+}
+
+
+.posts-sidebar {
+  font-size: 16px;
+}
+
+.posts-sidebar h3 {
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.sidebar-section {
+  margin-bottom: 30px;
+}
+
+.categories ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.categories li {
+  color: rgba(0, 0, 0, 0.8);
+  margin-bottom: 0;
+}
+
+.categories li>a {
+  border-bottom: none;
+}
+
+.categories li>a:hover {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.categories .active {
+  font-weight: 600;
+}
+
+.categories .category-count {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+
+@media(min-width: 768px) {
+  .posts-list .post-preview h2 {
+    font-size: 26px;
+  }
+  .posts-list .post-preview .thumbnail {
+    float: right;
+    width: 30%;
+    margin-bottom: 0;
+  }
+  .posts-list .post-preview .description {
+    float: left;
+    width: 45%;
+  }
+  .posts-list .post-preview .metadata {
+    float: left;
+    width: 20%;
+    margin-top: 8px;
+  }
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.5em;
+    font-size: 16px;
+  }
+  .posts-with-sidebar .posts-list {
+    float: left;
+    width: 75%;
+  }
+  .posts-with-sidebar .posts-sidebar {
+    float: right;
+    width: 20%;
+    margin-top: 60px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+}
+
+
+/* Improve display for browsers without grid (IE/Edge <= 15) */
+
+.downlevel {
+  line-height: 1.6em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
+
+.downlevel .d-title {
+  padding-top: 6rem;
+  padding-bottom: 1.5rem;
+}
+
+.downlevel .d-title h1 {
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1.1em;
+  margin: 0 0 0.5rem;
+}
+
+.downlevel .d-title p {
+  font-weight: 300;
+  font-size: 1.2rem;
+  line-height: 1.55em;
+  margin-top: 0;
+}
+
+.downlevel .d-byline {
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  font-size: 0.8rem;
+  line-height: 1.8em;
+}
+
+.downlevel .section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.downlevel .d-article {
+  font-size: 1.06rem;
+  line-height: 1.7em;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+
+.downlevel .d-appendix {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.5);
+  padding-top: 40px;
+  padding-bottom: 48px;
+}
+
+.downlevel .footnotes ol {
+  padding-left: 13px;
+}
+
+.downlevel .base-grid,
+.downlevel .distill-header,
+.downlevel .d-title,
+.downlevel .d-abstract,
+.downlevel .d-article,
+.downlevel .d-appendix,
+.downlevel .distill-appendix,
+.downlevel .d-byline,
+.downlevel .d-footnote-list,
+.downlevel .d-citation-list,
+.downlevel .distill-footer,
+.downlevel .appendix-bottom,
+.downlevel .posts-container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+@media(min-width: 768px) {
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+  padding-left: 150px;
+  padding-right: 150px;
+  max-width: 900px;
+}
+}
+
+.downlevel pre code {
+  display: block;
+  border-left: 2px solid rgba(0, 0, 0, .1);
+  padding: 0 0 0 20px;
+  font-size: 14px;
+}
+
+.downlevel code, .downlevel pre {
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+.downlevel .posts-list .post-preview {
+  color: inherit;
+}
+
+
+
+</style>
+
+<script type="application/javascript">
+
+function is_downlevel_browser() {
+  if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                 window.navigator.userAgent)) {
+    return true;
+  } else {
+    return window.load_distill_framework === undefined;
+  }
+}
+
+// show body when load is complete
+function on_load_complete() {
+
+  // add anchors
+  if (window.anchors) {
+    window.anchors.options.placement = 'left';
+    window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+  }
+
+
+  // set body to visible
+  document.body.style.visibility = 'visible';
+
+  // force redraw for leaflet widgets
+  if (window.HTMLWidgets) {
+    var maps = window.HTMLWidgets.findAll(".leaflet");
+    $.each(maps, function(i, el) {
+      var map = this.getMap();
+      map.invalidateSize();
+      map.eachLayer(function(layer) {
+        if (layer instanceof L.TileLayer)
+          layer.redraw();
+      });
+    });
+  }
+
+  // trigger 'shown' so htmlwidgets resize
+  $('d-article').trigger('shown');
+}
+
+function init_distill() {
+
+  init_common();
+
+  // create front matter
+  var front_matter = $('<d-front-matter></d-front-matter>');
+  $('#distill-front-matter').wrap(front_matter);
+
+  // create d-title
+  $('.d-title').changeElementType('d-title');
+
+  // create d-byline
+  var byline = $('<d-byline></d-byline>');
+  $('.d-byline').replaceWith(byline);
+
+  // create d-article
+  var article = $('<d-article></d-article>');
+  $('.d-article').wrap(article).children().unwrap();
+
+  // move posts container into article
+  $('.posts-container').appendTo($('d-article'));
+
+  // create d-appendix
+  $('.d-appendix').changeElementType('d-appendix');
+
+  // flag indicating that we have appendix items
+  var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+  // replace footnotes with <d-footnote>
+  $('.footnote-ref').each(function(i, val) {
+    appendix = true;
+    var href = $(this).attr('href');
+    var id = href.replace('#', '');
+    var fn = $('#' + id);
+    var fn_p = $('#' + id + '>p');
+    fn_p.find('.footnote-back').remove();
+    var text = fn_p.html();
+    var dtfn = $('<d-footnote></d-footnote>');
+    dtfn.html(text);
+    $(this).replaceWith(dtfn);
+  });
+  // remove footnotes
+  $('.footnotes').remove();
+
+  // move refs into #references-listing
+  $('#references-listing').replaceWith($('#refs'));
+
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    var id = $(this).attr('id');
+    $('.d-contents a[href="#' + id + '"]').parent().remove();
+    appendix = true;
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+  });
+
+  // show d-appendix if we have appendix content
+  $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+  // localize layout chunks to just output
+  $('.layout-chunk').each(function(i, val) {
+
+    // capture layout
+    var layout = $(this).attr('data-layout');
+
+    // apply layout to markdown level block elements
+    var elements = $(this).children().not('details, div.sourceCode, pre, script');
+    elements.each(function(i, el) {
+      var layout_div = $('<div class="' + layout + '"></div>');
+      if (layout_div.hasClass('shaded')) {
+        var shaded_content = $('<div class="shaded-content"></div>');
+        $(this).wrap(shaded_content);
+        $(this).parent().wrap(layout_div);
+      } else {
+        $(this).wrap(layout_div);
+      }
+    });
+
+
+    // unwrap the layout-chunk div
+    $(this).children().unwrap();
+  });
+
+  // remove code block used to force  highlighting css
+  $('.distill-force-highlighting-css').parent().remove();
+
+  // remove empty line numbers inserted by pandoc when using a
+  // custom syntax highlighting theme
+  $('code.sourceCode a:empty').remove();
+
+  // load distill framework
+  load_distill_framework();
+
+  // wait for window.distillRunlevel == 4 to do post processing
+  function distill_post_process() {
+
+    if (!window.distillRunlevel || window.distillRunlevel < 4)
+      return;
+
+    // hide author/affiliations entirely if we have no authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+    if (!have_authors)
+      $('d-byline').addClass('hidden');
+
+    // article with toc class
+    $('.d-contents').parent().addClass('d-article-with-toc');
+
+    // strip links that point to #
+    $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+    // add orcid ids
+    $('.authors-affiliations').find('.author').each(function(i, el) {
+      var orcid_id = front_matter.authors[i].orcidID;
+      if (orcid_id) {
+        var a = $('<a></a>');
+        a.attr('href', 'https://orcid.org/' + orcid_id);
+        var img = $('<img></img>');
+        img.addClass('orcid-id');
+        img.attr('alt', 'ORCID ID');
+        img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+        a.append(img);
+        $(this).append(a);
+      }
+    });
+
+    // hide elements of author/affiliations grid that have no value
+    function hide_byline_column(caption) {
+      $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+    }
+
+    // affiliations
+    var have_affiliations = false;
+    for (var i = 0; i<front_matter.authors.length; ++i) {
+      var author = front_matter.authors[i];
+      if (author.affiliation !== "&nbsp;") {
+        have_affiliations = true;
+        break;
+      }
+    }
+    if (!have_affiliations)
+      $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+    // published date
+    if (!front_matter.publishedDate)
+      hide_byline_column("Published");
+
+    // document object identifier
+    var doi = $('d-byline').find('h3:contains("DOI")');
+    var doi_p = doi.next().empty();
+    if (!front_matter.doi) {
+      // if we have a citation and valid citationText then link to that
+      if ($('#citation').length > 0 && front_matter.citationText) {
+        doi.html('Citation');
+        $('<a href="#citation"></a>')
+          .text(front_matter.citationText)
+          .appendTo(doi_p);
+      } else {
+        hide_byline_column("DOI");
+      }
+    } else {
+      $('<a></a>')
+         .attr('href', "https://doi.org/" + front_matter.doi)
+         .html(front_matter.doi)
+         .appendTo(doi_p);
+    }
+
+     // change plural form of authors/affiliations
+    if (front_matter.authors.length === 1) {
+      var grid = $('.authors-affiliations');
+      grid.children('h3:contains("Authors")').text('Author');
+      grid.children('h3:contains("Affiliations")').text('Affiliation');
+    }
+
+    // remove d-appendix and d-footnote-list local styles
+    $('d-appendix > style:first-child').remove();
+    $('d-footnote-list > style:first-child').remove();
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // hoverable references
+    $('span.citation[data-cites]').each(function() {
+      var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+      window.tippy(this, {
+        allowHTML: true,
+        content: refHtml,
+        maxWidth: 500,
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start'
+      });
+    });
+
+    // clear polling timer
+    clearInterval(tid);
+
+    // show body now that everything is ready
+    on_load_complete();
+  }
+
+  var tid = setInterval(distill_post_process, 50);
+  distill_post_process();
+
+}
+
+function init_downlevel() {
+
+  init_common();
+
+   // insert hr after d-title
+  $('.d-title').after($('<hr class="section-separator"/>'));
+
+  // check if we have authors
+  var front_matter = JSON.parse($("#distill-front-matter").html());
+  var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+  // manage byline/border
+  if (!have_authors)
+    $('.d-byline').remove();
+  $('.d-byline').after($('<hr class="section-separator"/>'));
+  $('.d-byline a').remove();
+
+  // remove toc
+  $('.d-contents').remove();
+
+  // move appendix elements
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+  });
+
+
+  // inject headers into references and footnotes
+  var refs_header = $('<h3></h3>');
+  refs_header.text('References');
+  $('#refs').prepend(refs_header);
+
+  var footnotes_header = $('<h3></h3');
+  footnotes_header.text('Footnotes');
+  $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+  // move appendix-bottom entries to the bottom
+  $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+  $('.appendix-bottom').remove();
+
+  // remove appendix if it's empty
+  if ($('.d-appendix').children().length === 0)
+    $('.d-appendix').remove();
+
+  // prepend separator above appendix
+  $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+  // trim code
+  $('pre>code').each(function(i, val) {
+    $(this).html($.trim($(this).html()));
+  });
+
+  // move posts-container right before article
+  $('.posts-container').insertBefore($('.d-article'));
+
+  $('body').addClass('downlevel');
+
+  on_load_complete();
+}
+
+
+function init_common() {
+
+  // jquery plugin to change element types
+  (function($) {
+    $.fn.changeElementType = function(newType) {
+      var attrs = {};
+
+      $.each(this[0].attributes, function(idx, attr) {
+        attrs[attr.nodeName] = attr.nodeValue;
+      });
+
+      this.replaceWith(function() {
+        return $("<" + newType + "/>", attrs).append($(this).contents());
+      });
+    };
+  })(jQuery);
+
+  // prevent underline for linked images
+  $('a > img').parent().css({'border-bottom' : 'none'});
+
+  // mark non-body figures created by knitr chunks as 100% width
+  $('.layout-chunk').each(function(i, val) {
+    var figures = $(this).find('img, .html-widget');
+    if ($(this).attr('data-layout') !== "l-body") {
+      figures.css('width', '100%');
+    } else {
+      figures.css('max-width', '100%');
+      figures.filter("[width]").each(function(i, val) {
+        var fig = $(this);
+        fig.css('width', fig.attr('width') + 'px');
+      });
+
+    }
+  });
+
+  // auto-append index.html to post-preview links in file: protocol
+  // and in rstudio ide preview
+  $('.post-preview').each(function(i, val) {
+    if (window.location.protocol === "file:")
+      $(this).attr('href', $(this).attr('href') + "index.html");
+  });
+
+  // get rid of index.html references in header
+  if (window.location.protocol !== "file:") {
+    $('.distill-site-header a[href]').each(function(i,val) {
+      $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+    });
+  }
+
+  // add class to pandoc style tables
+  $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+  $('.kable-table').children('table').addClass('pandoc-table');
+
+  // add figcaption style to table captions
+  $('caption').parent('table').addClass("figcaption");
+
+  // initialize posts list
+  if (window.init_posts_list)
+    window.init_posts_list();
+
+  // implmement disqus comment link
+  $('.disqus-comment-count').click(function() {
+    window.headroom_prevent_pin = true;
+    $('#disqus_thread').toggleClass('hidden');
+    if (!$('#disqus_thread').hasClass('hidden')) {
+      var offset = $(this).offset();
+      $(window).resize();
+      $('html, body').animate({
+        scrollTop: offset.top - 35
+      });
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (is_downlevel_browser())
+    init_downlevel();
+  else
+    window.addEventListener('WebComponentsReady', init_distill);
+});
+
+</script>
+
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+
+
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    sans-serif;
+  --mono-font:       monospace;
+  --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
+}
+
+/*-- ARTICLE METADATA --*/
+d-byline {
+  --heading-size:    0.6rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    18px;
+  --contents-size:   13px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       18px;
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+.distill-site-footer {
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+</style>
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+
+:root {
+  --custom-grey60: rgb(102, 102, 102);
+  --custom-grey20: rgb(204, 204, 204);
+  --custom-grey10: rgb(230, 230, 230);
+  --custom-blue: rgb(0, 114, 188);
+  --custom-lightblue: rgb(204, 227, 242);
+  --custom-orange: rgb(255, 127, 42); 
+  --custom-lightorange: rgb(255, 204, 170); 
+}
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    sans-serif;
+  --mono-font:       monospace;
+  --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
+}
+
+/*-- ARTICLE METADATA --*/
+d-byline {
+  --heading-size:    0.6rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    18px;
+  --contents-size:   13px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       18px;
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       var(--custom-blue);
+}
+
+.distill-site-footer {
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       var(--custom-blue);
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+
+.preface {
+  font-size: 11pt;
+  background-color: var(--custom-lightblue);
+  margin-top: 2em;
+  margin-bottom: 0.5em;  
+  padding: 1.5em;
+  padding-top: 1em;
+  border-color: DodgerBlue;
+}
+
+h1 {
+  font-size: 30px !important;  
+  color: var(--custom-blue) !important;
+  font-family: NanumSquare !important;
+  margin-top: 15px !important;
+  padding-top: 15px !important;  
+  margin-bottom: 15px !important;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 25px !important;  
+  color: var(--custom-blue) !important;  
+  font-family: NanumSquare !important;  
+  padding-top: 15px !important;  
+  margin-top: 15px !important;
+  padding-bottom: 10px !important;  
+  margin-bottom: 10px !important;    
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 20px !important;  
+  color: var(--custom-blue) !important;  
+  font-family: NanumSquare !important;  
+  margin-top: 10px !important;
+  margin-bottom: 10px !important; 
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;   
+  font-weight: bold;
+}
+
+d-byline h3 {
+  font-size: 0.6rem !important;   
+  font-weight: 400 !important;   
+  color: rgba(0, 0, 0, 0.5) !important;   
+  margin: 0 !important;   
+}
+    
+d-byline {
+  contain: content;
+  overflow: hidden;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 0.8rem;
+  line-height: 1.8em;
+  padding: 1.5rem 0;
+  min-height: 1.8em;
+} 
+
+.bg-blue,
+.bg-orange,
+.bg-grey {
+  padding: 1.6em;
+  margin-top: 1.0em;
+  margin-bottom: 1.0em;
+}
+.bg-blue {
+  background-color: var(--custom-lightblue);
+}
+.bg-orange {
+  background-color: var(--custom-lightorange);
+}
+.bg-grey {
+  background-color: var(--custom-grey20);
+}
+.bg-blue > *:last-child,
+.bg-orange > *:last-child,
+.bg-grey > *:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}</style>
+<style type="text/css">
+/* base style */
+
+/* FONT FAMILIES */
+
+:root {
+  --heading-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono-default: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  --body-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+body,
+.posts-list .post-preview p,
+.posts-list .description p {
+  font-family: var(--body-font), var(--body-default);
+}
+
+h1, h2, h3, h4, h5, h6,
+.posts-list .post-preview h2,
+.posts-list .description h2 {
+  font-family: var(--heading-font), var(--heading-default);
+}
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: var(--mono-font), var(--mono-default);
+}
+
+
+/*-- TITLE --*/
+d-title h1,
+.posts-list > h1 {
+  color: var(--title-color, black);
+}
+
+d-title h1 {
+  font-size: var(--title-size, 50px);
+}
+
+/*-- HEADERS --*/
+d-article h1,
+d-article h2,
+d-article h3,
+d-article h4,
+d-article h5,
+d-article h6 {
+  color: var(--header-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- BODY --*/
+d-article > p,  /* only text inside of <p> tags */
+d-article > ul, /* lists */
+d-article > ol {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+  font-size: var(--body-size, 1.06rem);
+}
+
+
+/*-- CODE --*/
+d-article div.sourceCode code,
+d-article pre code {
+  font-size: var(--code-size, 14px);
+}
+
+/*-- ASIDE --*/
+d-article aside {
+  font-size: var(--aside-size, 12px);
+  color: var(--aside-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- FIGURE CAPTIONS --*/
+figure .caption,
+figure figcaption,
+.figure .caption {
+  font-size: var(--fig-cap-size, 13px);
+  color: var(--fig-cap-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- METADATA --*/
+d-byline h3 {
+  font-size: var(--heading-size, 0.6rem);
+  color: var(--heading-color, rgba(0, 0, 0, 0.5));
+}
+
+d-byline {
+  font-size: var(--body-size, 0.8rem);
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+d-byline a,
+d-article d-byline a {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- TABLE OF CONTENTS --*/
+.d-contents nav h3 {
+  font-size: var(--heading-size, 18px);
+}
+
+.d-contents nav a {
+  font-size: var(--contents-size, 13px);
+}
+
+/*-- APPENDIX --*/
+d-appendix h3 {
+  font-size: var(--heading-size, 15px);
+  color: var(--heading-color, rgba(0, 0, 0, 0.65));
+}
+
+d-appendix {
+  font-size: var(--text-size, 0.8em);
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+d-appendix d-footnote-list a.footnote-backlink {
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+.distill-site-header .title {
+  font-size: var(--title-size, 18px);
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.distill-site-header a,
+.nav-dropdown .nav-dropbtn {
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.nav-dropdown .nav-dropbtn {
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  font-size: var(--text-size, 15px);
+}
+
+.distill-site-header a:hover,
+.nav-dropdown:hover .nav-dropbtn {
+  color: var(--hover-color, white);
+}
+
+.distill-site-header {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer a:hover {
+  color: var(--hover-color, white);
+}</style>
+<!--/radix_placeholder_distill-->
+  <script src="../../site_libs/header-attrs-2.8/header-attrs.js"></script>
+  <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
+  <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="../../site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="../../site_libs/tippy-6.2.7/tippy.umd.min.js"></script>
+  <script src="../../site_libs/anchor-4.2.2/anchor.min.js"></script>
+  <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
+  <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="../../site_libs/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+<!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"alookr - Binary classification modeling","description":"`alookr`은 이진분류 모델의 개발 과정에서 데이터 정제, 데이터의 traning set과 test set으로의 분리, 모델 적합, 적합된 모델의 평가 및 최적의 모델을 선정한다. 이 패키지는 `dplyr` 패키지와 협업하여 이진분류 데이터 분석 프로세스를 유연하게 처리해 준다.","authors":[{"author":"유충현","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2020-03-27T00:00:00.000+00:00","citationText":"유충현, 2020"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="distill-site-nav distill-site-header">
+<div class="nav-left">
+<a class="logo">
+<img src="../../images/rubik-cube-white.png" alt="Logo"/>
+</a>
+<a href="../../index.html" class="title">Dataholic</a>
+<input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
+</div>
+<div class="nav-right">
+<a href="../../index.html">Home</a>
+<a href="../../mydev.html">MyDevs</a>
+<a href="../../gallery.html">Gallery</a>
+<a href="../../about.html">About</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>alookr - Binary classification modeling</h1>
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+  <a href="../../index.html#category:R_Analytics" class="dt-tag">R Analytics</a>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p><code>alookr</code>은 이진분류 모델의 개발 과정에서 데이터 정제, 데이터의 traning set과 test set으로의 분리, 모델 적합, 적합된 모델의 평가 및 최적의 모델을 선정한다. 이 패키지는 <code>dplyr</code> 패키지와 협업하여 이진분류 데이터 분석 프로세스를 유연하게 처리해 준다.</p></p>
+</div>
+
+<div class="d-byline">
+  유충현  
+  
+<br/>2020-03-27
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#개요">개요</a></li>
+<li><a href="#alookr-설치">alookr 설치</a></li>
+<li><a href="#사용-방법">사용 방법</a></li>
+<li><a href="#데이터-정제">데이터 정제</a>
+<ul>
+<li><a href="#예제-데이터-생성하기">예제 데이터 생성하기</a></li>
+<li><a href="#데이터-정제-1">데이터 정제</a></li>
+<li><a href="#상관관계가-높은-변수의-진단-및-제거">상관관계가 높은 변수의 진단 및 제거</a></li>
+</ul></li>
+<li><a href="#training-set과-test-set-데이터-분할">training set과 test set 데이터 분할</a>
+<ul>
+<li><a href="#data-신용카드-연체-데이터">Data: 신용카드 연체 데이터</a></li>
+<li><a href="#데이터-분할">데이터 분할</a></li>
+<li><a href="#데이터셋의-비교">데이터셋의 비교</a></li>
+<li><a href="#training-set과-test-set의-추출">training set과 test set의 추출</a></li>
+</ul></li>
+<li><a href="#모델-적합-평가-및-예측modeling-and-evaluate-predict">모델 적합, 평가 및 예측(Modeling and Evaluate, Predict)</a>
+<ul>
+<li><a href="#data-wisconsin-breast-cancer-데이터">Data: Wisconsin Breast Cancer 데이터</a></li>
+<li><a href="#데이터-전처리">데이터 전처리</a></li>
+<li><a href="#데이터-분할-1">데이터 분할</a></li>
+<li><a href="#sampling_target를-이용한-불균형-클래스-핸들링">sampling_target()를 이용한 불균형 클래스 핸들링</a></li>
+<li><a href="#cleanse를-이용하여-분류-모델을-위한-데이터-정제">cleanse()를 이용하여 분류 모델을 위한 데이터 정제</a></li>
+<li><a href="#extract_set을-이용하여-모델-평가를-위한-test-set-추출">extract_set()을 이용하여 모델 평가를 위한 test set 추출</a></li>
+<li><a href="#run_models을-이용한-이진분류-모델-수행">run_models()을 이용한 이진분류 모델 수행</a></li>
+<li><a href="#모델의-평가">모델의 평가</a></li>
+<li><a href="#plot_performance이용한-roc-곡선의-시각화">plot_performance()이용한 ROC 곡선의 시각화</a></li>
+<li><a href="#예측">예측</a></li>
+</ul></li>
+</ul>
+</nav>
+</div>
+<h2 id="개요">개요</h2>
+<p><code>alookr</code>은 이진분류 모델의 개발 과정에서 데이터 정제, 데이터의 traning set과 test set으로의 분리, 모델 적합, 적합된 모델의 평가 및 최적의 모델을 선정한다. 이 패키지는 <code>dplyr</code> 패키지와 협업하여 이진분류 데이터 분석 프로세스를 유연하게 처리해 준다.</p>
+<p>주요 기능:</p>
+<ul>
+<li>데이터를 <em>traning set과 test set</em>으로 나눈다.</li>
+<li>여러 대표적인 <em>이진분류 모델</em>을 적합한다.</li>
+<li>적합한 이진분류 <em>모델을 평가</em>하고 <em>최적의 모델을 선정</em>한다.</li>
+<li>이진분류 모델의 <em>전 프로세스를 지원</em>한다.</li>
+</ul>
+<p><code>alookr</code>이라는 이름은 데이터 분석 과정에서 <code>looking at the analytics process</code>에서 유래하여 작명하였다.</p>
+<h2 id="alookr-설치">alookr 설치</h2>
+<p>CRAN에 등록된, 릴리즈된 패키지는 다음과 같이 설치한다.:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='st'>"alookr"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>혹은 GitHub에 등록된 vignettes이 없는 개발버전은 다음처럼 설치한다.:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>devtools</span><span class='fu'>::</span><span class='fu'><a href='https://devtools.r-lib.org//reference/remote-reexports.html'>install_github</a></span><span class='op'>(</span><span class='st'>"choonghyunryu/alookr"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>혹은 GitHub에 등록된 vignettes을 포함한 개발버전은 다음처럼 설치한다.:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ISLR"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>devtools</span><span class='fu'>::</span><span class='fu'><a href='https://devtools.r-lib.org//reference/remote-reexports.html'>install_github</a></span><span class='op'>(</span><span class='st'>"choonghyunryu/alookr"</span>, build_vignettes <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h2 id="사용-방법">사용 방법</h2>
+<p>alookr에는 몇 가지 vignette 파일을 포함하고 있는데, 이 포스트는 이를 기초로 작성하였다.</p>
+<p>제공되는 vignette는 다음과 같다.</p>
+<ul>
+<li>Cleansing the dataset</li>
+<li>Splitting the dataset
+<ul>
+<li>Split the data into a training set and a test set</li>
+</ul></li>
+<li>Classification Modeling
+<ul>
+<li>Modeling and Evaluate, Predict</li>
+</ul></li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/utils/browseVignettes.html'>browseVignettes</a></span><span class='op'>(</span>package <span class='op'>=</span> <span class='st'>"alookr"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h2 id="데이터-정제">데이터 정제</h2>
+<h3 id="예제-데이터-생성하기">예제 데이터 생성하기</h3>
+<p>alookr 패키지의 기초적인 사용 방법을 설명하기 위해서 <code>data_exam</code>라는 가상의 데이터를 생성한다. 이 데이터는 5개의 변수를 포함한다.</p>
+<p>예제를 위한 데이터는 다음과 같은 변수를 포함한다.:</p>
+<ul>
+<li>id : character</li>
+<li>year: character</li>
+<li>count: numeric</li>
+<li>alpha : character</li>
+<li>flag : character</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 샘플 데이터 생성</span>
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123L</span><span class='op'>)</span>
+<span class='va'>id</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>1000</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>letters</span>, <span class='fl'>5</span><span class='op'>)</span>, <span class='va'>x</span><span class='op'>)</span>, collapse <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>year</span> <span class='op'>&lt;-</span> <span class='st'>"2018"</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123L</span><span class='op'>)</span>
+<span class='va'>count</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, size <span class='op'>=</span> <span class='fl'>1000</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123L</span><span class='op'>)</span>
+<span class='va'>alpha</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>letters</span>, size <span class='op'>=</span> <span class='fl'>1000</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123L</span><span class='op'>)</span>
+<span class='va'>flag</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Y"</span>, <span class='st'>"N"</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fl'>1000</span>, prob <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.1</span>, <span class='fl'>0.9</span><span class='op'>)</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+
+<span class='va'>data_exam</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='va'>id</span>, <span class='va'>year</span>, <span class='va'>count</span>, <span class='va'>alpha</span>, <span class='va'>flag</span>, stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+
+<span class='co'># 데이터의 구조</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>data_exam</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>&#39;data.frame&#39;:   1000 obs. of  5 variables:
+ $ id   : chr  &quot;osncj1&quot; &quot;rvket2&quot; &quot;nvesi3&quot; &quot;chgji4&quot; ...
+ $ year : chr  &quot;2018&quot; &quot;2018&quot; &quot;2018&quot; &quot;2018&quot; ...
+ $ count: int  3 3 10 2 6 5 4 6 9 10 ...
+ $ alpha: chr  &quot;o&quot; &quot;s&quot; &quot;n&quot; &quot;c&quot; ...
+ $ flag : chr  &quot;N&quot; &quot;N&quot; &quot;N&quot; &quot;N&quot; ...</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 데이터의 집계</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>data_exam</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>      id                year               count       
+ Length:1000        Length:1000        Min.   : 1.000  
+ Class :character   Class :character   1st Qu.: 3.000  
+ Mode  :character   Mode  :character   Median : 6.000  
+                                       Mean   : 5.698  
+                                       3rd Qu.: 8.000  
+                                       Max.   :10.000  
+    alpha               flag          
+ Length:1000        Length:1000       
+ Class :character   Class :character  
+ Mode  :character   Mode  :character  
+                                      
+                                      
+                                      </code></pre>
+</div>
+<h3 id="데이터-정제-1">데이터 정제</h3>
+<p><code>cleanse()</code>는 이진분류 모델 적합을 수행하기 전에 데이터 정제를 수행한다.</p>
+<p><code>cleanse()</code>의 기능은 다음과 같다.:</p>
+<ul>
+<li>모든 관측치가 동일한 값을 갖는 변수의 제거</li>
+<li>유일한 값의 비중이 높은 변수의 제거</li>
+<li>character 변수를 factor로 변경</li>
+<li>결측치의 비중이 높은 변수의 제거</li>
+</ul>
+<h4 id="cleanse을-이용한-데이터의-정제">cleanse()을 이용한 데이터의 정제</h4>
+<p>다음 예제는 data_exam 데이터 프레임을 정제한다.:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>alookr</span><span class='op'>)</span>
+
+<span class='co'># 데이터 정제</span>
+<span class='va'>newDat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/cleanse.data.frame.html'>cleanse</a></span><span class='op'>(</span><span class='va'>data_exam</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>── Checking unique value ─────────────────────────── unique value is one ──
+• year
+
+── Checking unique rate ─────────────────────────────── high unique rate ──
+• id = 1000(1)
+
+── Checking character variables ─────────────────────── categorical data ──
+• alpha
+• flag</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 정제된 데이터의 구조</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>newDat</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>&#39;data.frame&#39;:   1000 obs. of  3 variables:
+ $ count: int  3 3 10 2 6 5 4 6 9 10 ...
+ $ alpha: Factor w/ 26 levels &quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;,..: 15 19 14 3 10 18 22 11 5 20 ...
+ $ flag : Factor w/ 2 levels &quot;N&quot;,&quot;Y&quot;: 1 1 1 1 2 1 1 1 1 1 ...</code></pre>
+</div>
+<ul>
+<li><code>remove variables whose unique value is one</code> : year 변수는 오직 “2018”라는 하나의 값만 가지고 있다.. 이런 변수는 모형적합에 필요치 않다. 그래서 제거된다.</li>
+<li><code>remove variables with high unique rate</code> : 범주형 변수에서 수준(levle)의 개수가 너무 많으면, 분류모델의 변수로 적당하지 않다. 이 경우에는 식별자(identifier)일 가능성이 높다. 그래서 범주형이나 문자열 변수에서 <strong>유일값의 비율</strong>로 정의된, <strong>수준의 개수/관측치의 개수</strong>가 큰 변수를 제거한다.
+<ul>
+<li>레벨의 개수가 1000인 변수 id의 유일값의 비율은 1이다. 그래서 이 변수는 제거 대상이다.</li>
+<li>변수 alpha의 유일값의 비율은 0.026이며, 이 변수로 제거된다.</li>
+</ul></li>
+<li><code>converts character variables to factor</code> : character 변수인 변수 flag는 factor로 변경된다.</li>
+</ul>
+<p>다음 예제처럼 <code>유일값의 비율</code>의 임계치를 변경하여, 범주형 변수의 제거를 조정할 수 있다.:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 데이터 정제</span>
+<span class='va'>newDat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/cleanse.data.frame.html'>cleanse</a></span><span class='op'>(</span><span class='va'>data_exam</span>, uniq_thres <span class='op'>=</span> <span class='fl'>0.03</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>── Checking unique value ─────────────────────────── unique value is one ──
+• year
+
+── Checking unique rate ─────────────────────────────── high unique rate ──
+• id = 1000(1)
+
+── Checking character variables ─────────────────────── categorical data ──
+• alpha
+• flag</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 정제된 데이터의 구조</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>newDat</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>&#39;data.frame&#39;:   1000 obs. of  3 variables:
+ $ count: int  3 3 10 2 6 5 4 6 9 10 ...
+ $ alpha: Factor w/ 26 levels &quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;,..: 15 19 14 3 10 18 22 11 5 20 ...
+ $ flag : Factor w/ 2 levels &quot;N&quot;,&quot;Y&quot;: 1 1 1 1 2 1 1 1 1 1 ...</code></pre>
+</div>
+<p>변수 alpha가 제거되지 않았다.</p>
+<p>데이터 정제에 유일값의 비율을 적용하지 않으려면, 다음처럼 uniq 인수값을 FALSE로 지정하면 된다.:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 데이터 정제</span>
+<span class='va'>newDat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/cleanse.data.frame.html'>cleanse</a></span><span class='op'>(</span><span class='va'>data_exam</span>, uniq <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>── Checking character variables ─────────────────────── categorical data ──
+• id
+• year
+• alpha
+• flag</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 정제된 데이터의 구조</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>newDat</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>&#39;data.frame&#39;:   1000 obs. of  5 variables:
+ $ id   : Factor w/ 1000 levels &quot;ablnc282&quot;,&quot;abqym54&quot;,..: 594 715 558 94 727 270 499 882 930 515 ...
+ $ year : Factor w/ 1 level &quot;2018&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+ $ count: int  3 3 10 2 6 5 4 6 9 10 ...
+ $ alpha: Factor w/ 26 levels &quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;,..: 15 19 14 3 10 18 22 11 5 20 ...
+ $ flag : Factor w/ 2 levels &quot;N&quot;,&quot;Y&quot;: 1 1 1 1 2 1 1 1 1 1 ...</code></pre>
+</div>
+<p>character 변수를 factor로 변경하지 않으려면, 다음처럼 char 인수값을 FALSE로 지정한다.:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 데이터 정제</span>
+<span class='va'>newDat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/cleanse.data.frame.html'>cleanse</a></span><span class='op'>(</span><span class='va'>data_exam</span>, char <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>── Checking unique value ─────────────────────────── unique value is one ──
+• year
+
+── Checking unique rate ─────────────────────────────── high unique rate ──
+• id = 1000(1)</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 정제된 데이터의 구조</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>newDat</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>&#39;data.frame&#39;:   1000 obs. of  3 variables:
+ $ count: int  3 3 10 2 6 5 4 6 9 10 ...
+ $ alpha: chr  &quot;o&quot; &quot;s&quot; &quot;n&quot; &quot;c&quot; ...
+ $ flag : chr  &quot;N&quot; &quot;N&quot; &quot;N&quot; &quot;N&quot; ...</code></pre>
+</div>
+<p>결측치가 포함된 변수를 제거하려면, missing 인수값을 FALSE로 지정한다. 다음 예제는 결측치가 포함된 flag 변수를 제거한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>data_exam</span><span class='op'>$</span><span class='va'>flag</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='cn'>NA</span> 
+
+<span class='co'># 데이터 정제</span>
+<span class='va'>newDat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/cleanse.data.frame.html'>cleanse</a></span><span class='op'>(</span><span class='va'>data_exam</span>, missing <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>── Checking missing value ────────────────────────────────── included NA ──
+• flag
+
+── Checking unique value ─────────────────────────── unique value is one ──
+• year
+
+── Checking unique rate ─────────────────────────────── high unique rate ──
+• id = 1000(1)
+
+── Checking character variables ─────────────────────── categorical data ──
+• alpha</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 정제된 데이터의 구조</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>newDat</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>&#39;data.frame&#39;:   1000 obs. of  2 variables:
+ $ count: int  3 3 10 2 6 5 4 6 9 10 ...
+ $ alpha: Factor w/ 26 levels &quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;,..: 15 19 14 3 10 18 22 11 5 20 ...</code></pre>
+</div>
+<h3 id="상관관계가-높은-변수의-진단-및-제거">상관관계가 높은 변수의 진단 및 제거</h3>
+<p><code>선형모형(linear model)</code>에서 독립변수간에 강한 상관관계(correlation)가 있으면, <code>다중공선성(multicollinearity)</code>이 발생한다. 따라서 상관관계가 존재하는 변수쌍에서 하나의 변수를 제거하는 것이 좋다.</p>
+<p>선형모형이 아니더라도 상관관계가 큰 변수쌍에서 하나의 변수를 제거하면, 모델 적합과정에서 연산 오버헤드를 줄일 수도 있다. 그리고 모델을 해석하는 것도 쉬워진다.</p>
+<h4 id="treatment_corr을-이용한-데이터-정제">treatment_corr()을 이용한 데이터 정제</h4>
+<p><code>treatment_corr()</code> 은 상관관계가 높은 변수의 쌍을 진단하거나 제거한다. <code>treatment_corr()</code> 은 수치형 변수에 대해서는 <code>피어슨(pearson)의 상관계수</code>를 범주형 변수에 대해서는 <code>스피어만(spearman)의 상관계수</code>를 계산한다.</p>
+<p>다음 예제는 상관관계가 높은 변수를 진단하고, 제거한다.:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 수치형 변수</span>
+<span class='va'>x1</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>100</span>
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>12L</span><span class='op'>)</span>
+<span class='va'>x2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, size <span class='op'>=</span> <span class='fl'>100</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>*</span> <span class='va'>x1</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1234L</span><span class='op'>)</span>
+<span class='va'>x3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, size <span class='op'>=</span> <span class='fl'>100</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>*</span> <span class='va'>x1</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>
+
+<span class='co'># 범주형 변수</span>
+<span class='va'>x4</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>20</span><span class='op'>]</span>, time <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>100L</span><span class='op'>)</span>
+<span class='va'>x5</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>20</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, size <span class='op'>=</span> <span class='fl'>20</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>]</span>, time <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>200L</span><span class='op'>)</span>
+<span class='va'>x6</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>20</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, size <span class='op'>=</span> <span class='fl'>20</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>]</span>, time <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>300L</span><span class='op'>)</span>
+<span class='va'>x7</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span>, size <span class='op'>=</span> <span class='fl'>100</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>exam</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='va'>x1</span>, <span class='va'>x2</span>, <span class='va'>x3</span>, <span class='va'>x4</span>, <span class='va'>x5</span>, <span class='va'>x6</span>, <span class='va'>x7</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>exam</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>&#39;data.frame&#39;:   100 obs. of  7 variables:
+ $ x1: int  1 2 3 4 5 6 7 8 9 10 ...
+ $ x2: num  2.55 4.55 9.55 12.55 10.55 ...
+ $ x3: num  0.194 2.194 4.194 6.194 3.194 ...
+ $ x4: Factor w/ 20 levels &quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;,..: 1 2 3 4 5 6 7 8 9 10 ...
+ $ x5: Factor w/ 13 levels &quot;c&quot;,&quot;e&quot;,&quot;f&quot;,&quot;g&quot;,..: 1 5 3 2 4 7 6 8 9 8 ...
+ $ x6: Factor w/ 15 levels &quot;c&quot;,&quot;d&quot;,&quot;f&quot;,&quot;g&quot;,..: 1 2 3 4 3 5 6 7 8 9 ...
+ $ x7: Factor w/ 5 levels &quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;,..: 2 2 1 4 5 1 4 3 1 5 ...</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>exam</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>  x1        x2         x3 x4 x5 x6 x7
+1  1  2.554297  0.1939687  a  c  c  b
+2  2  4.554297  2.1939687  b  h  d  b
+3  3  9.554297  4.1939687  c  f  f  a
+4  4 12.554297  6.1939687  d  e  g  d
+5  5 10.554297  3.1939687  e  g  f  e
+6  6  6.554297 10.1939687  f  l  h  a</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># default case</span>
+<span class='va'>exam_01</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/treatment_corr.html'>treatment_corr</a></span><span class='op'>(</span><span class='va'>exam</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>exam_01</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>         x2         x3 x6 x7
+1  2.554297  0.1939687  c  b
+2  4.554297  2.1939687  d  b
+3  9.554297  4.1939687  f  a
+4 12.554297  6.1939687  g  d
+5 10.554297  3.1939687  f  e
+6  6.554297 10.1939687  h  a</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># not removing variables</span>
+<span class='fu'><a href='https://rdrr.io/pkg/alookr/man/treatment_corr.html'>treatment_corr</a></span><span class='op'>(</span><span class='va'>exam</span>, treat <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+
+<span class='co'># Set a threshold to detecting variables when correlation greater then 0.9</span>
+<span class='fu'><a href='https://rdrr.io/pkg/alookr/man/treatment_corr.html'>treatment_corr</a></span><span class='op'>(</span><span class='va'>exam</span>, corr_thres <span class='op'>=</span> <span class='fl'>0.9</span>, treat <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+
+<span class='co'># verbose FALSE 모드</span>
+<span class='va'>exam_02</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/treatment_corr.html'>treatment_corr</a></span><span class='op'>(</span><span class='va'>exam</span>, verbose <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>exam_02</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>         x2         x3 x6 x7
+1  2.554297  0.1939687  c  b
+2  4.554297  2.1939687  d  b
+3  9.554297  4.1939687  f  a
+4 12.554297  6.1939687  g  d
+5 10.554297  3.1939687  f  e
+6  6.554297 10.1939687  h  a</code></pre>
+</div>
+<ul>
+<li><code>remove variables whose strong correlation</code> : 상관관계가 높은 변수 x1, x4, x5가 제거된다.</li>
+</ul>
+<h2 id="training-set과-test-set-데이터-분할">training set과 test set 데이터 분할</h2>
+<h3 id="data-신용카드-연체-데이터">Data: 신용카드 연체 데이터</h3>
+<p><code>ISLR</code> 패키지의 <code>Default</code> 1천명의 고객에 대한 정보를 포함하고 있는 시뮬레이션된 데이터다. 이 데이터는 어떤 고객이 신용카드의 부채를 상환하지 못하는지를 예측하는 목적의 데이터다.</p>
+<p>이 데이터 프레임은 1천개의 관측치와 다음의 4개 변수를 포함한다.:</p>
+<ul>
+<li>default : factor. 채무불이행 여부를 나낸다. “Y”는 불이행(연체), “N”은 이행을 의미한다.</li>
+<li>student: factor. 고객이 학생인지의 여부다. Y“는 학생,”N"은 학생이 아니다.</li>
+<li>balance: numeric. 고객의 월별 결제 후 신용카드 계자에 남아 있는 평균 잔액</li>
+<li>income : numeric. 고객의 소득</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 신용카드 연체 데이터</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>ISLR</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/ISLR/man/Default.html'>Default</a></span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>  default student   balance    income
+1      No      No  729.5265 44361.625
+2      No     Yes  817.1804 12106.135
+3      No      No 1073.5492 31767.139
+4      No      No  529.2506 35704.494
+5      No      No  785.6559 38463.496
+6      No     Yes  919.5885  7491.559</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 데이터 구조</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='fu'>ISLR</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/ISLR/man/Default.html'>Default</a></span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>&#39;data.frame&#39;:   10000 obs. of  4 variables:
+ $ default: Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+ $ student: Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 1 2 1 1 1 2 1 2 1 1 ...
+ $ balance: num  730 817 1074 529 786 ...
+ $ income : num  44362 12106 31767 35704 38463 ...</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 데이터 집계</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='fu'>ISLR</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/ISLR/man/Default.html'>Default</a></span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code> default    student       balance           income     
+ No :9667   No :7056   Min.   :   0.0   Min.   :  772  
+ Yes: 333   Yes:2944   1st Qu.: 481.7   1st Qu.:21340  
+                       Median : 823.6   Median :34553  
+                       Mean   : 835.4   Mean   :33517  
+                       3rd Qu.:1166.3   3rd Qu.:43808  
+                       Max.   :2654.3   Max.   :73554  </code></pre>
+</div>
+<h3 id="데이터-분할">데이터 분할</h3>
+<p><code>split_by()</code>는 <code>data.frame</code>이나 <code>tbl_df</code> 객체를 분할하여 <code>training set</code>과 <code>test set</code>로 나눈다.</p>
+<h4 id="split_by을-이용한-데이터-분할">split_by()을 이용한 데이터 분할</h4>
+<p><code>split_by()</code>는 <code>split_df</code> 클래스 객체를 반환하는데, 여기에는 <code>training set</code>과 <code>test set</code>를 분리하기 위한 분할 정보 및 기준이 포함된다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>alookr</span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+
+<span class='co'># 데이터의 분할</span>
+<span class='va'>sb</span> <span class='op'>&lt;-</span> <span class='fu'>ISLR</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/ISLR/man/Default.html'>Default</a></span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/split_by.data.frame.html'>split_by</a></span><span class='op'>(</span><span class='va'>default</span>, seed <span class='op'>=</span> <span class='fl'>6534</span><span class='op'>)</span>
+
+<span class='va'>sb</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 10,000 x 5
+# Groups:   split_flag [2]
+   default student balance income split_flag
+   &lt;fct&gt;   &lt;fct&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;     
+ 1 No      No         730. 44362. train     
+ 2 No      Yes        817. 12106. train     
+ 3 No      No        1074. 31767. train     
+ 4 No      No         529. 35704. train     
+ 5 No      No         786. 38463. test      
+ 6 No      Yes        920.  7492. train     
+ 7 No      No         826. 24905. test      
+ 8 No      Yes        809. 17600. train     
+ 9 No      No        1161. 37469. train     
+10 No      No           0  29275. train     
+# … with 9,990 more rows</code></pre>
+</div>
+<p><code>split_df</code> 클래스의 주요한 <code>속성(attributes)</code>은 다음과 같다.:</p>
+<ul>
+<li><code>split_seed</code> : integer. 데이터 분할에 사용된 random seed</li>
+<li><code>target</code> : character. target 변수의 이름</li>
+<li><code>binary</code> : logical. target 변수의 binary class 여부</li>
+<li><code>minority</code> : character. <code>minority class</code> 이름(수준, level)</li>
+<li><code>majority</code> : character. <code>majority class</code> 이름(수준, level)</li>
+<li><code>minority_rate</code> : numeric. <code>minority class</code> 비율</li>
+<li><code>majority_rate</code> : numeric. <code>majority class</code> 비율</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 모든 속성의 이름</span>
+<span class='va'>attr_names</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>sb</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>attr_names</span>
+</code></pre>
+</div>
+<pre><code> [1] &quot;names&quot;         &quot;row.names&quot;     &quot;groups&quot;        &quot;class&quot;        
+ [5] &quot;split_seed&quot;    &quot;target&quot;        &quot;binary&quot;        &quot;minority&quot;     
+ [9] &quot;majority&quot;      &quot;minority_rate&quot; &quot;majority_rate&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>sb_attr</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>sb</span><span class='op'>)</span>
+
+<span class='co'># 세 번째 속성인 row.names는 그 길이가 매우 길기 때문에 출력에서 제외한다.</span>
+<span class='va'>sb_attr</span><span class='op'>[</span><span class='op'>!</span><span class='va'>attr_names</span> <span class='op'>%in%</span> <span class='st'>"row.names"</span><span class='op'>]</span>
+</code></pre>
+</div>
+<pre><code>$names
+[1] &quot;default&quot;    &quot;student&quot;    &quot;balance&quot;    &quot;income&quot;     &quot;split_flag&quot;
+
+$groups
+# A tibble: 2 x 2
+  split_flag       .rows
+  &lt;chr&gt;      &lt;list&lt;int&gt;&gt;
+1 test           [3,000]
+2 train          [7,000]
+
+$class
+[1] &quot;split_df&quot;   &quot;grouped_df&quot; &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;
+
+$split_seed
+[1] 6534
+
+$target
+  default 
+&quot;default&quot; 
+
+$binary
+[1] TRUE
+
+$minority
+[1] &quot;Yes&quot;
+
+$majority
+[1] &quot;No&quot;
+
+$minority_rate
+   Yes 
+0.0333 
+
+$majority_rate
+    No 
+0.9667 </code></pre>
+</div>
+<p><code>summary()</code>는 <code>split_by()</code>에 의해서 분할된 두 데이터를 개괄적으로 집계한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>sb</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>** Split train/test set information **
+ + random seed        :  6534 
+ + split data            
+    - train set count :  7000 
+    - test set count  :  3000 
+ + target variable    :  default 
+    - minority class  :  Yes (0.033300)
+    - majority class  :  No (0.966700)</code></pre>
+</div>
+<h3 id="데이터셋의-비교">데이터셋의 비교</h3>
+<p><code>training set</code>과 <code>test set</code>은 비슷해야 한다. 두 데이터가 유사하지 않으면, 예측모델의 성능이 저하될 수 있다.</p>
+<p><code>alookr</code>은 <code>training set</code>과 <code>test set</code>의 유사성을 비교하는 기능을 제공한다.</p>
+<p>만약 두 데이터 세트가 유사하지 않으면, 원 데이터에서 <code>training set</code>과 <code>test set</code>을 다시 분할해야 한다.</p>
+<h4 id="compare_target_category를-이용한-범주형-변수의-비교">compare_target_category()를 이용한 범주형 변수의 비교</h4>
+<p><code>split_df</code> 클래스에 포함된<code>training set</code>과 <code>test set</code> 정보에 근거해서 두 데이터 셋에서의 범주형 변수를 비교한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>sb</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/compare_target_category.html'>compare_target_category</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 4 x 5
+  variable level train  test abs_diff
+  &lt;chr&gt;    &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;
+1 default  No    96.7  96.7   0.00476
+2 default  Yes    3.33  3.33  0.00476
+3 student  No    70.0  71.8   1.77   
+4 student  Yes   30.0  28.2   1.77   </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># character형 변수도 포함한다. 그러나, 예제에서는 character형 변수가 없기 때문에 결과는 동일하다.</span>
+<span class='va'>sb</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/compare_target_category.html'>compare_target_category</a></span><span class='op'>(</span>add_character <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 4 x 5
+  variable level train  test abs_diff
+  &lt;chr&gt;    &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;
+1 default  No    96.7  96.7   0.00476
+2 default  Yes    3.33  3.33  0.00476
+3 student  No    70.0  71.8   1.77   
+4 student  Yes   30.0  28.2   1.77   </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 주변합(marginal)을 출력한다.</span>
+<span class='va'>sb</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/compare_target_category.html'>compare_target_category</a></span><span class='op'>(</span>margin <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 6 x 5
+  variable level    train   test abs_diff
+  &lt;chr&gt;    &lt;fct&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;
+1 default  No       96.7   96.7   0.00476
+2 default  Yes       3.33   3.33  0.00476
+3 default  &lt;Total&gt; 100    100     0.00952
+4 student  No       70.0   71.8   1.77   
+5 student  Yes      30.0   28.2   1.77   
+6 student  &lt;Total&gt; 100    100     3.54   </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># student 변수만 비교한다.</span>
+<span class='va'>sb</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/compare_target_category.html'>compare_target_category</a></span><span class='op'>(</span><span class='va'>student</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 2 x 5
+  variable level train  test abs_diff
+  &lt;chr&gt;    &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;
+1 student  No     70.0  71.8     1.77
+2 student  Yes    30.0  28.2     1.77</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>sb</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/compare_target_category.html'>compare_target_category</a></span><span class='op'>(</span><span class='va'>student</span>, margin <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 3 x 5
+  variable level   train  test abs_diff
+  &lt;chr&gt;    &lt;fct&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;
+1 student  No       70.0  71.8     1.77
+2 student  Yes      30.0  28.2     1.77
+3 student  &lt;Total&gt; 100   100       3.54</code></pre>
+</div>
+<p><code>compare_target_category()</code>는 <code>tbl_df</code> 객체를 반환하는데 다음과 같은 변수를 포함한다.:</p>
+<ul>
+<li><code>variable</code> : character. 범주형 변수의 이름</li>
+<li><code>level</code> : factor. 범주형 변수의 수준</li>
+<li><code>train</code> : numeric. training set에서의 해당 수준의 상대 돗수</li>
+<li><code>test</code> : numeric. test set에서의 해당 수준의 상대 돗수</li>
+<li><code>abs_diff</code> : numeric. 두 상대 돗수 차의 절대치</li>
+</ul>
+<h4 id="compare_target_numeric를-이용한-수치형-변수의-비교">compare_target_numeric()를 이용한 수치형 변수의 비교</h4>
+<p><code>split_df</code> 클래스에 포함된<code>training set</code>과 <code>test set</code> 정보에 근거해서 두 데이터 셋에서의 수치형 변수를 비교한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>sb</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/compare_target_numeric.html'>compare_target_numeric</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 2 x 7
+  variable train_mean test_mean train_sd test_sd train_z test_z
+  &lt;chr&gt;         &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+1 balance        836.      834.     487.    477.    1.72   1.75
+2 income       33446.    33684.   13437.  13101.    2.49   2.57</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># balance 변수만 비교한다.</span>
+<span class='va'>sb</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/compare_target_numeric.html'>compare_target_numeric</a></span><span class='op'>(</span><span class='va'>balance</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 1 x 7
+  variable train_mean test_mean train_sd test_sd train_z test_z
+  &lt;chr&gt;         &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+1 balance        836.      834.     487.    477.    1.72   1.75</code></pre>
+</div>
+<p><code>compare_target_numeric()</code>는 tbl_df 객체를 반환하는데 다음과 같은 변수를 포함한다.:</p>
+<ul>
+<li><code>variable</code> : character. 수치형 변수의 이름</li>
+<li><code>train_mean</code> : numeric. training set에서의 산술평균</li>
+<li><code>test_mean</code> : numeric. test set에서의 산술평균</li>
+<li><code>train_sd</code> : numeric. training set에서의 표준편차</li>
+<li><code>test_sd</code> : numeric. test set에서의 표준편차</li>
+<li><code>train_z</code> : numeric. training set에서의 산술평균/표준편차</li>
+<li><code>test_z</code> : numeric. test set에서의 산술평균/표준편차n</li>
+</ul>
+<h4 id="compare_plot를-이용한-시각화-비교">compare_plot()를 이용한 시각화 비교</h4>
+<p><code>split_df</code> 클래스에 포함된 training set과 test set을 비교할 수 있는 플롯을 시각화한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># income 변수만 비교 시각화 출력</span>
+<span class='va'>sb</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/compare_plot.html'>compare_plot</a></span><span class='op'>(</span><span class='st'>"income"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="2020-03-27-r-alookr_files/figure-html5/split_data7-1.png" width="672" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 모든 변수의 비교 플롯 출력</span>
+<span class='va'>sb</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/compare_plot.html'>compare_plot</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="2020-03-27-r-alookr_files/figure-html5/split_data7_2-1.png" width="672" /><img src="2020-03-27-r-alookr_files/figure-html5/split_data7_2-2.png" width="672" /><img src="2020-03-27-r-alookr_files/figure-html5/split_data7_2-3.png" width="672" /><img src="2020-03-27-r-alookr_files/figure-html5/split_data7_2-4.png" width="672" /></p>
+</div>
+<h4 id="compare_diag를-이용한-training-set과-test-set의-진단">compare_diag()를 이용한 training set과 test set의 진단</h4>
+<p><code>split_df</code> 클래스에 포함된 training set과 test set 간의 유사성을 진단한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>defaults</span> <span class='op'>&lt;-</span> <span class='fu'>ISLR</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/ISLR/man/Default.html'>Default</a></span>
+<span class='va'>defaults</span><span class='op'>$</span><span class='va'>id</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>NROW</a></span><span class='op'>(</span><span class='va'>defaults</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>
+<span class='va'>defaults</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>NROW</a></span><span class='op'>(</span><span class='va'>defaults</span><span class='op'>)</span><span class='op'>)</span>, <span class='fl'>3</span><span class='op'>)</span>, <span class='st'>"student"</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='cn'>NA</span>
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>)</span>
+<span class='va'>defaults</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>NROW</a></span><span class='op'>(</span><span class='va'>defaults</span><span class='op'>)</span><span class='op'>)</span>, <span class='fl'>10</span><span class='op'>)</span>, <span class='st'>"balance"</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='cn'>NA</span>
+
+<span class='va'>sb_2</span> <span class='op'>&lt;-</span> <span class='va'>defaults</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/split_by.data.frame.html'>split_by</a></span><span class='op'>(</span><span class='va'>default</span><span class='op'>)</span>
+
+<span class='va'>sb_2</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/compare_diag.html'>compare_diag</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>$missing_value
+# A tibble: 3 x 4
+  variables train_misscount train_missrate test_missrate
+  &lt;chr&gt;               &lt;int&gt;          &lt;dbl&gt;         &lt;dbl&gt;
+1 student                 3         0.0429       NA     
+2 balance                 8         0.114        NA     
+3 balance                 2        NA             0.0667
+
+$single_value
+# A tibble: 0 x 3
+# … with 3 variables: variables &lt;chr&gt;, train_uniq &lt;lgl&gt;,
+#   test_uniq &lt;lgl&gt;
+
+$uniq_rate
+# A tibble: 0 x 5
+# … with 5 variables: variables &lt;chr&gt;, train_uniqcount &lt;int&gt;,
+#   train_uniqrate &lt;dbl&gt;, test_uniqcount &lt;int&gt;, test_uniqrate &lt;dbl&gt;
+
+$missing_level
+# A tibble: 1 x 4
+  variables n_levels train_missing_nlevel test_missing_nlevel
+  &lt;chr&gt;        &lt;int&gt;                &lt;int&gt;               &lt;int&gt;
+1 student          3                    0                   1</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>sb_2</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/compare_diag.html'>compare_diag</a></span><span class='op'>(</span>add_character <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>$missing_value
+# A tibble: 3 x 4
+  variables train_misscount train_missrate test_missrate
+  &lt;chr&gt;               &lt;int&gt;          &lt;dbl&gt;         &lt;dbl&gt;
+1 student                 3         0.0429       NA     
+2 balance                 8         0.114        NA     
+3 balance                 2        NA             0.0667
+
+$single_value
+# A tibble: 0 x 3
+# … with 3 variables: variables &lt;chr&gt;, train_uniq &lt;lgl&gt;,
+#   test_uniq &lt;lgl&gt;
+
+$uniq_rate
+# A tibble: 0 x 5
+# … with 5 variables: variables &lt;chr&gt;, train_uniqcount &lt;int&gt;,
+#   train_uniqrate &lt;dbl&gt;, test_uniqcount &lt;int&gt;, test_uniqrate &lt;dbl&gt;
+
+$missing_level
+# A tibble: 1 x 4
+  variables n_levels train_missing_nlevel test_missing_nlevel
+  &lt;chr&gt;        &lt;int&gt;                &lt;int&gt;               &lt;int&gt;
+1 student          3                    0                   1</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>sb_2</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/compare_diag.html'>compare_diag</a></span><span class='op'>(</span>uniq_thres <span class='op'>=</span> <span class='fl'>0.0005</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>$missing_value
+# A tibble: 3 x 4
+  variables train_misscount train_missrate test_missrate
+  &lt;chr&gt;               &lt;int&gt;          &lt;dbl&gt;         &lt;dbl&gt;
+1 student                 3         0.0429       NA     
+2 balance                 8         0.114        NA     
+3 balance                 2        NA             0.0667
+
+$single_value
+# A tibble: 0 x 3
+# … with 3 variables: variables &lt;chr&gt;, train_uniq &lt;lgl&gt;,
+#   test_uniq &lt;lgl&gt;
+
+$uniq_rate
+# A tibble: 2 x 5
+  variables train_uniqcount train_uniqrate test_uniqcount
+  &lt;chr&gt;               &lt;int&gt;          &lt;dbl&gt;          &lt;int&gt;
+1 default                NA             NA              2
+2 student                NA             NA              2
+# … with 1 more variable: test_uniqrate &lt;dbl&gt;
+
+$missing_level
+# A tibble: 1 x 4
+  variables n_levels train_missing_nlevel test_missing_nlevel
+  &lt;chr&gt;        &lt;int&gt;                &lt;int&gt;               &lt;int&gt;
+1 student          3                    0                   1</code></pre>
+</div>
+<h3 id="training-set과-test-set의-추출">training set과 test set의 추출</h3>
+<p>training set과 test set를 비교하여 두 데이터 세트가 유사하다고 판단되면 <code>split_df</code> 객체에서 데이터를 추출한다.</p>
+<h4 id="extract_set을-이용한-training-set과-test-set-데이터-추출">extract_set()을 이용한 training set과 test set 데이터 추출</h4>
+<p>다음은 <code>extract_set()</code> 함수로 <code>split_df</code> 객체에서 <code>training set</code>과 <code>test set</code>을 추출한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>train</span> <span class='op'>&lt;-</span> <span class='va'>sb</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/extract_set.html'>extract_set</a></span><span class='op'>(</span>set <span class='op'>=</span> <span class='st'>"train"</span><span class='op'>)</span>
+
+<span class='va'>test</span> <span class='op'>&lt;-</span> <span class='va'>sb</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/extract_set.html'>extract_set</a></span><span class='op'>(</span>set <span class='op'>=</span> <span class='st'>"test"</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>train</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] 7000    4</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>test</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] 3000    4</code></pre>
+</div>
+<h4 id="sampling_target을-이용한-모델-적합용-데이터-추출">sampling_target()을 이용한 모델 적합용 데이터 추출</h4>
+<p>이진분류 모형의 <code>target 변수(variable, class)</code>에서 <code>majority class</code>와 <code>minority class</code>의 비율이 비슷하지 않은, 특히 <code>minority class</code>의 비율이 매우 작은 <code>target class</code>를 <code>불균형 class(imbalanced class)</code>라고 한다.</p>
+<p><code>target 변수</code>가 <code>불균형 class</code>인 경우 대다수 클래스인 <code>majority class</code>의 특성이 모델에 적극적으로 반영된다. 이 경우에는 적합된 모델이 <code>minority class</code>를 대부분을 <code>majority class</code>로 예측하는 오류가 발생함을 의미한다. 따라서 <code>training set</code>을 균형잡힌 클래스로 만들어야합니다.</p>
+<p><code>sampling_target()</code>은 <code>split_df</code>의 <code>training set</code>에서 샘플링을 수행하여 <code>불균형 class</code> 문제를 해결한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># under-sampling with random seed</span>
+<span class='va'>under</span> <span class='op'>&lt;-</span> <span class='va'>sb</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/sampling_target.html'>sampling_target</a></span><span class='op'>(</span>seed <span class='op'>=</span> <span class='fl'>1234L</span><span class='op'>)</span>
+
+<span class='va'>under</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/count.html'>count</a></span><span class='op'>(</span><span class='va'>default</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 2 x 2
+  default     n
+  &lt;fct&gt;   &lt;int&gt;
+1 No        233
+2 Yes       233</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># under-sampling with random seed, and minority class frequency is 40%</span>
+<span class='va'>under40</span> <span class='op'>&lt;-</span> <span class='va'>sb</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/sampling_target.html'>sampling_target</a></span><span class='op'>(</span>seed <span class='op'>=</span> <span class='fl'>1234L</span>, perc <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span>
+
+<span class='va'>under40</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/count.html'>count</a></span><span class='op'>(</span><span class='va'>default</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 2 x 2
+  default     n
+  &lt;fct&gt;   &lt;int&gt;
+1 No        349
+2 Yes       233</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># over-sampling with random seed</span>
+<span class='va'>over</span> <span class='op'>&lt;-</span> <span class='va'>sb</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/sampling_target.html'>sampling_target</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"ubOver"</span>, seed <span class='op'>=</span> <span class='fl'>1234L</span><span class='op'>)</span>
+
+<span class='va'>over</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/count.html'>count</a></span><span class='op'>(</span><span class='va'>default</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 2 x 2
+  default     n
+  &lt;fct&gt;   &lt;int&gt;
+1 No       6767
+2 Yes      6767</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># over-sampling with random seed, and k = 10</span>
+<span class='va'>over10</span> <span class='op'>&lt;-</span> <span class='va'>sb</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/sampling_target.html'>sampling_target</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"ubOver"</span>, seed <span class='op'>=</span> <span class='fl'>1234L</span>, k <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
+
+<span class='va'>over10</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/count.html'>count</a></span><span class='op'>(</span><span class='va'>default</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 2 x 2
+  default     n
+  &lt;fct&gt;   &lt;int&gt;
+1 No       6767
+2 Yes      2330</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># SMOTE with random seed</span>
+<span class='va'>smote</span> <span class='op'>&lt;-</span> <span class='va'>sb</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/sampling_target.html'>sampling_target</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"ubSMOTE"</span>, seed <span class='op'>=</span> <span class='fl'>1234L</span><span class='op'>)</span>
+
+<span class='va'>smote</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/count.html'>count</a></span><span class='op'>(</span><span class='va'>default</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 2 x 2
+  default     n
+  &lt;fct&gt;   &lt;int&gt;
+1 No        932
+2 Yes       699</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># SMOTE with random seed, and perc.under = 250</span>
+<span class='va'>smote250</span> <span class='op'>&lt;-</span> <span class='va'>sb</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/sampling_target.html'>sampling_target</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"ubSMOTE"</span>, seed <span class='op'>=</span> <span class='fl'>1234L</span>, perc.under <span class='op'>=</span> <span class='fl'>250</span><span class='op'>)</span>
+
+<span class='va'>smote250</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/count.html'>count</a></span><span class='op'>(</span><span class='va'>default</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 2 x 2
+  default     n
+  &lt;fct&gt;   &lt;int&gt;
+1 No       1165
+2 Yes       699</code></pre>
+</div>
+<p><code>sampling_target()</code>에서 <code>method</code> 인수는 샘플링 방법을 지정한다. “ubUnder”는 <code>under sampling</code>을, “ubOver”는 <code>over sampling</code>, “ubSMOTE”는 <code>SMOTE(Synthetic Minority Over-sampling TEchnique)</code>을 수행한다.</p>
+<h2 id="모델-적합-평가-및-예측modeling-and-evaluate-predict">모델 적합, 평가 및 예측(Modeling and Evaluate, Predict)</h2>
+<h3 id="data-wisconsin-breast-cancer-데이터">Data: Wisconsin Breast Cancer 데이터</h3>
+<p><code>mlbench</code> 패키지의 <code>BreastCancer</code>는 유방암 데이터다. 이 데이터는 여러 종류의 양성 또는 악성 종양을 식별하는 목적으로 만들어졌다.</p>
+<p>이 데이터 프레임은 699개 관측치에, 다음과 같은 11개의 변수(하나는 문자형 변수, 9개는 순서형 또는 범주형, 1 개의 <code>target 변수</code>)로 구성되었다.:</p>
+<ul>
+<li><code>Id</code> : character. Sample code 번호</li>
+<li><code>Cl.thickness</code> : ordered factor. 종양 덩어리의 두께</li>
+<li><code>Cell.size</code> : ordered factor. 세포 크기의 균일성</li>
+<li><code>Cell.shape</code> : ordered factor. 세포 모양의 균일성</li>
+<li><code>Marg.adhesion</code> : ordered factor. 부분적 유착정도</li>
+<li><code>Epith.c.size</code> : ordered factor. 단일 상피세포의 크기</li>
+<li><code>Bare.nuclei</code> : factor. 노출된 핵들</li>
+<li><code>Bl.cromatin</code> : factor. 자극성이 적은 염색질(크로마틴)</li>
+<li><code>Normal.nucleoli</code> : factor. 일반적인 소핵들</li>
+<li><code>Mitoses</code> : factor. Mitoses (유사분열)</li>
+<li><code>Class</code> : factor. target 변수. benign(양성) malignant(악성)</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>mlbench</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>BreastCancer</span><span class='op'>)</span>
+
+<span class='co'># class of each variables</span>
+<span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span><span class='op'>(</span><span class='va'>BreastCancer</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>             Id    Cl.thickness       Cell.size      Cell.shape 
+    &quot;character&quot;       &quot;ordered&quot;       &quot;ordered&quot;       &quot;ordered&quot; 
+  Marg.adhesion    Epith.c.size     Bare.nuclei     Bl.cromatin 
+      &quot;ordered&quot;       &quot;ordered&quot;        &quot;factor&quot;        &quot;factor&quot; 
+Normal.nucleoli         Mitoses           Class 
+       &quot;factor&quot;        &quot;factor&quot;        &quot;factor&quot; </code></pre>
+</div>
+<h3 id="데이터-전처리">데이터 전처리</h3>
+<p>다음과 같은 전처리를 수행한다.:</p>
+<ul>
+<li>결측치가 포함된 변수를 찾아내고, 대체(imputate)한다.</li>
+<li>데이터를 training set과 test set으로 나눈다.</li>
+<li>불균형 클래스 문제를 해결하기 위해서, training set에서 샘플링을 수행한다.</li>
+<li>분류 모델을 수행하기 위해서 데이터를 정제한다.</li>
+</ul>
+<h4 id="dlookrimputate_na를-이용한-결측치-처리">dlookr::imputate_na()를 이용한 결측치 처리</h4>
+<p>결측치가 포함된 변수를 찾아서, <code>dlookr 패키지</code>의 <code>imputate_na()</code>를 사용하여 누락된 값을 대체한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/choonghyunryu/dlookr'>dlookr</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+
+<span class='co'># 결측치를 포함한 변수</span>
+<span class='fu'><a href='https://choonghyunryu.github.io/dlookr/reference/diagnose.data.frame.html'>diagnose</a></span><span class='op'>(</span><span class='va'>BreastCancer</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>missing_count</span> <span class='op'>&gt;</span> <span class='fl'>0</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 1 x 6
+  variables   types  missing_count missing_percent unique_count
+  &lt;chr&gt;       &lt;chr&gt;          &lt;int&gt;           &lt;dbl&gt;        &lt;int&gt;
+1 Bare.nuclei factor            16            2.29           11
+# … with 1 more variable: unique_rate &lt;dbl&gt;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 결측치의 대체 수행</span>
+<span class='va'>breastCancer</span> <span class='op'>&lt;-</span> <span class='va'>BreastCancer</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Bare.nuclei <span class='op'>=</span> <span class='fu'><a href='https://choonghyunryu.github.io/dlookr/reference/imputate_na.html'>imputate_na</a></span><span class='op'>(</span><span class='va'>BreastCancer</span>, <span class='va'>Bare.nuclei</span>, <span class='va'>Class</span>,
+                         method <span class='op'>=</span> <span class='st'>"mice"</span>, no_attrs <span class='op'>=</span> <span class='cn'>TRUE</span>, print_flag <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h3 id="데이터-분할-1">데이터 분할</h3>
+<h4 id="split_by을-이용한-training-set과-test-set의-분할">split_by()을 이용한 training set과 test set의 분할</h4>
+<p><code>alookr 패키지</code>의 <code>split_by()</code>는 원시 데이터에서 training set과 test set을 분할한다.</p>
+<p><code>split_by()</code>의 <code>ratio</code> 인수는 training set의 비율을 지정하며, <code>split_df</code> 클래스 객체를 생성한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>alookr</span><span class='op'>)</span>
+
+<span class='co'># 기본 인수로 training set과 test set로 분할</span>
+<span class='va'>sb</span> <span class='op'>&lt;-</span> <span class='va'>breastCancer</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/split_by.data.frame.html'>split_by</a></span><span class='op'>(</span>target <span class='op'>=</span> <span class='va'>Class</span><span class='op'>)</span>
+
+<span class='co'># 클래스 이름을 조회</span>
+<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>sb</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] &quot;split_df&quot;   &quot;grouped_df&quot; &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># ratio = 0.6로 training set과 test set을 분할</span>
+<span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='va'>breastCancer</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/split_by.data.frame.html'>split_by</a></span><span class='op'>(</span><span class='va'>Class</span>, ratio <span class='op'>=</span> <span class='fl'>0.6</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p><code>summary()</code>는 <code>split_df 객체</code>에 대한 다음과 같은 유용한 정보를 표시한다.:</p>
+<ul>
+<li><code>random seed</code> : random seed는 내부적으로 데이터를 분리하는 데 사용되는 random seed다.</li>
+<li><code>split data</code> : 분할 데이터의 정보
+<ul>
+<li><code>training set count</code> : training set 수</li>
+<li><code>test set count</code> : test set 수</li>
+</ul></li>
+<li><code>target variable</code> : target 변수 이름
+<ul>
+<li><code>minority class</code> : minority class의 이름과 비율</li>
+<li><code>majority class</code> : majority class의 이름과 비율</li>
+</ul></li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 집계 정보</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>sb</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>** Split train/test set information **
+ + random seed        :  2618 
+ + split data            
+    - train set count :  489 
+    - test set count  :  210 
+ + target variable    :  Class 
+    - minority class  :  malignant (0.344778)
+    - majority class  :  benign (0.655222)</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 집계 정</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>tmp</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>** Split train/test set information **
+ + random seed        :  15164 
+ + split data            
+    - train set count :  419 
+    - test set count  :  280 
+ + target variable    :  Class 
+    - minority class  :  malignant (0.344778)
+    - majority class  :  benign (0.655222)</code></pre>
+</div>
+<h5 id="training-set에서-누락된-수준level-확인">training set에서 누락된 수준(level) 확인</h5>
+<p>범주형 변수의 경우 training set와 test set가 분리되면서, 특정 수준이 training set에서 누락될 수 있다.</p>
+<p>이 경우 모형을 적합할(fitting) 때는 문제가 없지만, 작성한 모형으로 예측할 때 오류가 발생한다. 따라서 누락된 수준을 방지하기 위해 전처리가 수행된다.</p>
+<p>다음 예제에서는 다행히도 training set에서 누락된 수준을 포함하는 범주형 변수가 없다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 결측 레벨이 포함된 training set의 범주형 변수 목록</span>
+<span class='va'>nolevel_in_train</span> <span class='op'>&lt;-</span> <span class='va'>sb</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/compare_target_category.html'>compare_target_category</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>train</span> <span class='op'>==</span> <span class='fl'>0</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>variable</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='va'>pull</span>
+
+<span class='va'>nolevel_in_train</span>
+</code></pre>
+</div>
+<pre><code>character(0)</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># training set의 범주형 변수 중 결측 수준이 포함된 경우, 재 분할</span>
+<span class='kw'>while</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>nolevel_in_train</span><span class='op'>)</span> <span class='op'>&gt;</span> <span class='fl'>0</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>sb</span> <span class='op'>&lt;-</span> <span class='va'>breastCancer</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/split_by.data.frame.html'>split_by</a></span><span class='op'>(</span><span class='va'>Class</span><span class='op'>)</span>
+
+  <span class='va'>nolevel_in_train</span> <span class='op'>&lt;-</span> <span class='va'>sb</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://choonghyunryu.github.io/dlookr/reference/compare_category.data.frame.html'>compare_category</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>train</span> <span class='op'>==</span> <span class='fl'>0</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>variable</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='va'>pull</span>
+<span class='op'>}</span>
+</code></pre>
+</div>
+</div>
+<h3 id="sampling_target를-이용한-불균형-클래스-핸들링">sampling_target()를 이용한 불균형 클래스 핸들링</h3>
+<h4 id="불균형-클래스-데이터의-문제">불균형 클래스 데이터의 문제</h4>
+<p><code>불균형 클래스</code>(수준) 데이터는 target 변수의 도수(frequency)에서 한 수준의 도수가 상대적으로 매우 작다는 것을 의미한다. 그러나 대다수의 분류 모델의 <code>positive class</code> 비율은 상대적으로 작습니다. 예를 들어 스팸 예측 모델에서 관심있는 스팸 메일(positive class)의 비율은 스팸이 아닌 메일에 비해 매우 작다.</p>
+<p>불균형 클래스 데이터는 기계 학습 분류에서 일반적으로 발생하는 문제다.</p>
+<p><code>table()</code> 및 <code>prop.table()</code>은 불균형 클래스 데이터를 진단하는 데 유용한 함수다. 그러나 <code>alookr 패키지</code>의 <code>summary()</code>는 더 간단하며, 좀 더 자세한 정보를 제공한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># training set 돗수분포표 - 불균형 클래스 데이터</span>
+<span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>sb</span><span class='op'>$</span><span class='va'>Class</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>
+   benign malignant 
+      458       241 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># training set 상대돗수분포표 - 불균형 클래스 데이터</span>
+<span class='fu'><a href='https://rdrr.io/r/base/proportions.html'>prop.table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>sb</span><span class='op'>$</span><span class='va'>Class</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>
+   benign malignant 
+0.6552217 0.3447783 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 집계 - 불균형 클래스 데이터</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>sb</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>** Split train/test set information **
+ + random seed        :  2618 
+ + split data            
+    - train set count :  489 
+    - test set count  :  210 
+ + target variable    :  Class 
+    - minority class  :  malignant (0.344778)
+    - majority class  :  benign (0.655222)</code></pre>
+</div>
+<h4 id="불균형-클래스-데이터-핸들링">불균형 클래스 데이터 핸들링</h4>
+<p>대부분의 기계 학습 알고리즘은 각 클래스의 샘플 수가 거의 같을 때 가장 잘 작동된다. 또한 대부분의 알고리즘은 정확도를 최대화( maximize accuracy)하고 오류를 줄이도록 설계되었다. 따라서 우리는 반드시 불균형 클래스 문제를 처리해한다.</p>
+<p><code>sampling_target()</code>는 샘플링을 수행하여 불균형 클래스 데이터 문제를 해결한다.</p>
+<h5 id="resampling---minority-class의-오버-샘플링">Resampling - minority class의 오버 샘플링</h5>
+<p><code>오버 샘플링(over sampling)</code>은 <code>minority class</code>의 사본을 더 추가하는 방법으로 수행한다.</p>
+<p>오버 샘플링은 <code>sampling_target()</code> 함수의 <code>method</code> 인수값을 “ubOver”로 지정하여 수행한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 오버 샘플링</span>
+<span class='va'>train_over</span> <span class='op'>&lt;-</span> <span class='va'>sb</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/sampling_target.html'>sampling_target</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"ubOver"</span><span class='op'>)</span>
+
+<span class='co'># 돗수분포표</span>
+<span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>train_over</span><span class='op'>$</span><span class='va'>Class</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>
+   benign malignant 
+      322       322 </code></pre>
+</div>
+<h5 id="resampling---majority-class의-언더-샘플링">Resampling - majority class의 언더 샘플링</h5>
+<p><code>언더 샘플링(under sampling)</code>은 <code>majority class</code>의 관측치의 일부를 제거하는 방법으로 수행한다.</p>
+<p>언더 샘플링은 <code>sampling_target()</code> 함수의 <code>method</code> 인수값을 “ubUnder”로 지정하여 수행한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 언더 샘플링</span>
+<span class='va'>train_under</span> <span class='op'>&lt;-</span> <span class='va'>sb</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/sampling_target.html'>sampling_target</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"ubUnder"</span><span class='op'>)</span>
+
+<span class='co'># 돗수분포표</span>
+<span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>train_under</span><span class='op'>$</span><span class='va'>Class</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>
+   benign malignant 
+      167       167 </code></pre>
+</div>
+<h5 id="generate-synthetic-samples---smote">Generate synthetic samples - SMOTE</h5>
+<p><code>SMOTE(Synthetic Minority Oversampling Technique)</code>는 <code>최근접 이웃 알고리즘(nearest neighbors algorithm)</code>을 사용하여 새로운 데이터를 합성하여 생생한다.</p>
+<p>SMOTE 샘플링은 <code>sampling_target()</code> 함수의 <code>method</code> 인수값을 “ubSMOTE”로 지정하여 수행한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># SMOTE 샘플링</span>
+<span class='va'>train_smote</span> <span class='op'>&lt;-</span> <span class='va'>sb</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/sampling_target.html'>sampling_target</a></span><span class='op'>(</span>seed <span class='op'>=</span> <span class='fl'>1234L</span>, method <span class='op'>=</span> <span class='st'>"ubSMOTE"</span><span class='op'>)</span>
+
+<span class='co'># 돗수분포표</span>
+<span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>train_smote</span><span class='op'>$</span><span class='va'>Class</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>
+   benign malignant 
+      668       501 </code></pre>
+</div>
+<h3 id="cleanse를-이용하여-분류-모델을-위한-데이터-정제">cleanse()를 이용하여 분류 모델을 위한 데이터 정제</h3>
+<p>cleanse()는 분류 모델링을 위한 데이터를 정제한다.</p>
+<p>이 함수는 분류 모델을 적합할 때 유용하며, 다음의 기능을 수행한다.:</p>
+<ul>
+<li>오직 유일한 하나의 값을 갖는 변수를 제거한다.</li>
+<li>문자형 또는 범주형 변수에 대해서, 관측치 수와 비교하여 고유값의 수가 많은 변수를 제거한다.
+<ul>
+<li>이 경우는 대개 식별자 또는 식별자와 유사한 변수들이다.</li>
+</ul></li>
+<li>그리고 character 변수를 factor 변수로 변환한다.</li>
+</ul>
+<p>이 예제에서 <code>cleanse()</code>는 고유값 비율이 높은 변수 ID를 제거했다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># training set의 정제</span>
+<span class='va'>train</span> <span class='op'>&lt;-</span> <span class='va'>train_smote</span> <span class='op'>%&gt;%</span>
+  <span class='va'>cleanse</span>
+</code></pre>
+</div>
+<pre><code>── Checking unique value ─────────────────────────── unique value is one ──
+No variables that unique value is one.
+
+── Checking unique rate ─────────────────────────────── high unique rate ──
+• Id = 425(0.363558597091531)
+
+── Checking character variables ─────────────────────── categorical data ──
+No character variables.</code></pre>
+</div>
+<h3 id="extract_set을-이용하여-모델-평가를-위한-test-set-추출">extract_set()을 이용하여 모델 평가를 위한 test set 추출</h3>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># test set 추출</span>
+<span class='va'>test</span> <span class='op'>&lt;-</span> <span class='va'>sb</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/extract_set.html'>extract_set</a></span><span class='op'>(</span>set <span class='op'>=</span> <span class='st'>"test"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h3 id="run_models을-이용한-이진분류-모델-수행">run_models()을 이용한 이진분류 모델 수행</h3>
+<p><code>run_models()</code>는 <code>split_by()</code>로 작성된 <code>split_df</code> 객체를 사용하여 잘 알려진, 대표적인 <code>이진분류(binary classification)</code> 모델링을 수행한다.</p>
+<p><code>run_models()</code>는 모델을 적합할 때, 병렬처리로 수행된다. 다만, MS-Windows 운영체제와 RStudio 환경에서는 지원하지 않는다.</p>
+<p>현재 지원하는 알고리즘은 다음과 같다.:</p>
+<ul>
+<li><code>logistic</code> : 로지스틱 회귀(logistic regression), <code>stats</code> 패키지의 <code>glm()</code></li>
+<li><code>rpart</code> : Recursive Partitioning Trees, <code>rpart</code> 패키지의 <code>rpart()</code></li>
+<li><code>ctree</code> : Conditional Inference Trees, <code>party</code> 패키지의 <code>ctree()</code></li>
+<li><code>randomForest</code> :Classification with Random Forest, <code>randomForest</code> 패키지의 <code>randomForest()</code></li>
+<li><code>ranger</code> : A Fast Implementation of Random Forests, <code>ranger</code> 패키지의 <code>ranger()</code></li>
+</ul>
+<p><code>run_models()</code>은 <code>model_df</code> 클래스를 반환하며, <code>model_df</code> 클래스 다음의 변수를 포함한다.:</p>
+<ul>
+<li><code>step</code> : character. 이진분류 모델의 프로세스에서 진행한 해당 단계
+<ul>
+<li><code>run_models()</code>로 생성 된 객체의 경우 변수는 “1.Fitted”라는 값을 갖는다.</li>
+</ul></li>
+<li><code>model_id</code> : model 식별자</li>
+<li><code>target</code> : target 변수의 이름</li>
+<li><code>positive</code> : target variable의 positive class</li>
+<li><code>fitted_model</code> : list. model_id 알고리즘으로 적합된 모델 객체</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>result</span> <span class='op'>&lt;-</span> <span class='va'>train</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/run_models.html'>run_models</a></span><span class='op'>(</span>target <span class='op'>=</span> <span class='st'>"Class"</span>, positive <span class='op'>=</span> <span class='st'>"malignant"</span><span class='op'>)</span>
+
+<span class='va'>result</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 7 x 7
+  step     model_id    target is_factor positive negative fitted_model
+  &lt;chr&gt;    &lt;chr&gt;       &lt;chr&gt;  &lt;lgl&gt;     &lt;chr&gt;    &lt;chr&gt;    &lt;list&gt;      
+1 1.Fitted logistic    Class  TRUE      maligna… benign   &lt;glm&gt;       
+2 1.Fitted rpart       Class  TRUE      maligna… benign   &lt;rpart&gt;     
+3 1.Fitted ctree       Class  TRUE      maligna… benign   &lt;BinaryTr&gt;  
+4 1.Fitted randomFore… Class  TRUE      maligna… benign   &lt;rndmFrs.&gt;  
+5 1.Fitted ranger      Class  TRUE      maligna… benign   &lt;ranger&gt;    
+6 1.Fitted xgboost     Class  TRUE      maligna… benign   &lt;xgb.Bstr&gt;  
+7 1.Fitted lasso       Class  TRUE      maligna… benign   &lt;lognet&gt;    </code></pre>
+</div>
+<h3 id="모델의-평가">모델의 평가</h3>
+<p>적합된 모델의 예측 성능을 평가한다.</p>
+<h4 id="run_predict을-이용하여-적합한-모델로-test-set-target-변수-예측">run_predict()을 이용하여 적합한 모델로 test set target 변수 예측</h4>
+<p><code>run_predict()</code>는 run_models()에 의해서 적합된 모델로 <code>model_df</code> 클래스 개체에 포함된 test set의 target 변수를 예측한다.</p>
+<p><code>run_predict()</code>는 모델로 예측할 때, 병렬처리로 수행된다. 다만, MS-Windows 운영체제와 RStudio 환경에서는 지원하지 않는다.</p>
+<p><code>model_df</code> 클래스 객체에는 다음 변수가 포함된다.:</p>
+<ul>
+<li><code>step</code> : character. 이진분류 모델의 프로세스에서 진행한 해당 단계
+<ul>
+<li><code>run_predict()</code>로 생성 된 객체의 경우 변수는 “2.Predicted”라는 값을 갖는다.</li>
+</ul></li>
+<li><code>model_id</code> : model 식별자</li>
+<li><code>target</code> : target 변수의 이름</li>
+<li><code>positive</code> : target variable의 positive class</li>
+<li><code>fitted_model</code> : list. model_id 알고리즘으로 적합된 모델 객체</li>
+<li><code>predicted</code> : 각 모델별 예측 결과</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>pred</span> <span class='op'>&lt;-</span> <span class='va'>result</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/run_predict.html'>run_predict</a></span><span class='op'>(</span><span class='va'>test</span><span class='op'>)</span>
+
+<span class='va'>pred</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 7 x 8
+  step      model_id   target is_factor positive negative fitted_model
+  &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;  &lt;lgl&gt;     &lt;chr&gt;    &lt;chr&gt;    &lt;list&gt;      
+1 2.Predic… logistic   Class  TRUE      maligna… benign   &lt;glm&gt;       
+2 2.Predic… rpart      Class  TRUE      maligna… benign   &lt;rpart&gt;     
+3 2.Predic… ctree      Class  TRUE      maligna… benign   &lt;BinaryTr&gt;  
+4 2.Predic… randomFor… Class  TRUE      maligna… benign   &lt;rndmFrs.&gt;  
+5 2.Predic… ranger     Class  TRUE      maligna… benign   &lt;ranger&gt;    
+6 2.Predic… xgboost    Class  TRUE      maligna… benign   &lt;xgb.Bstr&gt;  
+7 2.Predic… lasso      Class  TRUE      maligna… benign   &lt;lognet&gt;    
+# … with 1 more variable: predicted &lt;list&gt;</code></pre>
+</div>
+<h4 id="run_performance을-이용한-성능평가-지표의-계산">run_performance()을 이용한 성능평가 지표의 계산</h4>
+<p><code>run_performance()</code>는 run_predict()에 의해 예측된 model_df 클래스 결과로 상능평가 지표를 계산한다.</p>
+<p><code>run_performance()</code>는 성능평가 지표를 계산할 때, 병렬처리로 수행된다. 다만, MS-Windows 운영체제와 RStudio 환경에서는 지원하지 않는다.</p>
+<p><code>model_df</code> 클래스 객체에는 다음 변수가 포함된다.:</p>
+<ul>
+<li><code>step</code> : character. 이진분류 모델의 프로세스에서 진행한 해당 단계
+<ul>
+<li><code>run_performance()</code>로 생성 된 객체의 경우 변수는 “3.Performanced”라는 값을 갖는다.</li>
+</ul></li>
+<li><code>model_id</code> : model 식별자</li>
+<li><code>target</code> : target 변수의 이름</li>
+<li><code>positive</code> : target variable의 positive class</li>
+<li><code>fitted_model</code> : list. model_id 알고리즘으로 적합된 모델 객체</li>
+<li><code>predicted</code> : 각 모델별 예측 결과. Each value has a predict_class class object.</li>
+<li><code>performance</code> : list. 개별 모델별로 평가 지표(mertic)을 계산한다. 모델별로 성능 지표의 수치벡터를 갖는다.</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Calculate performace metrics.</span>
+<span class='va'>perf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/run_performance.html'>run_performance</a></span><span class='op'>(</span><span class='va'>pred</span><span class='op'>)</span>
+
+<span class='va'>perf</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 7 x 7
+  step    model_id  target positive fitted_model predicted performance
+  &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;  &lt;chr&gt;    &lt;list&gt;       &lt;list&gt;    &lt;list&gt;     
+1 3.Perf… logistic  Class  maligna… &lt;glm&gt;        &lt;fct [21… &lt;dbl [15]&gt; 
+2 3.Perf… rpart     Class  maligna… &lt;rpart&gt;      &lt;fct [21… &lt;dbl [15]&gt; 
+3 3.Perf… ctree     Class  maligna… &lt;BinaryTr&gt;   &lt;fct [21… &lt;dbl [15]&gt; 
+4 3.Perf… randomFo… Class  maligna… &lt;rndmFrs.&gt;   &lt;fct [21… &lt;dbl [15]&gt; 
+5 3.Perf… ranger    Class  maligna… &lt;ranger&gt;     &lt;fct [21… &lt;dbl [15]&gt; 
+6 3.Perf… xgboost   Class  maligna… &lt;xgb.Bstr&gt;   &lt;fct [21… &lt;dbl [15]&gt; 
+7 3.Perf… lasso     Class  maligna… &lt;lognet&gt;     &lt;fct [21… &lt;dbl [15]&gt; </code></pre>
+</div>
+<p><code>performance</code> 변수는 다음과 같은 15개의 성능 지표를 표함한 <code>list</code> 개체다.:</p>
+<ul>
+<li><code>ZeroOneLoss</code> : Normalized Zero-One Loss(Classification Error Loss).</li>
+<li><code>Accuracy</code> : Accuracy.</li>
+<li><code>Precision</code> : Precision.</li>
+<li><code>Recall</code> : Recall.</li>
+<li><code>Sensitivity</code> : Sensitivity.</li>
+<li><code>Specificity</code> : Specificity.</li>
+<li><code>F1_Score</code> : F1 Score.</li>
+<li><code>Fbeta_Score</code> : F-Beta Score.</li>
+<li><code>LogLoss</code> : Log loss / Cross-Entropy Loss.</li>
+<li><code>AUC</code> : Area Under the Receiver Operating Characteristic Curve (ROC AUC).</li>
+<li><code>Gini</code> : Gini Coefficient.</li>
+<li><code>PRAUC</code> : Area Under the Precision-Recall Curve (PR AUC).</li>
+<li><code>LiftAUC</code> : Area Under the Lift Chart.</li>
+<li><code>GainAUC</code> : Area Under the Gain Chart.</li>
+<li><code>KS_Stat</code> : Kolmogorov-Smirnov Statistic.</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Performance by analytics models</span>
+<span class='va'>performance</span> <span class='op'>&lt;-</span> <span class='va'>perf</span><span class='op'>$</span><span class='va'>performance</span>
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>performance</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>perf</span><span class='op'>$</span><span class='va'>model_id</span>
+<span class='va'>performance</span>
+</code></pre>
+</div>
+<pre><code>$logistic
+ZeroOneLoss    Accuracy   Precision      Recall Sensitivity 
+ 0.04761905  0.95238095  0.94444444  0.91891892  0.91891892 
+Specificity    F1_Score Fbeta_Score     LogLoss         AUC 
+ 0.97058824  0.93150685  0.93150685  1.64471887  0.94455485 
+       Gini       PRAUC     LiftAUC     GainAUC     KS_Stat 
+ 0.90798887  0.06533148  1.22195953  0.78790219 88.95071542 
+
+$rpart
+ZeroOneLoss    Accuracy   Precision      Recall Sensitivity 
+ 0.04285714  0.95714286  0.92207792  0.95945946  0.95945946 
+Specificity    F1_Score Fbeta_Score     LogLoss         AUC 
+ 0.95588235  0.94039735  0.94039735  0.76045925  0.95791932 
+       Gini       PRAUC     LiftAUC     GainAUC     KS_Stat 
+ 0.91931638  0.67851233  1.78136627  0.79655727 91.53418124 
+
+$ctree
+ZeroOneLoss    Accuracy   Precision      Recall Sensitivity 
+ 0.03333333  0.96666667  0.94666667  0.95945946  0.95945946 
+Specificity    F1_Score Fbeta_Score     LogLoss         AUC 
+ 0.97058824  0.95302013  0.95302013  0.68735941  0.97267488 
+       Gini       PRAUC     LiftAUC     GainAUC     KS_Stat 
+ 0.96184420  0.68037312  1.82779002  0.80611326 94.35612083 
+
+$randomForest
+ZeroOneLoss    Accuracy   Precision      Recall Sensitivity 
+ 0.01904762  0.98095238  0.97297297  0.97297297  0.97297297 
+Specificity    F1_Score Fbeta_Score     LogLoss         AUC 
+ 0.98529412  0.97297297  0.97297297  0.09088358  0.99364070 
+       Gini       PRAUC     LiftAUC     GainAUC     KS_Stat 
+ 0.98708267  0.81129910  1.92087086  0.81969112 97.17806041 
+
+$ranger
+ZeroOneLoss    Accuracy   Precision      Recall Sensitivity 
+ 0.01904762  0.98095238  0.97297297  0.97297297  0.97297297 
+Specificity    F1_Score Fbeta_Score     LogLoss         AUC 
+ 0.98529412  0.97297297  0.97297297  0.07684005  0.99691971 
+       Gini       PRAUC     LiftAUC     GainAUC     KS_Stat 
+ 0.99383943  0.95454997  2.05646914  0.82181467 97.17806041 
+
+$xgboost
+ZeroOneLoss    Accuracy   Precision      Recall Sensitivity 
+ 0.03333333  0.96666667  0.94666667  0.95945946  0.95945946 
+Specificity    F1_Score Fbeta_Score     LogLoss         AUC 
+ 0.97058824  0.95302013  0.95302013  0.09384642  0.99682035 
+       Gini       PRAUC     LiftAUC     GainAUC     KS_Stat 
+ 0.99383943  0.92716301  2.02693559  0.82175032 94.59459459 
+
+$lasso
+ZeroOneLoss    Accuracy   Precision      Recall Sensitivity 
+ 0.02857143  0.97142857  0.98571429  0.93243243  0.93243243 
+Specificity    F1_Score Fbeta_Score     LogLoss         AUC 
+ 0.99264706  0.95833333  0.95833333  0.06740949  0.99672099 
+       Gini       PRAUC     LiftAUC     GainAUC     KS_Stat 
+ 0.99344197  0.98130004  2.02404320  0.82168597 97.17806041 </code></pre>
+</div>
+<p>list 객체를 다음처럼 깔끔한 형식으로 변경하면 결과를 한눈에 쉽게 볼 수 있다.:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 성능 평가지표 정보를 행렬로 변경하여 출력</span>
+<span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span><span class='op'>(</span><span class='va'>performance</span>, <span class='st'>"c"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>               logistic       rpart       ctree randomForest
+ZeroOneLoss  0.04761905  0.04285714  0.03333333   0.01904762
+Accuracy     0.95238095  0.95714286  0.96666667   0.98095238
+Precision    0.94444444  0.92207792  0.94666667   0.97297297
+Recall       0.91891892  0.95945946  0.95945946   0.97297297
+Sensitivity  0.91891892  0.95945946  0.95945946   0.97297297
+Specificity  0.97058824  0.95588235  0.97058824   0.98529412
+F1_Score     0.93150685  0.94039735  0.95302013   0.97297297
+Fbeta_Score  0.93150685  0.94039735  0.95302013   0.97297297
+LogLoss      1.64471887  0.76045925  0.68735941   0.09088358
+AUC          0.94455485  0.95791932  0.97267488   0.99364070
+Gini         0.90798887  0.91931638  0.96184420   0.98708267
+PRAUC        0.06533148  0.67851233  0.68037312   0.81129910
+LiftAUC      1.22195953  1.78136627  1.82779002   1.92087086
+GainAUC      0.78790219  0.79655727  0.80611326   0.81969112
+KS_Stat     88.95071542 91.53418124 94.35612083  97.17806041
+                 ranger     xgboost       lasso
+ZeroOneLoss  0.01904762  0.03333333  0.02857143
+Accuracy     0.98095238  0.96666667  0.97142857
+Precision    0.97297297  0.94666667  0.98571429
+Recall       0.97297297  0.95945946  0.93243243
+Sensitivity  0.97297297  0.95945946  0.93243243
+Specificity  0.98529412  0.97058824  0.99264706
+F1_Score     0.97297297  0.95302013  0.95833333
+Fbeta_Score  0.97297297  0.95302013  0.95833333
+LogLoss      0.07684005  0.09384642  0.06740949
+AUC          0.99691971  0.99682035  0.99672099
+Gini         0.99383943  0.99383943  0.99344197
+PRAUC        0.95454997  0.92716301  0.98130004
+LiftAUC      2.05646914  2.02693559  2.02404320
+GainAUC      0.82181467  0.82175032  0.82168597
+KS_Stat     97.17806041 94.59459459 97.17806041</code></pre>
+</div>
+<p><code>compare_performance()</code>는 list 객체(모델 성능 비교 결과)를 반환하며, list 객체는 다음과 같은 성분(component)가 포함되어 있다.</p>
+<ul>
+<li><code>recommend_model</code> : character. 적합된 다양한 모델 중에서 가장 권장되는 모델의 이름</li>
+<li><code>top_count</code> : numeric. 모델별 최고 성능 지표의 수</li>
+<li><code>mean_rank</code> : numeric. 모델별 개별 성능 지표 순위의 평균</li>
+<li><code>top_metric</code> : list. 모델별 개별 성능 메트릭에서 최상의 성능을 제공하는 성능 메트릭의 이름</li>
+</ul>
+<p>이 예제에서 <code>compare_performance()</code>는 “ranger”모델을 권장한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 개별 모델별 성능 평가지표의 비교</span>
+<span class='va'>comp_perf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/compare_performance.html'>compare_performance</a></span><span class='op'>(</span><span class='va'>pred</span><span class='op'>)</span>
+
+<span class='va'>comp_perf</span>
+</code></pre>
+</div>
+<pre><code>$recommend_model
+[1] &quot;ranger&quot;
+
+$top_metric_count
+    logistic        rpart        ctree randomForest       ranger 
+           0            0            0            5            9 
+     xgboost        lasso 
+           1            5 
+
+$mean_rank
+    logistic        rpart        ctree randomForest       ranger 
+    6.769231     6.000000     4.769231     2.769231     1.653846 
+     xgboost        lasso 
+    3.500000     2.538462 
+
+$top_metric
+$top_metric$logistic
+NULL
+
+$top_metric$rpart
+NULL
+
+$top_metric$ctree
+NULL
+
+$top_metric$randomForest
+[1] &quot;ZeroOneLoss&quot; &quot;Accuracy&quot;    &quot;Recall&quot;      &quot;F1_Score&quot;   
+[5] &quot;KS_Stat&quot;    
+
+$top_metric$ranger
+[1] &quot;ZeroOneLoss&quot; &quot;Accuracy&quot;    &quot;Recall&quot;      &quot;F1_Score&quot;   
+[5] &quot;AUC&quot;         &quot;Gini&quot;        &quot;LiftAUC&quot;     &quot;GainAUC&quot;    
+[9] &quot;KS_Stat&quot;    
+
+$top_metric$xgboost
+[1] &quot;Gini&quot;
+
+$top_metric$lasso
+[1] &quot;Precision&quot;   &quot;Specificity&quot; &quot;LogLoss&quot;     &quot;PRAUC&quot;      
+[5] &quot;KS_Stat&quot;    </code></pre>
+</div>
+<h3 id="plot_performance이용한-roc-곡선의-시각화">plot_performance()이용한 ROC 곡선의 시각화</h3>
+<p><code>compare_performance()</code>은 <code>ROC 곡선</code>을 그린다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># ROC 곡선의 시각화</span>
+<span class='fu'><a href='https://rdrr.io/pkg/alookr/man/plot_performance.html'>plot_performance</a></span><span class='op'>(</span><span class='va'>pred</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="2020-03-27-r-alookr_files/figure-html5/model18-1.png" width="624" /></p>
+</div>
+<h4 id="cut-off-튜닝">cut-off 튜닝</h4>
+<p>일반적으로 예측 확률이 0.5보다 클 경우에는 <code>positive class</code>로 예측한다. 즉, cut-off로 0.5를 사용하는 것이다. 이것은 대부분의 모델 알고리즘에서 적용된다. 그러나 경우에 따라서 cut-off의 값을 변경하여, 성능을 튜닝할 수도 있다.</p>
+<p><code>plot_cutoff()</code>는 cut-off의 값을 선정할 수 있는 플롯을 시각화하며, cut-off 값도 반환한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>pred_best</span> <span class='op'>&lt;-</span> <span class='va'>pred</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>model_id</span> <span class='op'>==</span> <span class='va'>comp_perf</span><span class='op'>$</span><span class='va'>recommend_model</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>predicted</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='va'>pull</span> <span class='op'>%&gt;%</span> 
+  <span class='va'>.</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='st'>"pred_prob"</span><span class='op'>)</span>
+
+<span class='va'>cutoff</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/plot_cutoff.html'>plot_cutoff</a></span><span class='op'>(</span><span class='va'>pred_best</span>, <span class='va'>test</span><span class='op'>$</span><span class='va'>Class</span>, <span class='st'>"malignant"</span>, type <span class='op'>=</span> <span class='st'>"mcc"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<img src="2020-03-27-r-alookr_files/figure-html5/model19-1.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>cutoff</span>
+</code></pre>
+</div>
+<pre><code>[1] 0.42</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>cutoff2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/plot_cutoff.html'>plot_cutoff</a></span><span class='op'>(</span><span class='va'>pred_best</span>, <span class='va'>test</span><span class='op'>$</span><span class='va'>Class</span>, <span class='st'>"malignant"</span>, type <span class='op'>=</span> <span class='st'>"density"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<img src="2020-03-27-r-alookr_files/figure-html5/model19-2.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>cutoff2</span>
+</code></pre>
+</div>
+<pre><code>[1] 0.6477</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>cutoff3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/plot_cutoff.html'>plot_cutoff</a></span><span class='op'>(</span><span class='va'>pred_best</span>, <span class='va'>test</span><span class='op'>$</span><span class='va'>Class</span>, <span class='st'>"malignant"</span>, type <span class='op'>=</span> <span class='st'>"prob"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<img src="2020-03-27-r-alookr_files/figure-html5/model19-3.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>cutoff3</span>
+</code></pre>
+</div>
+<pre><code>[1] 0.42</code></pre>
+</div>
+<h4 id="performance_metric을-이용한-예측과-조정된-컷오프-예측의-성능-비교">performance_metric()을 이용한 예측과 조정된 컷오프 예측의 성능 비교</h4>
+<p>원래 예측 성능과 조정된 컷오프 예측의 성능을 비교한다. 최상의 성능을 나타낸 모델 comp_perf$recommend_model과 컷오프를 변경한 모델을 비교해 보자.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>comp_perf</span><span class='op'>$</span><span class='va'>recommend_model</span>
+</code></pre>
+</div>
+<pre><code>[1] &quot;ranger&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 예측 확률의 추출</span>
+<span class='va'>idx</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/which.html'>which</a></span><span class='op'>(</span><span class='va'>pred</span><span class='op'>$</span><span class='va'>model_id</span> <span class='op'>==</span> <span class='va'>comp_perf</span><span class='op'>$</span><span class='va'>recommend_model</span><span class='op'>)</span>
+<span class='va'>pred_prob</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>pred</span><span class='op'>$</span><span class='va'>predicted</span><span class='op'>[[</span><span class='va'>idx</span><span class='op'>]</span><span class='op'>]</span>, <span class='st'>"pred_prob"</span><span class='op'>)</span>
+
+<span class='co'># 혹은, dplyr을 이용한 예측 확률의 추출</span>
+<span class='va'>pred_prob</span> <span class='op'>&lt;-</span> <span class='va'>pred</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>model_id</span> <span class='op'>==</span> <span class='va'>comp_perf</span><span class='op'>$</span><span class='va'>recommend_model</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>predicted</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='va'>pull</span> <span class='op'>%&gt;%</span> 
+  <span class='st'>"[["</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='st'>"pred_prob"</span><span class='op'>)</span>
+
+<span class='co'># 예측된 확률값</span>
+<span class='va'>pred_prob</span>  
+</code></pre>
+</div>
+<pre><code>  [1] 0.000000000 0.984200000 0.000000000 0.986300000 0.978838095
+  [6] 0.000000000 0.000000000 0.000000000 0.861914286 0.003653968
+ [11] 0.972980952 0.695388095 0.000000000 0.802765079 0.904215873
+ [16] 0.000000000 0.235516667 0.000000000 0.000000000 0.000000000
+ [21] 0.000000000 0.598628571 0.960562698 0.015192857 0.934376984
+ [26] 0.067979365 0.000950000 0.999600000 0.000000000 0.214118254
+ [31] 0.000000000 0.000000000 0.097299206 0.000000000 0.000000000
+ [36] 0.000000000 0.000000000 0.002722222 0.780812698 0.000000000
+ [41] 0.000000000 0.000000000 0.000000000 0.985964286 0.000000000
+ [46] 0.000000000 0.979764286 0.427121429 0.000000000 0.934456349
+ [51] 0.000000000 0.000000000 0.018697619 0.000000000 0.990339683
+ [56] 0.997214286 0.000000000 0.961404762 0.000000000 0.994466667
+ [61] 0.000000000 0.000000000 0.983619841 0.009397619 0.975446032
+ [66] 0.000000000 1.000000000 0.019753968 0.996466667 0.998711111
+ [71] 0.283431746 0.000000000 0.202021429 0.000000000 0.995159524
+ [76] 0.892195238 0.000000000 0.827315873 0.995550000 0.997761905
+ [81] 0.912645238 0.900494444 0.993251587 0.000000000 0.000000000
+ [86] 0.000000000 0.778804762 0.000000000 0.926170635 0.278473016
+ [91] 0.774467460 0.911610317 1.000000000 0.881719048 0.967116667
+ [96] 0.000000000 0.243321429 0.880563492 0.971373016 0.959742857
+[101] 0.950256349 0.909520635 0.000000000 0.950880159 0.000000000
+[106] 0.000000000 0.000000000 0.227507937 0.705684127 0.000000000
+[111] 1.000000000 0.950929365 0.933356349 0.000000000 0.000000000
+[116] 0.000000000 0.000000000 0.000000000 0.208778571 0.958753175
+[121] 0.000000000 0.000000000 0.000000000 0.000000000 0.000000000
+[126] 0.000000000 0.029394444 0.000000000 0.999083333 0.947929365
+[131] 0.101830952 0.992433333 0.000000000 0.000000000 0.911637302
+[136] 0.000000000 0.024001587 0.000000000 0.000000000 0.000000000
+[141] 0.010020635 0.915786508 0.000000000 0.000000000 0.000000000
+[146] 0.000000000 0.990155556 0.000000000 0.000000000 0.000000000
+[151] 0.987831746 0.000000000 0.000000000 0.986268254 0.000000000
+[156] 0.000000000 0.000000000 0.005063492 0.000000000 0.000000000
+[161] 0.009394444 0.000000000 0.000000000 0.000000000 0.000000000
+[166] 0.197366667 0.274388095 0.000000000 0.973695238 0.917184921
+[171] 0.992461905 0.000000000 0.000000000 0.000000000 0.992255556
+[176] 0.000000000 0.000000000 0.000000000 0.958853175 0.000000000
+[181] 0.988611111 0.999800000 0.001685714 0.000000000 0.000000000
+[186] 0.959733333 0.000000000 0.979682540 0.000000000 0.000000000
+[191] 0.000000000 0.000800000 0.000000000 0.000000000 0.000000000
+[196] 0.612531746 0.000000000 0.000000000 0.975539683 0.000200000
+[201] 0.000000000 0.000000000 0.000000000 0.993961111 0.000000000
+[206] 0.902404762 0.000000000 0.003653968 0.979246032 0.949333333</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Accuracy 비교</span>
+<span class='fu'><a href='https://rdrr.io/pkg/alookr/man/performance_metric.html'>performance_metric</a></span><span class='op'>(</span><span class='va'>pred_prob</span>, <span class='va'>test</span><span class='op'>$</span><span class='va'>Class</span>, <span class='st'>"malignant"</span>, <span class='st'>"Accuracy"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] 0.9809524</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/pkg/alookr/man/performance_metric.html'>performance_metric</a></span><span class='op'>(</span><span class='va'>pred_prob</span>, <span class='va'>test</span><span class='op'>$</span><span class='va'>Class</span>, <span class='st'>"malignant"</span>, <span class='st'>"Accuracy"</span>,
+                   cutoff <span class='op'>=</span> <span class='va'>cutoff</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] 0.9857143</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Confusion Matrix 비교</span>
+<span class='fu'><a href='https://rdrr.io/pkg/alookr/man/performance_metric.html'>performance_metric</a></span><span class='op'>(</span><span class='va'>pred_prob</span>, <span class='va'>test</span><span class='op'>$</span><span class='va'>Class</span>, <span class='st'>"malignant"</span>, <span class='st'>"ConfusionMatrix"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>           actual
+predict     benign malignant
+  benign       134         2
+  malignant      2        72</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/pkg/alookr/man/performance_metric.html'>performance_metric</a></span><span class='op'>(</span><span class='va'>pred_prob</span>, <span class='va'>test</span><span class='op'>$</span><span class='va'>Class</span>, <span class='st'>"malignant"</span>, <span class='st'>"ConfusionMatrix"</span>, 
+                   cutoff <span class='op'>=</span> <span class='va'>cutoff</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>           actual
+predict     benign malignant
+  benign       134         1
+  malignant      2        73</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># F1 Score 비교</span>
+<span class='fu'><a href='https://rdrr.io/pkg/alookr/man/performance_metric.html'>performance_metric</a></span><span class='op'>(</span><span class='va'>pred_prob</span>, <span class='va'>test</span><span class='op'>$</span><span class='va'>Class</span>, <span class='st'>"malignant"</span>, <span class='st'>"F1_Score"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] 0.972973</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/pkg/alookr/man/performance_metric.html'>performance_metric</a></span><span class='op'>(</span><span class='va'>pred_prob</span>, <span class='va'>test</span><span class='op'>$</span><span class='va'>Class</span>,  <span class='st'>"malignant"</span>, <span class='st'>"F1_Score"</span>, 
+                   cutoff <span class='op'>=</span> <span class='va'>cutoff</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] 0.9798658</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/pkg/alookr/man/performance_metric.html'>performance_metric</a></span><span class='op'>(</span><span class='va'>pred_prob</span>, <span class='va'>test</span><span class='op'>$</span><span class='va'>Class</span>,  <span class='st'>"malignant"</span>, <span class='st'>"F1_Score"</span>, 
+                   cutoff <span class='op'>=</span> <span class='va'>cutoff2</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] 0.9726027</code></pre>
+</div>
+<p>조정된 컷오프(cut-off)의 성능이 양호하면, 컷오프를 적용하여 <code>positives class</code>를 예측한다.</p>
+<h3 id="예측">예측</h3>
+<p>여러 모델에서 최상의 모델을 선택한 경우, 해당 모델로 예측을 수행한다.</p>
+<h4 id="예측을-위한-데이터-생성">예측을 위한 데이터 생성</h4>
+<p>이전 샘플링 예제에서 사용된 데이터 세트에서 100개의 샘플을 추출하여 예측할 데이터를 생성한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>data_pred</span> <span class='op'>&lt;-</span> <span class='va'>train_under</span> <span class='op'>%&gt;%</span> 
+  <span class='va'>cleanse</span> 
+</code></pre>
+</div>
+<pre><code>── Checking unique value ─────────────────────────── unique value is one ──
+No variables that unique value is one.
+
+── Checking unique rate ─────────────────────────────── high unique rate ──
+• Id = 326(0.976047904191617)
+
+── Checking character variables ─────────────────────── categorical data ──
+No character variables.</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1234L</span><span class='op'>)</span>
+<span class='va'>data_pred</span> <span class='op'>&lt;-</span> <span class='va'>data_pred</span> <span class='op'>%&gt;%</span> 
+  <span class='va'>nrow</span> <span class='op'>%&gt;%</span> 
+  <span class='va'>seq</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='va'>data_pred</span><span class='op'>[</span><span class='va'>.</span>, <span class='op'>]</span>
+</code></pre>
+</div>
+</div>
+<h4 id="alookr과-dplyr를-이용한-예측">alookr과 dplyr를 이용한 예측</h4>
+<p>다음과 같이 <code>alookr</code>과 <code>dplyr</code> 패키지를 사용하여 예측한다. 마지막 <code>factor()</code> 함수는 불필요한 정보를 제거한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>pred_actual</span> <span class='op'>&lt;-</span> <span class='va'>pred</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>model_id</span> <span class='op'>==</span> <span class='va'>comp_perf</span><span class='op'>$</span><span class='va'>recommend_model</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/run_predict.html'>run_predict</a></span><span class='op'>(</span><span class='va'>data_pred</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>predicted</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='va'>pull</span> <span class='op'>%&gt;%</span> 
+  <span class='st'>"[["</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='va'>pred_actual</span>
+</code></pre>
+</div>
+<pre><code> [1] benign    malignant malignant benign    malignant benign   
+ [7] benign    malignant malignant malignant malignant benign   
+[13] benign    malignant malignant benign    benign    benign   
+[19] malignant benign    malignant malignant malignant benign   
+[25] benign    benign    benign    benign    malignant malignant
+[31] malignant malignant benign    malignant malignant malignant
+[37] benign    benign    benign    benign    malignant benign   
+[43] benign    malignant benign    benign    benign    benign   
+[49] malignant benign   
+Levels: benign malignant</code></pre>
+</div>
+<p>컷오프로 예측하려면 다음과 같이 <code>run_predict()</code> 함수에 컷오프 <code>cutoff</code> 인수를 지정한다.:</p>
+<p>이 예제에서는 컷오프(cut-off) 사용 결과와 사용하지 않는 결과 간에 차이가 없다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>pred_actual2</span> <span class='op'>&lt;-</span> <span class='va'>pred</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>model_id</span> <span class='op'>==</span> <span class='va'>comp_perf</span><span class='op'>$</span><span class='va'>recommend_model</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/pkg/alookr/man/run_predict.html'>run_predict</a></span><span class='op'>(</span><span class='va'>data_pred</span>, <span class='va'>cutoff</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>predicted</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='va'>pull</span> <span class='op'>%&gt;%</span> 
+  <span class='st'>"[["</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='va'>pred_actual2</span>
+</code></pre>
+</div>
+<pre><code> [1] benign    malignant malignant benign    malignant benign   
+ [7] benign    malignant malignant malignant malignant benign   
+[13] benign    malignant malignant benign    benign    benign   
+[19] malignant benign    malignant malignant malignant benign   
+[25] benign    benign    benign    benign    malignant malignant
+[31] malignant malignant benign    malignant malignant malignant
+[37] benign    benign    benign    benign    malignant benign   
+[43] benign    malignant benign    benign    benign    benign   
+[49] malignant benign   
+Levels: benign malignant</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>pred_actual</span> <span class='op'>!=</span> <span class='va'>pred_actual2</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] 0</code></pre>
+</div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<div class="distill-site-nav distill-site-footer">
+  <span>
+    Copyright 2021 DATAHOLIC. All Rights Reserved</p>
+  </span> 
+  <!--Licensed under the <a href="https://opensource.org/licenses/lgpl-3.0.html" target="_blank">GNU General Public License version 3.0</a-->
+<br>
+</div>
+
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

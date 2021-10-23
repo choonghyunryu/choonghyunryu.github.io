@@ -1,0 +1,4971 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #20794d; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007ba5; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #007ba5; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #007ba5; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #20794d; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+  <!--radix_placeholder_meta_tags-->
+<title>Dataholic: 하나에서 여러 개를 파생하기</title>
+
+<meta property="description" itemprop="description" content="비정형 텍스트 데이터를 조작할 경우에 종종 발생하는 요건으로, `character 벡터의 개별 원소`를 특정 구분자로 나누어서 `여러 개의 원소로 만들거나`, 데이터 프레임에서 상속된 객체에서 특정 `character 변수`를 동일한 방법으로 나누어서 `여러 관측치로 만들 필요성` 있다."/>
+
+
+<!--  https://schema.org/Article -->
+<meta property="article:published" itemprop="datePublished" content="2019-12-28"/>
+<meta property="article:created" itemprop="dateCreated" content="2019-12-28"/>
+<meta name="article:author" content="유충현"/>
+
+<!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+<meta property="og:title" content="Dataholic: 하나에서 여러 개를 파생하기"/>
+<meta property="og:type" content="article"/>
+<meta property="og:description" content="비정형 텍스트 데이터를 조작할 경우에 종종 발생하는 요건으로, `character 벡터의 개별 원소`를 특정 구분자로 나누어서 `여러 개의 원소로 만들거나`, 데이터 프레임에서 상속된 객체에서 특정 `character 변수`를 동일한 방법으로 나누어서 `여러 관측치로 만들 필요성` 있다."/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Dataholic"/>
+
+<!--  https://dev.twitter.com/cards/types/summary -->
+<meta property="twitter:card" content="summary"/>
+<meta property="twitter:title" content="Dataholic: 하나에서 여러 개를 파생하기"/>
+<meta property="twitter:description" content="비정형 텍스트 데이터를 조작할 경우에 종종 발생하는 요건으로, `character 벡터의 개별 원소`를 특정 구분자로 나누어서 `여러 개의 원소로 만들거나`, 데이터 프레임에서 상속된 객체에서 특정 `character 변수`를 동일한 방법으로 나누어서 `여러 관측치로 만들 필요성` 있다."/>
+
+<!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+<script type="text/json" id="radix-rmarkdown-metadata">
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","categories","tags","output"]}},"value":[{"type":"character","attributes":{},"value":["하나에서 여러 개를 파생하기"]},{"type":"character","attributes":{},"value":["비정형 텍스트 데이터를 조작할 경우에 종종 발생하는 요건으로, `character 벡터의 개별 원소`를 특정 구분자로 나누어서 `여러 개의 원소로 만들거나`, 데이터 프레임에서 상속된 객체에서 특정 `character 변수`를 동일한 방법으로 나누어서 `여러 관측치로 만들 필요성` 있다."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["유충현"]}]}]},{"type":"character","attributes":{},"value":["2019-12-28"]},{"type":"character","attributes":{},"value":["Tidyverse"]},{"type":"character","attributes":{},"value":["dplyr","tidyr","foodfact","ggplot2","readr"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_depth"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]}]}]}]}
+</script>
+<!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["2019-12-28-multi_derived_files/figure-html5/unnamed-chunk-17-1.png","2019-12-28-multi_derived_files/figure-html5/unnamed-chunk-19-1.png","2019-12-28-multi_derived_files/figure-html5/unnamed-chunk-21-1.png","2019-12-28-multi_derived_files/figure-html5/unnamed-chunk-23-1.png","2019-12-28-multi_derived_files/figure-html5/unnamed-chunk-7-1.png","data/countries_additives.rda","data/FoodFacts.tsv"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+<meta name="distill:offset" content="../.."/>
+
+<script type="application/javascript">
+
+  window.headroom_prevent_pin = false;
+
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+
+    // initialize headroom for banner
+    var header = $('header').get(0);
+    var headerHeight = header.offsetHeight;
+    var headroom = new Headroom(header, {
+      tolerance: 5,
+      onPin : function() {
+        if (window.headroom_prevent_pin) {
+          window.headroom_prevent_pin = false;
+          headroom.unpin();
+        }
+      }
+    });
+    headroom.init();
+    if(window.location.hash)
+      headroom.unpin();
+    $(header).addClass('headroom--transition');
+
+    // offset scroll location for banner on hash change
+    // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+    window.addEventListener("hashchange", function(event) {
+      window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+    });
+
+    // responsive menu
+    $('.distill-site-header').each(function(i, val) {
+      var topnav = $(this);
+      var toggle = topnav.find('.nav-toggle');
+      toggle.on('click', function() {
+        topnav.toggleClass('responsive');
+      });
+    });
+
+    // nav dropdowns
+    $('.nav-dropbtn').click(function(e) {
+      $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+      $(this).parent().siblings('.nav-dropdown')
+         .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $("body").click(function(e){
+      $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $(".nav-dropdown").click(function(e){
+      e.stopPropagation();
+    });
+  });
+</script>
+
+<style type="text/css">
+
+/* Theme (user-documented overrideables for nav appearance) */
+
+.distill-site-nav {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: #0F2E3D;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.distill-site-nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.distill-site-nav a:hover {
+  color: white;
+}
+
+@media print {
+  .distill-site-nav {
+    display: none;
+  }
+}
+
+.distill-site-header {
+
+}
+
+.distill-site-footer {
+
+}
+
+
+/* Site Header */
+
+.distill-site-header {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.distill-site-header .nav-left {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header .nav-left {
+    margin-left: 0;
+  }
+}
+
+
+.distill-site-header .nav-right {
+  float: right;
+  margin-right: 8px;
+}
+
+.distill-site-header a,
+.distill-site-header .title {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 10px 14px 10px;
+}
+
+.distill-site-header .title {
+  font-size: 18px;
+  min-width: 150px;
+}
+
+.distill-site-header .logo {
+  padding: 0;
+}
+
+.distill-site-header .logo img {
+  display: none;
+  max-height: 20px;
+  width: auto;
+  margin-bottom: -4px;
+}
+
+.distill-site-header .nav-image img {
+  max-height: 18px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: -3px;
+}
+
+
+
+@media screen and (min-width: 1000px) {
+  .distill-site-header .logo img {
+    display: inline-block;
+  }
+  .distill-site-header .nav-left {
+    margin-left: 20px;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 20px;
+  }
+  .distill-site-header .title {
+    padding-left: 12px;
+  }
+}
+
+
+.distill-site-header .nav-toggle {
+  display: none;
+}
+
+.nav-dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.nav-dropdown .nav-dropbtn {
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 10px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  margin-top: 1px;
+  z-index: 2;
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+  z-index: 1;
+  margin-top: 2px;
+  white-space: nowrap;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.nav-dropdown-content hr {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-dropdown-active {
+  display: block;
+}
+
+.nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
+  color: black;
+  padding: 6px 24px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.nav-dropdown-content .nav-dropdown-header {
+  display: block;
+  padding: 5px 24px;
+  padding-bottom: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999;
+  white-space: nowrap;
+}
+
+.nav-dropdown:hover .nav-dropbtn {
+  color: white;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.nav-right .nav-dropdown-content {
+  margin-left: -45%;
+  right: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
+  .distill-site-header a.nav-toggle {
+    float: right;
+    display: block;
+  }
+  .distill-site-header .title {
+    margin-left: 0;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 0;
+  }
+  .distill-site-header {
+    overflow: hidden;
+  }
+  .nav-right .nav-dropdown-content {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-header.responsive {position: relative; min-height: 500px; }
+  .distill-site-header.responsive a.nav-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .distill-site-header.responsive a,
+  .distill-site-header.responsive .nav-dropdown {
+    display: block;
+    text-align: left;
+  }
+  .distill-site-header.responsive .nav-left,
+  .distill-site-header.responsive .nav-right {
+    width: 100%;
+  }
+  .distill-site-header.responsive .nav-dropdown {float: none;}
+  .distill-site-header.responsive .nav-dropdown-content {position: relative;}
+  .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Site Footer */
+
+.distill-site-footer {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 3;
+  margin-top: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+/* Headroom */
+
+d-title {
+  padding-top: 6rem;
+}
+
+@media print {
+  d-title {
+    padding-top: 4rem;
+  }
+}
+
+.headroom {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.headroom--transition {
+  transition: all .4s ease-in-out;
+}
+
+.headroom--unpinned {
+  top: -100px;
+}
+
+.headroom--pinned {
+  top: 0;
+}
+
+/* adjust viewport for navbar height */
+/* helps vertically center bootstrap (non-distill) content */
+.min-vh-100 {
+  min-height: calc(100vh - 100px) !important;
+}
+
+</style>
+
+<script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+<link href="../../site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
+<link href="../../site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
+<script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
+<script src="../../site_libs/autocomplete-0.37.1/autocomplete.min.js"></script>
+<script src="../../site_libs/fuse-6.4.1/fuse.min.js"></script>
+
+<script type="application/javascript">
+
+function getMeta(metaName) {
+  var metas = document.getElementsByTagName('meta');
+  for (let i = 0; i < metas.length; i++) {
+    if (metas[i].getAttribute('name') === metaName) {
+      return metas[i].getAttribute('content');
+    }
+  }
+  return '';
+}
+
+function offsetURL(url) {
+  var offset = getMeta('distill:offset');
+  return offset ? offset + '/' + url : url;
+}
+
+function createFuseIndex() {
+
+  // create fuse index
+  var options = {
+    keys: [
+      { name: 'title', weight: 20 },
+      { name: 'categories', weight: 15 },
+      { name: 'description', weight: 10 },
+      { name: 'contents', weight: 5 },
+    ],
+    ignoreLocation: true,
+    threshold: 0
+  };
+  var fuse = new window.Fuse([], options);
+
+  // fetch the main search.json
+  return fetch(offsetURL('search.json'))
+    .then(function(response) {
+      if (response.status == 200) {
+        return response.json().then(function(json) {
+          // index main articles
+          json.articles.forEach(function(article) {
+            fuse.add(article);
+          });
+          // download collections and index their articles
+          return Promise.all(json.collections.map(function(collection) {
+            return fetch(offsetURL(collection)).then(function(response) {
+              if (response.status === 200) {
+                return response.json().then(function(articles) {
+                  articles.forEach(function(article) {
+                    fuse.add(article);
+                  });
+                })
+              } else {
+                return Promise.reject(
+                  new Error('Unexpected status from search index request: ' +
+                            response.status)
+                );
+              }
+            });
+          })).then(function() {
+            return fuse;
+          });
+        });
+
+      } else {
+        return Promise.reject(
+          new Error('Unexpected status from search index request: ' +
+                      response.status)
+        );
+      }
+    });
+}
+
+window.document.addEventListener("DOMContentLoaded", function (event) {
+
+  // get search element (bail if we don't have one)
+  var searchEl = window.document.getElementById('distill-search');
+  if (!searchEl)
+    return;
+
+  createFuseIndex()
+    .then(function(fuse) {
+
+      // make search box visible
+      searchEl.classList.remove('hidden');
+
+      // initialize autocomplete
+      var options = {
+        autoselect: true,
+        hint: false,
+        minLength: 2,
+      };
+      window.autocomplete(searchEl, options, [{
+        source: function(query, callback) {
+          const searchOptions = {
+            isCaseSensitive: false,
+            shouldSort: true,
+            minMatchCharLength: 2,
+            limit: 10,
+          };
+          var results = fuse.search(query, searchOptions);
+          callback(results
+            .map(function(result) { return result.item; })
+          );
+        },
+        templates: {
+          suggestion: function(suggestion) {
+            var img = suggestion.preview && Object.keys(suggestion.preview).length > 0
+              ? `<img src="${offsetURL(suggestion.preview)}"</img>`
+              : '';
+            var html = `
+              <div class="search-item">
+                <h3>${suggestion.title}</h3>
+                <div class="search-item-description">
+                  ${suggestion.description || ''}
+                </div>
+                <div class="search-item-preview">
+                  ${img}
+                </div>
+              </div>
+            `;
+            return html;
+          }
+        }
+      }]).on('autocomplete:selected', function(event, suggestion) {
+        window.location.href = offsetURL(suggestion.path);
+      });
+      // remove inline display style on autocompleter (we want to
+      // manage responsive display via css)
+      $('.algolia-autocomplete').css("display", "");
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+
+});
+
+</script>
+
+<style type="text/css">
+
+.nav-search {
+  font-size: x-small;
+}
+
+/* Algolioa Autocomplete */
+
+.algolia-autocomplete {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: sub;
+  background-color: white;
+  color: black;
+  padding: 6px;
+  padding-top: 8px;
+  padding-bottom: 0;
+  border-radius: 6px;
+  border: 1px #0F2E3D solid;
+  width: 180px;
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-nav .algolia-autocomplete {
+    display: none;
+    visibility: hidden;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete {
+    display: inline-block;
+    visibility: visible;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete .aa-dropdown-menu {
+    margin-left: 0;
+    width: 400px;
+    max-height: 400px;
+  }
+}
+
+.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+  width: 90%;
+  outline: none;
+  border: none;
+}
+
+.algolia-autocomplete .aa-hint {
+  color: #999;
+}
+.algolia-autocomplete .aa-dropdown-menu {
+  width: 550px;
+  max-height: 70vh;
+  overflow-x: visible;
+  overflow-y: scroll;
+  padding: 5px;
+  margin-top: 3px;
+  margin-left: -150px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #999;
+  border-top: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+  cursor: pointer;
+  padding: 5px 4px;
+  border-bottom: 1px solid #eee;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion:last-of-type {
+  border-bottom: none;
+  margin-bottom: 2px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item {
+  overflow: hidden;
+  font-size: 0.8em;
+  line-height: 1.4em;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item h3 {
+  font-size: 1rem;
+  margin-block-start: 0;
+  margin-block-end: 5px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-description {
+  display: inline-block;
+  overflow: hidden;
+  height: 2.8em;
+  width: 80%;
+  margin-right: 4%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview {
+  display: inline-block;
+  width: 15%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img {
+  height: 3em;
+  width: auto;
+  display: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img[src] {
+  display: initial;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+  background-color: #eee;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+  font-weight: bold;
+  font-style: normal;
+}
+
+</style>
+
+
+<!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+<style type="text/css">
+
+body {
+  background-color: white;
+}
+
+.pandoc-table {
+  width: 100%;
+}
+
+.pandoc-table>caption {
+  margin-bottom: 10px;
+}
+
+.pandoc-table th:not([align]) {
+  text-align: left;
+}
+
+.pagedtable-footer {
+  font-size: 15px;
+}
+
+d-byline .byline {
+  grid-template-columns: 2fr 2fr;
+}
+
+d-byline .byline h3 {
+  margin-block-start: 1.5em;
+}
+
+d-byline .byline .authors-affiliations h3 {
+  margin-block-start: 0.5em;
+}
+
+.authors-affiliations .orcid-id {
+  width: 16px;
+  height:16px;
+  margin-left: 4px;
+  margin-right: 4px;
+  vertical-align: middle;
+  padding-bottom: 2px;
+}
+
+d-title .dt-tags {
+  margin-top: 1em;
+  grid-column: text;
+}
+
+.dt-tags .dt-tag {
+  text-decoration: none;
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0em 0.4em;
+  margin-right: 0.5em;
+  margin-bottom: 0.4em;
+  font-size: 70%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+d-article table.gt_table td,
+d-article table.gt_table th {
+  border-bottom: none;
+}
+
+.html-widget {
+  margin-bottom: 2.0em;
+}
+
+.l-screen-inset {
+  padding-right: 16px;
+}
+
+.l-screen .caption {
+  margin-left: 10px;
+}
+
+.shaded {
+  background: rgb(247, 247, 247);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .html-widget {
+  margin-bottom: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .shaded-content {
+  background: white;
+}
+
+.text-output {
+  margin-top: 0;
+  line-height: 1.5em;
+}
+
+.hidden {
+  display: none !important;
+}
+
+d-article {
+  padding-top: 2.5rem;
+  padding-bottom: 30px;
+}
+
+d-appendix {
+  padding-top: 30px;
+}
+
+d-article>p>img {
+  width: 100%;
+}
+
+d-article h2 {
+  margin: 1rem 0 1.5rem 0;
+}
+
+d-article h3 {
+  margin-top: 1.5rem;
+}
+
+d-article iframe {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 2.0em;
+  width: 100%;
+}
+
+/* Tweak code blocks */
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: auto;
+}
+
+d-article div.sourceCode {
+  background-color: white;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 10px;
+  font-size: 12px;
+  border-left: 2px solid rgba(0,0,0,0.1);
+}
+
+d-article pre {
+  font-size: 12px;
+  color: black;
+  background: none;
+  margin-top: 0;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+d-article pre a {
+  border-bottom: none;
+}
+
+d-article pre a:hover {
+  border-bottom: none;
+  text-decoration: underline;
+}
+
+d-article details {
+  grid-column: text;
+  margin-bottom: 0.8em;
+}
+
+@media(min-width: 768px) {
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: visible !important;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 18px;
+  font-size: 14px;
+}
+
+d-article pre {
+  font-size: 14px;
+}
+
+}
+
+figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+/* CSS for d-contents */
+
+.d-contents {
+  grid-column: text;
+  color: rgba(0,0,0,0.8);
+  font-size: 0.9em;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+  padding-bottom: 0.5em;
+  margin-bottom: 1em;
+  padding-left: 0.25em;
+  justify-self: start;
+}
+
+@media(min-width: 1000px) {
+  .d-contents.d-contents-float {
+    height: 0;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    justify-self: center;
+    padding-right: 3em;
+    padding-left: 2em;
+  }
+}
+
+.d-contents nav h3 {
+  font-size: 18px;
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+.d-contents li {
+  list-style-type: none
+}
+
+.d-contents nav > ul {
+  padding-left: 0;
+}
+
+.d-contents ul {
+  padding-left: 1em
+}
+
+.d-contents nav ul li {
+  margin-top: 0.6em;
+  margin-bottom: 0.2em;
+}
+
+.d-contents nav a {
+  font-size: 13px;
+  border-bottom: none;
+  text-decoration: none
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.d-contents nav a:hover {
+  text-decoration: underline solid rgba(0, 0, 0, 0.6)
+}
+
+.d-contents nav > ul > li > a {
+  font-weight: 600;
+}
+
+.d-contents nav > ul > li > ul {
+  font-weight: inherit;
+}
+
+.d-contents nav > ul > li > ul > li {
+  margin-top: 0.2em;
+}
+
+
+.d-contents nav ul {
+  margin-top: 0;
+  margin-bottom: 0.25em;
+}
+
+.d-article-with-toc h2:nth-child(2) {
+  margin-top: 0;
+}
+
+
+/* Figure */
+
+.figure {
+  position: relative;
+  margin-bottom: 2.5em;
+  margin-top: 1.5em;
+}
+
+.figure img {
+  width: 100%;
+}
+
+.figure .caption {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  line-height: 1.5em;
+}
+
+.figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.figure .caption a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.figure .caption b,
+.figure .caption strong, {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1.0);
+}
+
+/* Citations */
+
+d-article .citation {
+  color: inherit;
+  cursor: inherit;
+}
+
+div.hanging-indent{
+  margin-left: 1em; text-indent: -1em;
+}
+
+/* Citation hover box */
+
+.tippy-box[data-theme~=light-border] {
+  background-color: rgba(250, 250, 250, 0.95);
+}
+
+.tippy-content > p {
+  margin-bottom: 0;
+  padding: 2px;
+}
+
+
+/* Tweak 1000px media break to show more text */
+
+@media(min-width: 1000px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 16px;
+  }
+
+  .grid {
+    grid-column-gap: 16px;
+  }
+
+  d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+  }
+  figure .caption, .figure .caption, figure figcaption {
+    font-size: 13px;
+  }
+}
+
+@media(min-width: 1180px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 32px;
+  }
+
+  .grid {
+    grid-column-gap: 32px;
+  }
+}
+
+
+/* Get the citation styles for the appendix (not auto-injected on render since
+   we do our own rendering of the citation appendix) */
+
+d-appendix .citation-appendix,
+.d-appendix .citation-appendix {
+  font-size: 11px;
+  line-height: 15px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 18px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.02);
+  padding: 10px 18px;
+  border-radius: 3px;
+  color: rgba(150, 150, 150, 1);
+  overflow: hidden;
+  margin-top: -12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Include appendix styles here so they can be overridden */
+
+d-appendix {
+  contain: layout style;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-top: 60px;
+  margin-bottom: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  color: rgba(0,0,0,0.5);
+  padding-top: 60px;
+  padding-bottom: 48px;
+}
+
+d-appendix h3 {
+  grid-column: page-start / text-start;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 1em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.65);
+}
+
+d-appendix h3 + * {
+  margin-top: 1em;
+}
+
+d-appendix ol {
+  padding: 0 0 0 15px;
+}
+
+@media (min-width: 768px) {
+  d-appendix ol {
+    padding: 0 0 0 30px;
+    margin-left: -30px;
+  }
+}
+
+d-appendix li {
+  margin-bottom: 1em;
+}
+
+d-appendix a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+d-appendix > * {
+  grid-column: text;
+}
+
+d-appendix > d-footnote-list,
+d-appendix > d-citation-list,
+d-appendix > distill-appendix {
+  grid-column: screen;
+}
+
+/* Include footnote styles here so they can be overridden */
+
+d-footnote-list {
+  contain: layout style;
+}
+
+d-footnote-list > * {
+  grid-column: text;
+}
+
+d-footnote-list a.footnote-backlink {
+  color: rgba(0,0,0,0.3);
+  padding-left: 0.5em;
+}
+
+
+
+/* Anchor.js */
+
+.anchorjs-link {
+  /*transition: all .25s linear; */
+  text-decoration: none;
+  border-bottom: none;
+}
+*:hover > .anchorjs-link {
+  margin-left: -1.125em !important;
+  text-decoration: none;
+  border-bottom: none;
+}
+
+/* Social footer */
+
+.social_footer {
+  margin-top: 30px;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.67);
+}
+
+.disqus-comments {
+  margin-right: 30px;
+}
+
+.disqus-comment-count {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+#disqus_thread {
+  margin-top: 30px;
+}
+
+.article-sharing a {
+  border-bottom: none;
+  margin-right: 8px;
+}
+
+.article-sharing a:hover {
+  border-bottom: none;
+}
+
+.sidebar-section.subscribe {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.subscribe p {
+  margin-bottom: 0.5em;
+}
+
+
+.article-footer .subscribe {
+  font-size: 15px;
+  margin-top: 45px;
+}
+
+
+.sidebar-section.custom {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.custom p {
+  margin-bottom: 0.5em;
+}
+
+/* Styles for listing layout (hide title) */
+.layout-listing d-title, .layout-listing .d-title {
+  display: none;
+}
+
+/* Styles for posts lists (not auto-injected) */
+
+
+.posts-with-sidebar {
+  padding-left: 45px;
+  padding-right: 45px;
+}
+
+.posts-list .description h2,
+.posts-list .description p {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+.posts-list .description h2 {
+  font-weight: 700;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.posts-list h2.post-tag {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding-bottom: 12px;
+}
+.posts-list {
+  margin-top: 60px;
+  margin-bottom: 24px;
+}
+
+.posts-list .post-preview {
+  text-decoration: none;
+  overflow: hidden;
+  display: block;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 24px 0;
+}
+
+.post-preview-last {
+  border-bottom: none !important;
+}
+
+.posts-list .posts-list-caption {
+  grid-column: screen;
+  font-weight: 400;
+}
+
+.posts-list .post-preview h2 {
+  margin: 0 0 6px 0;
+  line-height: 1.2em;
+  font-style: normal;
+  font-size: 24px;
+}
+
+.posts-list .post-preview p {
+  margin: 0 0 12px 0;
+  line-height: 1.4em;
+  font-size: 16px;
+}
+
+.posts-list .post-preview .thumbnail {
+  box-sizing: border-box;
+  margin-bottom: 24px;
+  position: relative;
+  max-width: 500px;
+}
+.posts-list .post-preview img {
+  width: 100%;
+  display: block;
+}
+
+.posts-list .metadata {
+  font-size: 12px;
+  line-height: 1.4em;
+  margin-bottom: 18px;
+}
+
+.posts-list .metadata > * {
+  display: inline-block;
+}
+
+.posts-list .metadata .publishedDate {
+  margin-right: 2em;
+}
+
+.posts-list .metadata .dt-authors {
+  display: block;
+  margin-top: 0.3em;
+  margin-right: 2em;
+}
+
+.posts-list .dt-tags {
+  display: block;
+  line-height: 1em;
+}
+
+.posts-list .dt-tags .dt-tag {
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0.3em 0.4em;
+  margin-right: 0.2em;
+  margin-bottom: 0.4em;
+  font-size: 60%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.posts-list img {
+  opacity: 1;
+}
+
+.posts-list img[data-src] {
+  opacity: 0;
+}
+
+.posts-more {
+  clear: both;
+}
+
+
+.posts-sidebar {
+  font-size: 16px;
+}
+
+.posts-sidebar h3 {
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.sidebar-section {
+  margin-bottom: 30px;
+}
+
+.categories ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.categories li {
+  color: rgba(0, 0, 0, 0.8);
+  margin-bottom: 0;
+}
+
+.categories li>a {
+  border-bottom: none;
+}
+
+.categories li>a:hover {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.categories .active {
+  font-weight: 600;
+}
+
+.categories .category-count {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+
+@media(min-width: 768px) {
+  .posts-list .post-preview h2 {
+    font-size: 26px;
+  }
+  .posts-list .post-preview .thumbnail {
+    float: right;
+    width: 30%;
+    margin-bottom: 0;
+  }
+  .posts-list .post-preview .description {
+    float: left;
+    width: 45%;
+  }
+  .posts-list .post-preview .metadata {
+    float: left;
+    width: 20%;
+    margin-top: 8px;
+  }
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.5em;
+    font-size: 16px;
+  }
+  .posts-with-sidebar .posts-list {
+    float: left;
+    width: 75%;
+  }
+  .posts-with-sidebar .posts-sidebar {
+    float: right;
+    width: 20%;
+    margin-top: 60px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+}
+
+
+/* Improve display for browsers without grid (IE/Edge <= 15) */
+
+.downlevel {
+  line-height: 1.6em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
+
+.downlevel .d-title {
+  padding-top: 6rem;
+  padding-bottom: 1.5rem;
+}
+
+.downlevel .d-title h1 {
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1.1em;
+  margin: 0 0 0.5rem;
+}
+
+.downlevel .d-title p {
+  font-weight: 300;
+  font-size: 1.2rem;
+  line-height: 1.55em;
+  margin-top: 0;
+}
+
+.downlevel .d-byline {
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  font-size: 0.8rem;
+  line-height: 1.8em;
+}
+
+.downlevel .section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.downlevel .d-article {
+  font-size: 1.06rem;
+  line-height: 1.7em;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+
+.downlevel .d-appendix {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.5);
+  padding-top: 40px;
+  padding-bottom: 48px;
+}
+
+.downlevel .footnotes ol {
+  padding-left: 13px;
+}
+
+.downlevel .base-grid,
+.downlevel .distill-header,
+.downlevel .d-title,
+.downlevel .d-abstract,
+.downlevel .d-article,
+.downlevel .d-appendix,
+.downlevel .distill-appendix,
+.downlevel .d-byline,
+.downlevel .d-footnote-list,
+.downlevel .d-citation-list,
+.downlevel .distill-footer,
+.downlevel .appendix-bottom,
+.downlevel .posts-container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+@media(min-width: 768px) {
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+  padding-left: 150px;
+  padding-right: 150px;
+  max-width: 900px;
+}
+}
+
+.downlevel pre code {
+  display: block;
+  border-left: 2px solid rgba(0, 0, 0, .1);
+  padding: 0 0 0 20px;
+  font-size: 14px;
+}
+
+.downlevel code, .downlevel pre {
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+.downlevel .posts-list .post-preview {
+  color: inherit;
+}
+
+
+
+</style>
+
+<script type="application/javascript">
+
+function is_downlevel_browser() {
+  if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                 window.navigator.userAgent)) {
+    return true;
+  } else {
+    return window.load_distill_framework === undefined;
+  }
+}
+
+// show body when load is complete
+function on_load_complete() {
+
+  // add anchors
+  if (window.anchors) {
+    window.anchors.options.placement = 'left';
+    window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+  }
+
+
+  // set body to visible
+  document.body.style.visibility = 'visible';
+
+  // force redraw for leaflet widgets
+  if (window.HTMLWidgets) {
+    var maps = window.HTMLWidgets.findAll(".leaflet");
+    $.each(maps, function(i, el) {
+      var map = this.getMap();
+      map.invalidateSize();
+      map.eachLayer(function(layer) {
+        if (layer instanceof L.TileLayer)
+          layer.redraw();
+      });
+    });
+  }
+
+  // trigger 'shown' so htmlwidgets resize
+  $('d-article').trigger('shown');
+}
+
+function init_distill() {
+
+  init_common();
+
+  // create front matter
+  var front_matter = $('<d-front-matter></d-front-matter>');
+  $('#distill-front-matter').wrap(front_matter);
+
+  // create d-title
+  $('.d-title').changeElementType('d-title');
+
+  // create d-byline
+  var byline = $('<d-byline></d-byline>');
+  $('.d-byline').replaceWith(byline);
+
+  // create d-article
+  var article = $('<d-article></d-article>');
+  $('.d-article').wrap(article).children().unwrap();
+
+  // move posts container into article
+  $('.posts-container').appendTo($('d-article'));
+
+  // create d-appendix
+  $('.d-appendix').changeElementType('d-appendix');
+
+  // flag indicating that we have appendix items
+  var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+  // replace footnotes with <d-footnote>
+  $('.footnote-ref').each(function(i, val) {
+    appendix = true;
+    var href = $(this).attr('href');
+    var id = href.replace('#', '');
+    var fn = $('#' + id);
+    var fn_p = $('#' + id + '>p');
+    fn_p.find('.footnote-back').remove();
+    var text = fn_p.html();
+    var dtfn = $('<d-footnote></d-footnote>');
+    dtfn.html(text);
+    $(this).replaceWith(dtfn);
+  });
+  // remove footnotes
+  $('.footnotes').remove();
+
+  // move refs into #references-listing
+  $('#references-listing').replaceWith($('#refs'));
+
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    var id = $(this).attr('id');
+    $('.d-contents a[href="#' + id + '"]').parent().remove();
+    appendix = true;
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+  });
+
+  // show d-appendix if we have appendix content
+  $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+  // localize layout chunks to just output
+  $('.layout-chunk').each(function(i, val) {
+
+    // capture layout
+    var layout = $(this).attr('data-layout');
+
+    // apply layout to markdown level block elements
+    var elements = $(this).children().not('details, div.sourceCode, pre, script');
+    elements.each(function(i, el) {
+      var layout_div = $('<div class="' + layout + '"></div>');
+      if (layout_div.hasClass('shaded')) {
+        var shaded_content = $('<div class="shaded-content"></div>');
+        $(this).wrap(shaded_content);
+        $(this).parent().wrap(layout_div);
+      } else {
+        $(this).wrap(layout_div);
+      }
+    });
+
+
+    // unwrap the layout-chunk div
+    $(this).children().unwrap();
+  });
+
+  // remove code block used to force  highlighting css
+  $('.distill-force-highlighting-css').parent().remove();
+
+  // remove empty line numbers inserted by pandoc when using a
+  // custom syntax highlighting theme
+  $('code.sourceCode a:empty').remove();
+
+  // load distill framework
+  load_distill_framework();
+
+  // wait for window.distillRunlevel == 4 to do post processing
+  function distill_post_process() {
+
+    if (!window.distillRunlevel || window.distillRunlevel < 4)
+      return;
+
+    // hide author/affiliations entirely if we have no authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+    if (!have_authors)
+      $('d-byline').addClass('hidden');
+
+    // article with toc class
+    $('.d-contents').parent().addClass('d-article-with-toc');
+
+    // strip links that point to #
+    $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+    // add orcid ids
+    $('.authors-affiliations').find('.author').each(function(i, el) {
+      var orcid_id = front_matter.authors[i].orcidID;
+      if (orcid_id) {
+        var a = $('<a></a>');
+        a.attr('href', 'https://orcid.org/' + orcid_id);
+        var img = $('<img></img>');
+        img.addClass('orcid-id');
+        img.attr('alt', 'ORCID ID');
+        img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+        a.append(img);
+        $(this).append(a);
+      }
+    });
+
+    // hide elements of author/affiliations grid that have no value
+    function hide_byline_column(caption) {
+      $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+    }
+
+    // affiliations
+    var have_affiliations = false;
+    for (var i = 0; i<front_matter.authors.length; ++i) {
+      var author = front_matter.authors[i];
+      if (author.affiliation !== "&nbsp;") {
+        have_affiliations = true;
+        break;
+      }
+    }
+    if (!have_affiliations)
+      $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+    // published date
+    if (!front_matter.publishedDate)
+      hide_byline_column("Published");
+
+    // document object identifier
+    var doi = $('d-byline').find('h3:contains("DOI")');
+    var doi_p = doi.next().empty();
+    if (!front_matter.doi) {
+      // if we have a citation and valid citationText then link to that
+      if ($('#citation').length > 0 && front_matter.citationText) {
+        doi.html('Citation');
+        $('<a href="#citation"></a>')
+          .text(front_matter.citationText)
+          .appendTo(doi_p);
+      } else {
+        hide_byline_column("DOI");
+      }
+    } else {
+      $('<a></a>')
+         .attr('href', "https://doi.org/" + front_matter.doi)
+         .html(front_matter.doi)
+         .appendTo(doi_p);
+    }
+
+     // change plural form of authors/affiliations
+    if (front_matter.authors.length === 1) {
+      var grid = $('.authors-affiliations');
+      grid.children('h3:contains("Authors")').text('Author');
+      grid.children('h3:contains("Affiliations")').text('Affiliation');
+    }
+
+    // remove d-appendix and d-footnote-list local styles
+    $('d-appendix > style:first-child').remove();
+    $('d-footnote-list > style:first-child').remove();
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // hoverable references
+    $('span.citation[data-cites]').each(function() {
+      var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+      window.tippy(this, {
+        allowHTML: true,
+        content: refHtml,
+        maxWidth: 500,
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start'
+      });
+    });
+
+    // clear polling timer
+    clearInterval(tid);
+
+    // show body now that everything is ready
+    on_load_complete();
+  }
+
+  var tid = setInterval(distill_post_process, 50);
+  distill_post_process();
+
+}
+
+function init_downlevel() {
+
+  init_common();
+
+   // insert hr after d-title
+  $('.d-title').after($('<hr class="section-separator"/>'));
+
+  // check if we have authors
+  var front_matter = JSON.parse($("#distill-front-matter").html());
+  var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+  // manage byline/border
+  if (!have_authors)
+    $('.d-byline').remove();
+  $('.d-byline').after($('<hr class="section-separator"/>'));
+  $('.d-byline a').remove();
+
+  // remove toc
+  $('.d-contents').remove();
+
+  // move appendix elements
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+  });
+
+
+  // inject headers into references and footnotes
+  var refs_header = $('<h3></h3>');
+  refs_header.text('References');
+  $('#refs').prepend(refs_header);
+
+  var footnotes_header = $('<h3></h3');
+  footnotes_header.text('Footnotes');
+  $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+  // move appendix-bottom entries to the bottom
+  $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+  $('.appendix-bottom').remove();
+
+  // remove appendix if it's empty
+  if ($('.d-appendix').children().length === 0)
+    $('.d-appendix').remove();
+
+  // prepend separator above appendix
+  $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+  // trim code
+  $('pre>code').each(function(i, val) {
+    $(this).html($.trim($(this).html()));
+  });
+
+  // move posts-container right before article
+  $('.posts-container').insertBefore($('.d-article'));
+
+  $('body').addClass('downlevel');
+
+  on_load_complete();
+}
+
+
+function init_common() {
+
+  // jquery plugin to change element types
+  (function($) {
+    $.fn.changeElementType = function(newType) {
+      var attrs = {};
+
+      $.each(this[0].attributes, function(idx, attr) {
+        attrs[attr.nodeName] = attr.nodeValue;
+      });
+
+      this.replaceWith(function() {
+        return $("<" + newType + "/>", attrs).append($(this).contents());
+      });
+    };
+  })(jQuery);
+
+  // prevent underline for linked images
+  $('a > img').parent().css({'border-bottom' : 'none'});
+
+  // mark non-body figures created by knitr chunks as 100% width
+  $('.layout-chunk').each(function(i, val) {
+    var figures = $(this).find('img, .html-widget');
+    if ($(this).attr('data-layout') !== "l-body") {
+      figures.css('width', '100%');
+    } else {
+      figures.css('max-width', '100%');
+      figures.filter("[width]").each(function(i, val) {
+        var fig = $(this);
+        fig.css('width', fig.attr('width') + 'px');
+      });
+
+    }
+  });
+
+  // auto-append index.html to post-preview links in file: protocol
+  // and in rstudio ide preview
+  $('.post-preview').each(function(i, val) {
+    if (window.location.protocol === "file:")
+      $(this).attr('href', $(this).attr('href') + "index.html");
+  });
+
+  // get rid of index.html references in header
+  if (window.location.protocol !== "file:") {
+    $('.distill-site-header a[href]').each(function(i,val) {
+      $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+    });
+  }
+
+  // add class to pandoc style tables
+  $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+  $('.kable-table').children('table').addClass('pandoc-table');
+
+  // add figcaption style to table captions
+  $('caption').parent('table').addClass("figcaption");
+
+  // initialize posts list
+  if (window.init_posts_list)
+    window.init_posts_list();
+
+  // implmement disqus comment link
+  $('.disqus-comment-count').click(function() {
+    window.headroom_prevent_pin = true;
+    $('#disqus_thread').toggleClass('hidden');
+    if (!$('#disqus_thread').hasClass('hidden')) {
+      var offset = $(this).offset();
+      $(window).resize();
+      $('html, body').animate({
+        scrollTop: offset.top - 35
+      });
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (is_downlevel_browser())
+    init_downlevel();
+  else
+    window.addEventListener('WebComponentsReady', init_distill);
+});
+
+</script>
+
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+
+
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    sans-serif;
+  --mono-font:       monospace;
+  --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
+}
+
+/*-- ARTICLE METADATA --*/
+d-byline {
+  --heading-size:    0.6rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    18px;
+  --contents-size:   13px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       18px;
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+.distill-site-footer {
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+</style>
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+
+:root {
+  --custom-grey60: rgb(102, 102, 102);
+  --custom-grey20: rgb(204, 204, 204);
+  --custom-grey10: rgb(230, 230, 230);
+  --custom-blue: rgb(0, 114, 188);
+  --custom-lightblue: rgb(204, 227, 242);
+  --custom-orange: rgb(255, 127, 42); 
+  --custom-lightorange: rgb(255, 204, 170); 
+}
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    sans-serif;
+  --mono-font:       monospace;
+  --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
+}
+
+/*-- ARTICLE METADATA --*/
+d-byline {
+  --heading-size:    0.6rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    18px;
+  --contents-size:   13px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       18px;
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       var(--custom-blue);
+}
+
+.distill-site-footer {
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       var(--custom-blue);
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+
+.preface {
+  font-size: 11pt;
+  background-color: var(--custom-lightblue);
+  margin-top: 2em;
+  margin-bottom: 0.5em;  
+  padding: 1.5em;
+  padding-top: 1em;
+  border-color: DodgerBlue;
+}
+
+h1 {
+  font-size: 30px !important;  
+  color: var(--custom-blue) !important;
+  font-family: NanumSquare !important;
+  margin-top: 15px !important;
+  padding-top: 15px !important;  
+  margin-bottom: 15px !important;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 25px !important;  
+  color: var(--custom-blue) !important;  
+  font-family: NanumSquare !important;  
+  padding-top: 15px !important;  
+  margin-top: 15px !important;
+  padding-bottom: 10px !important;  
+  margin-bottom: 10px !important;    
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 20px !important;  
+  color: var(--custom-blue) !important;  
+  font-family: NanumSquare !important;  
+  margin-top: 10px !important;
+  margin-bottom: 10px !important; 
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;   
+  font-weight: bold;
+}
+
+d-byline h3 {
+  font-size: 0.6rem !important;   
+  font-weight: 400 !important;   
+  color: rgba(0, 0, 0, 0.5) !important;   
+  margin: 0 !important;   
+}
+    
+d-byline {
+  contain: content;
+  overflow: hidden;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 0.8rem;
+  line-height: 1.8em;
+  padding: 1.5rem 0;
+  min-height: 1.8em;
+} 
+
+.bg-blue,
+.bg-orange,
+.bg-grey {
+  padding: 1.6em;
+  margin-top: 1.0em;
+  margin-bottom: 1.0em;
+}
+.bg-blue {
+  background-color: var(--custom-lightblue);
+}
+.bg-orange {
+  background-color: var(--custom-lightorange);
+}
+.bg-grey {
+  background-color: var(--custom-grey20);
+}
+.bg-blue > *:last-child,
+.bg-orange > *:last-child,
+.bg-grey > *:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}</style>
+<style type="text/css">
+/* base style */
+
+/* FONT FAMILIES */
+
+:root {
+  --heading-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono-default: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  --body-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+body,
+.posts-list .post-preview p,
+.posts-list .description p {
+  font-family: var(--body-font), var(--body-default);
+}
+
+h1, h2, h3, h4, h5, h6,
+.posts-list .post-preview h2,
+.posts-list .description h2 {
+  font-family: var(--heading-font), var(--heading-default);
+}
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: var(--mono-font), var(--mono-default);
+}
+
+
+/*-- TITLE --*/
+d-title h1,
+.posts-list > h1 {
+  color: var(--title-color, black);
+}
+
+d-title h1 {
+  font-size: var(--title-size, 50px);
+}
+
+/*-- HEADERS --*/
+d-article h1,
+d-article h2,
+d-article h3,
+d-article h4,
+d-article h5,
+d-article h6 {
+  color: var(--header-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- BODY --*/
+d-article > p,  /* only text inside of <p> tags */
+d-article > ul, /* lists */
+d-article > ol {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+  font-size: var(--body-size, 1.06rem);
+}
+
+
+/*-- CODE --*/
+d-article div.sourceCode code,
+d-article pre code {
+  font-size: var(--code-size, 14px);
+}
+
+/*-- ASIDE --*/
+d-article aside {
+  font-size: var(--aside-size, 12px);
+  color: var(--aside-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- FIGURE CAPTIONS --*/
+figure .caption,
+figure figcaption,
+.figure .caption {
+  font-size: var(--fig-cap-size, 13px);
+  color: var(--fig-cap-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- METADATA --*/
+d-byline h3 {
+  font-size: var(--heading-size, 0.6rem);
+  color: var(--heading-color, rgba(0, 0, 0, 0.5));
+}
+
+d-byline {
+  font-size: var(--body-size, 0.8rem);
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+d-byline a,
+d-article d-byline a {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- TABLE OF CONTENTS --*/
+.d-contents nav h3 {
+  font-size: var(--heading-size, 18px);
+}
+
+.d-contents nav a {
+  font-size: var(--contents-size, 13px);
+}
+
+/*-- APPENDIX --*/
+d-appendix h3 {
+  font-size: var(--heading-size, 15px);
+  color: var(--heading-color, rgba(0, 0, 0, 0.65));
+}
+
+d-appendix {
+  font-size: var(--text-size, 0.8em);
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+d-appendix d-footnote-list a.footnote-backlink {
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+.distill-site-header .title {
+  font-size: var(--title-size, 18px);
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.distill-site-header a,
+.nav-dropdown .nav-dropbtn {
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.nav-dropdown .nav-dropbtn {
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  font-size: var(--text-size, 15px);
+}
+
+.distill-site-header a:hover,
+.nav-dropdown:hover .nav-dropbtn {
+  color: var(--hover-color, white);
+}
+
+.distill-site-header {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer a:hover {
+  color: var(--hover-color, white);
+}</style>
+<!--/radix_placeholder_distill-->
+  <script src="../../site_libs/header-attrs-2.8/header-attrs.js"></script>
+  <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
+  <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="../../site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="../../site_libs/tippy-6.2.7/tippy.umd.min.js"></script>
+  <script src="../../site_libs/anchor-4.2.2/anchor.min.js"></script>
+  <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
+  <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="../../site_libs/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+<!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"하나에서 여러 개를 파생하기","description":"비정형 텍스트 데이터를 조작할 경우에 종종 발생하는 요건으로, `character 벡터의 개별 원소`를 특정 구분자로 나누어서 `여러 개의 원소로 만들거나`, 데이터 프레임에서 상속된 객체에서 특정 `character 변수`를 동일한 방법으로 나누어서 `여러 관측치로 만들 필요성` 있다.","authors":[{"author":"유충현","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2019-12-28T00:00:00.000+00:00","citationText":"유충현, 2019"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="distill-site-nav distill-site-header">
+<div class="nav-left">
+<a class="logo">
+<img src="../../images/rubik-cube-white.png" alt="Logo"/>
+</a>
+<a href="../../index.html" class="title">Dataholic</a>
+<input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
+</div>
+<div class="nav-right">
+<a href="../../index.html">Home</a>
+<a href="../../mydev.html">MyDevs</a>
+<a href="../../gallery.html">Gallery</a>
+<a href="../../about.html">About</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>하나에서 여러 개를 파생하기</h1>
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+  <a href="../../index.html#category:Tidyverse" class="dt-tag">Tidyverse</a>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>비정형 텍스트 데이터를 조작할 경우에 종종 발생하는 요건으로, <code>character 벡터의 개별 원소</code>를 특정 구분자로 나누어서 <code>여러 개의 원소로 만들거나</code>, 데이터 프레임에서 상속된 객체에서 특정 <code>character 변수</code>를 동일한 방법으로 나누어서 <code>여러 관측치로 만들 필요성</code> 있다.</p></p>
+</div>
+
+<div class="d-byline">
+  유충현  
+  
+<br/>2019-12-28
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#들어가기">들어가기</a></li>
+<li><a href="#데이터의-준비">데이터의 준비</a></li>
+<li><a href="#벡터의-한-개-원소에서-여러-개-원소-추출하기">벡터의 한 개 원소에서 여러 개 원소 추출하기</a>
+<ul>
+<li><a href="#식품의-식자재-추출">식품의 식자재 추출</a></li>
+<li><a href="#벡터를-리스트로-그리고-다시-벡터로-변경하기">벡터를 리스트로, 그리고 다시 벡터로 변경하기</a></li>
+<li><a href="#벡터를-tbl_df로-변경하기">벡터를 tbl_df로 변경하기</a></li>
+<li><a href="#부수적인-텍스트-전처리">부수적인 텍스트 전처리</a></li>
+<li><a href="#대표적인-식재료의-wordcloud">대표적인 식재료의 <code>wordcloud</code></a></li>
+</ul></li>
+<li><a href="#하나의-레코드에서-여러-레코드-파생하기">하나의 레코드에서 여러 레코드 파생하기</a>
+<ul>
+<li><a href="#국가명-보정-함수-정의">국가명 보정 함수 정의</a></li>
+<li><a href="#국가명-보정하고-추출하기">국가명 보정하고 추출하기</a></li>
+<li><a href="#하나에서-여러-레코드-파생하기">하나에서 여러 레코드 파생하기</a></li>
+</ul></li>
+<li><a href="#국가별-식품-정보-분석하기">국가별 식품 정보 분석하기</a>
+<ul>
+<li><a href="#국가별-설탕에-대한-기호">국가별 설탕에 대한 기호</a></li>
+<li><a href="#나머지-관심-지표의-확인">나머지 관심 지표의 확인</a></li>
+</ul></li>
+</ul>
+</nav>
+</div>
+<h1 id="들어가기">들어가기</h1>
+<blockquote>
+<p>비정형 텍스트 데이터를 조작할 경우에 종종 발생하는 요건으로, <code>character 벡터의 개별 원소</code>를 특정 구분자로 나누어서 <code>여러 개의 원소로 만들거나</code>, 데이터 프레임에서 상속된 객체에서 특정 <code>character 변수</code>를 동일한 방법으로 나누어서 <code>여러 관측치로 만들 필요성</code> 있다. 텍스트 조작처럼 성가신 것이 없는데, 이들 두 요건에 대한 솔루션을 제시해 본다. 결국은 <code>dplyr</code> 패키지와 <code>tidyr</code> 패키지의 사용법에 대한 소개다.</p>
+</blockquote>
+<h1 id="데이터의-준비">데이터의 준비</h1>
+<p><a href="https://www.kaggle.com/openfoodfacts/world-food-facts에서" class="uri">https://www.kaggle.com/openfoodfacts/world-food-facts에서</a> <code>world-food-facts.zip</code>를 다운로드한 후 압축을 풀면 <code>en.openfoodfacts.org.products.tsv</code>라는 이름의 텍스트 파일을 얻을 수 있다. 이 파일은 컬럼의 구분자를 탭문자로 정의한 데이터 파일이다.</p>
+<p>예제에서는 <code>en.openfoodfacts.org.products.tsv</code>를 <code>FoodFacts.tsv</code>라는 이름으로 변경 후 <code>./data</code> 경로에 저장한 것을 전제로 수행한다.</p>
+<p>이 데이터는 전 세계 식품의 영양 정보를 수집한 데이터로 <code>Open Food Facts</code>라는 단체에서 공개한 public 데이터다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>data_repo</span> <span class='op'>&lt;-</span> <span class='st'>"./data"</span> 
+<span class='va'>fname</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='va'>data_repo</span>, <span class='st'>"FoodFacts.tsv"</span>, sep <span class='op'>=</span><span class='st'>"/"</span><span class='op'>)</span>
+
+<span class='co'># 파일의 용량</span>
+<span class='fu'><a href='https://rdrr.io/r/base/file.info.html'>file.size</a></span><span class='op'>(</span><span class='va'>fname</span><span class='op'>)</span> <span class='op'>/</span> <span class='fl'>1024</span><span class='op'>^</span><span class='fl'>2</span>
+</code></pre>
+</div>
+<pre><code>[1] 963.456</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 데이터를 R로 가져온다.</span>
+<span class='va'>foodfact</span> <span class='op'>&lt;-</span> <span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_tsv</a></span><span class='op'>(</span><span class='va'>fname</span>, progress <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+
+<span class='co'># 메모리에 적재된 R 데이터의 용량</span>
+<span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/object.size.html'>object.size</a></span><span class='op'>(</span><span class='va'>foodfact</span><span class='op'>)</span>, units <span class='op'>=</span> <span class='st'>"Mb"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] &quot;942.2 Mb&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 차원</span>
+<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>foodfact</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] 356001    163</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 변수의 이름</span>
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>foodfact</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>  [1] &quot;code&quot;                                      
+  [2] &quot;url&quot;                                       
+  [3] &quot;creator&quot;                                   
+  [4] &quot;created_t&quot;                                 
+  [5] &quot;created_datetime&quot;                          
+  [6] &quot;last_modified_t&quot;                           
+  [7] &quot;last_modified_datetime&quot;                    
+  [8] &quot;product_name&quot;                              
+  [9] &quot;generic_name&quot;                              
+ [10] &quot;quantity&quot;                                  
+ [11] &quot;packaging&quot;                                 
+ [12] &quot;packaging_tags&quot;                            
+ [13] &quot;brands&quot;                                    
+ [14] &quot;brands_tags&quot;                               
+ [15] &quot;categories&quot;                                
+ [16] &quot;categories_tags&quot;                           
+ [17] &quot;categories_en&quot;                             
+ [18] &quot;origins&quot;                                   
+ [19] &quot;origins_tags&quot;                              
+ [20] &quot;manufacturing_places&quot;                      
+ [21] &quot;manufacturing_places_tags&quot;                 
+ [22] &quot;labels&quot;                                    
+ [23] &quot;labels_tags&quot;                               
+ [24] &quot;labels_en&quot;                                 
+ [25] &quot;emb_codes&quot;                                 
+ [26] &quot;emb_codes_tags&quot;                            
+ [27] &quot;first_packaging_code_geo&quot;                  
+ [28] &quot;cities&quot;                                    
+ [29] &quot;cities_tags&quot;                               
+ [30] &quot;purchase_places&quot;                           
+ [31] &quot;stores&quot;                                    
+ [32] &quot;countries&quot;                                 
+ [33] &quot;countries_tags&quot;                            
+ [34] &quot;countries_en&quot;                              
+ [35] &quot;ingredients_text&quot;                          
+ [36] &quot;allergens&quot;                                 
+ [37] &quot;allergens_en&quot;                              
+ [38] &quot;traces&quot;                                    
+ [39] &quot;traces_tags&quot;                               
+ [40] &quot;traces_en&quot;                                 
+ [41] &quot;serving_size&quot;                              
+ [42] &quot;no_nutriments&quot;                             
+ [43] &quot;additives_n&quot;                               
+ [44] &quot;additives&quot;                                 
+ [45] &quot;additives_tags&quot;                            
+ [46] &quot;additives_en&quot;                              
+ [47] &quot;ingredients_from_palm_oil_n&quot;               
+ [48] &quot;ingredients_from_palm_oil&quot;                 
+ [49] &quot;ingredients_from_palm_oil_tags&quot;            
+ [50] &quot;ingredients_that_may_be_from_palm_oil_n&quot;   
+ [51] &quot;ingredients_that_may_be_from_palm_oil&quot;     
+ [52] &quot;ingredients_that_may_be_from_palm_oil_tags&quot;
+ [53] &quot;nutrition_grade_uk&quot;                        
+ [54] &quot;nutrition_grade_fr&quot;                        
+ [55] &quot;pnns_groups_1&quot;                             
+ [56] &quot;pnns_groups_2&quot;                             
+ [57] &quot;states&quot;                                    
+ [58] &quot;states_tags&quot;                               
+ [59] &quot;states_en&quot;                                 
+ [60] &quot;main_category&quot;                             
+ [61] &quot;main_category_en&quot;                          
+ [62] &quot;image_url&quot;                                 
+ [63] &quot;image_small_url&quot;                           
+ [64] &quot;energy_100g&quot;                               
+ [65] &quot;energy-from-fat_100g&quot;                      
+ [66] &quot;fat_100g&quot;                                  
+ [67] &quot;saturated-fat_100g&quot;                        
+ [68] &quot;-butyric-acid_100g&quot;                        
+ [69] &quot;-caproic-acid_100g&quot;                        
+ [70] &quot;-caprylic-acid_100g&quot;                       
+ [71] &quot;-capric-acid_100g&quot;                         
+ [72] &quot;-lauric-acid_100g&quot;                         
+ [73] &quot;-myristic-acid_100g&quot;                       
+ [74] &quot;-palmitic-acid_100g&quot;                       
+ [75] &quot;-stearic-acid_100g&quot;                        
+ [76] &quot;-arachidic-acid_100g&quot;                      
+ [77] &quot;-behenic-acid_100g&quot;                        
+ [78] &quot;-lignoceric-acid_100g&quot;                     
+ [79] &quot;-cerotic-acid_100g&quot;                        
+ [80] &quot;-montanic-acid_100g&quot;                       
+ [81] &quot;-melissic-acid_100g&quot;                       
+ [82] &quot;monounsaturated-fat_100g&quot;                  
+ [83] &quot;polyunsaturated-fat_100g&quot;                  
+ [84] &quot;omega-3-fat_100g&quot;                          
+ [85] &quot;-alpha-linolenic-acid_100g&quot;                
+ [86] &quot;-eicosapentaenoic-acid_100g&quot;               
+ [87] &quot;-docosahexaenoic-acid_100g&quot;                
+ [88] &quot;omega-6-fat_100g&quot;                          
+ [89] &quot;-linoleic-acid_100g&quot;                       
+ [90] &quot;-arachidonic-acid_100g&quot;                    
+ [91] &quot;-gamma-linolenic-acid_100g&quot;                
+ [92] &quot;-dihomo-gamma-linolenic-acid_100g&quot;         
+ [93] &quot;omega-9-fat_100g&quot;                          
+ [94] &quot;-oleic-acid_100g&quot;                          
+ [95] &quot;-elaidic-acid_100g&quot;                        
+ [96] &quot;-gondoic-acid_100g&quot;                        
+ [97] &quot;-mead-acid_100g&quot;                           
+ [98] &quot;-erucic-acid_100g&quot;                         
+ [99] &quot;-nervonic-acid_100g&quot;                       
+[100] &quot;trans-fat_100g&quot;                            
+[101] &quot;cholesterol_100g&quot;                          
+[102] &quot;carbohydrates_100g&quot;                        
+[103] &quot;sugars_100g&quot;                               
+[104] &quot;-sucrose_100g&quot;                             
+[105] &quot;-glucose_100g&quot;                             
+[106] &quot;-fructose_100g&quot;                            
+[107] &quot;-lactose_100g&quot;                             
+[108] &quot;-maltose_100g&quot;                             
+[109] &quot;-maltodextrins_100g&quot;                       
+[110] &quot;starch_100g&quot;                               
+[111] &quot;polyols_100g&quot;                              
+[112] &quot;fiber_100g&quot;                                
+[113] &quot;proteins_100g&quot;                             
+[114] &quot;casein_100g&quot;                               
+[115] &quot;serum-proteins_100g&quot;                       
+[116] &quot;nucleotides_100g&quot;                          
+[117] &quot;salt_100g&quot;                                 
+[118] &quot;sodium_100g&quot;                               
+[119] &quot;alcohol_100g&quot;                              
+[120] &quot;vitamin-a_100g&quot;                            
+[121] &quot;beta-carotene_100g&quot;                        
+[122] &quot;vitamin-d_100g&quot;                            
+[123] &quot;vitamin-e_100g&quot;                            
+[124] &quot;vitamin-k_100g&quot;                            
+[125] &quot;vitamin-c_100g&quot;                            
+[126] &quot;vitamin-b1_100g&quot;                           
+[127] &quot;vitamin-b2_100g&quot;                           
+[128] &quot;vitamin-pp_100g&quot;                           
+[129] &quot;vitamin-b6_100g&quot;                           
+[130] &quot;vitamin-b9_100g&quot;                           
+[131] &quot;folates_100g&quot;                              
+[132] &quot;vitamin-b12_100g&quot;                          
+[133] &quot;biotin_100g&quot;                               
+[134] &quot;pantothenic-acid_100g&quot;                     
+[135] &quot;silica_100g&quot;                               
+[136] &quot;bicarbonate_100g&quot;                          
+[137] &quot;potassium_100g&quot;                            
+[138] &quot;chloride_100g&quot;                             
+[139] &quot;calcium_100g&quot;                              
+[140] &quot;phosphorus_100g&quot;                           
+[141] &quot;iron_100g&quot;                                 
+[142] &quot;magnesium_100g&quot;                            
+[143] &quot;zinc_100g&quot;                                 
+[144] &quot;copper_100g&quot;                               
+[145] &quot;manganese_100g&quot;                            
+[146] &quot;fluoride_100g&quot;                             
+[147] &quot;selenium_100g&quot;                             
+[148] &quot;chromium_100g&quot;                             
+[149] &quot;molybdenum_100g&quot;                           
+[150] &quot;iodine_100g&quot;                               
+[151] &quot;caffeine_100g&quot;                             
+[152] &quot;taurine_100g&quot;                              
+[153] &quot;ph_100g&quot;                                   
+[154] &quot;fruits-vegetables-nuts_100g&quot;               
+[155] &quot;fruits-vegetables-nuts-estimate_100g&quot;      
+[156] &quot;collagen-meat-protein-ratio_100g&quot;          
+[157] &quot;cocoa_100g&quot;                                
+[158] &quot;chlorophyl_100g&quot;                           
+[159] &quot;carbon-footprint_100g&quot;                     
+[160] &quot;nutrition-score-fr_100g&quot;                   
+[161] &quot;nutrition-score-uk_100g&quot;                   
+[162] &quot;glycemic-index_100g&quot;                       
+[163] &quot;water-hardness_100g&quot;                       </code></pre>
+</div>
+<h1 id="벡터의-한-개-원소에서-여러-개-원소-추출하기">벡터의 한 개 원소에서 여러 개 원소 추출하기</h1>
+<h2 id="식품의-식자재-추출">식품의 식자재 추출</h2>
+<p>식품의 식자재 종류는 ingredients_text 변수에 텍스트로 들어 있다. 그래서 텍스트의 조작을 통해서 식자재를 분리해야 한다. 그러나 다음 예시처럼 일부 몇 건을 살펴보자. 하나의 ingredients_text에는 여러 개의 식자재들이 기술되어 있다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>exam</span> <span class='op'>&lt;-</span> <span class='va'>foodfact</span><span class='op'>$</span><span class='va'>ingredients_text</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span>, <span class='fl'>13</span><span class='op'>)</span><span class='op'>]</span>
+<span class='va'>exam</span>
+</code></pre>
+</div>
+<pre><code>[1] &quot;Bananas, vegetable oil (coconut oil, corn oil and/or palm oil) sugar, natural banana flavor.&quot;                                                                                                                                                                                                                                                                                     
+[2] &quot;Peanuts, wheat flour, sugar, rice flour, tapioca starch, salt, leavening (ammonium bicarbonate, baking soda), soy sauce (water, soybeans, wheat, salt), potato starch.&quot;                                                                                                                                                                                                           
+[3] &quot;Roasted peanuts (peanuts, peanut or canola oil, salt), sesame sticks (unbleached wheat flour, sesame seeds, sunflower oil, sa;t, beet powder, turmeric), chili crackers (rice, corn starch, soy sauce[water, soybeans, wheat, salt], brown rice syrup, paprika, onion powder, garlic powder), tamari roasted almonds (almonds, tamari shoyu [water, wheat, soybeans, salt]), salt&quot;</code></pre>
+</div>
+<h2 id="벡터를-리스트로-그리고-다시-벡터로-변경하기">벡터를 리스트로, 그리고 다시 벡터로 변경하기</h2>
+<p>하나의 벡터에는 임의의 갯수의 식자재가 포함되어 있다. 그런데 자세히 보면 다음과 같은 몇 가지의 대표적인 구분자 패턴이 존재한다.</p>
+<ul>
+<li>콤마(,)로 분리</li>
+<li>괄호로 분리</li>
+<li>중괄호로 분리</li>
+</ul>
+<p>먼저 앞에서 찾은 식자재들의 분리 패턴을 이용해서, 여러 개의 식자재를 추출해 보자. 구분자로 분리된 수 많큼 원소의 개수가 늘어난다. 벡터의 길이가 3개에서 60으로 늘어났다. 중요한 것은 <code>str_split() 함수</code>는 분리된 개별 문자열의 결과를 <code>리스트</code>로 반환하기 때문에 <code>unlist() 함수</code>로 리스트를 벡터로 변경해 주어야 한는 것이다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://stringr.tidyverse.org'>stringr</a></span><span class='op'>)</span>
+
+<span class='va'>foodfact</span> <span class='op'>%&gt;%</span>
+  <span class='va'>.</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span>, <span class='fl'>13</span><span class='op'>)</span>, <span class='op'>]</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>transmute</a></span><span class='op'>(</span>ingredients <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_split.html'>str_split</a></span><span class='op'>(</span><span class='va'>ingredients_text</span>, pattern <span class='op'>=</span> <span class='st'>",|\\(|\\)|\\[|\\]"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>               ingredients1                ingredients2 
+                  &quot;Bananas&quot;           &quot; vegetable oil &quot; 
+               ingredients3                ingredients4 
+              &quot;coconut oil&quot; &quot; corn oil and/or palm oil&quot; 
+               ingredients5                ingredients6 
+                   &quot; sugar&quot;   &quot; natural banana flavor.&quot; 
+               ingredients7                ingredients8 
+                  &quot;Peanuts&quot;              &quot; wheat flour&quot; 
+               ingredients9               ingredients10 
+                   &quot; sugar&quot;               &quot; rice flour&quot; 
+              ingredients11               ingredients12 
+          &quot; tapioca starch&quot;                     &quot; salt&quot; 
+              ingredients13               ingredients14 
+              &quot; leavening &quot;      &quot;ammonium bicarbonate&quot; 
+              ingredients15               ingredients16 
+             &quot; baking soda&quot;                          &quot;&quot; 
+              ingredients17               ingredients18 
+              &quot; soy sauce &quot;                     &quot;water&quot; 
+              ingredients19               ingredients20 
+                &quot; soybeans&quot;                    &quot; wheat&quot; 
+              ingredients21               ingredients22 
+                    &quot; salt&quot;                          &quot;&quot; 
+              ingredients23               ingredients24 
+          &quot; potato starch.&quot;          &quot;Roasted peanuts &quot; 
+              ingredients25               ingredients26 
+                  &quot;peanuts&quot;     &quot; peanut or canola oil&quot; 
+              ingredients27               ingredients28 
+                    &quot; salt&quot;                          &quot;&quot; 
+              ingredients29               ingredients30 
+          &quot; sesame sticks &quot;    &quot;unbleached wheat flour&quot; 
+              ingredients31               ingredients32 
+            &quot; sesame seeds&quot;            &quot; sunflower oil&quot; 
+              ingredients33               ingredients34 
+                    &quot; sa;t&quot;              &quot; beet powder&quot; 
+              ingredients35               ingredients36 
+                &quot; turmeric&quot;                          &quot;&quot; 
+              ingredients37               ingredients38 
+         &quot; chili crackers &quot;                      &quot;rice&quot; 
+              ingredients39               ingredients40 
+             &quot; corn starch&quot;                &quot; soy sauce&quot; 
+              ingredients41               ingredients42 
+                    &quot;water&quot;                 &quot; soybeans&quot; 
+              ingredients43               ingredients44 
+                   &quot; wheat&quot;                     &quot; salt&quot; 
+              ingredients45               ingredients46 
+                         &quot;&quot;         &quot; brown rice syrup&quot; 
+              ingredients47               ingredients48 
+                 &quot; paprika&quot;             &quot; onion powder&quot; 
+              ingredients49               ingredients50 
+           &quot; garlic powder&quot;                          &quot;&quot; 
+              ingredients51               ingredients52 
+ &quot; tamari roasted almonds &quot;                   &quot;almonds&quot; 
+              ingredients53               ingredients54 
+           &quot; tamari shoyu &quot;                     &quot;water&quot; 
+              ingredients55               ingredients56 
+                   &quot; wheat&quot;                 &quot; soybeans&quot; 
+              ingredients57               ingredients58 
+                    &quot; salt&quot;                          &quot;&quot; 
+              ingredients59               ingredients60 
+                         &quot;&quot;                     &quot; salt&quot; </code></pre>
+</div>
+<h2 id="벡터를-tbl_df로-변경하기">벡터를 tbl_df로 변경하기</h2>
+<p>앞의 결과는 길이가 60인 벡터를 반환한다. 그러나, 우리는 <code>dplyr 패키지</code>를 사용하기 위해서 <code>tibble 패키지</code>의 <code>enframe() 함수</code>를 사용해서 벡터를 <code>tbl_df 객체</code>로 변경할 수 있다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>foodfact</span> <span class='op'>%&gt;%</span>
+  <span class='va'>.</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span>, <span class='fl'>13</span><span class='op'>)</span>, <span class='op'>]</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>transmute</a></span><span class='op'>(</span>ingredients <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_split.html'>str_split</a></span><span class='op'>(</span><span class='va'>ingredients_text</span>, pattern <span class='op'>=</span> <span class='st'>",|\\(|\\)|\\[|\\]"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>tibble</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/enframe.html'>enframe</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ingredients1</td>
+<td style="text-align: left;">Bananas</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients2</td>
+<td style="text-align: left;">vegetable oil</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients3</td>
+<td style="text-align: left;">coconut oil</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients4</td>
+<td style="text-align: left;">corn oil and/or palm oil</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients5</td>
+<td style="text-align: left;">sugar</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients6</td>
+<td style="text-align: left;">natural banana flavor.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients7</td>
+<td style="text-align: left;">Peanuts</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients8</td>
+<td style="text-align: left;">wheat flour</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients9</td>
+<td style="text-align: left;">sugar</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients10</td>
+<td style="text-align: left;">rice flour</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients11</td>
+<td style="text-align: left;">tapioca starch</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients12</td>
+<td style="text-align: left;">salt</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients13</td>
+<td style="text-align: left;">leavening</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients14</td>
+<td style="text-align: left;">ammonium bicarbonate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients15</td>
+<td style="text-align: left;">baking soda</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients16</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients17</td>
+<td style="text-align: left;">soy sauce</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients18</td>
+<td style="text-align: left;">water</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients19</td>
+<td style="text-align: left;">soybeans</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients20</td>
+<td style="text-align: left;">wheat</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients21</td>
+<td style="text-align: left;">salt</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients22</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients23</td>
+<td style="text-align: left;">potato starch.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients24</td>
+<td style="text-align: left;">Roasted peanuts</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients25</td>
+<td style="text-align: left;">peanuts</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients26</td>
+<td style="text-align: left;">peanut or canola oil</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients27</td>
+<td style="text-align: left;">salt</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients28</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients29</td>
+<td style="text-align: left;">sesame sticks</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients30</td>
+<td style="text-align: left;">unbleached wheat flour</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients31</td>
+<td style="text-align: left;">sesame seeds</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients32</td>
+<td style="text-align: left;">sunflower oil</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients33</td>
+<td style="text-align: left;">sa;t</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients34</td>
+<td style="text-align: left;">beet powder</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients35</td>
+<td style="text-align: left;">turmeric</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients36</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients37</td>
+<td style="text-align: left;">chili crackers</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients38</td>
+<td style="text-align: left;">rice</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients39</td>
+<td style="text-align: left;">corn starch</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients40</td>
+<td style="text-align: left;">soy sauce</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients41</td>
+<td style="text-align: left;">water</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients42</td>
+<td style="text-align: left;">soybeans</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients43</td>
+<td style="text-align: left;">wheat</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients44</td>
+<td style="text-align: left;">salt</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients45</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients46</td>
+<td style="text-align: left;">brown rice syrup</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients47</td>
+<td style="text-align: left;">paprika</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients48</td>
+<td style="text-align: left;">onion powder</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients49</td>
+<td style="text-align: left;">garlic powder</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients50</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients51</td>
+<td style="text-align: left;">tamari roasted almonds</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients52</td>
+<td style="text-align: left;">almonds</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients53</td>
+<td style="text-align: left;">tamari shoyu</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients54</td>
+<td style="text-align: left;">water</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients55</td>
+<td style="text-align: left;">wheat</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients56</td>
+<td style="text-align: left;">soybeans</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients57</td>
+<td style="text-align: left;">salt</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients58</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ingredients59</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ingredients60</td>
+<td style="text-align: left;">salt</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="부수적인-텍스트-전처리">부수적인 텍스트 전처리</h2>
+<p>전체 데이터로 부수적인 텍스트 전처리를 수행한다. 식자재를 의미하지 않는 몇몇 텍스트의 패턴을 정규표현식을 이용해서 제거한다. 모든 의미 없는 텍스트를 제거하거나 보정하기에는 많은 시간과 노력이 필요하므로, 적당한 선에서 타협을 하였다.</p>
+<p>다음 코드는 간단한 전처리 후 도출된 식자재의 <code>돗수(frequency)</code>를 구한다. 그리고 마지막으로 돗수가 큰 상위 100개의 식자재를 추출하였다. 상위에 랭크된 것들은 제대로 추출된 식자재의 이름이다. 아마도 상위 100개의 식자재 이름은 무리없이 사용할 수 있을 것이다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># dplyr, tibble을 이용한 식자재의 추출</span>
+<span class='va'>ingredients</span> <span class='op'>&lt;-</span> <span class='va'>foodfact</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>transmute</a></span><span class='op'>(</span>ingredients <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_split.html'>str_split</a></span><span class='op'>(</span><span class='va'>ingredients_text</span>, pattern <span class='op'>=</span> <span class='st'>",|\\(|\\)|\\[|\\]"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>tibble</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/enframe.html'>enframe</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>value <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='va'>value</span>, <span class='st'>"org|organic"</span>, <span class='st'>""</span><span class='op'>)</span>,
+         value <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='va'>value</span>, <span class='st'>"and/or"</span>, <span class='st'>""</span><span class='op'>)</span>,
+         value <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='va'>value</span>, <span class='st'>"-&gt; en:\\w+"</span>, <span class='st'>""</span><span class='op'>)</span>,
+         value <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='va'>value</span>, <span class='st'>"-&gt; exists  -- ok"</span>, <span class='st'>""</span><span class='op'>)</span>,
+         value <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='va'>value</span>, <span class='st'>"-"</span>, <span class='st'>" "</span><span class='op'>)</span>,
+         value <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace_all</a></span><span class='op'>(</span><span class='va'>value</span>, <span class='st'>"[[:punct:]]"</span>, <span class='st'>" "</span><span class='op'>)</span>,
+         value <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace_all</a></span><span class='op'>(</span><span class='va'>value</span>, <span class='st'>"  "</span>, <span class='st'>" "</span><span class='op'>)</span>,
+         value <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_trim.html'>str_trim</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>!=</span> <span class='st'>""</span>, <span class='op'>!</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_detect.html'>str_detect</a></span><span class='op'>(</span><span class='va'>value</span>, <span class='st'>"completed|\\d"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/count.html'>count</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>transmute</a></span><span class='op'>(</span>ingredient <span class='op'>=</span> <span class='va'>value</span>, freq <span class='op'>=</span> <span class='va'>n</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>freq</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># 도수가 큰 상위 100건 추출</span>
+<span class='va'>top100</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>ingredients</span>, <span class='fl'>100</span><span class='op'>)</span>
+<span class='va'>top100</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span>format.args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>big.mark <span class='op'>=</span> <span class='st'>','</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">ingredient</th>
+<th style="text-align: right;">freq</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">salt</td>
+<td style="text-align: right;">99,466</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sugar</td>
+<td style="text-align: right;">65,631</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">water</td>
+<td style="text-align: right;">61,163</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sel</td>
+<td style="text-align: right;">48,847</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sucre</td>
+<td style="text-align: right;">35,901</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">eau</td>
+<td style="text-align: right;">33,960</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">citric acid</td>
+<td style="text-align: right;">32,105</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">riboflavin</td>
+<td style="text-align: right;">21,773</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">folic acid</td>
+<td style="text-align: right;">21,237</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">niacin</td>
+<td style="text-align: right;">21,237</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">dextrose</td>
+<td style="text-align: right;">19,493</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">natural flavor</td>
+<td style="text-align: right;">17,395</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">corn syrup</td>
+<td style="text-align: right;">17,388</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">wheat flour</td>
+<td style="text-align: right;">17,142</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">soy lecithin</td>
+<td style="text-align: right;">16,009</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">spices</td>
+<td style="text-align: right;">15,539</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sea salt</td>
+<td style="text-align: right;">14,724</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">enzymes</td>
+<td style="text-align: right;">13,850</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">reduced iron</td>
+<td style="text-align: right;">13,261</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">thiamine mononitrate</td>
+<td style="text-align: right;">12,486</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sugar</td>
+<td style="text-align: right;">12,343</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">soybean oil</td>
+<td style="text-align: right;">11,894</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">natural flavors</td>
+<td style="text-align: right;">11,775</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Water</td>
+<td style="text-align: right;">10,751</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">high fructose corn syrup</td>
+<td style="text-align: right;">10,717</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">maltodextrin</td>
+<td style="text-align: right;">10,555</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">milk</td>
+<td style="text-align: right;">10,471</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">garlic</td>
+<td style="text-align: right;">10,470</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">xanthan gum</td>
+<td style="text-align: right;">10,337</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">vinegar</td>
+<td style="text-align: right;">9,180</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">cream</td>
+<td style="text-align: right;">9,060</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">whey</td>
+<td style="text-align: right;">8,829</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">cocoa butter</td>
+<td style="text-align: right;">8,817</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">thiamin mononitrate</td>
+<td style="text-align: right;">8,762</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">farine de blé</td>
+<td style="text-align: right;">8,702</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">huile de tournesol</td>
+<td style="text-align: right;">8,560</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">arômes</td>
+<td style="text-align: right;">8,489</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ascorbic acid</td>
+<td style="text-align: right;">8,343</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">arôme</td>
+<td style="text-align: right;">8,076</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">palm oil</td>
+<td style="text-align: right;">7,862</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">preservative</td>
+<td style="text-align: right;">7,692</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">vegetable oil</td>
+<td style="text-align: right;">7,673</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">caramel color</td>
+<td style="text-align: right;">7,535</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">yeast</td>
+<td style="text-align: right;">7,341</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">huile de colza</td>
+<td style="text-align: right;">7,249</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">guar gum</td>
+<td style="text-align: right;">7,119</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">corn starch</td>
+<td style="text-align: right;">7,115</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sirop de glucose</td>
+<td style="text-align: right;">7,039</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">lait</td>
+<td style="text-align: right;">7,008</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">iron</td>
+<td style="text-align: right;">6,895</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">beurre de cacao</td>
+<td style="text-align: right;">6,883</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">garlic powder</td>
+<td style="text-align: right;">6,764</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">color</td>
+<td style="text-align: right;">6,740</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">onion powder</td>
+<td style="text-align: right;">6,319</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">modified corn starch</td>
+<td style="text-align: right;">6,193</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">canola oil</td>
+<td style="text-align: right;">6,144</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">épices</td>
+<td style="text-align: right;">6,066</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">carrageenan</td>
+<td style="text-align: right;">5,991</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">modified food starch</td>
+<td style="text-align: right;">5,991</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">onion</td>
+<td style="text-align: right;">5,948</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ail</td>
+<td style="text-align: right;">5,923</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">malted barley flour</td>
+<td style="text-align: right;">5,875</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">pâte de cacao</td>
+<td style="text-align: right;">5,740</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">paprika</td>
+<td style="text-align: right;">5,722</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">cheese culture</td>
+<td style="text-align: right;">5,643</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">butter</td>
+<td style="text-align: right;">5,496</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">lactose</td>
+<td style="text-align: right;">5,451</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">natural and artificial flavors</td>
+<td style="text-align: right;">5,317</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">vitamin c</td>
+<td style="text-align: right;">5,317</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mono and diglycerides</td>
+<td style="text-align: right;">5,295</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sodium citrate</td>
+<td style="text-align: right;">5,291</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">lactic acid</td>
+<td style="text-align: right;">5,241</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">artificial flavor</td>
+<td style="text-align: right;">5,221</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">honey</td>
+<td style="text-align: right;">5,138</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">potassium sorbate</td>
+<td style="text-align: right;">5,099</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tomato paste</td>
+<td style="text-align: right;">5,065</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">distilled vinegar</td>
+<td style="text-align: right;">4,991</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">levure</td>
+<td style="text-align: right;">4,952</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">arôme naturel</td>
+<td style="text-align: right;">4,846</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">brown sugar</td>
+<td style="text-align: right;">4,844</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">cane sugar</td>
+<td style="text-align: right;">4,725</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sunflower oil</td>
+<td style="text-align: right;">4,641</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">baking soda</td>
+<td style="text-align: right;">4,591</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sodium bicarbonate</td>
+<td style="text-align: right;">4,538</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sodium phosphate</td>
+<td style="text-align: right;">4,483</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">cheese cultures</td>
+<td style="text-align: right;">4,467</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">spice</td>
+<td style="text-align: right;">4,460</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">acidifiant acide citrique</td>
+<td style="text-align: right;">4,402</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">yeast extract</td>
+<td style="text-align: right;">4,383</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">poivre</td>
+<td style="text-align: right;">4,345</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">calcium chloride</td>
+<td style="text-align: right;">4,329</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">vitamin a palmitate</td>
+<td style="text-align: right;">4,315</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">chocolate liquor</td>
+<td style="text-align: right;">4,287</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">pectin</td>
+<td style="text-align: right;">4,240</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">molasses</td>
+<td style="text-align: right;">4,178</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">cocoa</td>
+<td style="text-align: right;">4,045</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">pasteurized milk</td>
+<td style="text-align: right;">4,001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">wheat</td>
+<td style="text-align: right;">3,994</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">oignons</td>
+<td style="text-align: right;">3,981</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">onions</td>
+<td style="text-align: right;">3,940</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>하위 10건을 살펴보니, 한자와 일본어가 포함되어 있다. 달걀과 식용색소인 황색5호도 눈에 띈다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 하위 10건 추출</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>ingredients</span>, <span class='fl'>10</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">ingredient</th>
+<th style="text-align: right;">freq</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">食用黃梔子色素</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">香料 カラメル色素</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">高分岐環狀糊精</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">高果糖糖漿</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">高梁</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">鶏卵</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">鹿角菜膠</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">麦芽エキス</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">黃色五號</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">黑醋粉</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="대표적인-식재료의-wordcloud">대표적인 식재료의 <code>wordcloud</code></h2>
+<p>앞서 구한 상위 100개의 식재료로 wordcloud 플롯을 그려본다. 식품에 소금, 설탕, 물이 가장 많이 사용되는 식재료임을 쉽게 알 수 있는 플롯이다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># 팔레트 정의</span>
+<span class='va'>pal</span> <span class='op'>&lt;-</span> <span class='fu'>RColorBrewer</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html'>brewer.pal</a></span><span class='op'>(</span><span class='fl'>6</span>, <span class='st'>"Dark2"</span><span class='op'>)</span>
+
+<span class='co'># 워드클라우드 생성</span>
+<span class='fu'>wordcloud</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/wordcloud/man/wordcloud.html'>wordcloud</a></span><span class='op'>(</span><span class='va'>top100</span><span class='op'>$</span><span class='va'>ingredient</span>, <span class='va'>top100</span><span class='op'>$</span><span class='va'>freq</span>, colors <span class='op'>=</span> <span class='va'>pal</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="2019-12-28-multi_derived_files/figure-html5/unnamed-chunk-7-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<h1 id="하나의-레코드에서-여러-레코드-파생하기">하나의 레코드에서 여러 레코드 파생하기</h1>
+<p>앞서 다룬 식자재 데이터는 일차원 데이터다. 그런데 이차원 이상의 데이터는 결국 하나의 레코드(관측치, Observations)를 여러 레코드로 분리하는 방법으로 데이터를 조작해야 한다.</p>
+<p>다음의 시나리오를 적용해 본다.</p>
+<ol type="1">
+<li>국가의 영문명인 <code>countries_en</code> 변수는 식품의 국가명을 영문으로 표현한 변수다.
+<ul>
+<li><strong>복수의 나라 명을 포함하며 컴마(,)로 분리하고 있다.</strong>
+<ul>
+<li><strong>개별 국가로 분리해야 하며, 관심있는 나머지 변수로 추출한다.</strong></li>
+<li><strong>관심있는 나머지 변수는 개별 국가의 관측치에 복제된다.</strong></li>
+</ul></li>
+<li>영문 외의 여러 나라 문자를 포함한다.
+<ul>
+<li>영문으로 변경해야 한다.</li>
+</ul></li>
+</ul></li>
+<li>식품에 포함된 여러 영양소의 규모를 제공한다.
+<ul>
+<li>접미어 <code>_100g</code>로 끝나는 변수들은 100g 당 해당 영양소의 포함 중량이다.</li>
+<li>관심있는 몇 개의 영양소를 국가별로 살펴보자.</li>
+</ul></li>
+<li>식품의 카테고리와 라벨에도 몇몇 정보를 얻을 수 있다.
+<ul>
+<li>카테고리 변수인 <code>categories_en</code>에서 고기가 포함된 식품을 추출해 본다.</li>
+<li>라벨 변수인 <code>labels</code>에서 <code>채식</code> 식품을 추출해 본다.</li>
+</ul></li>
+</ol>
+<h2 id="국가명-보정-함수-정의">국가명 보정 함수 정의</h2>
+<p>국가명은 여러 국가의 언어로 표현되어 있다. 그래서 이들을 영문으로 변경하는 <code>clean_country</code>라는 이름의 함수를 정의하였다. 이 함수는 국가의 이름을 영문 대문자로 변경해 준다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 국가명 보정 사용자 정의 함수</span>
+<span class='va'>clean_country</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://magrittr.tidyverse.org'>magrittr</a></span><span class='op'>)</span>
+  
+  <span class='va'>x</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/case.html'>str_to_upper</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"UNITED STATES|EN:US"</span>, <span class='st'>"US"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"UNITED KINGDOM|EN:GB|FR:GRANDE-BRETAGNE"</span>, <span class='st'>"UK"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"FR:REINO-UNIDO|FR:ANGLETERRE|المملكة-المتحدة"</span>, <span class='st'>"UK"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"FR:SCOTLAND"</span>, <span class='st'>"SCOTLAND"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"FR:DEUTSCHLAND|FR:ALEMANIA|NL:DEUTSCHLAND"</span>, <span class='st'>"GERMANY"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"EN:FR|FR:ФРАНЦИЯ|FR:FRANKRIJK|FR:FRANKREICH"</span>, <span class='st'>"FRANCE"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"FR:MARSEILLE-5|FR:PUYRICARD|NL:FRANKREICH"</span>, <span class='st'>"FRANCE"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"FR:BOURGOGNE-AUBE-NOGENT-SUR-SEINE|RÉUNION"</span>, <span class='st'>"FRANCE"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"HOLLAND|FR:NEDERLAND"</span>, <span class='st'>"NETHERLANDS"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"FR:GRIEKENLAND"</span>, <span class='st'>"GREECE"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"FR:IRLAND"</span>, <span class='st'>"IRELAND"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"EN:CN|FR:QUEBEC"</span>, <span class='st'>"CANADA"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"EN:AU"</span>, <span class='st'>"AUSTRALIA"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"EN:ES|ESPAÑA|FR:SPANJE|FR:SPANIEN"</span>, <span class='st'>"SPAIN"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"CÔTE D'IVOIRE"</span>, <span class='st'>"IVORY COAST"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"FR:MAURICIO"</span>, <span class='st'>"MAURITIUS"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"FR:SCHWEIZ|NL:SCHWEIZ"</span>, <span class='st'>"SWITZERLAND"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"FR:BELGIQU|NL:BELGIEN"</span>, <span class='st'>"BELGIUM"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"XX:DANEMARK"</span>, <span class='st'>"DENMARK"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"OTHER-TURQUIE"</span>, <span class='st'>"TURKEY"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"OTHER-JAPON|OTHER-日本"</span>, <span class='st'>"JAPAN"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"日本"</span>, <span class='st'>"JAPAN"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"السعودية"</span>, <span class='st'>"SAUDI ARABIA"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"سلطنة-عمان"</span>, <span class='st'>"OMAN"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"العراق"</span>, <span class='st'>"IRAQ"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"العراق"</span>, <span class='st'>"IRAQ"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"中华人民共和国|香港"</span>, <span class='st'>"CHINA"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"ព្រះរាជាណាចក្រកម្ពុជា"</span>, <span class='st'>"CAMBODIA"</span><span class='op'>)</span>
+<span class='op'>}</span>
+</code></pre>
+</div>
+</div>
+<h2 id="국가명-보정하고-추출하기">국가명 보정하고 추출하기</h2>
+<p>벡터를 컴마 구분자로 분리하여 리스트로 만든 후 벡터로 변경한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 원래의 데이터 건수</span>
+<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>foodfact</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] 356001</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 국가명 추출</span>
+<span class='va'>countries</span> <span class='op'>&lt;-</span> <span class='va'>foodfact</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>countries_clean <span class='op'>=</span> <span class='fu'>clean_country</span><span class='op'>(</span><span class='va'>countries_en</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>countries_clean</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_split.html'>str_split</a></span><span class='op'>(</span><span class='st'>","</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='va'>unlist</span>
+
+<span class='co'># 추출된 국가의 건수</span>
+<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>countries</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] 363850</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 상위 10개의 국가</span>
+<span class='va'>countries</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/base/sort.html'>sort</a></span><span class='op'>(</span>decreasing <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span>format.args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>big.mark <span class='op'>=</span> <span class='st'>','</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">.</th>
+<th style="text-align: right;">Freq</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">US</td>
+<td style="text-align: right;">173,708</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FRANCE</td>
+<td style="text-align: right;">129,624</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SWITZERLAND</td>
+<td style="text-align: right;">17,210</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GERMANY</td>
+<td style="text-align: right;">9,454</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SPAIN</td>
+<td style="text-align: right;">6,064</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">UK</td>
+<td style="text-align: right;">5,991</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BELGIUM</td>
+<td style="text-align: right;">4,092</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AUSTRALIA</td>
+<td style="text-align: right;">2,319</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RUSSIA</td>
+<td style="text-align: right;">1,641</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ITALY</td>
+<td style="text-align: right;">1,632</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="하나에서-여러-레코드-파생하기">하나에서 여러 레코드 파생하기</h2>
+<p>예시로 데이터 프레임을 생성한다. 컴마로 여러 단어를 묶은 city 변수를 주목하자.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 예제 데이터프레임</span>
+<span class='va'>exam</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>city <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"서울"</span>, <span class='st'>"부산,인천,광주"</span>, <span class='st'>"강원,경기"</span><span class='op'>)</span>, 
+                   falg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"특별시"</span>, <span class='st'>"광역시"</span>, <span class='st'>"시도"</span><span class='op'>)</span>,
+                   num <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>234</span>, <span class='fl'>123</span>, <span class='fl'>53</span><span class='op'>)</span><span class='op'>)</span> 
+<span class='va'>exam</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">city</th>
+<th style="text-align: left;">falg</th>
+<th style="text-align: right;">num</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">서울</td>
+<td style="text-align: left;">특별시</td>
+<td style="text-align: right;">234</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">부산,인천,광주</td>
+<td style="text-align: left;">광역시</td>
+<td style="text-align: right;">123</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">강원,경기</td>
+<td style="text-align: left;">시도</td>
+<td style="text-align: right;">53</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>city 변수를 컴마를 기준으로 분리해서 new_city 변수를 생성한다. 이 변수는 <code>stringr::str_split</code>의 결과인 리스트 객체를 포함하는 변수다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 컴마로 분리 후 new_city 변수 생성</span>
+<span class='va'>exam</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>new_city <span class='op'>=</span> <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_split.html'>str_split</a></span><span class='op'>(</span><span class='va'>city</span>, <span class='st'>","</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>city</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">falg</th>
+<th style="text-align: right;">num</th>
+<th style="text-align: left;">new_city</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">특별시</td>
+<td style="text-align: right;">234</td>
+<td style="text-align: left;">서울</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">광역시</td>
+<td style="text-align: right;">123</td>
+<td style="text-align: left;">부산, 인천, 광주</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">시도</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">강원, 경기</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>new_city 변수의 개별 리스트의 성분별로 레코드를 만들어 주기 위해서 <code>tidyr</code> 패키지의 <code>unnest()</code> 함수를 사용한다. 이제 비로소 도시별로 관측치가 만들어졌다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 최종 결과</span>
+<span class='va'>exam</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>new_city <span class='op'>=</span> <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_split.html'>str_split</a></span><span class='op'>(</span><span class='va'>city</span>, <span class='st'>","</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>city</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>tidyr</span><span class='fu'>::</span><span class='fu'><a href='https://tidyr.tidyverse.org/reference/nest.html'>unnest</a></span><span class='op'>(</span><span class='va'>new_city</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">falg</th>
+<th style="text-align: right;">num</th>
+<th style="text-align: left;">new_city</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">특별시</td>
+<td style="text-align: right;">234</td>
+<td style="text-align: left;">서울</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">광역시</td>
+<td style="text-align: right;">123</td>
+<td style="text-align: left;">부산</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">광역시</td>
+<td style="text-align: right;">123</td>
+<td style="text-align: left;">인천</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">광역시</td>
+<td style="text-align: right;">123</td>
+<td style="text-align: left;">광주</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">시도</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">강원</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">시도</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">경기</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>foodfact를 개별 국가별로 레코드를 분리하면서 몇 개의 관심있는 변수를 추출하고, 파생한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 국가별 관심 지표의 추출</span>
+<span class='va'>countries_additives</span> <span class='op'>&lt;-</span> <span class='va'>foodfact</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>meat_flag <span class='op'>=</span> <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_detect.html'>str_detect</a></span><span class='op'>(</span><span class='va'>categories_en</span>, <span class='st'>"meat|Meat"</span><span class='op'>)</span>,
+         vegan_flag <span class='op'>=</span> <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_detect.html'>str_detect</a></span><span class='op'>(</span><span class='va'>labels</span>, <span class='st'>"vegan|Vegan"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>countries_clean <span class='op'>=</span> <span class='fu'>clean_country</span><span class='op'>(</span><span class='va'>countries_en</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>countries_clean</span>, <span class='va'>energy_100g</span>, <span class='va'>sugars_100g</span>, <span class='va'>salt_100g</span>,
+         <span class='va'>alcohol_100g</span>, <span class='va'>sodium_100g</span>, <span class='va'>cholesterol_100g</span>,
+         <span class='va'>meat_flag</span>, <span class='va'>vegan_flag</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>countries <span class='op'>=</span> <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_split.html'>str_split</a></span><span class='op'>(</span><span class='va'>countries_clean</span>, <span class='st'>","</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>countries_clean</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>tidyr</span><span class='fu'>::</span><span class='fu'><a href='https://tidyr.tidyverse.org/reference/nest.html'>unnest</a></span><span class='op'>(</span><span class='va'>countries</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>countries_additives</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span>format.args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>big.mark <span class='op'>=</span> <span class='st'>','</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<table>
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 9%" />
+<col style="width: 12%" />
+<col style="width: 11%" />
+<col style="width: 15%" />
+<col style="width: 9%" />
+<col style="width: 10%" />
+<col style="width: 9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">energy_100g</th>
+<th style="text-align: right;">sugars_100g</th>
+<th style="text-align: right;">salt_100g</th>
+<th style="text-align: right;">alcohol_100g</th>
+<th style="text-align: right;">sodium_100g</th>
+<th style="text-align: right;">cholesterol_100g</th>
+<th style="text-align: left;">meat_flag</th>
+<th style="text-align: left;">vegan_flag</th>
+<th style="text-align: left;">countries</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">FRANCE</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2,243</td>
+<td style="text-align: right;">14.29</td>
+<td style="text-align: right;">0.00000</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">0.018</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">US</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1,941</td>
+<td style="text-align: right;">17.86</td>
+<td style="text-align: right;">0.63500</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.250</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">US</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2,540</td>
+<td style="text-align: right;">3.57</td>
+<td style="text-align: right;">1.22428</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.482</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">US</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1,552</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">US</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1,933</td>
+<td style="text-align: right;">11.54</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">US</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="국가별-식품-정보-분석하기">국가별 식품 정보 분석하기</h1>
+<p>우여곡절로 만든 데이터 셋을 이용해서 몇 가지 분석을 수행해 보자.</p>
+<h2 id="국가별-설탕에-대한-기호">국가별 설탕에 대한 기호</h2>
+<p>국가별 식품에 설탕 함량이 높은 국가는 다음과 같다. 건수가 적은 국가의 경우에는 Outlier에 영향을 받는 등 대표성을 띠지 못하기 때문에 5개 이상 설탕이 함유된 식품이 있는 국가만 대상으로 삼았다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 국가별 설탕 관련 지표의 생성</span>
+<span class='va'>sugar</span> <span class='op'>&lt;-</span> <span class='va'>countries_additives</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>countries</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='op'>(</span>sugar_mean <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>sugars_100g</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
+            freq_food <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span>,
+            freq_sugar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>sugars_100g</span><span class='op'>)</span><span class='op'>)</span>,
+            sugar_percn <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='va'>freq_sugar</span> <span class='op'>/</span> <span class='va'>freq_food</span> <span class='op'>*</span> <span class='fl'>100</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>freq_sugar</span> <span class='op'>&gt;</span> <span class='fl'>5</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>sugar_mean</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>sugar</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span>format.args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>big.mark <span class='op'>=</span> <span class='st'>','</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">countries</th>
+<th style="text-align: right;">sugar_mean</th>
+<th style="text-align: right;">freq_food</th>
+<th style="text-align: right;">freq_sugar</th>
+<th style="text-align: right;">sugar_percn</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">MADAGASCAR</td>
+<td style="text-align: right;">40.916667</td>
+<td style="text-align: right;">114</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">5.26</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">UNITED ARAB EMIRATES</td>
+<td style="text-align: right;">31.077778</td>
+<td style="text-align: right;">84</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">10.71</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ARGENTINA</td>
+<td style="text-align: right;">29.938333</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">9.09</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">JAPAN</td>
+<td style="text-align: right;">27.373846</td>
+<td style="text-align: right;">365</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">3.56</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">TUNISIA</td>
+<td style="text-align: right;">27.092414</td>
+<td style="text-align: right;">159</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: right;">18.24</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MOROCCO</td>
+<td style="text-align: right;">26.799167</td>
+<td style="text-align: right;">208</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: right;">17.31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SAUDI ARABIA</td>
+<td style="text-align: right;">26.486957</td>
+<td style="text-align: right;">117</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">19.66</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MONACO</td>
+<td style="text-align: right;">25.933333</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">64.29</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ALGERIA</td>
+<td style="text-align: right;">25.338889</td>
+<td style="text-align: right;">188</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">9.57</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">LITHUANIA</td>
+<td style="text-align: right;">25.100000</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">40.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BULGARIA</td>
+<td style="text-align: right;">25.005714</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">21.21</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MONTENEGRO</td>
+<td style="text-align: right;">24.622353</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">89.47</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">COLOMBIA</td>
+<td style="text-align: right;">24.451875</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">36.36</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FINLAND</td>
+<td style="text-align: right;">23.461111</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">36.73</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CHINA</td>
+<td style="text-align: right;">23.037235</td>
+<td style="text-align: right;">199</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">8.54</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CZECH REPUBLIC</td>
+<td style="text-align: right;">22.945652</td>
+<td style="text-align: right;">441</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">10.43</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BRAZIL</td>
+<td style="text-align: right;">22.404615</td>
+<td style="text-align: right;">363</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">7.16</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">TURKEY</td>
+<td style="text-align: right;">19.653158</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">38.78</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RUSSIA</td>
+<td style="text-align: right;">19.523095</td>
+<td style="text-align: right;">1,637</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">5.50</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NEW ZEALAND</td>
+<td style="text-align: right;">19.241333</td>
+<td style="text-align: right;">116</td>
+<td style="text-align: right;">75</td>
+<td style="text-align: right;">64.66</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FRENCH POLYNESIA</td>
+<td style="text-align: right;">19.018077</td>
+<td style="text-align: right;">86</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">30.23</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NEDERLAND</td>
+<td style="text-align: right;">18.807143</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">100.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NETHERLANDS</td>
+<td style="text-align: right;">18.796199</td>
+<td style="text-align: right;">804</td>
+<td style="text-align: right;">392</td>
+<td style="text-align: right;">48.76</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DENMARK</td>
+<td style="text-align: right;">18.124776</td>
+<td style="text-align: right;">435</td>
+<td style="text-align: right;">201</td>
+<td style="text-align: right;">46.21</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CANADA</td>
+<td style="text-align: right;">17.701837</td>
+<td style="text-align: right;">1,029</td>
+<td style="text-align: right;">280</td>
+<td style="text-align: right;">27.21</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BOSNIA AND HERZEGOVINA</td>
+<td style="text-align: right;">17.335714</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">82.35</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NEW CALEDONIA</td>
+<td style="text-align: right;">17.329167</td>
+<td style="text-align: right;">108</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">22.22</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MARTINIQUE</td>
+<td style="text-align: right;">17.258139</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">35.83</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SLOVENIA</td>
+<td style="text-align: right;">17.209091</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">47.83</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">POLAND</td>
+<td style="text-align: right;">17.199130</td>
+<td style="text-align: right;">227</td>
+<td style="text-align: right;">69</td>
+<td style="text-align: right;">30.40</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">US</td>
+<td style="text-align: right;">17.109738</td>
+<td style="text-align: right;">132,765</td>
+<td style="text-align: right;">122,367</td>
+<td style="text-align: right;">92.17</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">16.765593</td>
+<td style="text-align: right;">267</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: right;">22.10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">MALI</td>
+<td style="text-align: right;">16.533333</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">85.71</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SINGAPORE</td>
+<td style="text-align: right;">16.430000</td>
+<td style="text-align: right;">57</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">17.54</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SENEGAL</td>
+<td style="text-align: right;">16.363000</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">19.23</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BELGIUM</td>
+<td style="text-align: right;">15.734168</td>
+<td style="text-align: right;">4,082</td>
+<td style="text-align: right;">1,633</td>
+<td style="text-align: right;">40.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SLOVAKIA</td>
+<td style="text-align: right;">15.720000</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">29.41</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SWITZERLAND</td>
+<td style="text-align: right;">15.718281</td>
+<td style="text-align: right;">17,191</td>
+<td style="text-align: right;">11,896</td>
+<td style="text-align: right;">69.20</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">AUSTRALIA</td>
+<td style="text-align: right;">15.301966</td>
+<td style="text-align: right;">2,309</td>
+<td style="text-align: right;">610</td>
+<td style="text-align: right;">26.42</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">UK</td>
+<td style="text-align: right;">15.102567</td>
+<td style="text-align: right;">5,863</td>
+<td style="text-align: right;">2,192</td>
+<td style="text-align: right;">37.39</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">IRELAND</td>
+<td style="text-align: right;">15.102544</td>
+<td style="text-align: right;">221</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: right;">30.77</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ROMANIA</td>
+<td style="text-align: right;">15.093158</td>
+<td style="text-align: right;">266</td>
+<td style="text-align: right;">95</td>
+<td style="text-align: right;">35.71</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">GERMANY</td>
+<td style="text-align: right;">14.885447</td>
+<td style="text-align: right;">9,439</td>
+<td style="text-align: right;">5,777</td>
+<td style="text-align: right;">61.20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SERBIA</td>
+<td style="text-align: right;">14.664797</td>
+<td style="text-align: right;">350</td>
+<td style="text-align: right;">296</td>
+<td style="text-align: right;">84.57</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">LUXEMBOURG</td>
+<td style="text-align: right;">14.616463</td>
+<td style="text-align: right;">232</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">35.34</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PORTUGAL</td>
+<td style="text-align: right;">14.407170</td>
+<td style="text-align: right;">919</td>
+<td style="text-align: right;">516</td>
+<td style="text-align: right;">56.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NORWAY</td>
+<td style="text-align: right;">14.382727</td>
+<td style="text-align: right;">133</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: right;">41.35</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">REPUBLIC OF MACEDONIA</td>
+<td style="text-align: right;">14.062500</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">88.89</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">GUADELOUPE</td>
+<td style="text-align: right;">13.917464</td>
+<td style="text-align: right;">240</td>
+<td style="text-align: right;">138</td>
+<td style="text-align: right;">57.50</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ITALY</td>
+<td style="text-align: right;">13.883119</td>
+<td style="text-align: right;">1,630</td>
+<td style="text-align: right;">545</td>
+<td style="text-align: right;">33.44</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ANDORRA</td>
+<td style="text-align: right;">13.817500</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">47.06</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FRANCE</td>
+<td style="text-align: right;">13.418091</td>
+<td style="text-align: right;">129,221</td>
+<td style="text-align: right;">94,819</td>
+<td style="text-align: right;">73.38</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SAINT PIERRE AND MIQUELON</td>
+<td style="text-align: right;">13.390000</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">55.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SWEDEN</td>
+<td style="text-align: right;">13.303786</td>
+<td style="text-align: right;">414</td>
+<td style="text-align: right;">317</td>
+<td style="text-align: right;">76.57</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">HUNGARY</td>
+<td style="text-align: right;">13.023129</td>
+<td style="text-align: right;">327</td>
+<td style="text-align: right;">179</td>
+<td style="text-align: right;">54.74</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SOUTH AFRICA</td>
+<td style="text-align: right;">12.914667</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">35.71</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">TAIWAN</td>
+<td style="text-align: right;">12.705714</td>
+<td style="text-align: right;">170</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">16.47</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SPAIN</td>
+<td style="text-align: right;">12.680907</td>
+<td style="text-align: right;">6,043</td>
+<td style="text-align: right;">3,128</td>
+<td style="text-align: right;">51.76</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">GREECE</td>
+<td style="text-align: right;">12.430750</td>
+<td style="text-align: right;">106</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">37.74</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">EUROPEAN UNION</td>
+<td style="text-align: right;">12.356111</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">37.50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">AUSTRIA</td>
+<td style="text-align: right;">12.314074</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">135</td>
+<td style="text-align: right;">28.66</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MEXICO</td>
+<td style="text-align: right;">12.012467</td>
+<td style="text-align: right;">172</td>
+<td style="text-align: right;">92</td>
+<td style="text-align: right;">53.49</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">HONG KONG</td>
+<td style="text-align: right;">11.557895</td>
+<td style="text-align: right;">157</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">24.20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SCOTLAND</td>
+<td style="text-align: right;">11.190909</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">55.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CROATIA</td>
+<td style="text-align: right;">11.058889</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">62.07</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">THAILAND</td>
+<td style="text-align: right;">10.873667</td>
+<td style="text-align: right;">254</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">11.81</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">INDIA</td>
+<td style="text-align: right;">10.483333</td>
+<td style="text-align: right;">92</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">13.04</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ALBANIA</td>
+<td style="text-align: right;">10.392857</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">53.85</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FRENCH GUIANA</td>
+<td style="text-align: right;">10.106609</td>
+<td style="text-align: right;">104</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">61.54</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CHILE</td>
+<td style="text-align: right;">9.997826</td>
+<td style="text-align: right;">119</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">19.33</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SOUTH KOREA</td>
+<td style="text-align: right;">8.995000</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">14.63</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BELGIE</td>
+<td style="text-align: right;">8.525000</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">96.30</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CUBA</td>
+<td style="text-align: right;">7.546667</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">54.55</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CAMBODIA</td>
+<td style="text-align: right;">5.751111</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">20.45</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">LEBANON</td>
+<td style="text-align: right;">5.537500</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">19.05</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MALTA</td>
+<td style="text-align: right;">3.781818</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">52.38</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">AZERBAIJAN</td>
+<td style="text-align: right;">0.000000</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">63.16</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>시각화를 통해서 국가별 식품에 설탕 함량이 높은 국가에 대한 이해를 더 쉽게 할 수 있다.</p>
+<p><code>마다가스카르</code>, <code>아랍 에미레이트</code>, <code>아르헨티나</code>의 식품에는 평균적으로 많은 설탕이 함유됨을 알 수 있다. <code>마다가스카르</code>는 독보적이다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
+
+<span class='co'># 테마와 한글 폰트 설정</span>
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme_get.html'>theme_set</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_classic</a></span><span class='op'>(</span>base_family<span class='op'>=</span><span class='st'>'NanumSquare'</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>sugar</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>sugar_mean</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>order_seq <span class='op'>=</span> <span class='fl'>10</span><span class='op'>:</span><span class='fl'>1</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>countries</span>, <span class='va'>order_seq</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='va'>sugar_mean</span> <span class='op'>)</span><span class='op'>)</span>  <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"orange"</span>, colour <span class='op'>=</span> <span class='st'>"orange"</span>, alpha <span class='op'>=</span> <span class='fl'>.5</span>, stat <span class='op'>=</span> <span class='st'>'identity'</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_y_continuous</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"100g 중 식품의 평균 설탕 함유량"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>xlab</a></span><span class='op'>(</span><span class='st'>"국가"</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span><span class='op'>(</span><span class='st'>"식품의 평균 설탕 함유량이 높은 상위 10개 국가"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="2019-12-28-multi_derived_files/figure-html5/unnamed-chunk-17-1.png" width="864" style="display: block; margin: auto;" /></p>
+</div>
+<p>식품 중에 설탕 함량이 낮은 국가는 <code>아제르바이잔</code>, <code>몰타</code>, <code>레바논</code>, <code>캄보디아</code> 등이다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>sugar</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='va'>sugar_mean</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span>format.args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>big.mark <span class='op'>=</span> <span class='st'>','</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">countries</th>
+<th style="text-align: right;">sugar_mean</th>
+<th style="text-align: right;">freq_food</th>
+<th style="text-align: right;">freq_sugar</th>
+<th style="text-align: right;">sugar_percn</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">AZERBAIJAN</td>
+<td style="text-align: right;">0.000000</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">63.16</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MALTA</td>
+<td style="text-align: right;">3.781818</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">52.38</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">LEBANON</td>
+<td style="text-align: right;">5.537500</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">19.05</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CAMBODIA</td>
+<td style="text-align: right;">5.751111</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">20.45</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CUBA</td>
+<td style="text-align: right;">7.546667</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">54.55</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BELGIE</td>
+<td style="text-align: right;">8.525000</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">96.30</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SOUTH KOREA</td>
+<td style="text-align: right;">8.995000</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">14.63</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CHILE</td>
+<td style="text-align: right;">9.997826</td>
+<td style="text-align: right;">119</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">19.33</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FRENCH GUIANA</td>
+<td style="text-align: right;">10.106609</td>
+<td style="text-align: right;">104</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">61.54</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ALBANIA</td>
+<td style="text-align: right;">10.392857</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">53.85</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>sugar</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='va'>sugar_mean</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>order_seq <span class='op'>=</span> <span class='fl'>10</span><span class='op'>:</span><span class='fl'>1</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>countries</span>, <span class='va'>order_seq</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='va'>sugar_mean</span> <span class='op'>)</span><span class='op'>)</span>  <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"blue"</span>, colour <span class='op'>=</span> <span class='st'>"blue"</span>, alpha <span class='op'>=</span> <span class='fl'>.5</span>, stat <span class='op'>=</span> <span class='st'>'identity'</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_y_continuous</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"100g 중 식품의 평균 설탕 함유량"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>xlab</a></span><span class='op'>(</span><span class='st'>"국가"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span><span class='op'>(</span><span class='st'>"식품의 평균 설탕 함유량이 낮은 상위 10개 국가"</span><span class='op'>)</span> <span class='op'>+</span>  
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="2019-12-28-multi_derived_files/figure-html5/unnamed-chunk-19-1.png" width="864" style="display: block; margin: auto;" /></p>
+</div>
+<p>식품 중에 설탕이 포함된 비율이 높은 국가는 <code>네덜란드</code>, <code>벨기에</code>, <code>미국</code> 등이다. <code>네덜란드</code>는 모든 식품에 설탕이 함유되어 있음을 알 수 있다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>sugar</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>sugar_percn</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span>format.args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>big.mark <span class='op'>=</span> <span class='st'>','</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">countries</th>
+<th style="text-align: right;">sugar_mean</th>
+<th style="text-align: right;">freq_food</th>
+<th style="text-align: right;">freq_sugar</th>
+<th style="text-align: right;">sugar_percn</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">NEDERLAND</td>
+<td style="text-align: right;">18.80714</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">100.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BELGIE</td>
+<td style="text-align: right;">8.52500</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">96.30</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">US</td>
+<td style="text-align: right;">17.10974</td>
+<td style="text-align: right;">132,765</td>
+<td style="text-align: right;">122,367</td>
+<td style="text-align: right;">92.17</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MONTENEGRO</td>
+<td style="text-align: right;">24.62235</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">89.47</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">REPUBLIC OF MACEDONIA</td>
+<td style="text-align: right;">14.06250</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">88.89</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MALI</td>
+<td style="text-align: right;">16.53333</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">85.71</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SERBIA</td>
+<td style="text-align: right;">14.66480</td>
+<td style="text-align: right;">350</td>
+<td style="text-align: right;">296</td>
+<td style="text-align: right;">84.57</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BOSNIA AND HERZEGOVINA</td>
+<td style="text-align: right;">17.33571</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">82.35</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SWEDEN</td>
+<td style="text-align: right;">13.30379</td>
+<td style="text-align: right;">414</td>
+<td style="text-align: right;">317</td>
+<td style="text-align: right;">76.57</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FRANCE</td>
+<td style="text-align: right;">13.41809</td>
+<td style="text-align: right;">129,221</td>
+<td style="text-align: right;">94,819</td>
+<td style="text-align: right;">73.38</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>sugar</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>sugar_percn</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>order_seq <span class='op'>=</span> <span class='fl'>10</span><span class='op'>:</span><span class='fl'>1</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>countries</span>, <span class='va'>order_seq</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='va'>sugar_percn</span> <span class='op'>)</span><span class='op'>)</span>  <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"orange"</span>, colour <span class='op'>=</span> <span class='st'>"orange"</span>, alpha <span class='op'>=</span> <span class='fl'>.5</span>, stat <span class='op'>=</span> <span class='st'>'identity'</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_y_continuous</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"식품 중 설탕 포함 비율"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>xlab</a></span><span class='op'>(</span><span class='st'>"국가"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span><span class='op'>(</span><span class='st'>"식품 중에 설탕의 포함 비율이 높은 상위 10개 국가"</span><span class='op'>)</span>  <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="2019-12-28-multi_derived_files/figure-html5/unnamed-chunk-21-1.png" width="864" style="display: block; margin: auto;" /></p>
+</div>
+<p>식품 중에 설탕이 포함된 비율이 낮은 국가는 <code>일본</code>, <code>마다가스카르</code>, <code>러시아</code> 등이다. 특히 <code>마다가스카르</code>는 앞에서 식품 중에 설탕의 함량이 높은 국가였다. <strong>식품에 설탕이 들어가는 음식은 적지만, 설탕이 들어가는 식품의 설탕 함유량은 높은 국가</strong>다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>sugar</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='va'>sugar_percn</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span>format.args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>big.mark <span class='op'>=</span> <span class='st'>','</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">countries</th>
+<th style="text-align: right;">sugar_mean</th>
+<th style="text-align: right;">freq_food</th>
+<th style="text-align: right;">freq_sugar</th>
+<th style="text-align: right;">sugar_percn</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">JAPAN</td>
+<td style="text-align: right;">27.37385</td>
+<td style="text-align: right;">365</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">3.56</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MADAGASCAR</td>
+<td style="text-align: right;">40.91667</td>
+<td style="text-align: right;">114</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">5.26</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RUSSIA</td>
+<td style="text-align: right;">19.52310</td>
+<td style="text-align: right;">1,637</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">5.50</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BRAZIL</td>
+<td style="text-align: right;">22.40462</td>
+<td style="text-align: right;">363</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">7.16</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CHINA</td>
+<td style="text-align: right;">23.03724</td>
+<td style="text-align: right;">199</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">8.54</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ARGENTINA</td>
+<td style="text-align: right;">29.93833</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">9.09</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ALGERIA</td>
+<td style="text-align: right;">25.33889</td>
+<td style="text-align: right;">188</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">9.57</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CZECH REPUBLIC</td>
+<td style="text-align: right;">22.94565</td>
+<td style="text-align: right;">441</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">10.43</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">UNITED ARAB EMIRATES</td>
+<td style="text-align: right;">31.07778</td>
+<td style="text-align: right;">84</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">10.71</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">THAILAND</td>
+<td style="text-align: right;">10.87367</td>
+<td style="text-align: right;">254</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">11.81</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>sugar</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>sugar_percn</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>order_seq <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>countries</span>, <span class='va'>order_seq</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='va'>sugar_percn</span> <span class='op'>)</span><span class='op'>)</span>  <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"blue"</span>, colour <span class='op'>=</span> <span class='st'>"blue"</span>, alpha <span class='op'>=</span> <span class='fl'>.5</span>, stat <span class='op'>=</span> <span class='st'>'identity'</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_y_continuous</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"식품 중 설탕 포함 비율"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>xlab</a></span><span class='op'>(</span><span class='st'>"국가"</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span><span class='op'>(</span><span class='st'>"식품 중에 설탕의 포함 비율이 낮은 상위 10개 국가"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="2019-12-28-multi_derived_files/figure-html5/unnamed-chunk-23-1.png" width="864" style="display: block; margin: auto;" /></p>
+</div>
+<h2 id="나머지-관심-지표의-확인">나머지 관심 지표의 확인</h2>
+<p>설탕의 함량에 대한 변수로 국가별 몇 가지 분석을 수행하였다. 집계한 데이터에는 설탕의 함량 이외에도 소금, 알콜, 나트륨, 콜레스테롤의 함량과 고기의 포함 여부와 채식식품 여부의 변수가 있으니 유사 분석을 수행할 수 있을 것이다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>countries_additives</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] &quot;energy_100g&quot;      &quot;sugars_100g&quot;      &quot;salt_100g&quot;       
+[4] &quot;alcohol_100g&quot;     &quot;sodium_100g&quot;      &quot;cholesterol_100g&quot;
+[7] &quot;meat_flag&quot;        &quot;vegan_flag&quot;       &quot;countries&quot;       </code></pre>
+</div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<div class="distill-site-nav distill-site-footer">
+  <span>
+    Copyright 2021 DATAHOLIC. All Rights Reserved</p>
+  </span> 
+  <!--Licensed under the <a href="https://opensource.org/licenses/lgpl-3.0.html" target="_blank">GNU General Public License version 3.0</a-->
+<br>
+</div>
+
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

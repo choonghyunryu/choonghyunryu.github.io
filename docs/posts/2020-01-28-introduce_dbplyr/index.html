@@ -1,0 +1,3168 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #20794d; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007ba5; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #007ba5; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #007ba5; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #20794d; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+  <!--radix_placeholder_meta_tags-->
+<title>Dataholic: Introduce dbplyr package</title>
+
+<meta property="description" itemprop="description" content="`dbplyr` 패키지는 `DBMS`를 위한 `dplyr` 패키지의 `Backend`다. `dplyr` 패키지의 R 환경에서 data.frame  객체에서 상속된 데이터 객체를 조작해서 데이터 분석을 수행하는 패키지라면, `dbplyr` 패키지는 `dplyr` 패키지의 문법으로 DBMS 환경의 `Tables` 자원을 액세스하여 데이터 분석을 수행하게 도와 준다."/>
+
+
+<!--  https://schema.org/Article -->
+<meta property="article:published" itemprop="datePublished" content="2020-01-28"/>
+<meta property="article:created" itemprop="dateCreated" content="2020-01-28"/>
+<meta name="article:author" content="유충현"/>
+
+<!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+<meta property="og:title" content="Dataholic: Introduce dbplyr package"/>
+<meta property="og:type" content="article"/>
+<meta property="og:description" content="`dbplyr` 패키지는 `DBMS`를 위한 `dplyr` 패키지의 `Backend`다. `dplyr` 패키지의 R 환경에서 data.frame  객체에서 상속된 데이터 객체를 조작해서 데이터 분석을 수행하는 패키지라면, `dbplyr` 패키지는 `dplyr` 패키지의 문법으로 DBMS 환경의 `Tables` 자원을 액세스하여 데이터 분석을 수행하게 도와 준다."/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Dataholic"/>
+
+<!--  https://dev.twitter.com/cards/types/summary -->
+<meta property="twitter:card" content="summary"/>
+<meta property="twitter:title" content="Dataholic: Introduce dbplyr package"/>
+<meta property="twitter:description" content="`dbplyr` 패키지는 `DBMS`를 위한 `dplyr` 패키지의 `Backend`다. `dplyr` 패키지의 R 환경에서 data.frame  객체에서 상속된 데이터 객체를 조작해서 데이터 분석을 수행하는 패키지라면, `dbplyr` 패키지는 `dplyr` 패키지의 문법으로 DBMS 환경의 `Tables` 자원을 액세스하여 데이터 분석을 수행하게 도와 준다."/>
+
+<!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+<script type="text/json" id="radix-rmarkdown-metadata">
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","tags","categories","output"]}},"value":[{"type":"character","attributes":{},"value":["Introduce dbplyr package"]},{"type":"character","attributes":{},"value":["`dbplyr` 패키지는 `DBMS`를 위한 `dplyr` 패키지의 `Backend`다. `dplyr` 패키지의 R 환경에서 data.frame  객체에서 상속된 데이터 객체를 조작해서 데이터 분석을 수행하는 패키지라면, `dbplyr` 패키지는 `dplyr` 패키지의 문법으로 DBMS 환경의 `Tables` 자원을 액세스하여 데이터 분석을 수행하게 도와 준다."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["유충현"]}]}]},{"type":"character","attributes":{},"value":["2020-01-28"]},{"type":"character","attributes":{},"value":["PostgreSQL","tidyverse","dbplyr","nyc-taxi-data"]},{"type":"character","attributes":{},"value":["Tidyverse"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_depth"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]}]}]}]}
+</script>
+<!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["2020-01-28-introduce_dbplyr_files/anchor-4.2.2/anchor.min.js","2020-01-28-introduce_dbplyr_files/bowser-1.9.3/bowser.min.js","2020-01-28-introduce_dbplyr_files/distill-2.2.21/template.v2.js","2020-01-28-introduce_dbplyr_files/header-attrs-2.8/header-attrs.js","2020-01-28-introduce_dbplyr_files/jquery-1.11.3/jquery.min.js","2020-01-28-introduce_dbplyr_files/popper-2.6.0/popper.min.js","2020-01-28-introduce_dbplyr_files/tippy-6.2.7/tippy-bundle.umd.min.js","2020-01-28-introduce_dbplyr_files/tippy-6.2.7/tippy-light-border.css","2020-01-28-introduce_dbplyr_files/tippy-6.2.7/tippy.css","2020-01-28-introduce_dbplyr_files/tippy-6.2.7/tippy.umd.min.js","2020-01-28-introduce_dbplyr_files/webcomponents-2.0.0/webcomponents.js","img/logo.png"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+<meta name="distill:offset" content="../.."/>
+
+<script type="application/javascript">
+
+  window.headroom_prevent_pin = false;
+
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+
+    // initialize headroom for banner
+    var header = $('header').get(0);
+    var headerHeight = header.offsetHeight;
+    var headroom = new Headroom(header, {
+      tolerance: 5,
+      onPin : function() {
+        if (window.headroom_prevent_pin) {
+          window.headroom_prevent_pin = false;
+          headroom.unpin();
+        }
+      }
+    });
+    headroom.init();
+    if(window.location.hash)
+      headroom.unpin();
+    $(header).addClass('headroom--transition');
+
+    // offset scroll location for banner on hash change
+    // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+    window.addEventListener("hashchange", function(event) {
+      window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+    });
+
+    // responsive menu
+    $('.distill-site-header').each(function(i, val) {
+      var topnav = $(this);
+      var toggle = topnav.find('.nav-toggle');
+      toggle.on('click', function() {
+        topnav.toggleClass('responsive');
+      });
+    });
+
+    // nav dropdowns
+    $('.nav-dropbtn').click(function(e) {
+      $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+      $(this).parent().siblings('.nav-dropdown')
+         .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $("body").click(function(e){
+      $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $(".nav-dropdown").click(function(e){
+      e.stopPropagation();
+    });
+  });
+</script>
+
+<style type="text/css">
+
+/* Theme (user-documented overrideables for nav appearance) */
+
+.distill-site-nav {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: #0F2E3D;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.distill-site-nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.distill-site-nav a:hover {
+  color: white;
+}
+
+@media print {
+  .distill-site-nav {
+    display: none;
+  }
+}
+
+.distill-site-header {
+
+}
+
+.distill-site-footer {
+
+}
+
+
+/* Site Header */
+
+.distill-site-header {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.distill-site-header .nav-left {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header .nav-left {
+    margin-left: 0;
+  }
+}
+
+
+.distill-site-header .nav-right {
+  float: right;
+  margin-right: 8px;
+}
+
+.distill-site-header a,
+.distill-site-header .title {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 10px 14px 10px;
+}
+
+.distill-site-header .title {
+  font-size: 18px;
+  min-width: 150px;
+}
+
+.distill-site-header .logo {
+  padding: 0;
+}
+
+.distill-site-header .logo img {
+  display: none;
+  max-height: 20px;
+  width: auto;
+  margin-bottom: -4px;
+}
+
+.distill-site-header .nav-image img {
+  max-height: 18px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: -3px;
+}
+
+
+
+@media screen and (min-width: 1000px) {
+  .distill-site-header .logo img {
+    display: inline-block;
+  }
+  .distill-site-header .nav-left {
+    margin-left: 20px;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 20px;
+  }
+  .distill-site-header .title {
+    padding-left: 12px;
+  }
+}
+
+
+.distill-site-header .nav-toggle {
+  display: none;
+}
+
+.nav-dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.nav-dropdown .nav-dropbtn {
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 10px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  margin-top: 1px;
+  z-index: 2;
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+  z-index: 1;
+  margin-top: 2px;
+  white-space: nowrap;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.nav-dropdown-content hr {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-dropdown-active {
+  display: block;
+}
+
+.nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
+  color: black;
+  padding: 6px 24px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.nav-dropdown-content .nav-dropdown-header {
+  display: block;
+  padding: 5px 24px;
+  padding-bottom: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999;
+  white-space: nowrap;
+}
+
+.nav-dropdown:hover .nav-dropbtn {
+  color: white;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.nav-right .nav-dropdown-content {
+  margin-left: -45%;
+  right: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
+  .distill-site-header a.nav-toggle {
+    float: right;
+    display: block;
+  }
+  .distill-site-header .title {
+    margin-left: 0;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 0;
+  }
+  .distill-site-header {
+    overflow: hidden;
+  }
+  .nav-right .nav-dropdown-content {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-header.responsive {position: relative; min-height: 500px; }
+  .distill-site-header.responsive a.nav-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .distill-site-header.responsive a,
+  .distill-site-header.responsive .nav-dropdown {
+    display: block;
+    text-align: left;
+  }
+  .distill-site-header.responsive .nav-left,
+  .distill-site-header.responsive .nav-right {
+    width: 100%;
+  }
+  .distill-site-header.responsive .nav-dropdown {float: none;}
+  .distill-site-header.responsive .nav-dropdown-content {position: relative;}
+  .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Site Footer */
+
+.distill-site-footer {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 3;
+  margin-top: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+/* Headroom */
+
+d-title {
+  padding-top: 6rem;
+}
+
+@media print {
+  d-title {
+    padding-top: 4rem;
+  }
+}
+
+.headroom {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.headroom--transition {
+  transition: all .4s ease-in-out;
+}
+
+.headroom--unpinned {
+  top: -100px;
+}
+
+.headroom--pinned {
+  top: 0;
+}
+
+/* adjust viewport for navbar height */
+/* helps vertically center bootstrap (non-distill) content */
+.min-vh-100 {
+  min-height: calc(100vh - 100px) !important;
+}
+
+</style>
+
+<script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+<link href="../../site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
+<link href="../../site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
+<script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
+<script src="../../site_libs/autocomplete-0.37.1/autocomplete.min.js"></script>
+<script src="../../site_libs/fuse-6.4.1/fuse.min.js"></script>
+
+<script type="application/javascript">
+
+function getMeta(metaName) {
+  var metas = document.getElementsByTagName('meta');
+  for (let i = 0; i < metas.length; i++) {
+    if (metas[i].getAttribute('name') === metaName) {
+      return metas[i].getAttribute('content');
+    }
+  }
+  return '';
+}
+
+function offsetURL(url) {
+  var offset = getMeta('distill:offset');
+  return offset ? offset + '/' + url : url;
+}
+
+function createFuseIndex() {
+
+  // create fuse index
+  var options = {
+    keys: [
+      { name: 'title', weight: 20 },
+      { name: 'categories', weight: 15 },
+      { name: 'description', weight: 10 },
+      { name: 'contents', weight: 5 },
+    ],
+    ignoreLocation: true,
+    threshold: 0
+  };
+  var fuse = new window.Fuse([], options);
+
+  // fetch the main search.json
+  return fetch(offsetURL('search.json'))
+    .then(function(response) {
+      if (response.status == 200) {
+        return response.json().then(function(json) {
+          // index main articles
+          json.articles.forEach(function(article) {
+            fuse.add(article);
+          });
+          // download collections and index their articles
+          return Promise.all(json.collections.map(function(collection) {
+            return fetch(offsetURL(collection)).then(function(response) {
+              if (response.status === 200) {
+                return response.json().then(function(articles) {
+                  articles.forEach(function(article) {
+                    fuse.add(article);
+                  });
+                })
+              } else {
+                return Promise.reject(
+                  new Error('Unexpected status from search index request: ' +
+                            response.status)
+                );
+              }
+            });
+          })).then(function() {
+            return fuse;
+          });
+        });
+
+      } else {
+        return Promise.reject(
+          new Error('Unexpected status from search index request: ' +
+                      response.status)
+        );
+      }
+    });
+}
+
+window.document.addEventListener("DOMContentLoaded", function (event) {
+
+  // get search element (bail if we don't have one)
+  var searchEl = window.document.getElementById('distill-search');
+  if (!searchEl)
+    return;
+
+  createFuseIndex()
+    .then(function(fuse) {
+
+      // make search box visible
+      searchEl.classList.remove('hidden');
+
+      // initialize autocomplete
+      var options = {
+        autoselect: true,
+        hint: false,
+        minLength: 2,
+      };
+      window.autocomplete(searchEl, options, [{
+        source: function(query, callback) {
+          const searchOptions = {
+            isCaseSensitive: false,
+            shouldSort: true,
+            minMatchCharLength: 2,
+            limit: 10,
+          };
+          var results = fuse.search(query, searchOptions);
+          callback(results
+            .map(function(result) { return result.item; })
+          );
+        },
+        templates: {
+          suggestion: function(suggestion) {
+            var img = suggestion.preview && Object.keys(suggestion.preview).length > 0
+              ? `<img src="${offsetURL(suggestion.preview)}"</img>`
+              : '';
+            var html = `
+              <div class="search-item">
+                <h3>${suggestion.title}</h3>
+                <div class="search-item-description">
+                  ${suggestion.description || ''}
+                </div>
+                <div class="search-item-preview">
+                  ${img}
+                </div>
+              </div>
+            `;
+            return html;
+          }
+        }
+      }]).on('autocomplete:selected', function(event, suggestion) {
+        window.location.href = offsetURL(suggestion.path);
+      });
+      // remove inline display style on autocompleter (we want to
+      // manage responsive display via css)
+      $('.algolia-autocomplete').css("display", "");
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+
+});
+
+</script>
+
+<style type="text/css">
+
+.nav-search {
+  font-size: x-small;
+}
+
+/* Algolioa Autocomplete */
+
+.algolia-autocomplete {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: sub;
+  background-color: white;
+  color: black;
+  padding: 6px;
+  padding-top: 8px;
+  padding-bottom: 0;
+  border-radius: 6px;
+  border: 1px #0F2E3D solid;
+  width: 180px;
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-nav .algolia-autocomplete {
+    display: none;
+    visibility: hidden;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete {
+    display: inline-block;
+    visibility: visible;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete .aa-dropdown-menu {
+    margin-left: 0;
+    width: 400px;
+    max-height: 400px;
+  }
+}
+
+.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+  width: 90%;
+  outline: none;
+  border: none;
+}
+
+.algolia-autocomplete .aa-hint {
+  color: #999;
+}
+.algolia-autocomplete .aa-dropdown-menu {
+  width: 550px;
+  max-height: 70vh;
+  overflow-x: visible;
+  overflow-y: scroll;
+  padding: 5px;
+  margin-top: 3px;
+  margin-left: -150px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #999;
+  border-top: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+  cursor: pointer;
+  padding: 5px 4px;
+  border-bottom: 1px solid #eee;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion:last-of-type {
+  border-bottom: none;
+  margin-bottom: 2px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item {
+  overflow: hidden;
+  font-size: 0.8em;
+  line-height: 1.4em;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item h3 {
+  font-size: 1rem;
+  margin-block-start: 0;
+  margin-block-end: 5px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-description {
+  display: inline-block;
+  overflow: hidden;
+  height: 2.8em;
+  width: 80%;
+  margin-right: 4%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview {
+  display: inline-block;
+  width: 15%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img {
+  height: 3em;
+  width: auto;
+  display: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img[src] {
+  display: initial;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+  background-color: #eee;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+  font-weight: bold;
+  font-style: normal;
+}
+
+</style>
+
+
+<!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+<style type="text/css">
+
+body {
+  background-color: white;
+}
+
+.pandoc-table {
+  width: 100%;
+}
+
+.pandoc-table>caption {
+  margin-bottom: 10px;
+}
+
+.pandoc-table th:not([align]) {
+  text-align: left;
+}
+
+.pagedtable-footer {
+  font-size: 15px;
+}
+
+d-byline .byline {
+  grid-template-columns: 2fr 2fr;
+}
+
+d-byline .byline h3 {
+  margin-block-start: 1.5em;
+}
+
+d-byline .byline .authors-affiliations h3 {
+  margin-block-start: 0.5em;
+}
+
+.authors-affiliations .orcid-id {
+  width: 16px;
+  height:16px;
+  margin-left: 4px;
+  margin-right: 4px;
+  vertical-align: middle;
+  padding-bottom: 2px;
+}
+
+d-title .dt-tags {
+  margin-top: 1em;
+  grid-column: text;
+}
+
+.dt-tags .dt-tag {
+  text-decoration: none;
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0em 0.4em;
+  margin-right: 0.5em;
+  margin-bottom: 0.4em;
+  font-size: 70%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+d-article table.gt_table td,
+d-article table.gt_table th {
+  border-bottom: none;
+}
+
+.html-widget {
+  margin-bottom: 2.0em;
+}
+
+.l-screen-inset {
+  padding-right: 16px;
+}
+
+.l-screen .caption {
+  margin-left: 10px;
+}
+
+.shaded {
+  background: rgb(247, 247, 247);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .html-widget {
+  margin-bottom: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .shaded-content {
+  background: white;
+}
+
+.text-output {
+  margin-top: 0;
+  line-height: 1.5em;
+}
+
+.hidden {
+  display: none !important;
+}
+
+d-article {
+  padding-top: 2.5rem;
+  padding-bottom: 30px;
+}
+
+d-appendix {
+  padding-top: 30px;
+}
+
+d-article>p>img {
+  width: 100%;
+}
+
+d-article h2 {
+  margin: 1rem 0 1.5rem 0;
+}
+
+d-article h3 {
+  margin-top: 1.5rem;
+}
+
+d-article iframe {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 2.0em;
+  width: 100%;
+}
+
+/* Tweak code blocks */
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: auto;
+}
+
+d-article div.sourceCode {
+  background-color: white;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 10px;
+  font-size: 12px;
+  border-left: 2px solid rgba(0,0,0,0.1);
+}
+
+d-article pre {
+  font-size: 12px;
+  color: black;
+  background: none;
+  margin-top: 0;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+d-article pre a {
+  border-bottom: none;
+}
+
+d-article pre a:hover {
+  border-bottom: none;
+  text-decoration: underline;
+}
+
+d-article details {
+  grid-column: text;
+  margin-bottom: 0.8em;
+}
+
+@media(min-width: 768px) {
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: visible !important;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 18px;
+  font-size: 14px;
+}
+
+d-article pre {
+  font-size: 14px;
+}
+
+}
+
+figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+/* CSS for d-contents */
+
+.d-contents {
+  grid-column: text;
+  color: rgba(0,0,0,0.8);
+  font-size: 0.9em;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+  padding-bottom: 0.5em;
+  margin-bottom: 1em;
+  padding-left: 0.25em;
+  justify-self: start;
+}
+
+@media(min-width: 1000px) {
+  .d-contents.d-contents-float {
+    height: 0;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    justify-self: center;
+    padding-right: 3em;
+    padding-left: 2em;
+  }
+}
+
+.d-contents nav h3 {
+  font-size: 18px;
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+.d-contents li {
+  list-style-type: none
+}
+
+.d-contents nav > ul {
+  padding-left: 0;
+}
+
+.d-contents ul {
+  padding-left: 1em
+}
+
+.d-contents nav ul li {
+  margin-top: 0.6em;
+  margin-bottom: 0.2em;
+}
+
+.d-contents nav a {
+  font-size: 13px;
+  border-bottom: none;
+  text-decoration: none
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.d-contents nav a:hover {
+  text-decoration: underline solid rgba(0, 0, 0, 0.6)
+}
+
+.d-contents nav > ul > li > a {
+  font-weight: 600;
+}
+
+.d-contents nav > ul > li > ul {
+  font-weight: inherit;
+}
+
+.d-contents nav > ul > li > ul > li {
+  margin-top: 0.2em;
+}
+
+
+.d-contents nav ul {
+  margin-top: 0;
+  margin-bottom: 0.25em;
+}
+
+.d-article-with-toc h2:nth-child(2) {
+  margin-top: 0;
+}
+
+
+/* Figure */
+
+.figure {
+  position: relative;
+  margin-bottom: 2.5em;
+  margin-top: 1.5em;
+}
+
+.figure img {
+  width: 100%;
+}
+
+.figure .caption {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  line-height: 1.5em;
+}
+
+.figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.figure .caption a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.figure .caption b,
+.figure .caption strong, {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1.0);
+}
+
+/* Citations */
+
+d-article .citation {
+  color: inherit;
+  cursor: inherit;
+}
+
+div.hanging-indent{
+  margin-left: 1em; text-indent: -1em;
+}
+
+/* Citation hover box */
+
+.tippy-box[data-theme~=light-border] {
+  background-color: rgba(250, 250, 250, 0.95);
+}
+
+.tippy-content > p {
+  margin-bottom: 0;
+  padding: 2px;
+}
+
+
+/* Tweak 1000px media break to show more text */
+
+@media(min-width: 1000px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 16px;
+  }
+
+  .grid {
+    grid-column-gap: 16px;
+  }
+
+  d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+  }
+  figure .caption, .figure .caption, figure figcaption {
+    font-size: 13px;
+  }
+}
+
+@media(min-width: 1180px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 32px;
+  }
+
+  .grid {
+    grid-column-gap: 32px;
+  }
+}
+
+
+/* Get the citation styles for the appendix (not auto-injected on render since
+   we do our own rendering of the citation appendix) */
+
+d-appendix .citation-appendix,
+.d-appendix .citation-appendix {
+  font-size: 11px;
+  line-height: 15px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 18px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.02);
+  padding: 10px 18px;
+  border-radius: 3px;
+  color: rgba(150, 150, 150, 1);
+  overflow: hidden;
+  margin-top: -12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Include appendix styles here so they can be overridden */
+
+d-appendix {
+  contain: layout style;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-top: 60px;
+  margin-bottom: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  color: rgba(0,0,0,0.5);
+  padding-top: 60px;
+  padding-bottom: 48px;
+}
+
+d-appendix h3 {
+  grid-column: page-start / text-start;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 1em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.65);
+}
+
+d-appendix h3 + * {
+  margin-top: 1em;
+}
+
+d-appendix ol {
+  padding: 0 0 0 15px;
+}
+
+@media (min-width: 768px) {
+  d-appendix ol {
+    padding: 0 0 0 30px;
+    margin-left: -30px;
+  }
+}
+
+d-appendix li {
+  margin-bottom: 1em;
+}
+
+d-appendix a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+d-appendix > * {
+  grid-column: text;
+}
+
+d-appendix > d-footnote-list,
+d-appendix > d-citation-list,
+d-appendix > distill-appendix {
+  grid-column: screen;
+}
+
+/* Include footnote styles here so they can be overridden */
+
+d-footnote-list {
+  contain: layout style;
+}
+
+d-footnote-list > * {
+  grid-column: text;
+}
+
+d-footnote-list a.footnote-backlink {
+  color: rgba(0,0,0,0.3);
+  padding-left: 0.5em;
+}
+
+
+
+/* Anchor.js */
+
+.anchorjs-link {
+  /*transition: all .25s linear; */
+  text-decoration: none;
+  border-bottom: none;
+}
+*:hover > .anchorjs-link {
+  margin-left: -1.125em !important;
+  text-decoration: none;
+  border-bottom: none;
+}
+
+/* Social footer */
+
+.social_footer {
+  margin-top: 30px;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.67);
+}
+
+.disqus-comments {
+  margin-right: 30px;
+}
+
+.disqus-comment-count {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+#disqus_thread {
+  margin-top: 30px;
+}
+
+.article-sharing a {
+  border-bottom: none;
+  margin-right: 8px;
+}
+
+.article-sharing a:hover {
+  border-bottom: none;
+}
+
+.sidebar-section.subscribe {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.subscribe p {
+  margin-bottom: 0.5em;
+}
+
+
+.article-footer .subscribe {
+  font-size: 15px;
+  margin-top: 45px;
+}
+
+
+.sidebar-section.custom {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.custom p {
+  margin-bottom: 0.5em;
+}
+
+/* Styles for listing layout (hide title) */
+.layout-listing d-title, .layout-listing .d-title {
+  display: none;
+}
+
+/* Styles for posts lists (not auto-injected) */
+
+
+.posts-with-sidebar {
+  padding-left: 45px;
+  padding-right: 45px;
+}
+
+.posts-list .description h2,
+.posts-list .description p {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+.posts-list .description h2 {
+  font-weight: 700;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.posts-list h2.post-tag {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding-bottom: 12px;
+}
+.posts-list {
+  margin-top: 60px;
+  margin-bottom: 24px;
+}
+
+.posts-list .post-preview {
+  text-decoration: none;
+  overflow: hidden;
+  display: block;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 24px 0;
+}
+
+.post-preview-last {
+  border-bottom: none !important;
+}
+
+.posts-list .posts-list-caption {
+  grid-column: screen;
+  font-weight: 400;
+}
+
+.posts-list .post-preview h2 {
+  margin: 0 0 6px 0;
+  line-height: 1.2em;
+  font-style: normal;
+  font-size: 24px;
+}
+
+.posts-list .post-preview p {
+  margin: 0 0 12px 0;
+  line-height: 1.4em;
+  font-size: 16px;
+}
+
+.posts-list .post-preview .thumbnail {
+  box-sizing: border-box;
+  margin-bottom: 24px;
+  position: relative;
+  max-width: 500px;
+}
+.posts-list .post-preview img {
+  width: 100%;
+  display: block;
+}
+
+.posts-list .metadata {
+  font-size: 12px;
+  line-height: 1.4em;
+  margin-bottom: 18px;
+}
+
+.posts-list .metadata > * {
+  display: inline-block;
+}
+
+.posts-list .metadata .publishedDate {
+  margin-right: 2em;
+}
+
+.posts-list .metadata .dt-authors {
+  display: block;
+  margin-top: 0.3em;
+  margin-right: 2em;
+}
+
+.posts-list .dt-tags {
+  display: block;
+  line-height: 1em;
+}
+
+.posts-list .dt-tags .dt-tag {
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0.3em 0.4em;
+  margin-right: 0.2em;
+  margin-bottom: 0.4em;
+  font-size: 60%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.posts-list img {
+  opacity: 1;
+}
+
+.posts-list img[data-src] {
+  opacity: 0;
+}
+
+.posts-more {
+  clear: both;
+}
+
+
+.posts-sidebar {
+  font-size: 16px;
+}
+
+.posts-sidebar h3 {
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.sidebar-section {
+  margin-bottom: 30px;
+}
+
+.categories ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.categories li {
+  color: rgba(0, 0, 0, 0.8);
+  margin-bottom: 0;
+}
+
+.categories li>a {
+  border-bottom: none;
+}
+
+.categories li>a:hover {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.categories .active {
+  font-weight: 600;
+}
+
+.categories .category-count {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+
+@media(min-width: 768px) {
+  .posts-list .post-preview h2 {
+    font-size: 26px;
+  }
+  .posts-list .post-preview .thumbnail {
+    float: right;
+    width: 30%;
+    margin-bottom: 0;
+  }
+  .posts-list .post-preview .description {
+    float: left;
+    width: 45%;
+  }
+  .posts-list .post-preview .metadata {
+    float: left;
+    width: 20%;
+    margin-top: 8px;
+  }
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.5em;
+    font-size: 16px;
+  }
+  .posts-with-sidebar .posts-list {
+    float: left;
+    width: 75%;
+  }
+  .posts-with-sidebar .posts-sidebar {
+    float: right;
+    width: 20%;
+    margin-top: 60px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+}
+
+
+/* Improve display for browsers without grid (IE/Edge <= 15) */
+
+.downlevel {
+  line-height: 1.6em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
+
+.downlevel .d-title {
+  padding-top: 6rem;
+  padding-bottom: 1.5rem;
+}
+
+.downlevel .d-title h1 {
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1.1em;
+  margin: 0 0 0.5rem;
+}
+
+.downlevel .d-title p {
+  font-weight: 300;
+  font-size: 1.2rem;
+  line-height: 1.55em;
+  margin-top: 0;
+}
+
+.downlevel .d-byline {
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  font-size: 0.8rem;
+  line-height: 1.8em;
+}
+
+.downlevel .section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.downlevel .d-article {
+  font-size: 1.06rem;
+  line-height: 1.7em;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+
+.downlevel .d-appendix {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.5);
+  padding-top: 40px;
+  padding-bottom: 48px;
+}
+
+.downlevel .footnotes ol {
+  padding-left: 13px;
+}
+
+.downlevel .base-grid,
+.downlevel .distill-header,
+.downlevel .d-title,
+.downlevel .d-abstract,
+.downlevel .d-article,
+.downlevel .d-appendix,
+.downlevel .distill-appendix,
+.downlevel .d-byline,
+.downlevel .d-footnote-list,
+.downlevel .d-citation-list,
+.downlevel .distill-footer,
+.downlevel .appendix-bottom,
+.downlevel .posts-container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+@media(min-width: 768px) {
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+  padding-left: 150px;
+  padding-right: 150px;
+  max-width: 900px;
+}
+}
+
+.downlevel pre code {
+  display: block;
+  border-left: 2px solid rgba(0, 0, 0, .1);
+  padding: 0 0 0 20px;
+  font-size: 14px;
+}
+
+.downlevel code, .downlevel pre {
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+.downlevel .posts-list .post-preview {
+  color: inherit;
+}
+
+
+
+</style>
+
+<script type="application/javascript">
+
+function is_downlevel_browser() {
+  if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                 window.navigator.userAgent)) {
+    return true;
+  } else {
+    return window.load_distill_framework === undefined;
+  }
+}
+
+// show body when load is complete
+function on_load_complete() {
+
+  // add anchors
+  if (window.anchors) {
+    window.anchors.options.placement = 'left';
+    window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+  }
+
+
+  // set body to visible
+  document.body.style.visibility = 'visible';
+
+  // force redraw for leaflet widgets
+  if (window.HTMLWidgets) {
+    var maps = window.HTMLWidgets.findAll(".leaflet");
+    $.each(maps, function(i, el) {
+      var map = this.getMap();
+      map.invalidateSize();
+      map.eachLayer(function(layer) {
+        if (layer instanceof L.TileLayer)
+          layer.redraw();
+      });
+    });
+  }
+
+  // trigger 'shown' so htmlwidgets resize
+  $('d-article').trigger('shown');
+}
+
+function init_distill() {
+
+  init_common();
+
+  // create front matter
+  var front_matter = $('<d-front-matter></d-front-matter>');
+  $('#distill-front-matter').wrap(front_matter);
+
+  // create d-title
+  $('.d-title').changeElementType('d-title');
+
+  // create d-byline
+  var byline = $('<d-byline></d-byline>');
+  $('.d-byline').replaceWith(byline);
+
+  // create d-article
+  var article = $('<d-article></d-article>');
+  $('.d-article').wrap(article).children().unwrap();
+
+  // move posts container into article
+  $('.posts-container').appendTo($('d-article'));
+
+  // create d-appendix
+  $('.d-appendix').changeElementType('d-appendix');
+
+  // flag indicating that we have appendix items
+  var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+  // replace footnotes with <d-footnote>
+  $('.footnote-ref').each(function(i, val) {
+    appendix = true;
+    var href = $(this).attr('href');
+    var id = href.replace('#', '');
+    var fn = $('#' + id);
+    var fn_p = $('#' + id + '>p');
+    fn_p.find('.footnote-back').remove();
+    var text = fn_p.html();
+    var dtfn = $('<d-footnote></d-footnote>');
+    dtfn.html(text);
+    $(this).replaceWith(dtfn);
+  });
+  // remove footnotes
+  $('.footnotes').remove();
+
+  // move refs into #references-listing
+  $('#references-listing').replaceWith($('#refs'));
+
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    var id = $(this).attr('id');
+    $('.d-contents a[href="#' + id + '"]').parent().remove();
+    appendix = true;
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+  });
+
+  // show d-appendix if we have appendix content
+  $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+  // localize layout chunks to just output
+  $('.layout-chunk').each(function(i, val) {
+
+    // capture layout
+    var layout = $(this).attr('data-layout');
+
+    // apply layout to markdown level block elements
+    var elements = $(this).children().not('details, div.sourceCode, pre, script');
+    elements.each(function(i, el) {
+      var layout_div = $('<div class="' + layout + '"></div>');
+      if (layout_div.hasClass('shaded')) {
+        var shaded_content = $('<div class="shaded-content"></div>');
+        $(this).wrap(shaded_content);
+        $(this).parent().wrap(layout_div);
+      } else {
+        $(this).wrap(layout_div);
+      }
+    });
+
+
+    // unwrap the layout-chunk div
+    $(this).children().unwrap();
+  });
+
+  // remove code block used to force  highlighting css
+  $('.distill-force-highlighting-css').parent().remove();
+
+  // remove empty line numbers inserted by pandoc when using a
+  // custom syntax highlighting theme
+  $('code.sourceCode a:empty').remove();
+
+  // load distill framework
+  load_distill_framework();
+
+  // wait for window.distillRunlevel == 4 to do post processing
+  function distill_post_process() {
+
+    if (!window.distillRunlevel || window.distillRunlevel < 4)
+      return;
+
+    // hide author/affiliations entirely if we have no authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+    if (!have_authors)
+      $('d-byline').addClass('hidden');
+
+    // article with toc class
+    $('.d-contents').parent().addClass('d-article-with-toc');
+
+    // strip links that point to #
+    $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+    // add orcid ids
+    $('.authors-affiliations').find('.author').each(function(i, el) {
+      var orcid_id = front_matter.authors[i].orcidID;
+      if (orcid_id) {
+        var a = $('<a></a>');
+        a.attr('href', 'https://orcid.org/' + orcid_id);
+        var img = $('<img></img>');
+        img.addClass('orcid-id');
+        img.attr('alt', 'ORCID ID');
+        img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+        a.append(img);
+        $(this).append(a);
+      }
+    });
+
+    // hide elements of author/affiliations grid that have no value
+    function hide_byline_column(caption) {
+      $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+    }
+
+    // affiliations
+    var have_affiliations = false;
+    for (var i = 0; i<front_matter.authors.length; ++i) {
+      var author = front_matter.authors[i];
+      if (author.affiliation !== "&nbsp;") {
+        have_affiliations = true;
+        break;
+      }
+    }
+    if (!have_affiliations)
+      $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+    // published date
+    if (!front_matter.publishedDate)
+      hide_byline_column("Published");
+
+    // document object identifier
+    var doi = $('d-byline').find('h3:contains("DOI")');
+    var doi_p = doi.next().empty();
+    if (!front_matter.doi) {
+      // if we have a citation and valid citationText then link to that
+      if ($('#citation').length > 0 && front_matter.citationText) {
+        doi.html('Citation');
+        $('<a href="#citation"></a>')
+          .text(front_matter.citationText)
+          .appendTo(doi_p);
+      } else {
+        hide_byline_column("DOI");
+      }
+    } else {
+      $('<a></a>')
+         .attr('href', "https://doi.org/" + front_matter.doi)
+         .html(front_matter.doi)
+         .appendTo(doi_p);
+    }
+
+     // change plural form of authors/affiliations
+    if (front_matter.authors.length === 1) {
+      var grid = $('.authors-affiliations');
+      grid.children('h3:contains("Authors")').text('Author');
+      grid.children('h3:contains("Affiliations")').text('Affiliation');
+    }
+
+    // remove d-appendix and d-footnote-list local styles
+    $('d-appendix > style:first-child').remove();
+    $('d-footnote-list > style:first-child').remove();
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // hoverable references
+    $('span.citation[data-cites]').each(function() {
+      var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+      window.tippy(this, {
+        allowHTML: true,
+        content: refHtml,
+        maxWidth: 500,
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start'
+      });
+    });
+
+    // clear polling timer
+    clearInterval(tid);
+
+    // show body now that everything is ready
+    on_load_complete();
+  }
+
+  var tid = setInterval(distill_post_process, 50);
+  distill_post_process();
+
+}
+
+function init_downlevel() {
+
+  init_common();
+
+   // insert hr after d-title
+  $('.d-title').after($('<hr class="section-separator"/>'));
+
+  // check if we have authors
+  var front_matter = JSON.parse($("#distill-front-matter").html());
+  var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+  // manage byline/border
+  if (!have_authors)
+    $('.d-byline').remove();
+  $('.d-byline').after($('<hr class="section-separator"/>'));
+  $('.d-byline a').remove();
+
+  // remove toc
+  $('.d-contents').remove();
+
+  // move appendix elements
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+  });
+
+
+  // inject headers into references and footnotes
+  var refs_header = $('<h3></h3>');
+  refs_header.text('References');
+  $('#refs').prepend(refs_header);
+
+  var footnotes_header = $('<h3></h3');
+  footnotes_header.text('Footnotes');
+  $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+  // move appendix-bottom entries to the bottom
+  $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+  $('.appendix-bottom').remove();
+
+  // remove appendix if it's empty
+  if ($('.d-appendix').children().length === 0)
+    $('.d-appendix').remove();
+
+  // prepend separator above appendix
+  $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+  // trim code
+  $('pre>code').each(function(i, val) {
+    $(this).html($.trim($(this).html()));
+  });
+
+  // move posts-container right before article
+  $('.posts-container').insertBefore($('.d-article'));
+
+  $('body').addClass('downlevel');
+
+  on_load_complete();
+}
+
+
+function init_common() {
+
+  // jquery plugin to change element types
+  (function($) {
+    $.fn.changeElementType = function(newType) {
+      var attrs = {};
+
+      $.each(this[0].attributes, function(idx, attr) {
+        attrs[attr.nodeName] = attr.nodeValue;
+      });
+
+      this.replaceWith(function() {
+        return $("<" + newType + "/>", attrs).append($(this).contents());
+      });
+    };
+  })(jQuery);
+
+  // prevent underline for linked images
+  $('a > img').parent().css({'border-bottom' : 'none'});
+
+  // mark non-body figures created by knitr chunks as 100% width
+  $('.layout-chunk').each(function(i, val) {
+    var figures = $(this).find('img, .html-widget');
+    if ($(this).attr('data-layout') !== "l-body") {
+      figures.css('width', '100%');
+    } else {
+      figures.css('max-width', '100%');
+      figures.filter("[width]").each(function(i, val) {
+        var fig = $(this);
+        fig.css('width', fig.attr('width') + 'px');
+      });
+
+    }
+  });
+
+  // auto-append index.html to post-preview links in file: protocol
+  // and in rstudio ide preview
+  $('.post-preview').each(function(i, val) {
+    if (window.location.protocol === "file:")
+      $(this).attr('href', $(this).attr('href') + "index.html");
+  });
+
+  // get rid of index.html references in header
+  if (window.location.protocol !== "file:") {
+    $('.distill-site-header a[href]').each(function(i,val) {
+      $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+    });
+  }
+
+  // add class to pandoc style tables
+  $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+  $('.kable-table').children('table').addClass('pandoc-table');
+
+  // add figcaption style to table captions
+  $('caption').parent('table').addClass("figcaption");
+
+  // initialize posts list
+  if (window.init_posts_list)
+    window.init_posts_list();
+
+  // implmement disqus comment link
+  $('.disqus-comment-count').click(function() {
+    window.headroom_prevent_pin = true;
+    $('#disqus_thread').toggleClass('hidden');
+    if (!$('#disqus_thread').hasClass('hidden')) {
+      var offset = $(this).offset();
+      $(window).resize();
+      $('html, body').animate({
+        scrollTop: offset.top - 35
+      });
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (is_downlevel_browser())
+    init_downlevel();
+  else
+    window.addEventListener('WebComponentsReady', init_distill);
+});
+
+</script>
+
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+
+
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    sans-serif;
+  --mono-font:       monospace;
+  --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
+}
+
+/*-- ARTICLE METADATA --*/
+d-byline {
+  --heading-size:    0.6rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    18px;
+  --contents-size:   13px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       18px;
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+.distill-site-footer {
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+</style>
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+
+:root {
+  --custom-grey60: rgb(102, 102, 102);
+  --custom-grey20: rgb(204, 204, 204);
+  --custom-grey10: rgb(230, 230, 230);
+  --custom-blue: rgb(0, 114, 188);
+  --custom-lightblue: rgb(204, 227, 242);
+  --custom-orange: rgb(255, 127, 42); 
+  --custom-lightorange: rgb(255, 204, 170); 
+}
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    sans-serif;
+  --mono-font:       monospace;
+  --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
+}
+
+/*-- ARTICLE METADATA --*/
+d-byline {
+  --heading-size:    0.6rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    18px;
+  --contents-size:   13px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       18px;
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       var(--custom-blue);
+}
+
+.distill-site-footer {
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       var(--custom-blue);
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+
+.preface {
+  font-size: 11pt;
+  background-color: var(--custom-lightblue);
+  margin-top: 2em;
+  margin-bottom: 0.5em;  
+  padding: 1.5em;
+  padding-top: 1em;
+  border-color: DodgerBlue;
+}
+
+h1 {
+  font-size: 30px !important;  
+  color: var(--custom-blue) !important;
+  font-family: NanumSquare !important;
+  margin-top: 15px !important;
+  padding-top: 15px !important;  
+  margin-bottom: 15px !important;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 25px !important;  
+  color: var(--custom-blue) !important;  
+  font-family: NanumSquare !important;  
+  padding-top: 15px !important;  
+  margin-top: 15px !important;
+  padding-bottom: 10px !important;  
+  margin-bottom: 10px !important;    
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 20px !important;  
+  color: var(--custom-blue) !important;  
+  font-family: NanumSquare !important;  
+  margin-top: 10px !important;
+  margin-bottom: 10px !important; 
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;   
+  font-weight: bold;
+}
+
+d-byline h3 {
+  font-size: 0.6rem !important;   
+  font-weight: 400 !important;   
+  color: rgba(0, 0, 0, 0.5) !important;   
+  margin: 0 !important;   
+}
+    
+d-byline {
+  contain: content;
+  overflow: hidden;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 0.8rem;
+  line-height: 1.8em;
+  padding: 1.5rem 0;
+  min-height: 1.8em;
+} 
+
+.bg-blue,
+.bg-orange,
+.bg-grey {
+  padding: 1.6em;
+  margin-top: 1.0em;
+  margin-bottom: 1.0em;
+}
+.bg-blue {
+  background-color: var(--custom-lightblue);
+}
+.bg-orange {
+  background-color: var(--custom-lightorange);
+}
+.bg-grey {
+  background-color: var(--custom-grey20);
+}
+.bg-blue > *:last-child,
+.bg-orange > *:last-child,
+.bg-grey > *:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}</style>
+<style type="text/css">
+/* base style */
+
+/* FONT FAMILIES */
+
+:root {
+  --heading-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono-default: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  --body-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+body,
+.posts-list .post-preview p,
+.posts-list .description p {
+  font-family: var(--body-font), var(--body-default);
+}
+
+h1, h2, h3, h4, h5, h6,
+.posts-list .post-preview h2,
+.posts-list .description h2 {
+  font-family: var(--heading-font), var(--heading-default);
+}
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: var(--mono-font), var(--mono-default);
+}
+
+
+/*-- TITLE --*/
+d-title h1,
+.posts-list > h1 {
+  color: var(--title-color, black);
+}
+
+d-title h1 {
+  font-size: var(--title-size, 50px);
+}
+
+/*-- HEADERS --*/
+d-article h1,
+d-article h2,
+d-article h3,
+d-article h4,
+d-article h5,
+d-article h6 {
+  color: var(--header-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- BODY --*/
+d-article > p,  /* only text inside of <p> tags */
+d-article > ul, /* lists */
+d-article > ol {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+  font-size: var(--body-size, 1.06rem);
+}
+
+
+/*-- CODE --*/
+d-article div.sourceCode code,
+d-article pre code {
+  font-size: var(--code-size, 14px);
+}
+
+/*-- ASIDE --*/
+d-article aside {
+  font-size: var(--aside-size, 12px);
+  color: var(--aside-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- FIGURE CAPTIONS --*/
+figure .caption,
+figure figcaption,
+.figure .caption {
+  font-size: var(--fig-cap-size, 13px);
+  color: var(--fig-cap-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- METADATA --*/
+d-byline h3 {
+  font-size: var(--heading-size, 0.6rem);
+  color: var(--heading-color, rgba(0, 0, 0, 0.5));
+}
+
+d-byline {
+  font-size: var(--body-size, 0.8rem);
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+d-byline a,
+d-article d-byline a {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- TABLE OF CONTENTS --*/
+.d-contents nav h3 {
+  font-size: var(--heading-size, 18px);
+}
+
+.d-contents nav a {
+  font-size: var(--contents-size, 13px);
+}
+
+/*-- APPENDIX --*/
+d-appendix h3 {
+  font-size: var(--heading-size, 15px);
+  color: var(--heading-color, rgba(0, 0, 0, 0.65));
+}
+
+d-appendix {
+  font-size: var(--text-size, 0.8em);
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+d-appendix d-footnote-list a.footnote-backlink {
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+.distill-site-header .title {
+  font-size: var(--title-size, 18px);
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.distill-site-header a,
+.nav-dropdown .nav-dropbtn {
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.nav-dropdown .nav-dropbtn {
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  font-size: var(--text-size, 15px);
+}
+
+.distill-site-header a:hover,
+.nav-dropdown:hover .nav-dropbtn {
+  color: var(--hover-color, white);
+}
+
+.distill-site-header {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer a:hover {
+  color: var(--hover-color, white);
+}</style>
+<!--/radix_placeholder_distill-->
+  <script src="../../site_libs/header-attrs-2.8/header-attrs.js"></script>
+  <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
+  <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="../../site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="../../site_libs/tippy-6.2.7/tippy.umd.min.js"></script>
+  <script src="../../site_libs/anchor-4.2.2/anchor.min.js"></script>
+  <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
+  <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="../../site_libs/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+<!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Introduce dbplyr package","description":"`dbplyr` 패키지는 `DBMS`를 위한 `dplyr` 패키지의 `Backend`다. `dplyr` 패키지의 R 환경에서 data.frame  객체에서 상속된 데이터 객체를 조작해서 데이터 분석을 수행하는 패키지라면, `dbplyr` 패키지는 `dplyr` 패키지의 문법으로 DBMS 환경의 `Tables` 자원을 액세스하여 데이터 분석을 수행하게 도와 준다.","authors":[{"author":"유충현","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2020-01-28T00:00:00.000+00:00","citationText":"유충현, 2020"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="distill-site-nav distill-site-header">
+<div class="nav-left">
+<a class="logo">
+<img src="../../images/rubik-cube-white.png" alt="Logo"/>
+</a>
+<a href="../../index.html" class="title">Dataholic</a>
+<input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
+</div>
+<div class="nav-right">
+<a href="../../index.html">Home</a>
+<a href="../../mydev.html">MyDevs</a>
+<a href="../../gallery.html">Gallery</a>
+<a href="../../about.html">About</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Introduce dbplyr package</h1>
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+  <a href="../../index.html#category:Tidyverse" class="dt-tag">Tidyverse</a>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p><code>dbplyr</code> 패키지는 <code>DBMS</code>를 위한 <code>dplyr</code> 패키지의 <code>Backend</code>다. <code>dplyr</code> 패키지의 R 환경에서 data.frame 객체에서 상속된 데이터 객체를 조작해서 데이터 분석을 수행하는 패키지라면, <code>dbplyr</code> 패키지는 <code>dplyr</code> 패키지의 문법으로 DBMS 환경의 <code>Tables</code> 자원을 액세스하여 데이터 분석을 수행하게 도와 준다.</p></p>
+</div>
+
+<div class="d-byline">
+  유충현  
+  
+<br/>2020-01-28
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#dbplyr">dbplyr</a></li>
+<li><a href="#테스트-dbms의-환경">테스트 DBMS의 환경</a>
+<ul>
+<li><a href="#dbms-접속-및-dbms-정보">DBMS 접속 및 DBMS 정보</a></li>
+<li><a href="#테스트-데이터-확인">테스트 데이터 확인</a></li>
+</ul></li>
+<li><a href="#데이터-집계하기">데이터 집계하기</a>
+<ul>
+<li><a href="#query를-이용한-데이터-집계">Query를 이용한 데이터 집계</a></li>
+<li><a href="#dbplyr를-이용한-데이터-집계">dbplyr를 이용한 데이터 집계</a></li>
+</ul></li>
+<li><a href="#explain-plan">Explain Plan</a>
+<ul>
+<li><a href="#disconnection">disconnection</a></li>
+</ul></li>
+<li><a href="#참고-리소스">참고 리소스</a></li>
+</ul>
+</nav>
+</div>
+<h2 id="dbplyr">dbplyr</h2>
+<p><code>dbplyr</code> 패키지는 <code>DBMS</code>를 위한 <code>dplyr</code> 패키지의 <code>Backend</code>다. <code>dplyr</code> 패키지의 R 환경에서 data.frame 객체에서 상속된 데이터 객체를 조작해서 데이터 분석을 수행하는 패키지라면, <code>dbplyr</code> 패키지는 <code>dplyr</code> 패키지의 문법으로 DBMS 환경의 <code>Tables</code> 자원을 액세스하여 데이터 분석을 수행하게 도와 준다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="img/logo.png" width="20%" /></p>
+</div>
+<p><a href="https://dbplyr.tidyverse.org/" target="_blank">https://dbplyr.tidyverse.org/</a></p>
+<h2 id="테스트-dbms의-환경">테스트 DBMS의 환경</h2>
+<p>Mac OS X 노트북 환경에 PostgrSQL DBMS 12 버전을= 설치한 환경에 <a href="https://github.com/lcheng6/nyc-taxi-data-code-annotated의" class="uri">https://github.com/lcheng6/nyc-taxi-data-code-annotated의</a> 정보를 이용해서<code>New York</code> 지역의 <code>Taxi 운행 공공 데이터</code>를 분석한 사례의 일부 데이터를 migration하였다.</p>
+<h3 id="dbms-접속-및-dbms-정보">DBMS 접속 및 DBMS 정보</h3>
+<p>PostgreSQL DBMS의 정보는 다음과 같다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/tomoakin/RPostgreSQL'>RPostgreSQL</a></span><span class='op'>)</span>
+
+<span class='va'>con</span> <span class='op'>&lt;-</span> <span class='fu'>dbConnect</span><span class='op'>(</span><span class='fu'>dbDriver</span><span class='op'>(</span><span class='st'>"PostgreSQL"</span><span class='op'>)</span>, dbname <span class='op'>=</span> <span class='st'>"nyc-taxi-data"</span>, host <span class='op'>=</span> <span class='st'>"localhost"</span><span class='op'>)</span>
+
+<span class='co'># DBMS 정보 </span>
+<span class='fu'><a href='https://rdrr.io/pkg/RPostgreSQL/man/dbGetInfo-methods.html'>dbGetInfo</a></span><span class='op'>(</span><span class='va'>con</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>$host
+[1] &quot;localhost&quot;
+
+$port
+[1] &quot;5432&quot;
+
+$user
+[1] &quot;choonghyunryu&quot;
+
+$dbname
+[1] &quot;nyc-taxi-data&quot;
+
+$serverVersion
+[1] &quot;12.0.5&quot;
+
+$protocolVersion
+[1] 3
+
+$backendPId
+[1] 72687
+
+$rsId
+list()</code></pre>
+</div>
+<h3 id="테스트-데이터-확인">테스트 데이터 확인</h3>
+<p>예제로 사용할 <code>trips</code> 테이블은 New York City에서의 택시 운행 정보를 담은 테이블이다.</p>
+<h4 id="테이블-컬럼-정보">테이블 컬럼 정보</h4>
+<p><code>trips</code> 테이블이 폴함하고 있는 컬럼 이름은 다음과 같다. 30개의 데이터 컬럼을 가지고 있다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># trips 테이블 컬럼 이름</span>
+<span class='fu'>dbListFields</span><span class='op'>(</span><span class='va'>con</span>, <span class='st'>"trips"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code> [1] &quot;id&quot;                    &quot;cab_type_id&quot;          
+ [3] &quot;vendor_id&quot;             &quot;pickup_datetime&quot;      
+ [5] &quot;dropoff_datetime&quot;      &quot;store_and_fwd_flag&quot;   
+ [7] &quot;rate_code_id&quot;          &quot;pickup_longitude&quot;     
+ [9] &quot;pickup_latitude&quot;       &quot;dropoff_longitude&quot;    
+[11] &quot;dropoff_latitude&quot;      &quot;passenger_count&quot;      
+[13] &quot;trip_distance&quot;         &quot;fare_amount&quot;          
+[15] &quot;extra&quot;                 &quot;mta_tax&quot;              
+[17] &quot;tip_amount&quot;            &quot;tolls_amount&quot;         
+[19] &quot;ehail_fee&quot;             &quot;improvement_surcharge&quot;
+[21] &quot;congestion_surcharge&quot;  &quot;total_amount&quot;         
+[23] &quot;payment_type&quot;          &quot;trip_type&quot;            
+[25] &quot;pickup_nyct2010_gid&quot;   &quot;dropoff_nyct2010_gid&quot; 
+[27] &quot;pickup_location_id&quot;    &quot;dropoff_location_id&quot;  
+[29] &quot;pickup&quot;                &quot;dropoff&quot;              </code></pre>
+</div>
+<p>컬럼 이름으로는 정보가 부족하다. 그래서 PostgreSQL DBMS의 메타 정보를 읽어서 데이터 타입과 컬럼의 description을 조회해 보았다. 간단하게 get_schema라는 이름의 사용자 정의 함수를 만들어서 조회해 본다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Table 정보 가져오는 함수</span>
+<span class='va'>get_schema</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>con</span>, <span class='va'>tab</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>sql</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span><span class='op'>(</span><span class='st'>"select column_name
+                        ,data_type
+                        ,col_description('public.%s'::regclass, ordinal_position)
+                    from information_schema.columns
+                  where table_schema = 'public' 
+                    and table_name = '%s'"</span>, <span class='va'>tab</span>, <span class='va'>tab</span><span class='op'>)</span>
+  <span class='fu'>dbGetQuery</span><span class='op'>(</span><span class='va'>con</span>, <span class='va'>sql</span><span class='op'>)</span>
+<span class='op'>}</span>
+
+<span class='co'># trips 테이블 컬럼 정보</span>
+<span class='fu'>get_schema</span><span class='op'>(</span><span class='va'>con</span>, <span class='st'>"trips"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>             column_name                   data_type col_description
+1                     id                     integer            &lt;NA&gt;
+2            cab_type_id                     integer            &lt;NA&gt;
+3              vendor_id                        text            &lt;NA&gt;
+4        pickup_datetime timestamp without time zone            &lt;NA&gt;
+5       dropoff_datetime timestamp without time zone            &lt;NA&gt;
+6     store_and_fwd_flag                        text            &lt;NA&gt;
+7           rate_code_id                     integer            &lt;NA&gt;
+8       pickup_longitude                     numeric            &lt;NA&gt;
+9        pickup_latitude                     numeric            &lt;NA&gt;
+10     dropoff_longitude                     numeric            &lt;NA&gt;
+11      dropoff_latitude                     numeric            &lt;NA&gt;
+12       passenger_count                     integer            &lt;NA&gt;
+13         trip_distance                     numeric            &lt;NA&gt;
+14           fare_amount                     numeric            &lt;NA&gt;
+15                 extra                     numeric            &lt;NA&gt;
+16               mta_tax                     numeric            &lt;NA&gt;
+17            tip_amount                     numeric            &lt;NA&gt;
+18          tolls_amount                     numeric            &lt;NA&gt;
+19             ehail_fee                     numeric            &lt;NA&gt;
+20 improvement_surcharge                     numeric            &lt;NA&gt;
+21  congestion_surcharge                     numeric            &lt;NA&gt;
+22          total_amount                     numeric            &lt;NA&gt;
+23          payment_type                        text            &lt;NA&gt;
+24             trip_type                     integer            &lt;NA&gt;
+25   pickup_nyct2010_gid                     integer            &lt;NA&gt;
+26  dropoff_nyct2010_gid                     integer            &lt;NA&gt;
+27    pickup_location_id                     integer            &lt;NA&gt;
+28   dropoff_location_id                     integer            &lt;NA&gt;
+29                pickup                USER-DEFINED            &lt;NA&gt;
+30               dropoff                USER-DEFINED            &lt;NA&gt;</code></pre>
+</div>
+<p>다른 방법으로는 dbColumnInfo() 함수를 이용하는 방법이다. 이 함수는 RPostgreSQL 패키지에서 제공하는 함수다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>rs</span> <span class='op'>&lt;-</span> <span class='fu'>dbSendQuery</span><span class='op'>(</span><span class='va'>con</span>, <span class='st'>"SELECT * FROM trips limit 10"</span><span class='op'>)</span>
+<span class='fu'>dbColumnInfo</span><span class='op'>(</span><span class='va'>rs</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>                    name    Sclass      type len precision scale
+1                     id   integer   INTEGER   4        -1    -1
+2            cab_type_id   integer   INTEGER   4        -1    -1
+3              vendor_id character      TEXT  -1        -1    -1
+4        pickup_datetime   POSIXct TIMESTAMP   8        -1    -1
+5       dropoff_datetime   POSIXct TIMESTAMP   8        -1    -1
+6     store_and_fwd_flag character      TEXT  -1        -1    -1
+7           rate_code_id   integer   INTEGER   4        -1    -1
+8       pickup_longitude    double   DECIMAL  -1        -1    -1
+9        pickup_latitude    double   DECIMAL  -1        -1    -1
+10     dropoff_longitude    double   DECIMAL  -1        -1    -1
+11      dropoff_latitude    double   DECIMAL  -1        -1    -1
+12       passenger_count   integer   INTEGER   4        -1    -1
+13         trip_distance    double   DECIMAL  -1        -1    -1
+14           fare_amount    double   DECIMAL  -1        -1    -1
+15                 extra    double   DECIMAL  -1        -1    -1
+16               mta_tax    double   DECIMAL  -1        -1    -1
+17            tip_amount    double   DECIMAL  -1        -1    -1
+18          tolls_amount    double   DECIMAL  -1        -1    -1
+19             ehail_fee    double   DECIMAL  -1        -1    -1
+20 improvement_surcharge    double   DECIMAL  -1        -1    -1
+21  congestion_surcharge    double   DECIMAL  -1        -1    -1
+22          total_amount    double   DECIMAL  -1        -1    -1
+23          payment_type character      TEXT  -1        -1    -1
+24             trip_type   integer   INTEGER   4        -1    -1
+25   pickup_nyct2010_gid   integer   INTEGER   4        -1    -1
+26  dropoff_nyct2010_gid   integer   INTEGER   4        -1    -1
+27    pickup_location_id   integer   INTEGER   4        -1    -1
+28   dropoff_location_id   integer   INTEGER   4        -1    -1
+29                pickup character   UNKNOWN  -1   1107460    -1
+30               dropoff character   UNKNOWN  -1   1107460    -1
+   nullOK
+1   FALSE
+2    TRUE
+3    TRUE
+4    TRUE
+5    TRUE
+6    TRUE
+7    TRUE
+8    TRUE
+9    TRUE
+10   TRUE
+11   TRUE
+12   TRUE
+13   TRUE
+14   TRUE
+15   TRUE
+16   TRUE
+17   TRUE
+18   TRUE
+19   TRUE
+20   TRUE
+21   TRUE
+22   TRUE
+23   TRUE
+24   TRUE
+25   TRUE
+26   TRUE
+27   TRUE
+28   TRUE
+29   TRUE
+30   TRUE</code></pre>
+</div>
+<h4 id="데이터-건수">데이터 건수</h4>
+<p>trips 테이블의 데이터 건수는 84,345,018건이다. 데이터 건수를 화인하기 위해서 "SELECT count(*) FROM trips" 문을 수행하였으며, 집계를 위한 Query 수행 시간이 짧지는 았았다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>dbGetQuery</span><span class='op'>(</span><span class='va'>con</span>, <span class='st'>"SELECT count(*) FROM trips"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>     count
+1 84345018</code></pre>
+</div>
+<h2 id="데이터-집계하기">데이터 집계하기</h2>
+<p>데이터를 집계하는 간단한 예제로 dbplyr의 사용 방법을 살펴보자.</p>
+<h3 id="query를-이용한-데이터-집계">Query를 이용한 데이터 집계</h3>
+<p>택시의 주행 거리당 운임의 평균을 계산한다. Query로 간단하게 집계할 수 있다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>sql</span> <span class='op'>&lt;-</span> <span class='st'>"select avg(fare_amount / trip_distance) as fare_per_distance
+          from trips
+         where trip_distance &gt; 0
+           and fare_amount &gt; 0"</span>
+
+<span class='va'>excute_time</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='op'>(</span><span class='va'>fare</span> <span class='op'>&lt;-</span> <span class='fu'>dbGetQuery</span><span class='op'>(</span><span class='va'>con</span>, <span class='va'>sql</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>excute_time</span>
+</code></pre>
+</div>
+<pre><code>   user  system elapsed 
+  0.001   0.000 153.817 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>fare</span>
+</code></pre>
+</div>
+<pre><code>  fare_per_distance
+1          5.623411</code></pre>
+</div>
+<p>시스템 환경에 따라 차이가 있을 수 있으나, 예제에서는 153.817초 동안 수행되었다. 그리고 킬로미터 당 약 5.6 달러의 평균 요금을 지불하였음을 알 수 있다.</p>
+<p>요금 결제 방법에 따른 평균 총 지불 운임에 대한 통계는 다음과 같다. 그런데 지불 방법에 대한 코드 값이 대소문자가 섞여 있고, 동일한 내용이 몇 개의 코드로 표현되는 것이 있어 정확한 통계를 산출하지 못했다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>sql</span> <span class='op'>&lt;-</span> <span class='st'>"SELECT payment_type
+              ,AVG(total_amount) mean_fare 
+          FROM trips t 
+      GROUP BY payment_type
+      ORDER BY mean_fare DESC"</span>
+
+<span class='fu'>dbGetQuery</span><span class='op'>(</span><span class='va'>con</span>, <span class='va'>sql</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>  payment_type  mean_fare
+1          Cre 14.3489055
+2          CRE 14.1596819
+3          CRD 13.6265705
+4          NA  12.5874196
+5          Dis 12.2977820
+6          No  10.8333954
+7          CAS 10.1805913
+8          Cas  9.9806661
+9          CSH  0.6285917</code></pre>
+</div>
+<p>그래서 지불 방법의 코드를 대문자로 변환하고 동일한 의미로 분류하여 집계하였다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>sql</span> <span class='op'>&lt;-</span> <span class='st'>"SELECT CASE WHEN UPPER(payment_type) IN ('CRE', 'CRD') THEN 'Credit Card'
+               WHEN UPPER(payment_type) IN ('CAS', 'CSH') THEN 'Cash' 
+               WHEN UPPER(payment_type) = 'DIS' THEN 'Dispute'
+               WHEN UPPER(payment_type) = 'NO' THEN 'No charge'
+               ELSE 'Unknown' END AS payment_type
+              ,COUNT(*) as freq
+              ,AVG(total_amount) mean_fare 
+  FROM trips t 
+ GROUP BY CASE WHEN UPPER(payment_type) IN ('CRE', 'CRD') THEN 'Credit Card'
+               WHEN UPPER(payment_type) IN ('CAS', 'CSH') THEN 'Cash' 
+               WHEN UPPER(payment_type) = 'DIS' THEN 'Dispute'
+               WHEN UPPER(payment_type) = 'NO' THEN 'No charge'
+               ELSE 'Unknown' END
+ ORDER BY mean_fare DESC"</span>
+
+<span class='fu'>dbGetQuery</span><span class='op'>(</span><span class='va'>con</span>, <span class='va'>sql</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>  payment_type     freq mean_fare
+1  Credit Card 29294014 14.232335
+2      Dispute    36768 12.297782
+3      Unknown   208765 11.169581
+4         Cash 54805471  8.851864</code></pre>
+</div>
+<h3 id="dbplyr를-이용한-데이터-집계">dbplyr를 이용한 데이터 집계</h3>
+<p>dbplyr를 이용한 데이터 집계의 장점은 R 환경에서 일관된 dplyr 문법으로 데이터를 집계할 수 있다는 점이다. 특히 SQL query에 익숙치 않은 분석가도 익숙한 dplyr 문법으로 데이터 분석을 수행할 수 있다.</p>
+<p>먼저 tbl() 함수로 해당 테이블에 접근할 수 있는 tbl 컨넥션을 생성한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dbplyr.tidyverse.org/'>dbplyr</a></span><span class='op'>)</span>
+
+<span class='va'>trips_db</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl</a></span><span class='op'>(</span><span class='va'>con</span>, <span class='st'>"trips"</span><span class='op'>)</span>
+
+<span class='fu'>is</span><span class='op'>(</span><span class='va'>trips_db</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] &quot;tbl_PostgreSQLConnection&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>trips_db</span>
+</code></pre>
+</div>
+<pre><code># Source:   table&lt;trips&gt; [?? x 30]
+# Database: postgres 12.0.5 [@localhost:5432/nyc-taxi-data]
+      id cab_type_id vendor_id pickup_datetime     dropoff_datetime   
+   &lt;int&gt;       &lt;int&gt; &lt;chr&gt;     &lt;dttm&gt;              &lt;dttm&gt;             
+ 1     1           1 VTS       2010-01-19 04:22:00 2010-01-19 04:29:00
+ 2     2           1 CMT       2010-01-27 00:42:46 2010-01-27 01:00:20
+ 3     3           1 VTS       2010-01-30 19:00:00 2010-01-30 19:32:00
+ 4     4           1 CMT       2010-01-18 11:16:32 2010-01-18 11:27:57
+ 5     5           1 CMT       2010-01-30 19:18:50 2010-01-30 19:23:31
+ 6     6           1 CMT       2010-01-01 14:37:46 2010-01-01 14:43:19
+ 7     7           1 VTS       2010-01-17 12:13:00 2010-01-17 12:30:00
+ 8     8           1 VTS       2010-01-23 22:20:00 2010-01-23 22:24:00
+ 9     9           1 VTS       2010-01-26 09:14:00 2010-01-26 09:29:00
+10    10           1 VTS       2010-01-31 04:12:00 2010-01-31 04:18:00
+# … with more rows, and 25 more variables: store_and_fwd_flag &lt;chr&gt;,
+#   rate_code_id &lt;int&gt;, pickup_longitude &lt;dbl&gt;,
+#   pickup_latitude &lt;dbl&gt;, dropoff_longitude &lt;dbl&gt;,
+#   dropoff_latitude &lt;dbl&gt;, passenger_count &lt;int&gt;,
+#   trip_distance &lt;dbl&gt;, fare_amount &lt;dbl&gt;, extra &lt;dbl&gt;,
+#   mta_tax &lt;dbl&gt;, tip_amount &lt;dbl&gt;, tolls_amount &lt;dbl&gt;,
+#   ehail_fee &lt;dbl&gt;, improvement_surcharge &lt;dbl&gt;,
+#   congestion_surcharge &lt;dbl&gt;, total_amount &lt;dbl&gt;,
+#   payment_type &lt;chr&gt;, trip_type &lt;int&gt;, pickup_nyct2010_gid &lt;int&gt;,
+#   dropoff_nyct2010_gid &lt;int&gt;, pickup_location_id &lt;int&gt;,
+#   dropoff_location_id &lt;int&gt;, pickup &lt;chr&gt;, dropoff &lt;chr&gt;</code></pre>
+</div>
+<p>trips_db 객체를 콘솔에 출력한 결과의 포맷은 dplyr을 사용한 결과와 유사하다. 그러나 데이터의 건수를 위미하는 영역은 정확한 건수를 표시하지 않고, 물음표로 표현된다.</p>
+<p>앞서 구한 택시의 주행 거리당 운임의 평균은 dplyr의 방법처럼 쉽게 구할 수 있다. 단지, 차이점은 데이터 객체 대신에 tbl 컨넥션을 데이터 소스로 지정한다는 점이다.</p>
+<p>그런데 153.817초 동안 수행된 Query와는 달리 바로 수행이 종료된다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='op'>(</span><span class='va'>fare_db</span> <span class='op'>&lt;-</span> <span class='va'>trips_db</span> <span class='op'>%&gt;%</span> 
+              <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>fare_amount</span>, <span class='va'>trip_distance</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+              <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>fare_amount</span> <span class='op'>&gt;</span> <span class='fl'>0</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+              <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>trip_distance</span> <span class='op'>&gt;</span> <span class='fl'>0</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+              <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='op'>(</span>fare_per_distance <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>fare_amount</span> <span class='op'>/</span> <span class='va'>trip_distance</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>   user  system elapsed 
+  0.019   0.002   0.023 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>is</span><span class='op'>(</span><span class='va'>fare_db</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] &quot;tbl_PostgreSQLConnection&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>fare_db</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/explain.html'>show_query</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>&lt;SQL&gt;
+SELECT AVG(&quot;fare_amount&quot; / &quot;trip_distance&quot;) AS &quot;fare_per_distance&quot;
+FROM (SELECT *
+FROM (SELECT &quot;fare_amount&quot;, &quot;trip_distance&quot;
+FROM &quot;trips&quot;) &quot;q01&quot;
+WHERE (&quot;fare_amount&quot; &gt; 0.0)) &quot;q02&quot;
+WHERE (&quot;trip_distance&quot; &gt; 0.0)</code></pre>
+</div>
+<p>그 이유는 생성된 객체가 결과가 아니라 아직도 tbl 컨넥션임을 알 수 있다. 그리고 show_query() 함수로 기술된 dplyr 문법의 표현식이 연결된 DBMS에서 수행될 Query를 조회할 수도 있다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>is</span><span class='op'>(</span><span class='va'>fare_db</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] &quot;tbl_PostgreSQLConnection&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>fare_db</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/explain.html'>show_query</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>&lt;SQL&gt;
+SELECT AVG(&quot;fare_amount&quot; / &quot;trip_distance&quot;) AS &quot;fare_per_distance&quot;
+FROM (SELECT *
+FROM (SELECT &quot;fare_amount&quot;, &quot;trip_distance&quot;
+FROM &quot;trips&quot;) &quot;q01&quot;
+WHERE (&quot;fare_amount&quot; &gt; 0.0)) &quot;q02&quot;
+WHERE (&quot;trip_distance&quot; &gt; 0.0)</code></pre>
+</div>
+<p>collect() 함수가 실제로 연결된 DBMS에서 Query를 실행한 후 결과를 R 영역으로 가져온다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='op'>(</span><span class='va'>fare2</span> <span class='op'>&lt;-</span> <span class='va'>fare_db</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>collect</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>   user  system elapsed 
+  0.042   0.000 116.439 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>fare2</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 1 x 1
+  fare_per_distance
+              &lt;dbl&gt;
+1              5.62</code></pre>
+</div>
+<p>요금 결제 방법에 따른 평균 총 지불 운임에 대한 통계는 다음과 같이 구한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>payment_db</span> <span class='op'>&lt;-</span> <span class='va'>trips_db</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>payment_type</span>, <span class='va'>total_amount</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>payment_type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>toupper</a></span><span class='op'>(</span><span class='va'>payment_type</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>payment_type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>payment_type</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'CRE'</span>, <span class='st'>'CRD'</span><span class='op'>)</span>, 
+                               <span class='st'>'Credit Card'</span>, <span class='va'>payment_type</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>payment_type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>payment_type</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'CAS'</span>, <span class='st'>'CSH'</span><span class='op'>)</span>, 
+                               <span class='st'>'Cash'</span>, <span class='va'>payment_type</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>payment_type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>payment_type</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'DIS'</span><span class='op'>)</span>, 
+                               <span class='st'>'Dispute'</span>, <span class='va'>payment_type</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>            
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>payment_type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>payment_type</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'NO'</span><span class='op'>)</span>, 
+                               <span class='st'>'No charge'</span>, <span class='st'>'Unknown'</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>payment_type</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='op'>(</span>freq <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span>,
+            mean_fare <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>total_amount</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>mean_fare</span><span class='op'>)</span><span class='op'>)</span> 
+
+<span class='va'>payment_db</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/explain.html'>show_query</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>&lt;SQL&gt;
+SELECT &quot;payment_type&quot;, COUNT(*) AS &quot;freq&quot;, AVG(&quot;total_amount&quot;) AS &quot;mean_fare&quot;
+FROM (SELECT CASE WHEN (&quot;payment_type&quot; IN (&#39;NO&#39;)) THEN (&#39;No charge&#39;) WHEN NOT(&quot;payment_type&quot; IN (&#39;NO&#39;)) THEN (&#39;Unknown&#39;) END AS &quot;payment_type&quot;, &quot;total_amount&quot;
+FROM (SELECT CASE WHEN (&quot;payment_type&quot; IN (&#39;DIS&#39;)) THEN (&#39;Dispute&#39;) WHEN NOT(&quot;payment_type&quot; IN (&#39;DIS&#39;)) THEN (&quot;payment_type&quot;) END AS &quot;payment_type&quot;, &quot;total_amount&quot;
+FROM (SELECT CASE WHEN (&quot;payment_type&quot; IN (&#39;CAS&#39;, &#39;CSH&#39;)) THEN (&#39;Cash&#39;) WHEN NOT(&quot;payment_type&quot; IN (&#39;CAS&#39;, &#39;CSH&#39;)) THEN (&quot;payment_type&quot;) END AS &quot;payment_type&quot;, &quot;total_amount&quot;
+FROM (SELECT CASE WHEN (&quot;payment_type&quot; IN (&#39;CRE&#39;, &#39;CRD&#39;)) THEN (&#39;Credit Card&#39;) WHEN NOT(&quot;payment_type&quot; IN (&#39;CRE&#39;, &#39;CRD&#39;)) THEN (&quot;payment_type&quot;) END AS &quot;payment_type&quot;, &quot;total_amount&quot;
+FROM (SELECT UPPER(&quot;payment_type&quot;) AS &quot;payment_type&quot;, &quot;total_amount&quot;
+FROM &quot;trips&quot;) &quot;q01&quot;) &quot;q02&quot;) &quot;q03&quot;) &quot;q04&quot;) &quot;q05&quot;
+GROUP BY &quot;payment_type&quot;
+ORDER BY &quot;mean_fare&quot; DESC</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>payment_db</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>collect</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 1 x 3
+  payment_type     freq mean_fare
+  &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;
+1 Unknown      84345018      10.7</code></pre>
+</div>
+<p>그런데, 결과를 보면 원하는 답이 아니고, 수행 속도도 매우 느리다. 그래서 mutate() 함수를 여러 개 독립, 순차적으로 기술한 것을 하나의 함수로 합쳐서 수행해 보았다.</p>
+<p>수행속도도 개선되었고 원하는 결과를 얻을 수 있었다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>payment2_db</span> <span class='op'>&lt;-</span> <span class='va'>trips_db</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>payment_type</span>, <span class='va'>total_amount</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>payment_type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>toupper</a></span><span class='op'>(</span><span class='va'>payment_type</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>payment_type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>payment_type</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'CRE'</span>, <span class='st'>'CRD'</span><span class='op'>)</span>, 
+                               <span class='st'>'Credit Card'</span>, <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>payment_type</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'CAS'</span>, <span class='st'>'CSH'</span><span class='op'>)</span>, 
+                               <span class='st'>'Cash'</span>, <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>payment_type</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'DIS'</span><span class='op'>)</span>, 
+                               <span class='st'>'Dispute'</span>, <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>payment_type</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'NO'</span><span class='op'>)</span>, 
+                               <span class='st'>'No charge'</span>, <span class='st'>'Unknown'</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>payment_type</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='op'>(</span>freq <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span>,
+            mean_fare <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>total_amount</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>mean_fare</span><span class='op'>)</span><span class='op'>)</span> 
+
+<span class='va'>payment2_db</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/explain.html'>show_query</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>&lt;SQL&gt;
+SELECT &quot;payment_type&quot;, COUNT(*) AS &quot;freq&quot;, AVG(&quot;total_amount&quot;) AS &quot;mean_fare&quot;
+FROM (SELECT CASE WHEN (&quot;payment_type&quot; IN (&#39;CRE&#39;, &#39;CRD&#39;)) THEN (&#39;Credit Card&#39;) WHEN NOT(&quot;payment_type&quot; IN (&#39;CRE&#39;, &#39;CRD&#39;)) THEN (CASE WHEN (&quot;payment_type&quot; IN (&#39;CAS&#39;, &#39;CSH&#39;)) THEN (&#39;Cash&#39;) WHEN NOT(&quot;payment_type&quot; IN (&#39;CAS&#39;, &#39;CSH&#39;)) THEN (CASE WHEN (&quot;payment_type&quot; IN (&#39;DIS&#39;)) THEN (&#39;Dispute&#39;) WHEN NOT(&quot;payment_type&quot; IN (&#39;DIS&#39;)) THEN (CASE WHEN (&quot;payment_type&quot; IN (&#39;NO&#39;)) THEN (&#39;No charge&#39;) WHEN NOT(&quot;payment_type&quot; IN (&#39;NO&#39;)) THEN (&#39;Unknown&#39;) END) END) END) END AS &quot;payment_type&quot;, &quot;total_amount&quot;
+FROM (SELECT UPPER(&quot;payment_type&quot;) AS &quot;payment_type&quot;, &quot;total_amount&quot;
+FROM &quot;trips&quot;) &quot;q01&quot;) &quot;q02&quot;
+GROUP BY &quot;payment_type&quot;
+ORDER BY &quot;mean_fare&quot; DESC</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>payment2_db</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>collect</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 4 x 3
+  payment_type     freq mean_fare
+  &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;
+1 Credit Card  29294014     14.2 
+2 Dispute         36768     12.3 
+3 Unknown        208765     11.2 
+4 Cash         54805471      8.85</code></pre>
+</div>
+<p>아직 dbplyr가 복잡한 dplyr 구문을 Query로 파싱할 때에 성능의 이슈나, 올바로 파싱하지 못하는 문제점을 안고 있다. 특히, mutate() 함수를 여러 개 독립, 순차적으로 기술하는 것은 피해야 한다.</p>
+<h2 id="explain-plan">Explain Plan</h2>
+<p>show_query() 함수로 DBMS에서 수행될 Query를 살펴 보는 것이 중요하다. 그런데 dbplyr는 Explain Plan도 지원하므로 수행 속도의 개선을 위한 튜닝에서 적절하게 활용하는 것도 좋다.</p>
+<p>다음은 택시의 주행 거리당 운임의 평균을 계산한 dbplyr 구문의 Explain Plan이다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/remote_name.html'>remote_query_plan</a></span><span class='op'>(</span><span class='va'>fare_db</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>                                                                                    QUERY PLAN
+1                            Finalize Aggregate  (cost=2795452.65..2795452.66 rows=1 width=32)
+2                                    -&gt;  Gather  (cost=2795452.43..2795452.64 rows=2 width=32)
+3                                                                           Workers Planned: 2
+4                         -&gt;  Partial Aggregate  (cost=2794452.43..2794452.44 rows=1 width=32)
+5               -&gt;  Parallel Seq Scan on trips  (cost=0.00..2619740.10 rows=34942465 width=21)
+6                                      Filter: ((fare_amount &gt; 0.0) AND (trip_distance &gt; 0.0))</code></pre>
+</div>
+<p>다음은 택시의 주행 거리당 운임의 평균을 계산한 Query의 Explain Plan이다. dbplyr 구문의 것도 거의 유사하다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>sql2</span> <span class='op'>&lt;-</span> <span class='st'>"EXPLAIN ANALYZE 
+          SELECT payment_type
+                ,AVG(total_amount) mean_fare 
+           FROM trips t 
+       GROUP BY payment_type
+       ORDER BY mean_fare DESC"</span>
+
+<span class='va'>plan</span> <span class='op'>&lt;-</span> <span class='fu'>dbGetQuery</span><span class='op'>(</span><span class='va'>con</span>, <span class='va'>sql2</span><span class='op'>)</span>
+<span class='va'>plan</span>
+</code></pre>
+</div>
+<pre><code>                                                                                                                                                        QUERY PLAN
+1                                                            Sort  (cost=2620742.87..2620742.89 rows=9 width=36) (actual time=79915.407..79917.957 rows=9 loops=1)
+2                                                                                                                               Sort Key: (avg(total_amount)) DESC
+3                                                                                                                             Sort Method: quicksort  Memory: 25kB
+4                                     -&gt;  Finalize GroupAggregate  (cost=2620740.38..2620742.73 rows=9 width=36) (actual time=79915.133..79917.932 rows=9 loops=1)
+5                                                                                                                                          Group Key: payment_type
+6                                              -&gt;  Gather Merge  (cost=2620740.38..2620742.48 rows=18 width=36) (actual time=79915.071..79917.752 rows=27 loops=1)
+7                                                                                                                                               Workers Planned: 2
+8                                                                                                                                              Workers Launched: 2
+9                                                        -&gt;  Sort  (cost=2619740.36..2619740.38 rows=9 width=36) (actual time=79891.627..79891.631 rows=9 loops=3)
+10                                                                                                                                          Sort Key: payment_type
+11                                                                                                                            Sort Method: quicksort  Memory: 26kB
+12                                                                                                                 Worker 0:  Sort Method: quicksort  Memory: 26kB
+13                                                                                                                 Worker 1:  Sort Method: quicksort  Memory: 26kB
+14                                      -&gt;  Partial HashAggregate  (cost=2619740.10..2619740.21 rows=9 width=36) (actual time=79891.487..79891.508 rows=9 loops=3)
+15                                                                                                                                         Group Key: payment_type
+16                           -&gt;  Parallel Seq Scan on trips t  (cost=0.00..2443989.07 rows=35150207 width=14) (actual time=0.094..46938.267 rows=28115006 loops=3)
+17                                                                                                                                         Planning Time: 0.160 ms
+18                                                                                                                                    Execution Time: 79918.048 ms</code></pre>
+</div>
+<p>요금 결제 방법에 따른 평균 총 지불 운임에 대한 통계를 계산하기 위한 dbplyr 구문의 Explain Plan이다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/remote_name.html'>remote_query_plan</a></span><span class='op'>(</span><span class='va'>payment_db</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         QUERY PLAN
+1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             Sort  (cost=12199179.18..12199179.21 rows=9 width=72)
+2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          Sort Key: (avg(trips.total_amount)) DESC
+3                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      -&gt;  Finalize GroupAggregate  (cost=12199174.22..12199179.04 rows=9 width=72)
+4                          Group Key: (CASE WHEN (CASE WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END &lt;&gt; &#39;DIS&#39;::text) THEN CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END = &#39;NO&#39;::text) THEN &#39;No charge&#39;::text WHEN (CASE WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END &lt;&gt; &#39;DIS&#39;::text) THEN CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END &lt;&gt; &#39;NO&#39;::text) THEN &#39;Unknown&#39;::text ELSE NULL::text END)
+5                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                -&gt;  Gather Merge  (cost=12199174.22..12199176.32 rows=18 width=72)
+6                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Workers Planned: 2
+7                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         -&gt;  Sort  (cost=12198174.19..12198174.22 rows=9 width=72)
+8                           Sort Key: (CASE WHEN (CASE WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END &lt;&gt; &#39;DIS&#39;::text) THEN CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END = &#39;NO&#39;::text) THEN &#39;No charge&#39;::text WHEN (CASE WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END &lt;&gt; &#39;DIS&#39;::text) THEN CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END &lt;&gt; &#39;NO&#39;::text) THEN &#39;Unknown&#39;::text ELSE NULL::text END)
+9                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        -&gt;  Partial HashAggregate  (cost=12198171.51..12198174.05 rows=9 width=72)
+10                           Group Key: CASE WHEN (CASE WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END &lt;&gt; &#39;DIS&#39;::text) THEN CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END = &#39;NO&#39;::text) THEN &#39;No charge&#39;::text WHEN (CASE WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END &lt;&gt; &#39;DIS&#39;::text) THEN CASE WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN upper(trips.payment_type) ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END &lt;&gt; &#39;NO&#39;::text) THEN &#39;Unknown&#39;::text ELSE NULL::text END
+11                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  -&gt;  Parallel Seq Scan on trips  (cost=0.00..11934544.96 rows=35150207 width=42)</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/remote_name.html'>remote_query_plan</a></span><span class='op'>(</span><span class='va'>payment2_db</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              QUERY PLAN
+1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    Sort  (cost=4114627.43..4114627.46 rows=9 width=72)
+2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               Sort Key: (avg(trips.total_amount)) DESC
+3                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             -&gt;  Finalize GroupAggregate  (cost=4114624.54..4114627.29 rows=9 width=72)
+4                          Group Key: (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; &#39;DIS&#39;::text) THEN CASE WHEN (upper(trips.payment_type) = &#39;NO&#39;::text) THEN &#39;No charge&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; &#39;NO&#39;::text) THEN &#39;Unknown&#39;::text ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END)
+5                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       -&gt;  Gather Merge  (cost=4114624.54..4114626.64 rows=18 width=72)
+6                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     Workers Planned: 2
+7                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                -&gt;  Sort  (cost=4113624.51..4113624.54 rows=9 width=72)
+8                           Sort Key: (CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; &#39;DIS&#39;::text) THEN CASE WHEN (upper(trips.payment_type) = &#39;NO&#39;::text) THEN &#39;No charge&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; &#39;NO&#39;::text) THEN &#39;Unknown&#39;::text ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END)
+9                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               -&gt;  Partial HashAggregate  (cost=4113623.90..4113624.37 rows=9 width=72)
+10                           Group Key: CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CRE,CRD}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; ALL (&#39;{CAS,CSH}&#39;::text[])) THEN CASE WHEN (upper(trips.payment_type) = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; &#39;DIS&#39;::text) THEN CASE WHEN (upper(trips.payment_type) = &#39;NO&#39;::text) THEN &#39;No charge&#39;::text WHEN (upper(trips.payment_type) &lt;&gt; &#39;NO&#39;::text) THEN &#39;Unknown&#39;::text ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END ELSE NULL::text END
+11                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        -&gt;  Parallel Seq Scan on trips  (cost=0.00..3849997.35 rows=35150207 width=42)</code></pre>
+</div>
+<p>요금 결제 방법에 따른 평균 총 지불 운임에 대한 통계를 계산하기 위한 Query의 Explain Plan이다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>sql3</span> <span class='op'>&lt;-</span> <span class='st'>"EXPLAIN ANALYZE 
+          SELECT CASE WHEN UPPER(payment_type) IN ('CRE', 'CRD') THEN 'Credit Card'
+                 WHEN UPPER(payment_type) IN ('CAS', 'CSH') THEN 'Cash' 
+                 WHEN UPPER(payment_type) = 'DIS' THEN 'Dispute'
+                 WHEN UPPER(payment_type) = 'NO' THEN 'No charge'
+                 ELSE 'Unknown' END AS payment_type
+                ,COUNT(*) as freq
+                ,AVG(total_amount) mean_fare 
+     FROM trips t 
+  GROUP BY CASE WHEN UPPER(payment_type) IN ('CRE', 'CRD') THEN 'Credit Card'
+                WHEN UPPER(payment_type) IN ('CAS', 'CSH') THEN 'Cash' 
+                WHEN UPPER(payment_type) = 'DIS' THEN 'Dispute'
+                WHEN UPPER(payment_type) = 'NO' THEN 'No charge'
+                ELSE 'Unknown' END
+  ORDER BY mean_fare DESC"</span>
+
+<span class='va'>plan</span> <span class='op'>&lt;-</span> <span class='fu'>dbGetQuery</span><span class='op'>(</span><span class='va'>con</span>, <span class='va'>sql3</span><span class='op'>)</span>
+<span class='va'>plan</span>
+</code></pre>
+</div>
+<pre><code>                                                                                                                                                                                                                                                                                                                                                 QUERY PLAN
+1                                                                                                                                                                                                                                                   Sort  (cost=3411622.93..3411622.96 rows=9 width=72) (actual time=108677.198..108679.859 rows=4 loops=1)
+2                                                                                                                                                                                                                                                                                                                        Sort Key: (avg(total_amount)) DESC
+3                                                                                                                                                                                                                                                                                                                      Sort Method: quicksort  Memory: 25kB
+4                                                                                                                                                                                                                            -&gt;  Finalize GroupAggregate  (cost=3411620.22..3411622.79 rows=9 width=72) (actual time=108677.047..108679.841 rows=4 loops=1)
+5                          Group Key: (CASE WHEN (upper(payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(payment_type) = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (upper(payment_type) = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (upper(payment_type) = &#39;NO&#39;::text) THEN &#39;No charge&#39;::text ELSE &#39;Unknown&#39;::text END)
+6                                                                                                                                                                                                                                     -&gt;  Gather Merge  (cost=3411620.22..3411622.32 rows=18 width=72) (actual time=108676.924..108679.708 rows=12 loops=1)
+7                                                                                                                                                                                                                                                                                                                                        Workers Planned: 2
+8                                                                                                                                                                                                                                                                                                                                       Workers Launched: 2
+9                                                                                                                                                                                                                                               -&gt;  Sort  (cost=3410620.19..3410620.22 rows=9 width=72) (actual time=108652.747..108652.749 rows=4 loops=3)
+10                          Sort Key: (CASE WHEN (upper(payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(payment_type) = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (upper(payment_type) = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (upper(payment_type) = &#39;NO&#39;::text) THEN &#39;No charge&#39;::text ELSE &#39;Unknown&#39;::text END)
+11                                                                                                                                                                                                                                                                                                                     Sort Method: quicksort  Memory: 25kB
+12                                                                                                                                                                                                                                                                                                          Worker 0:  Sort Method: quicksort  Memory: 25kB
+13                                                                                                                                                                                                                                                                                                          Worker 1:  Sort Method: quicksort  Memory: 25kB
+14                                                                                                                                                                                                                             -&gt;  Partial HashAggregate  (cost=3410619.76..3410620.05 rows=9 width=72) (actual time=108652.662..108652.670 rows=4 loops=3)
+15                           Group Key: CASE WHEN (upper(payment_type) = ANY (&#39;{CRE,CRD}&#39;::text[])) THEN &#39;Credit Card&#39;::text WHEN (upper(payment_type) = ANY (&#39;{CAS,CSH}&#39;::text[])) THEN &#39;Cash&#39;::text WHEN (upper(payment_type) = &#39;DIS&#39;::text) THEN &#39;Dispute&#39;::text WHEN (upper(payment_type) = &#39;NO&#39;::text) THEN &#39;No charge&#39;::text ELSE &#39;Unknown&#39;::text END
+16                                                                                                                                                                                                                    -&gt;  Parallel Seq Scan on trips t  (cost=0.00..3146993.21 rows=35150207 width=42) (actual time=0.108..84754.703 rows=28115006 loops=3)
+17                                                                                                                                                                                                                                                                                                                                  Planning Time: 0.322 ms
+18                                                                                                                                                                                                                                                                                                                            Execution Time: 108679.976 ms</code></pre>
+</div>
+<p>Explain Plan의 결과를 보면 SQL Query &gt; payment2_db &gt; payment_db의 순으로 성능이 좋은 것을 알 수 있다. 복잡한 연산에 대해서는 dbplyr보다는 직접 DB에 접속하여 SQL Query를 수행하는 것이 성능상 이롭다. 그러나 dbplyr는 버전 업을 통해서 성능이 개선될 것이라는 믿음을 가지고 있다.</p>
+<p>선택은 가용자의 몫이지만 간단한 집계의 경우는 dbplyr를 사용해 보기를 권한다.</p>
+<h3 id="disconnection">disconnection</h3>
+<p>모든 작업이 마무리되면 연결된 DB 컨넥션을 종료한다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>dbDisconnect</span><span class='op'>(</span><span class='va'>con</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] TRUE</code></pre>
+</div>
+<h2 id="참고-리소스">참고 리소스</h2>
+<ul>
+<li>데이터 관련 : <a href="https://github.com/toddwschneider/nyc-taxi-data" target="_blank">https://github.com/toddwschneider/nyc-taxi-data</a></li>
+<li>dbplyr 관련 : <a href="https://cran.r-project.org/web/packages/dbplyr/vignettes/dbplyr.html" target="_blank">https://cran.r-project.org/web/packages/dbplyr/vignettes/dbplyr.html</a></li>
+</ul>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<div class="distill-site-nav distill-site-footer">
+  <span>
+    Copyright 2021 DATAHOLIC. All Rights Reserved</p>
+  </span> 
+  <!--Licensed under the <a href="https://opensource.org/licenses/lgpl-3.0.html" target="_blank">GNU General Public License version 3.0</a-->
+<br>
+</div>
+
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>
