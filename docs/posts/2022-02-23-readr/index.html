@@ -1,0 +1,3194 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #20794d; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007ba5; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #007ba5; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #007ba5; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #20794d; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+  <!--radix_placeholder_meta_tags-->
+<title>Dataholic: Import data with readr</title>
+
+<meta property="description" itemprop="description" content="readr 패키지로 데이터를 R로 가져오는 방법을 숙지합니다."/>
+
+<link rel="canonical" href="https://choonghyunryu.github.io/2022-02-23-readr/"/>
+
+<!--  https://schema.org/Article -->
+<meta property="article:published" itemprop="datePublished" content="2022-02-23"/>
+<meta property="article:created" itemprop="dateCreated" content="2022-02-23"/>
+<meta name="article:author" content="유충현"/>
+
+<!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+<meta property="og:title" content="Dataholic: Import data with readr"/>
+<meta property="og:type" content="article"/>
+<meta property="og:description" content="readr 패키지로 데이터를 R로 가져오는 방법을 숙지합니다."/>
+<meta property="og:url" content="https://choonghyunryu.github.io/2022-02-23-readr/"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Dataholic"/>
+
+<!--  https://dev.twitter.com/cards/types/summary -->
+<meta property="twitter:card" content="summary"/>
+<meta property="twitter:title" content="Dataholic: Import data with readr"/>
+<meta property="twitter:description" content="readr 패키지로 데이터를 R로 가져오는 방법을 숙지합니다."/>
+<meta property="twitter:url" content="https://choonghyunryu.github.io/2022-02-23-readr/"/>
+
+<!--  https://scholar.google.com/intl/en/scholar/inclusion.html#indexing -->
+<meta name="citation_title" content="Dataholic: Import data with readr"/>
+<meta name="citation_fulltext_html_url" content="https://choonghyunryu.github.io/2022-02-23-readr"/>
+<meta name="citation_online_date" content="2022/02/23"/>
+<meta name="citation_publication_date" content="2022/02/23"/>
+<meta name="citation_author" content="유충현"/>
+<meta name="citation_author_institution" content="한화생명"/>
+<!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+<script type="text/json" id="radix-rmarkdown-metadata">
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","citation_url","date","tags","categories","output","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["Import data with readr"]},{"type":"character","attributes":{},"value":["readr 패키지로 데이터를 R로 가져오는 방법을 숙지합니다."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation"]}},"value":[{"type":"character","attributes":{},"value":["유충현"]},{"type":"character","attributes":{},"value":["https://choonghyunryu.github.io"]},{"type":"character","attributes":{},"value":["한화생명"]}]}]},{"type":"character","attributes":{},"value":["https://choonghyunryu.github.io/2022-02-23-readr"]},{"type":"character","attributes":{},"value":["2022-02-23"]},{"type":"character","attributes":{},"value":["tidyverse","readr","import data"]},{"type":"character","attributes":{},"value":["tidyverse","readr","import data"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_depth"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]}]}]},{"type":"character","attributes":{},"value":["https://choonghyunryu.github.io/2022-02-23-readr/"]}]}
+</script>
+<!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["2022-01-27-donate_files/anchor-4.2.2/anchor.min.js","2022-01-27-donate_files/bowser-1.9.3/bowser.min.js","2022-01-27-donate_files/distill-2.2.21/template.v2.js","2022-01-27-donate_files/header-attrs-2.8/header-attrs.js","2022-01-27-donate_files/jquery-1.11.3/jquery.min.js","2022-01-27-donate_files/popper-2.6.0/popper.min.js","2022-01-27-donate_files/tippy-6.2.7/tippy-bundle.umd.min.js","2022-01-27-donate_files/tippy-6.2.7/tippy-light-border.css","2022-01-27-donate_files/tippy-6.2.7/tippy.css","2022-01-27-donate_files/tippy-6.2.7/tippy.umd.min.js","2022-01-27-donate_files/webcomponents-2.0.0/webcomponents.js","2022-02-23-readr_files/anchor-4.2.2/anchor.min.js","2022-02-23-readr_files/bowser-1.9.3/bowser.min.js","2022-02-23-readr_files/distill-2.2.21/template.v2.js","2022-02-23-readr_files/font-awesome-5.13.0/css/all.css","2022-02-23-readr_files/font-awesome-5.13.0/css/all.min.css","2022-02-23-readr_files/font-awesome-5.13.0/css/v4-shims.css","2022-02-23-readr_files/font-awesome-5.13.0/css/v4-shims.min.css","2022-02-23-readr_files/font-awesome-5.13.0/webfonts/fa-brands-400.eot","2022-02-23-readr_files/font-awesome-5.13.0/webfonts/fa-brands-400.svg","2022-02-23-readr_files/font-awesome-5.13.0/webfonts/fa-brands-400.ttf","2022-02-23-readr_files/font-awesome-5.13.0/webfonts/fa-brands-400.woff","2022-02-23-readr_files/font-awesome-5.13.0/webfonts/fa-brands-400.woff2","2022-02-23-readr_files/font-awesome-5.13.0/webfonts/fa-regular-400.eot","2022-02-23-readr_files/font-awesome-5.13.0/webfonts/fa-regular-400.svg","2022-02-23-readr_files/font-awesome-5.13.0/webfonts/fa-regular-400.ttf","2022-02-23-readr_files/font-awesome-5.13.0/webfonts/fa-regular-400.woff","2022-02-23-readr_files/font-awesome-5.13.0/webfonts/fa-regular-400.woff2","2022-02-23-readr_files/font-awesome-5.13.0/webfonts/fa-solid-900.eot","2022-02-23-readr_files/font-awesome-5.13.0/webfonts/fa-solid-900.svg","2022-02-23-readr_files/font-awesome-5.13.0/webfonts/fa-solid-900.ttf","2022-02-23-readr_files/font-awesome-5.13.0/webfonts/fa-solid-900.woff","2022-02-23-readr_files/font-awesome-5.13.0/webfonts/fa-solid-900.woff2","2022-02-23-readr_files/header-attrs-2.8/header-attrs.js","2022-02-23-readr_files/jquery-1.11.3/jquery.min.js","2022-02-23-readr_files/panelset-0.2.5.9000/panelset.css","2022-02-23-readr_files/panelset-0.2.5.9000/panelset.js","2022-02-23-readr_files/popper-2.6.0/popper.min.js","2022-02-23-readr_files/tippy-6.2.7/tippy-bundle.umd.min.js","2022-02-23-readr_files/tippy-6.2.7/tippy-light-border.css","2022-02-23-readr_files/tippy-6.2.7/tippy.css","2022-02-23-readr_files/tippy-6.2.7/tippy.umd.min.js","2022-02-23-readr_files/webcomponents-2.0.0/webcomponents.js","data/FoodFacts.tsv","data/아파트매매_실거래가_200001.csv","img/readr.png"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+<meta name="distill:offset" content="../.."/>
+
+<script type="application/javascript">
+
+  window.headroom_prevent_pin = false;
+
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+
+    // initialize headroom for banner
+    var header = $('header').get(0);
+    var headerHeight = header.offsetHeight;
+    var headroom = new Headroom(header, {
+      tolerance: 5,
+      onPin : function() {
+        if (window.headroom_prevent_pin) {
+          window.headroom_prevent_pin = false;
+          headroom.unpin();
+        }
+      }
+    });
+    headroom.init();
+    if(window.location.hash)
+      headroom.unpin();
+    $(header).addClass('headroom--transition');
+
+    // offset scroll location for banner on hash change
+    // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+    window.addEventListener("hashchange", function(event) {
+      window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+    });
+
+    // responsive menu
+    $('.distill-site-header').each(function(i, val) {
+      var topnav = $(this);
+      var toggle = topnav.find('.nav-toggle');
+      toggle.on('click', function() {
+        topnav.toggleClass('responsive');
+      });
+    });
+
+    // nav dropdowns
+    $('.nav-dropbtn').click(function(e) {
+      $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+      $(this).parent().siblings('.nav-dropdown')
+         .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $("body").click(function(e){
+      $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $(".nav-dropdown").click(function(e){
+      e.stopPropagation();
+    });
+  });
+</script>
+
+<style type="text/css">
+
+/* Theme (user-documented overrideables for nav appearance) */
+
+.distill-site-nav {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: #0F2E3D;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.distill-site-nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.distill-site-nav a:hover {
+  color: white;
+}
+
+@media print {
+  .distill-site-nav {
+    display: none;
+  }
+}
+
+.distill-site-header {
+
+}
+
+.distill-site-footer {
+
+}
+
+
+/* Site Header */
+
+.distill-site-header {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.distill-site-header .nav-left {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header .nav-left {
+    margin-left: 0;
+  }
+}
+
+
+.distill-site-header .nav-right {
+  float: right;
+  margin-right: 8px;
+}
+
+.distill-site-header a,
+.distill-site-header .title {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 10px 14px 10px;
+}
+
+.distill-site-header .title {
+  font-size: 18px;
+  min-width: 150px;
+}
+
+.distill-site-header .logo {
+  padding: 0;
+}
+
+.distill-site-header .logo img {
+  display: none;
+  max-height: 20px;
+  width: auto;
+  margin-bottom: -4px;
+}
+
+.distill-site-header .nav-image img {
+  max-height: 18px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: -3px;
+}
+
+
+
+@media screen and (min-width: 1000px) {
+  .distill-site-header .logo img {
+    display: inline-block;
+  }
+  .distill-site-header .nav-left {
+    margin-left: 20px;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 20px;
+  }
+  .distill-site-header .title {
+    padding-left: 12px;
+  }
+}
+
+
+.distill-site-header .nav-toggle {
+  display: none;
+}
+
+.nav-dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.nav-dropdown .nav-dropbtn {
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 10px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  margin-top: 1px;
+  z-index: 2;
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+  z-index: 1;
+  margin-top: 2px;
+  white-space: nowrap;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.nav-dropdown-content hr {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-dropdown-active {
+  display: block;
+}
+
+.nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
+  color: black;
+  padding: 6px 24px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.nav-dropdown-content .nav-dropdown-header {
+  display: block;
+  padding: 5px 24px;
+  padding-bottom: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999;
+  white-space: nowrap;
+}
+
+.nav-dropdown:hover .nav-dropbtn {
+  color: white;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.nav-right .nav-dropdown-content {
+  margin-left: -45%;
+  right: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
+  .distill-site-header a.nav-toggle {
+    float: right;
+    display: block;
+  }
+  .distill-site-header .title {
+    margin-left: 0;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 0;
+  }
+  .distill-site-header {
+    overflow: hidden;
+  }
+  .nav-right .nav-dropdown-content {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-header.responsive {position: relative; min-height: 500px; }
+  .distill-site-header.responsive a.nav-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .distill-site-header.responsive a,
+  .distill-site-header.responsive .nav-dropdown {
+    display: block;
+    text-align: left;
+  }
+  .distill-site-header.responsive .nav-left,
+  .distill-site-header.responsive .nav-right {
+    width: 100%;
+  }
+  .distill-site-header.responsive .nav-dropdown {float: none;}
+  .distill-site-header.responsive .nav-dropdown-content {position: relative;}
+  .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Site Footer */
+
+.distill-site-footer {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 3;
+  margin-top: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+/* Headroom */
+
+d-title {
+  padding-top: 6rem;
+}
+
+@media print {
+  d-title {
+    padding-top: 4rem;
+  }
+}
+
+.headroom {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.headroom--transition {
+  transition: all .4s ease-in-out;
+}
+
+.headroom--unpinned {
+  top: -100px;
+}
+
+.headroom--pinned {
+  top: 0;
+}
+
+/* adjust viewport for navbar height */
+/* helps vertically center bootstrap (non-distill) content */
+.min-vh-100 {
+  min-height: calc(100vh - 100px) !important;
+}
+
+</style>
+
+<script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+<link href="../../site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
+<link href="../../site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
+<script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
+<script src="../../site_libs/autocomplete-0.37.1/autocomplete.min.js"></script>
+<script src="../../site_libs/fuse-6.4.1/fuse.min.js"></script>
+
+<script type="application/javascript">
+
+function getMeta(metaName) {
+  var metas = document.getElementsByTagName('meta');
+  for (let i = 0; i < metas.length; i++) {
+    if (metas[i].getAttribute('name') === metaName) {
+      return metas[i].getAttribute('content');
+    }
+  }
+  return '';
+}
+
+function offsetURL(url) {
+  var offset = getMeta('distill:offset');
+  return offset ? offset + '/' + url : url;
+}
+
+function createFuseIndex() {
+
+  // create fuse index
+  var options = {
+    keys: [
+      { name: 'title', weight: 20 },
+      { name: 'categories', weight: 15 },
+      { name: 'description', weight: 10 },
+      { name: 'contents', weight: 5 },
+    ],
+    ignoreLocation: true,
+    threshold: 0
+  };
+  var fuse = new window.Fuse([], options);
+
+  // fetch the main search.json
+  return fetch(offsetURL('search.json'))
+    .then(function(response) {
+      if (response.status == 200) {
+        return response.json().then(function(json) {
+          // index main articles
+          json.articles.forEach(function(article) {
+            fuse.add(article);
+          });
+          // download collections and index their articles
+          return Promise.all(json.collections.map(function(collection) {
+            return fetch(offsetURL(collection)).then(function(response) {
+              if (response.status === 200) {
+                return response.json().then(function(articles) {
+                  articles.forEach(function(article) {
+                    fuse.add(article);
+                  });
+                })
+              } else {
+                return Promise.reject(
+                  new Error('Unexpected status from search index request: ' +
+                            response.status)
+                );
+              }
+            });
+          })).then(function() {
+            return fuse;
+          });
+        });
+
+      } else {
+        return Promise.reject(
+          new Error('Unexpected status from search index request: ' +
+                      response.status)
+        );
+      }
+    });
+}
+
+window.document.addEventListener("DOMContentLoaded", function (event) {
+
+  // get search element (bail if we don't have one)
+  var searchEl = window.document.getElementById('distill-search');
+  if (!searchEl)
+    return;
+
+  createFuseIndex()
+    .then(function(fuse) {
+
+      // make search box visible
+      searchEl.classList.remove('hidden');
+
+      // initialize autocomplete
+      var options = {
+        autoselect: true,
+        hint: false,
+        minLength: 2,
+      };
+      window.autocomplete(searchEl, options, [{
+        source: function(query, callback) {
+          const searchOptions = {
+            isCaseSensitive: false,
+            shouldSort: true,
+            minMatchCharLength: 2,
+            limit: 10,
+          };
+          var results = fuse.search(query, searchOptions);
+          callback(results
+            .map(function(result) { return result.item; })
+          );
+        },
+        templates: {
+          suggestion: function(suggestion) {
+            var img = suggestion.preview && Object.keys(suggestion.preview).length > 0
+              ? `<img src="${offsetURL(suggestion.preview)}"</img>`
+              : '';
+            var html = `
+              <div class="search-item">
+                <h3>${suggestion.title}</h3>
+                <div class="search-item-description">
+                  ${suggestion.description || ''}
+                </div>
+                <div class="search-item-preview">
+                  ${img}
+                </div>
+              </div>
+            `;
+            return html;
+          }
+        }
+      }]).on('autocomplete:selected', function(event, suggestion) {
+        window.location.href = offsetURL(suggestion.path);
+      });
+      // remove inline display style on autocompleter (we want to
+      // manage responsive display via css)
+      $('.algolia-autocomplete').css("display", "");
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+
+});
+
+</script>
+
+<style type="text/css">
+
+.nav-search {
+  font-size: x-small;
+}
+
+/* Algolioa Autocomplete */
+
+.algolia-autocomplete {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: sub;
+  background-color: white;
+  color: black;
+  padding: 6px;
+  padding-top: 8px;
+  padding-bottom: 0;
+  border-radius: 6px;
+  border: 1px #0F2E3D solid;
+  width: 180px;
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-nav .algolia-autocomplete {
+    display: none;
+    visibility: hidden;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete {
+    display: inline-block;
+    visibility: visible;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete .aa-dropdown-menu {
+    margin-left: 0;
+    width: 400px;
+    max-height: 400px;
+  }
+}
+
+.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+  width: 90%;
+  outline: none;
+  border: none;
+}
+
+.algolia-autocomplete .aa-hint {
+  color: #999;
+}
+.algolia-autocomplete .aa-dropdown-menu {
+  width: 550px;
+  max-height: 70vh;
+  overflow-x: visible;
+  overflow-y: scroll;
+  padding: 5px;
+  margin-top: 3px;
+  margin-left: -150px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #999;
+  border-top: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+  cursor: pointer;
+  padding: 5px 4px;
+  border-bottom: 1px solid #eee;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion:last-of-type {
+  border-bottom: none;
+  margin-bottom: 2px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item {
+  overflow: hidden;
+  font-size: 0.8em;
+  line-height: 1.4em;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item h3 {
+  font-size: 1rem;
+  margin-block-start: 0;
+  margin-block-end: 5px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-description {
+  display: inline-block;
+  overflow: hidden;
+  height: 2.8em;
+  width: 80%;
+  margin-right: 4%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview {
+  display: inline-block;
+  width: 15%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img {
+  height: 3em;
+  width: auto;
+  display: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img[src] {
+  display: initial;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+  background-color: #eee;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+  font-weight: bold;
+  font-style: normal;
+}
+
+</style>
+
+
+<!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+<style type="text/css">
+
+body {
+  background-color: white;
+}
+
+.pandoc-table {
+  width: 100%;
+}
+
+.pandoc-table>caption {
+  margin-bottom: 10px;
+}
+
+.pandoc-table th:not([align]) {
+  text-align: left;
+}
+
+.pagedtable-footer {
+  font-size: 15px;
+}
+
+d-byline .byline {
+  grid-template-columns: 2fr 2fr;
+}
+
+d-byline .byline h3 {
+  margin-block-start: 1.5em;
+}
+
+d-byline .byline .authors-affiliations h3 {
+  margin-block-start: 0.5em;
+}
+
+.authors-affiliations .orcid-id {
+  width: 16px;
+  height:16px;
+  margin-left: 4px;
+  margin-right: 4px;
+  vertical-align: middle;
+  padding-bottom: 2px;
+}
+
+d-title .dt-tags {
+  margin-top: 1em;
+  grid-column: text;
+}
+
+.dt-tags .dt-tag {
+  text-decoration: none;
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0em 0.4em;
+  margin-right: 0.5em;
+  margin-bottom: 0.4em;
+  font-size: 70%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+d-article table.gt_table td,
+d-article table.gt_table th {
+  border-bottom: none;
+}
+
+.html-widget {
+  margin-bottom: 2.0em;
+}
+
+.l-screen-inset {
+  padding-right: 16px;
+}
+
+.l-screen .caption {
+  margin-left: 10px;
+}
+
+.shaded {
+  background: rgb(247, 247, 247);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .html-widget {
+  margin-bottom: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .shaded-content {
+  background: white;
+}
+
+.text-output {
+  margin-top: 0;
+  line-height: 1.5em;
+}
+
+.hidden {
+  display: none !important;
+}
+
+d-article {
+  padding-top: 2.5rem;
+  padding-bottom: 30px;
+}
+
+d-appendix {
+  padding-top: 30px;
+}
+
+d-article>p>img {
+  width: 100%;
+}
+
+d-article h2 {
+  margin: 1rem 0 1.5rem 0;
+}
+
+d-article h3 {
+  margin-top: 1.5rem;
+}
+
+d-article iframe {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 2.0em;
+  width: 100%;
+}
+
+/* Tweak code blocks */
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: auto;
+}
+
+d-article div.sourceCode {
+  background-color: white;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 10px;
+  font-size: 12px;
+  border-left: 2px solid rgba(0,0,0,0.1);
+}
+
+d-article pre {
+  font-size: 12px;
+  color: black;
+  background: none;
+  margin-top: 0;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+d-article pre a {
+  border-bottom: none;
+}
+
+d-article pre a:hover {
+  border-bottom: none;
+  text-decoration: underline;
+}
+
+d-article details {
+  grid-column: text;
+  margin-bottom: 0.8em;
+}
+
+@media(min-width: 768px) {
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: visible !important;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 18px;
+  font-size: 14px;
+}
+
+d-article pre {
+  font-size: 14px;
+}
+
+}
+
+figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+/* CSS for d-contents */
+
+.d-contents {
+  grid-column: text;
+  color: rgba(0,0,0,0.8);
+  font-size: 0.9em;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+  padding-bottom: 0.5em;
+  margin-bottom: 1em;
+  padding-left: 0.25em;
+  justify-self: start;
+}
+
+@media(min-width: 1000px) {
+  .d-contents.d-contents-float {
+    height: 0;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    justify-self: center;
+    padding-right: 3em;
+    padding-left: 2em;
+  }
+}
+
+.d-contents nav h3 {
+  font-size: 18px;
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+.d-contents li {
+  list-style-type: none
+}
+
+.d-contents nav > ul {
+  padding-left: 0;
+}
+
+.d-contents ul {
+  padding-left: 1em
+}
+
+.d-contents nav ul li {
+  margin-top: 0.6em;
+  margin-bottom: 0.2em;
+}
+
+.d-contents nav a {
+  font-size: 13px;
+  border-bottom: none;
+  text-decoration: none
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.d-contents nav a:hover {
+  text-decoration: underline solid rgba(0, 0, 0, 0.6)
+}
+
+.d-contents nav > ul > li > a {
+  font-weight: 600;
+}
+
+.d-contents nav > ul > li > ul {
+  font-weight: inherit;
+}
+
+.d-contents nav > ul > li > ul > li {
+  margin-top: 0.2em;
+}
+
+
+.d-contents nav ul {
+  margin-top: 0;
+  margin-bottom: 0.25em;
+}
+
+.d-article-with-toc h2:nth-child(2) {
+  margin-top: 0;
+}
+
+
+/* Figure */
+
+.figure {
+  position: relative;
+  margin-bottom: 2.5em;
+  margin-top: 1.5em;
+}
+
+.figure img {
+  width: 100%;
+}
+
+.figure .caption {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  line-height: 1.5em;
+}
+
+.figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.figure .caption a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.figure .caption b,
+.figure .caption strong, {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1.0);
+}
+
+/* Citations */
+
+d-article .citation {
+  color: inherit;
+  cursor: inherit;
+}
+
+div.hanging-indent{
+  margin-left: 1em; text-indent: -1em;
+}
+
+/* Citation hover box */
+
+.tippy-box[data-theme~=light-border] {
+  background-color: rgba(250, 250, 250, 0.95);
+}
+
+.tippy-content > p {
+  margin-bottom: 0;
+  padding: 2px;
+}
+
+
+/* Tweak 1000px media break to show more text */
+
+@media(min-width: 1000px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 16px;
+  }
+
+  .grid {
+    grid-column-gap: 16px;
+  }
+
+  d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+  }
+  figure .caption, .figure .caption, figure figcaption {
+    font-size: 13px;
+  }
+}
+
+@media(min-width: 1180px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 32px;
+  }
+
+  .grid {
+    grid-column-gap: 32px;
+  }
+}
+
+
+/* Get the citation styles for the appendix (not auto-injected on render since
+   we do our own rendering of the citation appendix) */
+
+d-appendix .citation-appendix,
+.d-appendix .citation-appendix {
+  font-size: 11px;
+  line-height: 15px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 18px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.02);
+  padding: 10px 18px;
+  border-radius: 3px;
+  color: rgba(150, 150, 150, 1);
+  overflow: hidden;
+  margin-top: -12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Include appendix styles here so they can be overridden */
+
+d-appendix {
+  contain: layout style;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-top: 60px;
+  margin-bottom: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  color: rgba(0,0,0,0.5);
+  padding-top: 60px;
+  padding-bottom: 48px;
+}
+
+d-appendix h3 {
+  grid-column: page-start / text-start;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 1em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.65);
+}
+
+d-appendix h3 + * {
+  margin-top: 1em;
+}
+
+d-appendix ol {
+  padding: 0 0 0 15px;
+}
+
+@media (min-width: 768px) {
+  d-appendix ol {
+    padding: 0 0 0 30px;
+    margin-left: -30px;
+  }
+}
+
+d-appendix li {
+  margin-bottom: 1em;
+}
+
+d-appendix a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+d-appendix > * {
+  grid-column: text;
+}
+
+d-appendix > d-footnote-list,
+d-appendix > d-citation-list,
+d-appendix > distill-appendix {
+  grid-column: screen;
+}
+
+/* Include footnote styles here so they can be overridden */
+
+d-footnote-list {
+  contain: layout style;
+}
+
+d-footnote-list > * {
+  grid-column: text;
+}
+
+d-footnote-list a.footnote-backlink {
+  color: rgba(0,0,0,0.3);
+  padding-left: 0.5em;
+}
+
+
+
+/* Anchor.js */
+
+.anchorjs-link {
+  /*transition: all .25s linear; */
+  text-decoration: none;
+  border-bottom: none;
+}
+*:hover > .anchorjs-link {
+  margin-left: -1.125em !important;
+  text-decoration: none;
+  border-bottom: none;
+}
+
+/* Social footer */
+
+.social_footer {
+  margin-top: 30px;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.67);
+}
+
+.disqus-comments {
+  margin-right: 30px;
+}
+
+.disqus-comment-count {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+#disqus_thread {
+  margin-top: 30px;
+}
+
+.article-sharing a {
+  border-bottom: none;
+  margin-right: 8px;
+}
+
+.article-sharing a:hover {
+  border-bottom: none;
+}
+
+.sidebar-section.subscribe {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.subscribe p {
+  margin-bottom: 0.5em;
+}
+
+
+.article-footer .subscribe {
+  font-size: 15px;
+  margin-top: 45px;
+}
+
+
+.sidebar-section.custom {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.custom p {
+  margin-bottom: 0.5em;
+}
+
+/* Styles for listing layout (hide title) */
+.layout-listing d-title, .layout-listing .d-title {
+  display: none;
+}
+
+/* Styles for posts lists (not auto-injected) */
+
+
+.posts-with-sidebar {
+  padding-left: 45px;
+  padding-right: 45px;
+}
+
+.posts-list .description h2,
+.posts-list .description p {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+.posts-list .description h2 {
+  font-weight: 700;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.posts-list h2.post-tag {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding-bottom: 12px;
+}
+.posts-list {
+  margin-top: 60px;
+  margin-bottom: 24px;
+}
+
+.posts-list .post-preview {
+  text-decoration: none;
+  overflow: hidden;
+  display: block;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 24px 0;
+}
+
+.post-preview-last {
+  border-bottom: none !important;
+}
+
+.posts-list .posts-list-caption {
+  grid-column: screen;
+  font-weight: 400;
+}
+
+.posts-list .post-preview h2 {
+  margin: 0 0 6px 0;
+  line-height: 1.2em;
+  font-style: normal;
+  font-size: 24px;
+}
+
+.posts-list .post-preview p {
+  margin: 0 0 12px 0;
+  line-height: 1.4em;
+  font-size: 16px;
+}
+
+.posts-list .post-preview .thumbnail {
+  box-sizing: border-box;
+  margin-bottom: 24px;
+  position: relative;
+  max-width: 500px;
+}
+.posts-list .post-preview img {
+  width: 100%;
+  display: block;
+}
+
+.posts-list .metadata {
+  font-size: 12px;
+  line-height: 1.4em;
+  margin-bottom: 18px;
+}
+
+.posts-list .metadata > * {
+  display: inline-block;
+}
+
+.posts-list .metadata .publishedDate {
+  margin-right: 2em;
+}
+
+.posts-list .metadata .dt-authors {
+  display: block;
+  margin-top: 0.3em;
+  margin-right: 2em;
+}
+
+.posts-list .dt-tags {
+  display: block;
+  line-height: 1em;
+}
+
+.posts-list .dt-tags .dt-tag {
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0.3em 0.4em;
+  margin-right: 0.2em;
+  margin-bottom: 0.4em;
+  font-size: 60%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.posts-list img {
+  opacity: 1;
+}
+
+.posts-list img[data-src] {
+  opacity: 0;
+}
+
+.posts-more {
+  clear: both;
+}
+
+
+.posts-sidebar {
+  font-size: 16px;
+}
+
+.posts-sidebar h3 {
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.sidebar-section {
+  margin-bottom: 30px;
+}
+
+.categories ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.categories li {
+  color: rgba(0, 0, 0, 0.8);
+  margin-bottom: 0;
+}
+
+.categories li>a {
+  border-bottom: none;
+}
+
+.categories li>a:hover {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.categories .active {
+  font-weight: 600;
+}
+
+.categories .category-count {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+
+@media(min-width: 768px) {
+  .posts-list .post-preview h2 {
+    font-size: 26px;
+  }
+  .posts-list .post-preview .thumbnail {
+    float: right;
+    width: 30%;
+    margin-bottom: 0;
+  }
+  .posts-list .post-preview .description {
+    float: left;
+    width: 45%;
+  }
+  .posts-list .post-preview .metadata {
+    float: left;
+    width: 20%;
+    margin-top: 8px;
+  }
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.5em;
+    font-size: 16px;
+  }
+  .posts-with-sidebar .posts-list {
+    float: left;
+    width: 75%;
+  }
+  .posts-with-sidebar .posts-sidebar {
+    float: right;
+    width: 20%;
+    margin-top: 60px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+}
+
+
+/* Improve display for browsers without grid (IE/Edge <= 15) */
+
+.downlevel {
+  line-height: 1.6em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
+
+.downlevel .d-title {
+  padding-top: 6rem;
+  padding-bottom: 1.5rem;
+}
+
+.downlevel .d-title h1 {
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1.1em;
+  margin: 0 0 0.5rem;
+}
+
+.downlevel .d-title p {
+  font-weight: 300;
+  font-size: 1.2rem;
+  line-height: 1.55em;
+  margin-top: 0;
+}
+
+.downlevel .d-byline {
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  font-size: 0.8rem;
+  line-height: 1.8em;
+}
+
+.downlevel .section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.downlevel .d-article {
+  font-size: 1.06rem;
+  line-height: 1.7em;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+
+.downlevel .d-appendix {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.5);
+  padding-top: 40px;
+  padding-bottom: 48px;
+}
+
+.downlevel .footnotes ol {
+  padding-left: 13px;
+}
+
+.downlevel .base-grid,
+.downlevel .distill-header,
+.downlevel .d-title,
+.downlevel .d-abstract,
+.downlevel .d-article,
+.downlevel .d-appendix,
+.downlevel .distill-appendix,
+.downlevel .d-byline,
+.downlevel .d-footnote-list,
+.downlevel .d-citation-list,
+.downlevel .distill-footer,
+.downlevel .appendix-bottom,
+.downlevel .posts-container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+@media(min-width: 768px) {
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+  padding-left: 150px;
+  padding-right: 150px;
+  max-width: 900px;
+}
+}
+
+.downlevel pre code {
+  display: block;
+  border-left: 2px solid rgba(0, 0, 0, .1);
+  padding: 0 0 0 20px;
+  font-size: 14px;
+}
+
+.downlevel code, .downlevel pre {
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+.downlevel .posts-list .post-preview {
+  color: inherit;
+}
+
+
+
+</style>
+
+<script type="application/javascript">
+
+function is_downlevel_browser() {
+  if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                 window.navigator.userAgent)) {
+    return true;
+  } else {
+    return window.load_distill_framework === undefined;
+  }
+}
+
+// show body when load is complete
+function on_load_complete() {
+
+  // add anchors
+  if (window.anchors) {
+    window.anchors.options.placement = 'left';
+    window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+  }
+
+
+  // set body to visible
+  document.body.style.visibility = 'visible';
+
+  // force redraw for leaflet widgets
+  if (window.HTMLWidgets) {
+    var maps = window.HTMLWidgets.findAll(".leaflet");
+    $.each(maps, function(i, el) {
+      var map = this.getMap();
+      map.invalidateSize();
+      map.eachLayer(function(layer) {
+        if (layer instanceof L.TileLayer)
+          layer.redraw();
+      });
+    });
+  }
+
+  // trigger 'shown' so htmlwidgets resize
+  $('d-article').trigger('shown');
+}
+
+function init_distill() {
+
+  init_common();
+
+  // create front matter
+  var front_matter = $('<d-front-matter></d-front-matter>');
+  $('#distill-front-matter').wrap(front_matter);
+
+  // create d-title
+  $('.d-title').changeElementType('d-title');
+
+  // create d-byline
+  var byline = $('<d-byline></d-byline>');
+  $('.d-byline').replaceWith(byline);
+
+  // create d-article
+  var article = $('<d-article></d-article>');
+  $('.d-article').wrap(article).children().unwrap();
+
+  // move posts container into article
+  $('.posts-container').appendTo($('d-article'));
+
+  // create d-appendix
+  $('.d-appendix').changeElementType('d-appendix');
+
+  // flag indicating that we have appendix items
+  var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+  // replace footnotes with <d-footnote>
+  $('.footnote-ref').each(function(i, val) {
+    appendix = true;
+    var href = $(this).attr('href');
+    var id = href.replace('#', '');
+    var fn = $('#' + id);
+    var fn_p = $('#' + id + '>p');
+    fn_p.find('.footnote-back').remove();
+    var text = fn_p.html();
+    var dtfn = $('<d-footnote></d-footnote>');
+    dtfn.html(text);
+    $(this).replaceWith(dtfn);
+  });
+  // remove footnotes
+  $('.footnotes').remove();
+
+  // move refs into #references-listing
+  $('#references-listing').replaceWith($('#refs'));
+
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    var id = $(this).attr('id');
+    $('.d-contents a[href="#' + id + '"]').parent().remove();
+    appendix = true;
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+  });
+
+  // show d-appendix if we have appendix content
+  $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+  // localize layout chunks to just output
+  $('.layout-chunk').each(function(i, val) {
+
+    // capture layout
+    var layout = $(this).attr('data-layout');
+
+    // apply layout to markdown level block elements
+    var elements = $(this).children().not('details, div.sourceCode, pre, script');
+    elements.each(function(i, el) {
+      var layout_div = $('<div class="' + layout + '"></div>');
+      if (layout_div.hasClass('shaded')) {
+        var shaded_content = $('<div class="shaded-content"></div>');
+        $(this).wrap(shaded_content);
+        $(this).parent().wrap(layout_div);
+      } else {
+        $(this).wrap(layout_div);
+      }
+    });
+
+
+    // unwrap the layout-chunk div
+    $(this).children().unwrap();
+  });
+
+  // remove code block used to force  highlighting css
+  $('.distill-force-highlighting-css').parent().remove();
+
+  // remove empty line numbers inserted by pandoc when using a
+  // custom syntax highlighting theme
+  $('code.sourceCode a:empty').remove();
+
+  // load distill framework
+  load_distill_framework();
+
+  // wait for window.distillRunlevel == 4 to do post processing
+  function distill_post_process() {
+
+    if (!window.distillRunlevel || window.distillRunlevel < 4)
+      return;
+
+    // hide author/affiliations entirely if we have no authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+    if (!have_authors)
+      $('d-byline').addClass('hidden');
+
+    // article with toc class
+    $('.d-contents').parent().addClass('d-article-with-toc');
+
+    // strip links that point to #
+    $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+    // add orcid ids
+    $('.authors-affiliations').find('.author').each(function(i, el) {
+      var orcid_id = front_matter.authors[i].orcidID;
+      if (orcid_id) {
+        var a = $('<a></a>');
+        a.attr('href', 'https://orcid.org/' + orcid_id);
+        var img = $('<img></img>');
+        img.addClass('orcid-id');
+        img.attr('alt', 'ORCID ID');
+        img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+        a.append(img);
+        $(this).append(a);
+      }
+    });
+
+    // hide elements of author/affiliations grid that have no value
+    function hide_byline_column(caption) {
+      $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+    }
+
+    // affiliations
+    var have_affiliations = false;
+    for (var i = 0; i<front_matter.authors.length; ++i) {
+      var author = front_matter.authors[i];
+      if (author.affiliation !== "&nbsp;") {
+        have_affiliations = true;
+        break;
+      }
+    }
+    if (!have_affiliations)
+      $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+    // published date
+    if (!front_matter.publishedDate)
+      hide_byline_column("Published");
+
+    // document object identifier
+    var doi = $('d-byline').find('h3:contains("DOI")');
+    var doi_p = doi.next().empty();
+    if (!front_matter.doi) {
+      // if we have a citation and valid citationText then link to that
+      if ($('#citation').length > 0 && front_matter.citationText) {
+        doi.html('Citation');
+        $('<a href="#citation"></a>')
+          .text(front_matter.citationText)
+          .appendTo(doi_p);
+      } else {
+        hide_byline_column("DOI");
+      }
+    } else {
+      $('<a></a>')
+         .attr('href', "https://doi.org/" + front_matter.doi)
+         .html(front_matter.doi)
+         .appendTo(doi_p);
+    }
+
+     // change plural form of authors/affiliations
+    if (front_matter.authors.length === 1) {
+      var grid = $('.authors-affiliations');
+      grid.children('h3:contains("Authors")').text('Author');
+      grid.children('h3:contains("Affiliations")').text('Affiliation');
+    }
+
+    // remove d-appendix and d-footnote-list local styles
+    $('d-appendix > style:first-child').remove();
+    $('d-footnote-list > style:first-child').remove();
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // hoverable references
+    $('span.citation[data-cites]').each(function() {
+      var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+      window.tippy(this, {
+        allowHTML: true,
+        content: refHtml,
+        maxWidth: 500,
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start'
+      });
+    });
+
+    // clear polling timer
+    clearInterval(tid);
+
+    // show body now that everything is ready
+    on_load_complete();
+  }
+
+  var tid = setInterval(distill_post_process, 50);
+  distill_post_process();
+
+}
+
+function init_downlevel() {
+
+  init_common();
+
+   // insert hr after d-title
+  $('.d-title').after($('<hr class="section-separator"/>'));
+
+  // check if we have authors
+  var front_matter = JSON.parse($("#distill-front-matter").html());
+  var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+  // manage byline/border
+  if (!have_authors)
+    $('.d-byline').remove();
+  $('.d-byline').after($('<hr class="section-separator"/>'));
+  $('.d-byline a').remove();
+
+  // remove toc
+  $('.d-contents').remove();
+
+  // move appendix elements
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+  });
+
+
+  // inject headers into references and footnotes
+  var refs_header = $('<h3></h3>');
+  refs_header.text('References');
+  $('#refs').prepend(refs_header);
+
+  var footnotes_header = $('<h3></h3');
+  footnotes_header.text('Footnotes');
+  $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+  // move appendix-bottom entries to the bottom
+  $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+  $('.appendix-bottom').remove();
+
+  // remove appendix if it's empty
+  if ($('.d-appendix').children().length === 0)
+    $('.d-appendix').remove();
+
+  // prepend separator above appendix
+  $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+  // trim code
+  $('pre>code').each(function(i, val) {
+    $(this).html($.trim($(this).html()));
+  });
+
+  // move posts-container right before article
+  $('.posts-container').insertBefore($('.d-article'));
+
+  $('body').addClass('downlevel');
+
+  on_load_complete();
+}
+
+
+function init_common() {
+
+  // jquery plugin to change element types
+  (function($) {
+    $.fn.changeElementType = function(newType) {
+      var attrs = {};
+
+      $.each(this[0].attributes, function(idx, attr) {
+        attrs[attr.nodeName] = attr.nodeValue;
+      });
+
+      this.replaceWith(function() {
+        return $("<" + newType + "/>", attrs).append($(this).contents());
+      });
+    };
+  })(jQuery);
+
+  // prevent underline for linked images
+  $('a > img').parent().css({'border-bottom' : 'none'});
+
+  // mark non-body figures created by knitr chunks as 100% width
+  $('.layout-chunk').each(function(i, val) {
+    var figures = $(this).find('img, .html-widget');
+    if ($(this).attr('data-layout') !== "l-body") {
+      figures.css('width', '100%');
+    } else {
+      figures.css('max-width', '100%');
+      figures.filter("[width]").each(function(i, val) {
+        var fig = $(this);
+        fig.css('width', fig.attr('width') + 'px');
+      });
+
+    }
+  });
+
+  // auto-append index.html to post-preview links in file: protocol
+  // and in rstudio ide preview
+  $('.post-preview').each(function(i, val) {
+    if (window.location.protocol === "file:")
+      $(this).attr('href', $(this).attr('href') + "index.html");
+  });
+
+  // get rid of index.html references in header
+  if (window.location.protocol !== "file:") {
+    $('.distill-site-header a[href]').each(function(i,val) {
+      $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+    });
+  }
+
+  // add class to pandoc style tables
+  $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+  $('.kable-table').children('table').addClass('pandoc-table');
+
+  // add figcaption style to table captions
+  $('caption').parent('table').addClass("figcaption");
+
+  // initialize posts list
+  if (window.init_posts_list)
+    window.init_posts_list();
+
+  // implmement disqus comment link
+  $('.disqus-comment-count').click(function() {
+    window.headroom_prevent_pin = true;
+    $('#disqus_thread').toggleClass('hidden');
+    if (!$('#disqus_thread').hasClass('hidden')) {
+      var offset = $(this).offset();
+      $(window).resize();
+      $('html, body').animate({
+        scrollTop: offset.top - 35
+      });
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (is_downlevel_browser())
+    init_downlevel();
+  else
+    window.addEventListener('WebComponentsReady', init_distill);
+});
+
+</script>
+
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+
+
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    sans-serif;
+  --mono-font:       monospace;
+  --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
+}
+
+/*-- ARTICLE METADATA --*/
+d-byline {
+  --heading-size:    0.6rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    18px;
+  --contents-size:   13px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       18px;
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+.distill-site-footer {
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+</style>
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+
+:root {
+  --custom-grey60: rgb(102, 102, 102);
+  --custom-grey20: rgb(204, 204, 204);
+  --custom-grey10: rgb(230, 230, 230);
+  --custom-blue: rgb(0, 114, 188);
+  --custom-lightblue: rgb(204, 227, 242);
+  --custom-orange: rgb(255, 127, 42); 
+  --custom-lightorange: rgb(255, 204, 170); 
+}
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    sans-serif;
+  --mono-font:       monospace;
+  --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
+}
+
+/*-- ARTICLE METADATA --*/
+d-byline {
+  --heading-size:    0.6rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    18px;
+  --contents-size:   13px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       18px;
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       var(--custom-blue);
+}
+
+.distill-site-footer {
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       var(--custom-blue);
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+
+.preface {
+  font-size: 11pt;
+  background-color: var(--custom-lightblue);
+  margin-top: 1em;
+  margin-bottom: 0.5em;  
+  padding: 1.5em;
+  padding-top: 0.5em;
+  border-color: DodgerBlue;
+}
+
+h1 {
+  font-size: 30px !important;  
+  color: var(--custom-blue) !important;
+  font-family: NanumSquare !important;
+  margin-top: 15px !important;
+  padding-top: 15px !important;  
+  margin-bottom: 15px !important;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 25px !important;  
+  color: var(--custom-blue) !important;  
+  font-family: NanumSquare !important;  
+  padding-top: 15px !important;  
+  margin-top: 15px !important;
+  padding-bottom: 10px !important;  
+  margin-bottom: 10px !important;    
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 20px !important;  
+  color: var(--custom-blue) !important;  
+  font-family: NanumSquare !important;  
+  margin-top: 10px !important;
+  margin-bottom: 10px !important; 
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;   
+  font-weight: bold;
+}
+
+.tab-content {
+   top: 25px;
+   padding: 20px;
+}
+
+.bg-blue,
+.bg-orange,
+.bg-grey {
+  padding: 1.6em;
+  margin-top: 1.0em;
+  margin-bottom: 1.0em;
+}
+.bg-blue {
+  background-color: var(--custom-lightblue);
+}
+.bg-orange {
+  background-color: var(--custom-lightorange);
+}
+.bg-grey {
+  background-color: var(--custom-grey20);
+}
+.bg-blue > *:last-child,
+.bg-orange > *:last-child,
+.bg-grey > *:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.panelset {
+  --panel-tab-foreground: currentColor !important;
+  --panel-tab-active-foreground: var(--custom-blue) !important;
+  --panel-tab-active-background: var(--custom-lightblue) !important;  
+  --panel-tab-hover-foreground: var(--custom-blue) !important;
+  --panel-tabs-border-bottom: #ddd !important;
+  --panel-tab-inactive-opacity: 0.5 !important;
+}
+
+d-byline {
+    contain: content;
+    overflow: hidden;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 0.8rem;
+    line-height: 1.8em;
+    padding: 1.5rem 0;
+    min-height: 1.8em;
+}
+
+d-byline h3 {
+    font-size: 0.6rem !important;  
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.5) !important;  
+    margin: 4.8px 0px 0px 0px !important; 
+    padding: 0px 0px 0px 0px !important;  
+    text-transform: uppercase;
+}
+
+
+blockquote {
+  background: var(--custom-grey10);
+  border-left: 10px solid #ccc !important;  
+  margin: 1.5em 10px;
+  padding: 0.5em 10px;
+  quotes: "\201C""\201D""\2018""\2019";
+}
+
+blockquote:before {
+  color: #ccc;
+  content: open-quote;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+
+blockquote p {
+  display: inline;
+}
+
+</style>
+<style type="text/css">
+/* base style */
+
+/* FONT FAMILIES */
+
+:root {
+  --heading-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono-default: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  --body-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+body,
+.posts-list .post-preview p,
+.posts-list .description p {
+  font-family: var(--body-font), var(--body-default);
+}
+
+h1, h2, h3, h4, h5, h6,
+.posts-list .post-preview h2,
+.posts-list .description h2 {
+  font-family: var(--heading-font), var(--heading-default);
+}
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: var(--mono-font), var(--mono-default);
+}
+
+
+/*-- TITLE --*/
+d-title h1,
+.posts-list > h1 {
+  color: var(--title-color, black);
+}
+
+d-title h1 {
+  font-size: var(--title-size, 50px);
+}
+
+/*-- HEADERS --*/
+d-article h1,
+d-article h2,
+d-article h3,
+d-article h4,
+d-article h5,
+d-article h6 {
+  color: var(--header-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- BODY --*/
+d-article > p,  /* only text inside of <p> tags */
+d-article > ul, /* lists */
+d-article > ol {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+  font-size: var(--body-size, 1.06rem);
+}
+
+
+/*-- CODE --*/
+d-article div.sourceCode code,
+d-article pre code {
+  font-size: var(--code-size, 14px);
+}
+
+/*-- ASIDE --*/
+d-article aside {
+  font-size: var(--aside-size, 12px);
+  color: var(--aside-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- FIGURE CAPTIONS --*/
+figure .caption,
+figure figcaption,
+.figure .caption {
+  font-size: var(--fig-cap-size, 13px);
+  color: var(--fig-cap-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- METADATA --*/
+d-byline h3 {
+  font-size: var(--heading-size, 0.6rem);
+  color: var(--heading-color, rgba(0, 0, 0, 0.5));
+}
+
+d-byline {
+  font-size: var(--body-size, 0.8rem);
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+d-byline a,
+d-article d-byline a {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- TABLE OF CONTENTS --*/
+.d-contents nav h3 {
+  font-size: var(--heading-size, 18px);
+}
+
+.d-contents nav a {
+  font-size: var(--contents-size, 13px);
+}
+
+/*-- APPENDIX --*/
+d-appendix h3 {
+  font-size: var(--heading-size, 15px);
+  color: var(--heading-color, rgba(0, 0, 0, 0.65));
+}
+
+d-appendix {
+  font-size: var(--text-size, 0.8em);
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+d-appendix d-footnote-list a.footnote-backlink {
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+.distill-site-header .title {
+  font-size: var(--title-size, 18px);
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.distill-site-header a,
+.nav-dropdown .nav-dropbtn {
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.nav-dropdown .nav-dropbtn {
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  font-size: var(--text-size, 15px);
+}
+
+.distill-site-header a:hover,
+.nav-dropdown:hover .nav-dropbtn {
+  color: var(--hover-color, white);
+}
+
+.distill-site-header {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer a:hover {
+  color: var(--hover-color, white);
+}</style>
+<!--/radix_placeholder_distill-->
+  <script src="../../site_libs/header-attrs-2.8/header-attrs.js"></script>
+  <link href="../../site_libs/panelset-0.2.5.9000/panelset.css" rel="stylesheet" />
+  <script src="../../site_libs/panelset-0.2.5.9000/panelset.js"></script>
+  <link href="../../site_libs/font-awesome-5.13.0/css/all.min.css" rel="stylesheet" />
+  <link href="../../site_libs/font-awesome-5.13.0/css/v4-shims.min.css" rel="stylesheet" />
+  <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
+  <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="../../site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="../../site_libs/tippy-6.2.7/tippy.umd.min.js"></script>
+  <script src="../../site_libs/anchor-4.2.2/anchor.min.js"></script>
+  <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
+  <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="../../site_libs/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+<!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Import data with readr","description":"readr 패키지로 데이터를 R로 가져오는 방법을 숙지합니다.","authors":[{"author":"유충현","authorURL":"https://choonghyunryu.github.io","affiliation":"한화생명","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-02-23T00:00:00.000+00:00","citationText":"유충현, 2022"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="distill-site-nav distill-site-header">
+<div class="nav-left">
+<a class="logo">
+<img src="../../images/rubik-cube-white.png" alt="Logo"/>
+</a>
+<a href="../../index.html" class="title">Dataholic</a>
+<input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
+</div>
+<div class="nav-right">
+<a href="../../index.html">Home</a>
+<a href="../../mydev.html">MyDevs</a>
+<a href="../../gallery.html">Gallery</a>
+<a href="../../about.html">About</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Import data with readr</h1>
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+  <a href="../../index.html#category:tidyverse" class="dt-tag">tidyverse</a>
+  <a href="../../index.html#category:readr" class="dt-tag">readr</a>
+  <a href="../../index.html#category:import_data" class="dt-tag">import data</a>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>readr 패키지로 데이터를 R로 가져오는 방법을 숙지합니다.</p></p>
+</div>
+
+<div class="d-byline">
+  유충현 <a href="https://choonghyunryu.github.io" class="uri">https://choonghyunryu.github.io</a> (한화생명)
+  
+<br/>2022-02-23
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#준비하기">준비하기</a>
+<ul>
+<li><a href="#데이터-파일-준비하기">데이터 파일 준비하기</a></li>
+</ul></li>
+<li><a href="#실습하기">실습하기</a>
+<ul>
+<li><a href="#csv-파일-읽기">CSV 파일 읽기</a></li>
+<li><a href="#대용량-tsv-파일-읽기">대용량 TSV 파일 읽기</a></li>
+</ul></li>
+</ul>
+</nav>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="img/readr.png" width="25%" style="display: block; margin: auto;" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="preface">
+<h4>들어가기</h4>
+대용량 데이터는 이제부터 readr을 사용하자. 왜? 속도가 빠르기 때문에 필요없는 대기 시간을 줄여주기 때문입니다.
+<br/>
+readr은 파일의 인코딩을 유추할 수 있는 기능이 있어 특히 한글 파일을 import할 때 유용합니다.
+</div>
+</div>
+<p><br></p>
+<h1 id="준비하기">준비하기</h1>
+<h2 id="데이터-파일-준비하기">데이터 파일 준비하기</h2>
+<p>다음과 같은 데이터 파일을 다운로드 한다. 브라우저의 <strong>다른 이름으로 링크 저장</strong> 기능을 이용해서 파일을 다운로드 합니다.</p>
+<ul>
+<li><a href="data/아파트매매_실거래가_200001.csv" target="_blank">아파트매매_실거래가_200001.csv</a>
+<ul>
+<li>한글이 포함된 데이터 파일</li>
+<li>CSV 파일(컴마를 구분자로 한 텍스트 파일)</li>
+<li>한글이 “cp949”로 인코딩되어 있음</li>
+</ul></li>
+<li><a href="data/FoodFacts.tsv" target="_blank">FoodFacts.tsv</a>
+<ul>
+<li>대용량 데이터 파일</li>
+<li>TSV 파일(탭문자를 구분자로 한 텍스트 파일)</li>
+</ul></li>
+</ul>
+<p>“data” 라는 디렉토리를 생성하고, 다운로드한 데이터 파일을 복사해 넣습는다.</p>
+<h1 id="실습하기">실습하기</h1>
+<h2 id="csv-파일-읽기">CSV 파일 읽기</h2>
+<div class="panelset">
+<section id="기존-방법" class="panel-name panel">
+<h3 class="panel-name">기존 방법</h3>
+<p><code>read.csv()</code> 함수는 CSV 파일을 읽을 수 있는 함수입니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>apt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span>file <span class='op'>=</span> <span class='st'>"data/아파트매매_실거래가_200001.csv"</span>, 
+                header <span class='op'>=</span> <span class='cn'>TRUE</span>, 
+                fileEncoding <span class='op'>=</span> <span class='st'>"cp949"</span>,
+                stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>apt</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>&#39;data.frame&#39;:   58805 obs. of  13 variables:
+ $ 시군구        : chr  &quot;강원도 강릉시 견소동&quot; &quot;강원도 강릉시 견소동&quot; &quot;강원도 강릉시 견소동&quot; &quot;강원도 강릉시 견소동&quot; ...
+ $ 번지          : chr  &quot;202&quot; &quot;202&quot; &quot;202&quot; &quot;202&quot; ...
+ $ 본번          : chr  &quot;0202&quot; &quot;0202&quot; &quot;0202&quot; &quot;0202&quot; ...
+ $ 부번          : chr  &quot;0000&quot; &quot;0000&quot; &quot;0000&quot; &quot;0000&quot; ...
+ $ 단지명        : chr  &quot;송정한신&quot; &quot;송정한신&quot; &quot;송정한신&quot; &quot;송정한신&quot; ...
+ $ 전용면적...   : num  43.4 59.8 59.8 84.9 116.2 ...
+ $ 계약년월      : int  202001 202001 202001 202001 202001 202001 202001 202001 202001 202001 ...
+ $ 계약일        : int  3 15 18 18 21 23 6 20 27 4 ...
+ $ 거래금액.만원.: chr  &quot;12,000&quot; &quot;10,000&quot; &quot;10,500&quot; &quot;13,500&quot; ...
+ $ 층            : int  12 3 12 11 5 8 10 15 8 14 ...
+ $ 건축년도      : int  1997 1997 1997 1997 1997 1997 2005 2009 2009 1999 ...
+ $ 도로명        : chr  &quot;경강로2539번길 8&quot; &quot;경강로2539번길 8&quot; &quot;경강로2539번길 8&quot; &quot;경강로2539번길 8&quot; ...
+ $ 해제사유발생일: logi  NA NA NA NA NA NA ...</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>apt</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] 58805    13</code></pre>
+</div>
+</section>
+<section id="readr" class="panel-name panel">
+<h3 class="panel-name">readr</h3>
+<p><code>read_csv()</code> 함수는 readr 패키지에서 CSV 파일을 읽을 수 있는 함수입니다.</p>
+<p>그런데 <code>read_csv()</code> 함수로 영문 파일이 아닌 멀티 바이트 문자 파일을 읽을 때 에러가 발생 할 수 있습니다. 이 경우는 <code>guess_encoding()</code> 함수로 파일의 인코딩을 유추할 수 있습니다. 그러나 read.csv()에서의 사용하는 인코딩 이름과 체계가 다를 수 있습니다. “cp949”가 “EUC-KR”로 유추됩니다. <code>read_csv()</code> 함수에 “EUC-KR” 인코딩 이름을 적용해도 결과는 동일합니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://readr.tidyverse.org'>readr</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+
+<span class='va'>apt2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span>file <span class='op'>=</span> <span class='st'>"data/아파트매매_실거래가_200001.csv"</span>,
+                 locale <span class='op'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/locale.html'>locale</a></span><span class='op'>(</span>encoding <span class='op'>=</span> <span class='st'>"cp949"</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>apt2</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>spec_tbl_df [58,805 × 13] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+ $ 시군구        : chr [1:58805] &quot;강원도 강릉시 견소동&quot; &quot;강원도 강릉시 견소동&quot; &quot;강원도 강릉시 견소동&quot; &quot;강원도 강릉시 견소동&quot; ...
+ $ 번지          : chr [1:58805] &quot;202&quot; &quot;202&quot; &quot;202&quot; &quot;202&quot; ...
+ $ 본번          : chr [1:58805] &quot;0202&quot; &quot;0202&quot; &quot;0202&quot; &quot;0202&quot; ...
+ $ 부번          : chr [1:58805] &quot;0000&quot; &quot;0000&quot; &quot;0000&quot; &quot;0000&quot; ...
+ $ 단지명        : chr [1:58805] &quot;송정한신&quot; &quot;송정한신&quot; &quot;송정한신&quot; &quot;송정한신&quot; ...
+ $ 전용면적(㎡)  : num [1:58805] 43.4 59.8 59.8 84.9 116.2 ...
+ $ 계약년월      : num [1:58805] 202001 202001 202001 202001 202001 ...
+ $ 계약일        : num [1:58805] 3 15 18 18 21 23 6 20 27 4 ...
+ $ 거래금액(만원): num [1:58805] 12000 10000 10500 13500 19000 ...
+ $ 층            : num [1:58805] 12 3 12 11 5 8 10 15 8 14 ...
+ $ 건축년도      : num [1:58805] 1997 1997 1997 1997 1997 ...
+ $ 도로명        : chr [1:58805] &quot;경강로2539번길 8&quot; &quot;경강로2539번길 8&quot; &quot;경강로2539번길 8&quot; &quot;경강로2539번길 8&quot; ...
+ $ 해제사유발생일: logi [1:58805] NA NA NA NA NA NA ...
+ - attr(*, &quot;spec&quot;)=
+  .. cols(
+  ..   시군구 = col_character(),
+  ..   번지 = col_character(),
+  ..   본번 = col_character(),
+  ..   부번 = col_character(),
+  ..   단지명 = col_character(),
+  ..   `전용면적(㎡)` = col_double(),
+  ..   계약년월 = col_double(),
+  ..   계약일 = col_double(),
+  ..   `거래금액(만원)` = col_number(),
+  ..   층 = col_double(),
+  ..   건축년도 = col_double(),
+  ..   도로명 = col_character(),
+  ..   해제사유발생일 = col_logical()
+  .. )
+ - attr(*, &quot;problems&quot;)=&lt;externalptr&gt; </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>apt2</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] 58805    13</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 파일의 10줄을 읽어서 인코딩을 유추합니다.</span>
+<span class='fu'><a href='https://readr.tidyverse.org/reference/read_lines.html'>read_lines</a></span><span class='op'>(</span><span class='st'>"data/아파트매매_실거래가_200001.csv"</span>, n_max <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://readr.tidyverse.org/reference/encoding.html'>guess_encoding</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 3 x 2
+  encoding confidence
+  &lt;chr&gt;         &lt;dbl&gt;
+1 EUC-KR         1   
+2 GB18030        0.58
+3 Big5           0.34</code></pre>
+</div>
+</section>
+</div>
+<p>read.csv() 함수는 data.frame 객체를 반환하지만, read 패키지의 함수들은 tibble 객체를 반환합니다.</p>
+<h2 id="대용량-tsv-파일-읽기">대용량 TSV 파일 읽기</h2>
+<p>FoodFacts.tsv 파일은 약 92MB의 용량으로 대용량이라 보기 어렵지만, 실습 차원에서 대용량으로 간주하여 진행합니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/file.info.html'>file.size</a></span><span class='op'>(</span><span class='st'>"data/FoodFacts.tsv"</span><span class='op'>)</span> <span class='op'>/</span> <span class='fl'>1024</span><span class='op'>^</span><span class='fl'>2</span>
+</code></pre>
+</div>
+<pre><code>[1] 91.65345</code></pre>
+</div>
+<div class="panelset">
+<section id="기존-방법-1" class="panel-name panel">
+<h3 class="panel-name">기존 방법</h3>
+<p>read.csv() 함수는 TSV 파일을 읽을 수 있는 함수입니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>elapse_old</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='op'>(</span>
+  <span class='va'>foodfact</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span>file <span class='op'>=</span> <span class='st'>"data/FoodFacts.tsv"</span>,
+                       sep <span class='op'>=</span> <span class='st'>"\t"</span>,
+                       header <span class='op'>=</span> <span class='cn'>TRUE</span>, 
+                       stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='op'>)</span>
+
+<span class='va'>elapse_old</span>
+</code></pre>
+</div>
+<pre><code>   user  system elapsed 
+  2.816   0.093   2.911 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>foodfact</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] 23179   163</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>foodfact</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>&#39;data.frame&#39;:   23179 obs. of  163 variables:
+ $ code                                      : num  3087 4530 4559 16087 16094 ...
+ $ url                                       : chr  &quot;http://world-en.openfoodfacts.org/product/0000000003087/farine-de-ble-noir-ferme-t-y-r-nao&quot; &quot;http://world-en.openfoodfacts.org/product/0000000004530/banana-chips-sweetened-whole&quot; &quot;http://world-en.openfoodfacts.org/product/0000000004559/peanuts-torn-glasser&quot; &quot;http://world-en.openfoodfacts.org/product/0000000016087/organic-salted-nut-mix-grizzlies&quot; ...
+ $ creator                                   : chr  &quot;openfoodfacts-contributors&quot; &quot;usda-ndb-import&quot; &quot;usda-ndb-import&quot; &quot;usda-ndb-import&quot; ...
+ $ created_t                                 : int  1474103866 1489069957 1489069957 1489055731 1489055653 1489055651 1489055730 1489055711 1489055651 1489055654 ...
+ $ created_datetime                          : chr  &quot;2016-09-17T09:17:46Z&quot; &quot;2017-03-09T14:32:37Z&quot; &quot;2017-03-09T14:32:37Z&quot; &quot;2017-03-09T10:35:31Z&quot; ...
+ $ last_modified_t                           : int  1474103893 1489069957 1489069957 1489055731 1489055653 1489055651 1489055730 1489055712 1489055651 1489055654 ...
+ $ last_modified_datetime                    : chr  &quot;2016-09-17T09:18:13Z&quot; &quot;2017-03-09T14:32:37Z&quot; &quot;2017-03-09T14:32:37Z&quot; &quot;2017-03-09T10:35:31Z&quot; ...
+ $ product_name                              : chr  &quot;Farine de blé noir&quot; &quot;Banana Chips Sweetened (Whole)&quot; &quot;Peanuts&quot; &quot;Organic Salted Nut Mix&quot; ...
+ $ generic_name                              : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ quantity                                  : chr  &quot;1kg&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ packaging                                 : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ packaging_tags                            : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ brands                                    : chr  &quot;Ferme t&#39;y R&#39;nao&quot; &quot;&quot; &quot;Torn &amp; Glasser&quot; &quot;Grizzlies&quot; ...
+ $ brands_tags                               : chr  &quot;ferme-t-y-r-nao&quot; &quot;&quot; &quot;torn-glasser&quot; &quot;grizzlies&quot; ...
+ $ categories                                : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ categories_tags                           : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ categories_en                             : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ origins                                   : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ origins_tags                              : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ manufacturing_places                      : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ manufacturing_places_tags                 : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ labels                                    : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ labels_tags                               : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ labels_en                                 : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ emb_codes                                 : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ emb_codes_tags                            : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ first_packaging_code_geo                  : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ cities                                    : logi  NA NA NA NA NA NA ...
+ $ cities_tags                               : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ purchase_places                           : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ stores                                    : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ countries                                 : chr  &quot;en:FR&quot; &quot;US&quot; &quot;US&quot; &quot;US&quot; ...
+ $ countries_tags                            : chr  &quot;en:france&quot; &quot;en:united-states&quot; &quot;en:united-states&quot; &quot;en:united-states&quot; ...
+ $ countries_en                              : chr  &quot;France&quot; &quot;United States&quot; &quot;United States&quot; &quot;United States&quot; ...
+ $ ingredients_text                          : chr  &quot;&quot; &quot;Bananas, vegetable oil (coconut oil, corn oil and/or palm oil) sugar, natural banana flavor.&quot; &quot;Peanuts, wheat flour, sugar, rice flour, tapioca starch, salt, leavening (ammonium bicarbonate, baking soda), s&quot;| __truncated__ &quot;Organic hazelnuts, organic cashews, organic walnuts almonds, organic sunflower oil, sea salt.&quot; ...
+ $ allergens                                 : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ allergens_en                              : logi  NA NA NA NA NA NA ...
+ $ traces                                    : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ traces_tags                               : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ traces_en                                 : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ serving_size                              : chr  &quot;&quot; &quot;28 g (1 ONZ)&quot; &quot;28 g (0.25 cup)&quot; &quot;28 g (0.25 cup)&quot; ...
+ $ no_nutriments                             : logi  NA NA NA NA NA NA ...
+ $ additives_n                               : int  NA 0 0 0 0 0 0 1 0 0 ...
+ $ additives                                 : chr  &quot;&quot; &quot; [ bananas -&gt; en:bananas  ]  [ vegetable-oil -&gt; en:vegetable-oil  ]  [ oil -&gt; en:oil  ]  [ coconut-oil -&gt; en:co&quot;| __truncated__ &quot; [ peanuts -&gt; en:peanuts  ]  [ wheat-flour -&gt; en:wheat-flour  ]  [ flour -&gt; en:flour  ]  [ sugar -&gt; en:sugar  ]&quot;| __truncated__ &quot; [ organic-hazelnuts -&gt; en:organic-hazelnuts  ]  [ hazelnuts -&gt; en:hazelnuts  ]  [ organic-cashews -&gt; en:organi&quot;| __truncated__ ...
+ $ additives_tags                            : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ additives_en                              : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ ingredients_from_palm_oil_n               : chr  &quot;&quot; &quot;0&quot; &quot;0&quot; &quot;0&quot; ...
+ $ ingredients_from_palm_oil                 : logi  NA NA NA NA NA NA ...
+ $ ingredients_from_palm_oil_tags            : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ ingredients_that_may_be_from_palm_oil_n   : chr  &quot;&quot; &quot;0&quot; &quot;0&quot; &quot;0&quot; ...
+ $ ingredients_that_may_be_from_palm_oil     : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ ingredients_that_may_be_from_palm_oil_tags: chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ nutrition_grade_uk                        : int  NA NA NA NA NA NA NA NA NA NA ...
+ $ nutrition_grade_fr                        : chr  &quot;&quot; &quot;d&quot; &quot;b&quot; &quot;d&quot; ...
+ $ pnns_groups_1                             : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ pnns_groups_2                             : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ states                                    : chr  &quot;en:to-be-completed, en:nutrition-facts-to-be-completed, en:ingredients-to-be-completed, en:expiration-date-to-b&quot;| __truncated__ &quot;en:to-be-completed, en:nutrition-facts-completed, en:ingredients-completed, en:expiration-date-to-be-completed,&quot;| __truncated__ &quot;en:to-be-completed, en:nutrition-facts-completed, en:ingredients-completed, en:expiration-date-to-be-completed,&quot;| __truncated__ &quot;en:to-be-completed, en:nutrition-facts-completed, en:ingredients-completed, en:expiration-date-to-be-completed,&quot;| __truncated__ ...
+ $ states_tags                               : chr  &quot;en:to-be-completed,en:nutrition-facts-to-be-completed,en:ingredients-to-be-completed,en:expiration-date-to-be-c&quot;| __truncated__ &quot;en:to-be-completed,en:nutrition-facts-completed,en:ingredients-completed,en:expiration-date-to-be-completed,en:&quot;| __truncated__ &quot;en:to-be-completed,en:nutrition-facts-completed,en:ingredients-completed,en:expiration-date-to-be-completed,en:&quot;| __truncated__ &quot;en:to-be-completed,en:nutrition-facts-completed,en:ingredients-completed,en:expiration-date-to-be-completed,en:&quot;| __truncated__ ...
+ $ states_en                                 : chr  &quot;To be completed,Nutrition facts to be completed,Ingredients to be completed,Expiration date to be completed,Cha&quot;| __truncated__ &quot;To be completed,Nutrition facts completed,Ingredients completed,Expiration date to be completed,Packaging-code-&quot;| __truncated__ &quot;To be completed,Nutrition facts completed,Ingredients completed,Expiration date to be completed,Packaging-code-&quot;| __truncated__ &quot;To be completed,Nutrition facts completed,Ingredients completed,Expiration date to be completed,Packaging-code-&quot;| __truncated__ ...
+ $ main_category                             : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ main_category_en                          : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ image_url                                 : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ image_small_url                           : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ energy_100g                               : chr  &quot;&quot; &quot;2243&quot; &quot;1941&quot; &quot;2540&quot; ...
+ $ energy.from.fat_100g                      : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ fat_100g                                  : chr  &quot;&quot; &quot;28.57&quot; &quot;17.86&quot; &quot;57.14&quot; ...
+ $ saturated.fat_100g                        : chr  &quot;&quot; &quot;28.57&quot; &quot;0&quot; &quot;5.36&quot; ...
+ $ X.butyric.acid_100g                       : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ X.caproic.acid_100g                       : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ X.caprylic.acid_100g                      : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ X.capric.acid_100g                        : logi  NA NA NA NA NA NA ...
+ $ X.lauric.acid_100g                        : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ X.myristic.acid_100g                      : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ X.palmitic.acid_100g                      : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ X.stearic.acid_100g                       : logi  NA NA NA NA NA NA ...
+ $ X.arachidic.acid_100g                     : int  NA NA NA NA NA NA NA NA NA NA ...
+ $ X.behenic.acid_100g                       : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ X.lignoceric.acid_100g                    : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ X.cerotic.acid_100g                       : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ X.montanic.acid_100g                      : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ X.melissic.acid_100g                      : logi  NA NA NA NA NA NA ...
+ $ monounsaturated.fat_100g                  : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ polyunsaturated.fat_100g                  : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ omega.3.fat_100g                          : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ X.alpha.linolenic.acid_100g               : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ X.eicosapentaenoic.acid_100g              : logi  NA NA NA NA NA NA ...
+ $ X.docosahexaenoic.acid_100g               : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ omega.6.fat_100g                          : logi  NA NA NA NA NA NA ...
+ $ X.linoleic.acid_100g                      : logi  NA NA NA NA NA NA ...
+ $ X.arachidonic.acid_100g                   : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ X.gamma.linolenic.acid_100g               : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ X.dihomo.gamma.linolenic.acid_100g        : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ omega.9.fat_100g                          : logi  NA NA NA NA NA NA ...
+ $ X.oleic.acid_100g                         : logi  NA NA NA NA NA NA ...
+ $ X.elaidic.acid_100g                       : logi  NA NA NA NA NA NA ...
+ $ X.gondoic.acid_100g                       : logi  NA NA NA NA NA NA ...
+ $ X.mead.acid_100g                          : int  NA NA NA NA NA NA NA NA NA NA ...
+ $ X.erucic.acid_100g                        : logi  NA NA NA NA NA NA ...
+ $ X.nervonic.acid_100g                      : int  NA NA NA NA NA NA NA NA NA NA ...
+  [list output truncated]</code></pre>
+</div>
+</section>
+<section id="readr-1" class="panel-name panel">
+<h3 class="panel-name">readr</h3>
+<p><code>read_tsv()</code> 함수는 readr 패키지에서 TSV 파일을 읽을 수 있는 함수입니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>elapse_readr</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='op'>(</span>
+  <span class='va'>foodfact2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_tsv</a></span><span class='op'>(</span>file <span class='op'>=</span> <span class='st'>"data/FoodFacts.tsv"</span><span class='op'>)</span>
+<span class='op'>)</span>
+
+<span class='va'>elapse_readr</span>
+</code></pre>
+</div>
+<pre><code>   user  system elapsed 
+  4.923   0.245   3.940 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>foodfact2</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] 35000   163</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>foodfact2</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>spec_tbl_df [35,000 × 163] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+ $ code                                      : chr [1:35000] &quot;0000000003087&quot; &quot;0000000004530&quot; &quot;0000000004559&quot; &quot;0000000016087&quot; ...
+ $ url                                       : chr [1:35000] &quot;http://world-en.openfoodfacts.org/product/0000000003087/farine-de-ble-noir-ferme-t-y-r-nao&quot; &quot;http://world-en.openfoodfacts.org/product/0000000004530/banana-chips-sweetened-whole&quot; &quot;http://world-en.openfoodfacts.org/product/0000000004559/peanuts-torn-glasser&quot; &quot;http://world-en.openfoodfacts.org/product/0000000016087/organic-salted-nut-mix-grizzlies&quot; ...
+ $ creator                                   : chr [1:35000] &quot;openfoodfacts-contributors&quot; &quot;usda-ndb-import&quot; &quot;usda-ndb-import&quot; &quot;usda-ndb-import&quot; ...
+ $ created_t                                 : num [1:35000] 1.47e+09 1.49e+09 1.49e+09 1.49e+09 1.49e+09 ...
+ $ created_datetime                          : POSIXct[1:35000], format: &quot;2016-09-17 09:17:46&quot; ...
+ $ last_modified_t                           : num [1:35000] 1.47e+09 1.49e+09 1.49e+09 1.49e+09 1.49e+09 ...
+ $ last_modified_datetime                    : POSIXct[1:35000], format: &quot;2016-09-17 09:18:13&quot; ...
+ $ product_name                              : chr [1:35000] &quot;Farine de blé noir&quot; &quot;Banana Chips Sweetened (Whole)&quot; &quot;Peanuts&quot; &quot;Organic Salted Nut Mix&quot; ...
+ $ generic_name                              : chr [1:35000] NA NA NA NA ...
+ $ quantity                                  : chr [1:35000] &quot;1kg&quot; NA NA NA ...
+ $ packaging                                 : chr [1:35000] NA NA NA NA ...
+ $ packaging_tags                            : chr [1:35000] NA NA NA NA ...
+ $ brands                                    : chr [1:35000] &quot;Ferme t&#39;y R&#39;nao&quot; NA &quot;Torn &amp; Glasser&quot; &quot;Grizzlies&quot; ...
+ $ brands_tags                               : chr [1:35000] &quot;ferme-t-y-r-nao&quot; NA &quot;torn-glasser&quot; &quot;grizzlies&quot; ...
+ $ categories                                : chr [1:35000] NA NA NA NA ...
+ $ categories_tags                           : chr [1:35000] NA NA NA NA ...
+ $ categories_en                             : chr [1:35000] NA NA NA NA ...
+ $ origins                                   : chr [1:35000] NA NA NA NA ...
+ $ origins_tags                              : chr [1:35000] NA NA NA NA ...
+ $ manufacturing_places                      : chr [1:35000] NA NA NA NA ...
+ $ manufacturing_places_tags                 : chr [1:35000] NA NA NA NA ...
+ $ labels                                    : chr [1:35000] NA NA NA NA ...
+ $ labels_tags                               : chr [1:35000] NA NA NA NA ...
+ $ labels_en                                 : chr [1:35000] NA NA NA NA ...
+ $ emb_codes                                 : chr [1:35000] NA NA NA NA ...
+ $ emb_codes_tags                            : chr [1:35000] NA NA NA NA ...
+ $ first_packaging_code_geo                  : logi [1:35000] NA NA NA NA NA NA ...
+ $ cities                                    : logi [1:35000] NA NA NA NA NA NA ...
+ $ cities_tags                               : logi [1:35000] NA NA NA NA NA NA ...
+ $ purchase_places                           : chr [1:35000] NA NA NA NA ...
+ $ stores                                    : chr [1:35000] NA NA NA NA ...
+ $ countries                                 : chr [1:35000] &quot;en:FR&quot; &quot;US&quot; &quot;US&quot; &quot;US&quot; ...
+ $ countries_tags                            : chr [1:35000] &quot;en:france&quot; &quot;en:united-states&quot; &quot;en:united-states&quot; &quot;en:united-states&quot; ...
+ $ countries_en                              : chr [1:35000] &quot;France&quot; &quot;United States&quot; &quot;United States&quot; &quot;United States&quot; ...
+ $ ingredients_text                          : chr [1:35000] NA &quot;Bananas, vegetable oil (coconut oil, corn oil and/or palm oil) sugar, natural banana flavor.&quot; &quot;Peanuts, wheat flour, sugar, rice flour, tapioca starch, salt, leavening (ammonium bicarbonate, baking soda), s&quot;| __truncated__ &quot;Organic hazelnuts, organic cashews, organic walnuts almonds, organic sunflower oil, sea salt.&quot; ...
+ $ allergens                                 : chr [1:35000] NA NA NA NA ...
+ $ allergens_en                              : logi [1:35000] NA NA NA NA NA NA ...
+ $ traces                                    : chr [1:35000] NA NA NA NA ...
+ $ traces_tags                               : chr [1:35000] NA NA NA NA ...
+ $ traces_en                                 : chr [1:35000] NA NA NA NA ...
+ $ serving_size                              : chr [1:35000] NA &quot;28 g (1 ONZ)&quot; &quot;28 g (0.25 cup)&quot; &quot;28 g (0.25 cup)&quot; ...
+ $ no_nutriments                             : logi [1:35000] NA NA NA NA NA NA ...
+ $ additives_n                               : num [1:35000] NA 0 0 0 0 0 0 1 0 0 ...
+ $ additives                                 : chr [1:35000] NA &quot;[ bananas -&gt; en:bananas  ]  [ vegetable-oil -&gt; en:vegetable-oil  ]  [ oil -&gt; en:oil  ]  [ coconut-oil -&gt; en:coc&quot;| __truncated__ &quot;[ peanuts -&gt; en:peanuts  ]  [ wheat-flour -&gt; en:wheat-flour  ]  [ flour -&gt; en:flour  ]  [ sugar -&gt; en:sugar  ] &quot;| __truncated__ &quot;[ organic-hazelnuts -&gt; en:organic-hazelnuts  ]  [ hazelnuts -&gt; en:hazelnuts  ]  [ organic-cashews -&gt; en:organic&quot;| __truncated__ ...
+ $ additives_tags                            : chr [1:35000] NA NA NA NA ...
+ $ additives_en                              : chr [1:35000] NA NA NA NA ...
+ $ ingredients_from_palm_oil_n               : num [1:35000] NA 0 0 0 0 0 0 0 0 0 ...
+ $ ingredients_from_palm_oil                 : logi [1:35000] NA NA NA NA NA NA ...
+ $ ingredients_from_palm_oil_tags            : chr [1:35000] NA NA NA NA ...
+ $ ingredients_that_may_be_from_palm_oil_n   : num [1:35000] NA 0 0 0 0 0 0 0 0 0 ...
+ $ ingredients_that_may_be_from_palm_oil     : logi [1:35000] NA NA NA NA NA NA ...
+ $ ingredients_that_may_be_from_palm_oil_tags: chr [1:35000] NA NA NA NA ...
+ $ nutrition_grade_uk                        : logi [1:35000] NA NA NA NA NA NA ...
+ $ nutrition_grade_fr                        : chr [1:35000] NA &quot;d&quot; &quot;b&quot; &quot;d&quot; ...
+ $ pnns_groups_1                             : chr [1:35000] NA NA NA NA ...
+ $ pnns_groups_2                             : chr [1:35000] NA NA NA NA ...
+ $ states                                    : chr [1:35000] &quot;en:to-be-completed, en:nutrition-facts-to-be-completed, en:ingredients-to-be-completed, en:expiration-date-to-b&quot;| __truncated__ &quot;en:to-be-completed, en:nutrition-facts-completed, en:ingredients-completed, en:expiration-date-to-be-completed,&quot;| __truncated__ &quot;en:to-be-completed, en:nutrition-facts-completed, en:ingredients-completed, en:expiration-date-to-be-completed,&quot;| __truncated__ &quot;en:to-be-completed, en:nutrition-facts-completed, en:ingredients-completed, en:expiration-date-to-be-completed,&quot;| __truncated__ ...
+ $ states_tags                               : chr [1:35000] &quot;en:to-be-completed,en:nutrition-facts-to-be-completed,en:ingredients-to-be-completed,en:expiration-date-to-be-c&quot;| __truncated__ &quot;en:to-be-completed,en:nutrition-facts-completed,en:ingredients-completed,en:expiration-date-to-be-completed,en:&quot;| __truncated__ &quot;en:to-be-completed,en:nutrition-facts-completed,en:ingredients-completed,en:expiration-date-to-be-completed,en:&quot;| __truncated__ &quot;en:to-be-completed,en:nutrition-facts-completed,en:ingredients-completed,en:expiration-date-to-be-completed,en:&quot;| __truncated__ ...
+ $ states_en                                 : chr [1:35000] &quot;To be completed,Nutrition facts to be completed,Ingredients to be completed,Expiration date to be completed,Cha&quot;| __truncated__ &quot;To be completed,Nutrition facts completed,Ingredients completed,Expiration date to be completed,Packaging-code-&quot;| __truncated__ &quot;To be completed,Nutrition facts completed,Ingredients completed,Expiration date to be completed,Packaging-code-&quot;| __truncated__ &quot;To be completed,Nutrition facts completed,Ingredients completed,Expiration date to be completed,Packaging-code-&quot;| __truncated__ ...
+ $ main_category                             : chr [1:35000] NA NA NA NA ...
+ $ main_category_en                          : chr [1:35000] NA NA NA NA ...
+ $ image_url                                 : chr [1:35000] NA NA NA NA ...
+ $ image_small_url                           : chr [1:35000] NA NA NA NA ...
+ $ energy_100g                               : num [1:35000] NA 2243 1941 2540 1552 ...
+ $ energy-from-fat_100g                      : num [1:35000] NA NA NA NA NA NA NA NA NA NA ...
+ $ fat_100g                                  : num [1:35000] NA 28.57 17.86 57.14 1.43 ...
+ $ saturated-fat_100g                        : num [1:35000] NA 28.57 0 5.36 NA ...
+ $ -butyric-acid_100g                        : logi [1:35000] NA NA NA NA NA NA ...
+ $ -caproic-acid_100g                        : logi [1:35000] NA NA NA NA NA NA ...
+ $ -caprylic-acid_100g                       : logi [1:35000] NA NA NA NA NA NA ...
+ $ -capric-acid_100g                         : logi [1:35000] NA NA NA NA NA NA ...
+ $ -lauric-acid_100g                         : logi [1:35000] NA NA NA NA NA NA ...
+ $ -myristic-acid_100g                       : logi [1:35000] NA NA NA NA NA NA ...
+ $ -palmitic-acid_100g                       : logi [1:35000] NA NA NA NA NA NA ...
+ $ -stearic-acid_100g                        : logi [1:35000] NA NA NA NA NA NA ...
+ $ -arachidic-acid_100g                      : logi [1:35000] NA NA NA NA NA NA ...
+ $ -behenic-acid_100g                        : logi [1:35000] NA NA NA NA NA NA ...
+ $ -lignoceric-acid_100g                     : logi [1:35000] NA NA NA NA NA NA ...
+ $ -cerotic-acid_100g                        : logi [1:35000] NA NA NA NA NA NA ...
+ $ -montanic-acid_100g                       : logi [1:35000] NA NA NA NA NA NA ...
+ $ -melissic-acid_100g                       : logi [1:35000] NA NA NA NA NA NA ...
+ $ monounsaturated-fat_100g                  : num [1:35000] NA NA NA NA NA NA NA NA NA NA ...
+ $ polyunsaturated-fat_100g                  : num [1:35000] NA NA NA NA NA NA NA NA NA NA ...
+ $ omega-3-fat_100g                          : logi [1:35000] NA NA NA NA NA NA ...
+ $ -alpha-linolenic-acid_100g                : logi [1:35000] NA NA NA NA NA NA ...
+ $ -eicosapentaenoic-acid_100g               : logi [1:35000] NA NA NA NA NA NA ...
+ $ -docosahexaenoic-acid_100g                : logi [1:35000] NA NA NA NA NA NA ...
+ $ omega-6-fat_100g                          : logi [1:35000] NA NA NA NA NA NA ...
+ $ -linoleic-acid_100g                       : logi [1:35000] NA NA NA NA NA NA ...
+ $ -arachidonic-acid_100g                    : logi [1:35000] NA NA NA NA NA NA ...
+ $ -gamma-linolenic-acid_100g                : logi [1:35000] NA NA NA NA NA NA ...
+ $ -dihomo-gamma-linolenic-acid_100g         : logi [1:35000] NA NA NA NA NA NA ...
+ $ omega-9-fat_100g                          : logi [1:35000] NA NA NA NA NA NA ...
+ $ -oleic-acid_100g                          : logi [1:35000] NA NA NA NA NA NA ...
+ $ -elaidic-acid_100g                        : logi [1:35000] NA NA NA NA NA NA ...
+ $ -gondoic-acid_100g                        : logi [1:35000] NA NA NA NA NA NA ...
+ $ -mead-acid_100g                           : logi [1:35000] NA NA NA NA NA NA ...
+ $ -erucic-acid_100g                         : logi [1:35000] NA NA NA NA NA NA ...
+ $ -nervonic-acid_100g                       : logi [1:35000] NA NA NA NA NA NA ...
+  [list output truncated]
+ - attr(*, &quot;spec&quot;)=
+  .. cols(
+  ..   code = col_character(),
+  ..   url = col_character(),
+  ..   creator = col_character(),
+  ..   created_t = col_double(),
+  ..   created_datetime = col_datetime(format = &quot;&quot;),
+  ..   last_modified_t = col_double(),
+  ..   last_modified_datetime = col_datetime(format = &quot;&quot;),
+  ..   product_name = col_character(),
+  ..   generic_name = col_character(),
+  ..   quantity = col_character(),
+  ..   packaging = col_character(),
+  ..   packaging_tags = col_character(),
+  ..   brands = col_character(),
+  ..   brands_tags = col_character(),
+  ..   categories = col_character(),
+  ..   categories_tags = col_character(),
+  ..   categories_en = col_character(),
+  ..   origins = col_character(),
+  ..   origins_tags = col_character(),
+  ..   manufacturing_places = col_character(),
+  ..   manufacturing_places_tags = col_character(),
+  ..   labels = col_character(),
+  ..   labels_tags = col_character(),
+  ..   labels_en = col_character(),
+  ..   emb_codes = col_character(),
+  ..   emb_codes_tags = col_character(),
+  ..   first_packaging_code_geo = col_logical(),
+  ..   cities = col_logical(),
+  ..   cities_tags = col_logical(),
+  ..   purchase_places = col_character(),
+  ..   stores = col_character(),
+  ..   countries = col_character(),
+  ..   countries_tags = col_character(),
+  ..   countries_en = col_character(),
+  ..   ingredients_text = col_character(),
+  ..   allergens = col_character(),
+  ..   allergens_en = col_logical(),
+  ..   traces = col_character(),
+  ..   traces_tags = col_character(),
+  ..   traces_en = col_character(),
+  ..   serving_size = col_character(),
+  ..   no_nutriments = col_logical(),
+  ..   additives_n = col_double(),
+  ..   additives = col_character(),
+  ..   additives_tags = col_character(),
+  ..   additives_en = col_character(),
+  ..   ingredients_from_palm_oil_n = col_double(),
+  ..   ingredients_from_palm_oil = col_logical(),
+  ..   ingredients_from_palm_oil_tags = col_character(),
+  ..   ingredients_that_may_be_from_palm_oil_n = col_double(),
+  ..   ingredients_that_may_be_from_palm_oil = col_logical(),
+  ..   ingredients_that_may_be_from_palm_oil_tags = col_character(),
+  ..   nutrition_grade_uk = col_logical(),
+  ..   nutrition_grade_fr = col_character(),
+  ..   pnns_groups_1 = col_character(),
+  ..   pnns_groups_2 = col_character(),
+  ..   states = col_character(),
+  ..   states_tags = col_character(),
+  ..   states_en = col_character(),
+  ..   main_category = col_character(),
+  ..   main_category_en = col_character(),
+  ..   image_url = col_character(),
+  ..   image_small_url = col_character(),
+  ..   energy_100g = col_double(),
+  ..   `energy-from-fat_100g` = col_double(),
+  ..   fat_100g = col_double(),
+  ..   `saturated-fat_100g` = col_double(),
+  ..   `-butyric-acid_100g` = col_logical(),
+  ..   `-caproic-acid_100g` = col_logical(),
+  ..   `-caprylic-acid_100g` = col_logical(),
+  ..   `-capric-acid_100g` = col_logical(),
+  ..   `-lauric-acid_100g` = col_logical(),
+  ..   `-myristic-acid_100g` = col_logical(),
+  ..   `-palmitic-acid_100g` = col_logical(),
+  ..   `-stearic-acid_100g` = col_logical(),
+  ..   `-arachidic-acid_100g` = col_logical(),
+  ..   `-behenic-acid_100g` = col_logical(),
+  ..   `-lignoceric-acid_100g` = col_logical(),
+  ..   `-cerotic-acid_100g` = col_logical(),
+  ..   `-montanic-acid_100g` = col_logical(),
+  ..   `-melissic-acid_100g` = col_logical(),
+  ..   `monounsaturated-fat_100g` = col_double(),
+  ..   `polyunsaturated-fat_100g` = col_double(),
+  ..   `omega-3-fat_100g` = col_logical(),
+  ..   `-alpha-linolenic-acid_100g` = col_logical(),
+  ..   `-eicosapentaenoic-acid_100g` = col_logical(),
+  ..   `-docosahexaenoic-acid_100g` = col_logical(),
+  ..   `omega-6-fat_100g` = col_logical(),
+  ..   `-linoleic-acid_100g` = col_logical(),
+  ..   `-arachidonic-acid_100g` = col_logical(),
+  ..   `-gamma-linolenic-acid_100g` = col_logical(),
+  ..   `-dihomo-gamma-linolenic-acid_100g` = col_logical(),
+  ..   `omega-9-fat_100g` = col_logical(),
+  ..   `-oleic-acid_100g` = col_logical(),
+  ..   `-elaidic-acid_100g` = col_logical(),
+  ..   `-gondoic-acid_100g` = col_logical(),
+  ..   `-mead-acid_100g` = col_logical(),
+  ..   `-erucic-acid_100g` = col_logical(),
+  ..   `-nervonic-acid_100g` = col_logical(),
+  ..   `trans-fat_100g` = col_double(),
+  ..   cholesterol_100g = col_double(),
+  ..   carbohydrates_100g = col_double(),
+  ..   sugars_100g = col_double(),
+  ..   `-sucrose_100g` = col_logical(),
+  ..   `-glucose_100g` = col_logical(),
+  ..   `-fructose_100g` = col_logical(),
+  ..   `-lactose_100g` = col_double(),
+  ..   `-maltose_100g` = col_logical(),
+  ..   `-maltodextrins_100g` = col_logical(),
+  ..   starch_100g = col_double(),
+  ..   polyols_100g = col_logical(),
+  ..   fiber_100g = col_double(),
+  ..   proteins_100g = col_double(),
+  ..   casein_100g = col_logical(),
+  ..   `serum-proteins_100g` = col_logical(),
+  ..   nucleotides_100g = col_logical(),
+  ..   salt_100g = col_double(),
+  ..   sodium_100g = col_double(),
+  ..   alcohol_100g = col_logical(),
+  ..   `vitamin-a_100g` = col_double(),
+  ..   `beta-carotene_100g` = col_logical(),
+  ..   `vitamin-d_100g` = col_double(),
+  ..   `vitamin-e_100g` = col_double(),
+  ..   `vitamin-k_100g` = col_double(),
+  ..   `vitamin-c_100g` = col_double(),
+  ..   `vitamin-b1_100g` = col_double(),
+  ..   `vitamin-b2_100g` = col_double(),
+  ..   `vitamin-pp_100g` = col_double(),
+  ..   `vitamin-b6_100g` = col_double(),
+  ..   `vitamin-b9_100g` = col_double(),
+  ..   folates_100g = col_double(),
+  ..   `vitamin-b12_100g` = col_double(),
+  ..   biotin_100g = col_logical(),
+  ..   `pantothenic-acid_100g` = col_double(),
+  ..   silica_100g = col_logical(),
+  ..   bicarbonate_100g = col_logical(),
+  ..   potassium_100g = col_double(),
+  ..   chloride_100g = col_logical(),
+  ..   calcium_100g = col_double(),
+  ..   phosphorus_100g = col_double(),
+  ..   iron_100g = col_double(),
+  ..   magnesium_100g = col_double(),
+  ..   zinc_100g = col_double(),
+  ..   copper_100g = col_double(),
+  ..   manganese_100g = col_double(),
+  ..   fluoride_100g = col_logical(),
+  ..   selenium_100g = col_double(),
+  ..   chromium_100g = col_logical(),
+  ..   molybdenum_100g = col_logical(),
+  ..   iodine_100g = col_logical(),
+  ..   caffeine_100g = col_logical(),
+  ..   taurine_100g = col_logical(),
+  ..   ph_100g = col_logical(),
+  ..   `fruits-vegetables-nuts_100g` = col_logical(),
+  ..   `fruits-vegetables-nuts-estimate_100g` = col_double(),
+  ..   `collagen-meat-protein-ratio_100g` = col_logical(),
+  ..   cocoa_100g = col_logical(),
+  ..   chlorophyl_100g = col_logical(),
+  ..   `carbon-footprint_100g` = col_logical(),
+  ..   `nutrition-score-fr_100g` = col_double(),
+  ..   `nutrition-score-uk_100g` = col_double(),
+  ..   `glycemic-index_100g` = col_logical(),
+  ..   `water-hardness_100g` = col_logical()
+  .. )
+ - attr(*, &quot;problems&quot;)=&lt;externalptr&gt; </code></pre>
+</div>
+</section>
+</div>
+<p>기존 방법은 2.911초, readr 패키지는 3.94초가 소요되었습니다. 데이터의 용량이 그리 크지 않기 때문에 기존 방법의 수행속도가 다소 빠를 수 있지만, 대용량 데이터의 경우에는 readr 패키지의 속도가 빠릅니다.</p>
+<p>그리고 35,000건의 데이터 중에서 기존의 방법은 23,179만 읽었을 뿐입니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="bg-orange">
+<h4 style="margin-bottom: 10px; margin-top: 0px;">
+<i class="fa fa-lightbulb" role="presentation" aria-label="lightbulb icon" style="margin-right: 5px;"></i>
+솔루션
+</h4>
+파일의 용량이 클 경우에는 readr 패키지를 이용해서 데이터를 읽는 것이 시간을 절약할 수 있는 유용한 방법입니다.
+</div>
+</div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<div class="distill-site-nav distill-site-footer">
+  <span>
+    Copyright 2021 DATAHOLIC. All Rights Reserved</p>
+  </span> 
+  <!--Licensed under the <a href="https://opensource.org/licenses/lgpl-3.0.html" target="_blank">GNU General Public License version 3.0</a-->
+<br>
+</div>
+
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom">
+  <h3 id="citation">Citation</h3>
+  <p>For attribution, please cite this work as</p>
+  <pre class="citation-appendix short">유충현 (2022, Feb. 23). Dataholic: Import data with readr. Retrieved from https://choonghyunryu.github.io/2022-02-23-readr</pre>
+  <p>BibTeX citation</p>
+  <pre class="citation-appendix long">@misc{유충현2022import,
+  author = {유충현, },
+  title = {Dataholic: Import data with readr},
+  url = {https://choonghyunryu.github.io/2022-02-23-readr},
+  year = {2022}
+}</pre>
+</div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>
