@@ -1,5 +1,28 @@
 [
   {
+    "path": "posts/2022-02-28-forcats/",
+    "title": "Wrangle factor with forcats",
+    "description": "forcats 패키지로 범주형 데이터를 조작합니다.",
+    "author": [
+      {
+        "name": "유충현",
+        "url": "https://choonghyunryu.github.io"
+      }
+    ],
+    "date": "2022-02-28",
+    "categories": [
+      "Tidyverse",
+      "forcats",
+      "manipulate data"
+    ],
+    "contents": "\n\nContents\n왜 factor인가?\n레벨 변경 함수\nfct_recode\nfct_collapse, fct_other\n\n레벨 순서 변경 함수\nfct_relevel\nfct_rev\nfct_infreq\nfct_reorder\n\n기타 함수\nfct_drop\nfct_expand\nfct_c\n\n\n\n\n\n\n\n들어가기\n범주형 데이터라 부르고 factor라 읽는다.\n\nforcats 패키지는 R에서 조작하는 것이 까다롭다는 factor의 조작에 날개를 달아줍니다.\n\n\n\n왜 factor인가?\n성별을 나타내는 gender는 두 가지로 다음처럼 표현이 가능합니다. 어느 가족의 성별 데이터를 가정합니다.\n\n[1] \"male\"   \"female\" \"male\"   \"male\"  \n\n그런데, 어떤 R 사용자는 다음과 같이 데이터를 코딩합니다. 범주형 데이터를 문자인 character가 아닌 factor로 코딩하는 겁니다.\n\n[1] male   female male   male  \nLevels: female male\n\nR을 사용하는 초보자들은 factor를 다루는 것을 불편해 합니다. 그리고 질문을 합니다.\n\n왜 굳이 factor를 만듭니까? character로 사용해도 충분하지 않나요? 나는 이제껏 character로 사용해도 문제가 없었습니다.\n\n\nR은 factor에 대해서 많은 유용한 기능을 제공하고 있습니다. 예를 들면, 가족의 성별의 구성을 시각화할 경우에 아래처럼 그저 plot() 함수만 호출하면 됩니다. summary() 함수는 알아서 돗수분포표를 계산해줍니다. character는 지원하지 않는 기능입니다.\n\nfemale   male \n     1      3 \n\n\n레벨 변경 함수\nposition factor에서의 “father”, “mother”, “child”를 레벨(levels)라 합니다. 쉽게 이야기하면 범주의 종류인 셈입니다. 여기서는 범주의 종류인 레벨을 변경할 때 사용하는 함수를 다룹니다.\n다음과 같은 함수를 익히게 됩니다.\n함수 이름\n기능\nfct_recode\n매뉴얼로 levels을 변경함\nfct_collapse\n매뉴얼로 levels을 정의된 그룹으로 축소함\nfct_other\nlevels을 “other”로 교체\nfct_recode\n가족을 나타내는 family의 레벨이 “father”, “mother”, “son”, “daughter”입니다. 이 영문 레벨을 한글 레벨로 고치고 싶습니다.\nfct_recode() 함수는 레벨을 쉽게 재정의할 수 있습니다.\n\n[1] father   mother   son      daughter\nLevels: daughter father mother son\n[1] 아빠 엄마 자녀 자녀\nLevels: 자녀 아빠 엄마\n\nfct_collapse, fct_other\nfct_collapse(), fct_other() 함수도 fct_recode() 함수와 유사한 기능을 가지고 있습니다. fct_recode() 함수로도 가능한 기능이지만, 몇 개의 레벨을 합쳐서 하나의 레벨을 만들어줍니다.\n\nHands-on 1\n데이터 분석 과정에서 family의 레벨인 “son”, “daughter”을 “child”로 합치고 싶습니다.\nfct_recode() 함수를 이용하세요.\nfct_collapse() 함수를 이용하세요.\nfct_other() 함수를 이용하세요.\n\n\n\n힌트\nfct_recode() 함수에서 “child”로 변경하는 작업이 두 번 이루어집니다.\nfct_other() 함수의 other_level 인수를 사용해서 레벨을 “child”로 조정합니다.\n\npurrr\n다음은 변수를 minmax로 표준화하는 purrr 패키지 구문입니다.\n\n[1] father mother child  child \nLevels: child father mother\n[1] father mother child  child \nLevels: child father mother\n[1] father mother child  child \nLevels: father mother child\n\n\n레벨 순서 변경 함수\n앞의 예제에서 fct_recode(), fct_collapse() 함수와 fct_other() 함수로 변경한 레벨의 순서가 다름을 발견할 수 있습니다. 명목척도가 코딩된 범주형 데이터인 factor는 큰 문제가 없으나, 서열척도가 코딩된 범주형 데이터인 ordered factor의 경우는 문제가 발생할 수 있습니다.\n다음과 같은 함수가 레벨의 순서를 바꿔줍니다.\n함수 이름\n기능\nfct_relevel\n매뉴얼로 levels의 순서를 변경함\nfct_infreq\n돗수의 크기로 levels의 순서를 변경함\nfct_rev\nlevels의 순서를 역순으로 변경함\nfct_reorder\n다른 변수의 정렬 순서로 levels의 순서 변경함\nfct_relevel\n앞의 예제에서 fct_recode()의 결과의 레벨 순서 “child”, “father”, “mother”은 알파벳 순서로 만들어진 것입니다. 이것을 fct_relevel() 함수를 이용해서 “father”, “mother”, “child”로 변경해 보겠습니다.\n\n[1] father mother child  child \nLevels: child father mother\n[1] father mother child  child \nLevels: father mother child\n\nfct_rev\nfct_rev() 함수는 레벨의 순서를 역방향으로 바꿔주기 때문에, “child”, “father”, “mother” 순서가 “mother”, “father”, “child” 순서로 변경됩니다.\n\n[1] father mother child  child \nLevels: child father mother\n[1] father mother child  child \nLevels: mother father child\n\nfct_infreq\n앞에서 plot(gender)로 그림 돗수분포 시각화는 돗수의 무관하게 출력되었습니다. 그런데, 이제는 돗수가 제일 큰 레벨이 왼쪽에 출력되도록 레벨의 순서를 변경하려 합니다.\n\n[1] male   female male   male  \nLevels: female male\n[1] male   female male   male  \nLevels: male female\n\n\nfct_reorder\nforcats 패키지에는 사회조사 샘플 데이터를 gss_cat라는 이름의 데이터 프레임으로 제공하고 있습니다.\n응답자의 결혼상태별로 일 평균 TV 시청시간을 막대 그래프로 그렸습니다.\n\n\n\n\nHands-on 2\n데이터 해석의 용이성을 위해서 TV 시청시간의 크기별로 결혼상태의 레벨 순서를 조정해서 시각화하세요.\nfct_reorder() 함수를 이용하세요.\nmutate() 함수를 이용하세요.\n\n\n\n힌트\nmutate() 함수를 사용한다는 것은, 데이터 집계 후 레벨의 순서를 바꾼다는 의미입니다.\npurrr\n다음은 변수를 minmax로 표준화하는 purrr 패키지 구문입니다.\n\n\n\n\n\n\n\n\n솔루션\n\nfct_reorder() 함수를 사용하여 시각화에서의 범주 순서를 바꾸는 경우는 자주 발생하는 사례이니, 꼭 기억하시기 바랍니다.\n\n\n\n기타 함수\nlevels를 추가/삭제하거나 여러 개의 factor를 병합하는 함수도 제공합니다.\n다음과 같은 함수가 레벨의 순서를 바꿔줍니다.\n함수 이름\n기능\nfct_drop\n사용하지 않는 levels를 제거함\nfct_expand\n새로운 levels를 추가함\nfct_c\n서로 다른 factor의 levels를 병합함\nfct_drop\nfct_drop() 함수는 불필요한 레벨을 삭제해 줍니다..\n\n[1] a b\nLevels: a b c\n[1] a b\nLevels: a b\n\nfct_expand\nfct_expand() 함수는 데이터로는 포함되어 있지 않는 새로운 레벨을 추가해 줍니다. 이 기능을 데이터를 모델링하기 위해서 테스트 셋과 트레이닝 셋을 나눌 때, 어느 한 쪽의 데이터 셋에서 특정 레벨이 누락되는 것을 막아줍니다.\n\n[1] male male male male\nLevels: male\n[1] male male male male\nLevels: male female\n\nfct_c\nfct_c() 함수는 factor를 결합하고, 레벨을 합쳐줍니다.\n\n[1] a b x\nLevels: a b x\n\n\n\n\n",
+    "preview": "posts/2022-02-28-forcats/img/forcats.png",
+    "last_modified": "2022-02-28T16:00:38+09:00",
+    "input_file": "2022-02-28-forcats.knit.md",
+    "preview_width": 736,
+    "preview_height": 853
+  },
+  {
     "path": "posts/2022-02-27-stringr/",
     "title": "Operate string with stringr",
     "description": "stringr 패키지로 문자를 조작하는 방법을 숙지합니다.",

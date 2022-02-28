@@ -7,7 +7,19 @@
     <description>Dataholic
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sun, 27 Feb 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 28 Feb 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Wrangle factor with forcats</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-02-28-forcats</link>
+      <description>forcats 패키지로 범주형 데이터를 조작합니다.</description>
+      <category>Tidyverse</category>
+      <category>forcats</category>
+      <category>manipulate data</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-02-28-forcats</guid>
+      <pubDate>Mon, 28 Feb 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-02-28-forcats/img/forcats.png" medium="image" type="image/png" width="736" height="853"/>
+    </item>
     <item>
       <title>Operate string with stringr</title>
       <dc:creator>유충현</dc:creator>
