@@ -132,7 +132,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["img/stringr.png"]}
+  {"type":"character","attributes":{},"value":["2022-02-27-stringr_files/anchor-4.2.2/anchor.min.js","2022-02-27-stringr_files/bowser-1.9.3/bowser.min.js","2022-02-27-stringr_files/distill-2.2.21/template.v2.js","2022-02-27-stringr_files/header-attrs-2.8/header-attrs.js","2022-02-27-stringr_files/jquery-1.11.3/jquery.min.js","2022-02-27-stringr_files/panelset-0.2.5.9000/panelset.css","2022-02-27-stringr_files/panelset-0.2.5.9000/panelset.js","2022-02-27-stringr_files/popper-2.6.0/popper.min.js","2022-02-27-stringr_files/tippy-6.2.7/tippy-bundle.umd.min.js","2022-02-27-stringr_files/tippy-6.2.7/tippy-light-border.css","2022-02-27-stringr_files/tippy-6.2.7/tippy.css","2022-02-27-stringr_files/tippy-6.2.7/tippy.umd.min.js","2022-02-27-stringr_files/webcomponents-2.0.0/webcomponents.js","img/stringr.png"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2630,6 +2630,13 @@ d-appendix d-footnote-list a.footnote-backlink {
 <h2 id="대표함수-목록">대표함수 목록</h2>
 <p>stringr 패키지의 대표적인 함수는 “str_”로 시작하게 작명되었습니다. 다음의 함수들이 대표적인 함수들입니다. 함수 이름을 통해서 개별 함수들의 기능을 유출할 수 있습니다. 도움말을 보면 완벽하게 이해할 수 있겠죠?</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://stringr.tidyverse.org'>stringr</a></span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/ls.html'>ls</a></span><span class='op'>(</span>pos <span class='op'>=</span> <span class='st'>"package:stringr"</span>, pattern <span class='op'>=</span> <span class='st'>"^str_"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_subset.html'>str_subset</a></span><span class='op'>(</span><span class='st'>"&lt;"</span>, negate <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code> [1] &quot;str_c&quot;           &quot;str_conv&quot;        &quot;str_count&quot;      
  [4] &quot;str_detect&quot;      &quot;str_dup&quot;         &quot;str_ends&quot;       
  [7] &quot;str_extract&quot;     &quot;str_extract_all&quot; &quot;str_flatten&quot;    
@@ -2903,79 +2910,223 @@ d-appendix d-footnote-list a.footnote-backlink {
 <h2 id="문자열-포맷-바꾸기">문자열 포맷 바꾸기</h2>
 <p>한글에서는 필요하지 않는 기능이나, 영문에서는 유용한 기능입니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>dog</span> <span class='op'>&lt;-</span> <span class='st'>"The quick brown dog"</span>
+<span class='fu'><a href='https://stringr.tidyverse.org/reference/case.html'>str_to_upper</a></span><span class='op'>(</span><span class='va'>dog</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;THE QUICK BROWN DOG&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/case.html'>str_to_lower</a></span><span class='op'>(</span><span class='va'>dog</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;the quick brown dog&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/case.html'>str_to_title</a></span><span class='op'>(</span><span class='va'>dog</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;The Quick Brown Dog&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/case.html'>str_to_sentence</a></span><span class='op'>(</span><span class='st'>"the quick brown dog"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;The quick brown dog&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>mountain</span> <span class='op'>&lt;-</span> <span class='st'>"동해물과 백두산이 마르고 닳도록"</span>
+<span class='fu'><a href='https://stringr.tidyverse.org/reference/case.html'>str_to_upper</a></span><span class='op'>(</span><span class='va'>mountain</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;동해물과 백두산이 마르고 닳도록&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/case.html'>str_to_lower</a></span><span class='op'>(</span><span class='va'>mountain</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;동해물과 백두산이 마르고 닳도록&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/case.html'>str_to_title</a></span><span class='op'>(</span><span class='va'>mountain</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;동해물과 백두산이 마르고 닳도록&quot;</code></pre>
 </div>
 <h2 id="문자열-정리하기">문자열 정리하기</h2>
 <h3 id="화이트-스페이스-제거">화이트 스페이스 제거</h3>
 <p>문자열 앞 뒤에 있는 불필요한 공백 등을 제거할 때 유용합니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>mountain</span> <span class='op'>&lt;-</span> <span class='st'>"  동해물과 백두산이 마르고 닳도록"</span>
+<span class='va'>mountain2</span> <span class='op'>&lt;-</span> <span class='st'>"\n\n동해물과 백두산이 마르고 닳도록\n\n"</span>
+
+<span class='fu'><a href='https://stringr.tidyverse.org/reference/str_trim.html'>str_trim</a></span><span class='op'>(</span><span class='va'>mountain</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;동해물과 백두산이 마르고 닳도록&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_trim.html'>str_trim</a></span><span class='op'>(</span><span class='va'>mountain2</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;동해물과 백두산이 마르고 닳도록&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_trim.html'>str_squish</a></span><span class='op'>(</span><span class='va'>mountain</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;동해물과 백두산이 마르고 닳도록&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_trim.html'>str_squish</a></span><span class='op'>(</span><span class='va'>mountain2</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;동해물과 백두산이 마르고 닳도록&quot;</code></pre>
 </div>
 <h3 id="공백-채우기">공백 채우기</h3>
 <p>문장의 길이를 맞추기 위해서 문자열 앞 뒤에 공백을 채웁니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_pad.html'>str_pad</a></span><span class='op'>(</span><span class='st'>"뚜벅뚜벅 걷다가 뒤돌아"</span>, <span class='fl'>25</span>, <span class='st'>"left"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;   뚜벅뚜벅 걷다가 뒤돌아&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_pad.html'>str_pad</a></span><span class='op'>(</span><span class='st'>"뚜벅뚜벅 걷다가 뒤돌아"</span>, <span class='fl'>25</span>, <span class='st'>"right"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;뚜벅뚜벅 걷다가 뒤돌아   &quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_pad.html'>str_pad</a></span><span class='op'>(</span><span class='st'>"뚜벅뚜벅 걷다가 뒤돌아"</span>, <span class='fl'>25</span>, <span class='st'>"both"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot; 뚜벅뚜벅 걷다가 뒤돌아  &quot;</code></pre>
 </div>
 <h3 id="줄바꿈-처리">줄바꿈 처리</h3>
 <p>문장의 길이를 맞추기 위해서 정해진 자리수에서 개행합니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_wrap.html'>str_wrap</a></span> <span class='op'>(</span><span class='st'>"뚜벅뚜벅 걷다가 뒤돌아"</span>, <span class='fl'>8</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;뚜벅뚜벅\n걷다가\n뒤돌아&quot;</code></pre>
 </div>
 <h3 id="지정-길이로-변경">지정 길이로 변경</h3>
 <p>문자열의 길이를 맞추기 위해서 길이가 넘쳐나는 문자열을 줄여줍니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_trunc.html'>str_trunc</a></span> <span class='op'>(</span><span class='st'>"뚜벅뚜벅 걷다가 뒤돌아"</span>, <span class='fl'>10</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;뚜벅뚜벅 걷다...&quot;</code></pre>
 </div>
 <h2 id="문자열-길이-관련-처리">문자열 길이 관련 처리</h2>
 <h3 id="글자수-계산">글자수 계산</h3>
 <p>문자열의 길이를 계산합니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>star</span> <span class='op'>&lt;-</span> <span class='st'>"  별 하나에 추억과 별 하나에 사랑과"</span>
+<span class='va'>star2</span> <span class='op'>&lt;-</span> <span class='st'>"\n\n별 하나에 추억과\n\n별 하나에 사랑과"</span>
+
+<span class='fu'><a href='https://stringr.tidyverse.org/reference/str_length.html'>str_length</a></span><span class='op'>(</span><span class='va'>star</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] 21</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_length.html'>str_length</a></span><span class='op'>(</span><span class='va'>star2</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] 22</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_count.html'>str_count</a></span><span class='op'>(</span><span class='va'>star</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] 21</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_count.html'>str_count</a></span><span class='op'>(</span><span class='va'>star2</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] 22</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_count.html'>str_count</a></span><span class='op'>(</span><span class='va'>star</span>, <span class='st'>"별"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] 2</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_count.html'>str_count</a></span><span class='op'>(</span><span class='va'>star2</span>, <span class='st'>"\n"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] 4</code></pre>
 </div>
 <h2 id="문자열-정렬과-순서">문자열 정렬과 순서</h2>
 <h3 id="문자열-정렬과-순서-1">문자열 정렬과 순서</h3>
 <p>문자열을 정렬하거나, 사전적 순서를 계산합니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>city</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"서울"</span>, <span class='st'>"춘천"</span>, <span class='st'>"군산"</span>, <span class='st'>"제주"</span>, <span class='st'>"경주"</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://stringr.tidyverse.org/reference/str_order.html'>str_order</a></span><span class='op'>(</span><span class='va'>city</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] 5 3 1 4 2</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_order.html'>str_sort</a></span><span class='op'>(</span><span class='va'>city</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;경주&quot; &quot;군산&quot; &quot;서울&quot; &quot;제주&quot; &quot;춘천&quot;</code></pre>
 </div>
 <h2 id="문자열-결합">문자열 결합</h2>
 <h3 id="문자열-결합-1">문자열 결합</h3>
 <p>여러 문자열을 하나로 결합합니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>city</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"서울"</span>, <span class='st'>"춘천"</span>, <span class='st'>"군산"</span>, <span class='st'>"제주"</span>, <span class='st'>"경주"</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://stringr.tidyverse.org/reference/str_c.html'>str_c</a></span><span class='op'>(</span><span class='st'>"도시: "</span>, <span class='va'>city</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;도시: 서울&quot; &quot;도시: 춘천&quot; &quot;도시: 군산&quot; &quot;도시: 제주&quot; &quot;도시: 경주&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_flatten.html'>str_flatten</a></span><span class='op'>(</span><span class='va'>city</span>, <span class='st'>"-"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;서울-춘천-군산-제주-경주&quot;</code></pre>
 </div>
 <h3 id="파라미터-이용-문자열-결합">파라미터 이용 문자열 결합</h3>
 <p>문자열을 변수들의 값을 동적으로 받아서 꾸며줍니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>Phi</span> <span class='op'>&lt;-</span> <span class='st'>"파이"</span>
+
+<span class='fu'><a href='https://stringr.tidyverse.org/reference/str_glue.html'>str_glue</a></span><span class='op'>(</span><span class='st'>"원주율을 {Phi}라고 하며, 대략 {pi}이다."</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>원주율을 파이라고 하며, 대략 3.14159265358979이다.</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_interp.html'>str_interp</a></span><span class='op'>(</span><span class='st'>"원주율을 {Phi}라고 하며, 대략 $[.2f]{pi}이다."</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;원주율을 {Phi}라고 하며, 대략 3.14이다.&quot;</code></pre>
 </div>
 <h2 id="문자열-자르기">문자열 자르기</h2>
 <h3 id="문자열-패턴-분리">문자열 패턴 분리</h3>
 <p>문자열의 특정 패턴을 구분자로하여 나눠줍니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>star3</span> <span class='op'>&lt;-</span> <span class='st'>" 별 하나에 추억과 별 하나에 사랑과 별 하나에 쓸쓸함과"</span>
+
+
+<span class='fu'><a href='https://stringr.tidyverse.org/reference/str_split.html'>str_split</a></span><span class='op'>(</span><span class='va'>star3</span>, <span class='st'>"과[[:space:]]*"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[[1]]
 [1] &quot; 별 하나에 추억&quot;  &quot;별 하나에 사랑&quot;   &quot;별 하나에 쓸쓸함&quot;
 [4] &quot;&quot;                </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_split.html'>str_split</a></span><span class='op'>(</span><span class='va'>star3</span>, <span class='st'>"과[[:space:]]*"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_subset.html'>str_subset</a></span><span class='op'>(</span><span class='st'>"별"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot; 별 하나에 추억&quot;  &quot;별 하나에 사랑&quot;   &quot;별 하나에 쓸쓸함&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 2개로 나눔</span>
+<span class='fu'><a href='https://stringr.tidyverse.org/reference/str_split.html'>str_split_fixed</a></span><span class='op'>(</span><span class='va'>star3</span>, <span class='st'>"과[[:space:]]*"</span>, n <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>     [,1]              [,2]                                 
 [1,] &quot; 별 하나에 추억&quot; &quot;별 하나에 사랑과 별 하나에 쓸쓸함과&quot;</code></pre>
 </div>
@@ -2983,31 +3134,75 @@ d-appendix d-footnote-list a.footnote-backlink {
 <h3 id="문자열-패턴-매치-여부">문자열 패턴 매치 여부</h3>
 <p>매턴 매치되는 문자열을 논리값으로 알려줍니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>fruit</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"apple"</span>, <span class='st'>"banana"</span>, <span class='st'>"pear"</span>, <span class='st'>"pinapple"</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://stringr.tidyverse.org/reference/str_detect.html'>str_detect</a></span><span class='op'>(</span><span class='va'>fruit</span>, <span class='st'>"a"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] TRUE TRUE TRUE TRUE</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_detect.html'>str_detect</a></span><span class='op'>(</span><span class='va'>fruit</span>, <span class='st'>"a$"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] FALSE  TRUE FALSE FALSE</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_starts.html'>str_starts</a></span><span class='op'>(</span><span class='va'>fruit</span>, <span class='st'>"p"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] FALSE FALSE  TRUE  TRUE</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_starts.html'>str_starts</a></span><span class='op'>(</span><span class='va'>fruit</span>, <span class='st'>"p"</span>, negate <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1]  TRUE  TRUE FALSE FALSE</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_starts.html'>str_ends</a></span><span class='op'>(</span><span class='va'>fruit</span>, <span class='st'>"e"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1]  TRUE FALSE FALSE  TRUE</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_starts.html'>str_ends</a></span><span class='op'>(</span><span class='va'>fruit</span>, <span class='st'>"e"</span>, negate <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] FALSE  TRUE  TRUE FALSE</code></pre>
 </div>
 <h3 id="문자열-패턴-매치-위치">문자열 패턴 매치 위치</h3>
 <p>매턴 매치되는 문자열이 몇번째 위치인지 정수로로 알려줍니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>fruit</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"apple"</span>, <span class='st'>"banana"</span>, <span class='st'>"pear"</span>, <span class='st'>"pinapple"</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://stringr.tidyverse.org/reference/str_locate.html'>str_locate</a></span><span class='op'>(</span><span class='va'>fruit</span>, <span class='st'>"$"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>     start end
 [1,]     6   5
 [2,]     7   6
 [3,]     5   4
 [4,]     9   8</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_locate.html'>str_locate</a></span><span class='op'>(</span><span class='va'>fruit</span>, <span class='st'>"a"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>     start end
 [1,]     1   1
 [2,]     2   2
 [3,]     3   3
 [4,]     4   4</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_locate.html'>str_locate</a></span><span class='op'>(</span><span class='va'>fruit</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"p"</span>, <span class='st'>"p"</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>     start end
 [1,]     1   1
 [2,]     1   1
 [3,]     1   1
 [4,]     1   1</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_locate.html'>str_locate_all</a></span><span class='op'>(</span><span class='va'>fruit</span>, <span class='st'>"a"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[[1]]
      start end
 [1,]     1   1
@@ -3025,6 +3220,10 @@ d-appendix d-footnote-list a.footnote-backlink {
 [[4]]
      start end
 [1,]     4   4</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_locate.html'>str_locate_all</a></span><span class='op'>(</span><span class='va'>fruit</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"p"</span>, <span class='st'>"p"</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[[1]]
      start end
 [1,]     1   1
@@ -3046,12 +3245,42 @@ d-appendix d-footnote-list a.footnote-backlink {
 <h3 id="문자열-패턴-매치-추출">문자열 패턴 매치 추출</h3>
 <p>문자열에서 패턴 매치된 값들을 보여줍니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>fruit</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"apple"</span>, <span class='st'>"banana"</span>, <span class='st'>"pear"</span>, <span class='st'>"pinapple"</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://stringr.tidyverse.org/reference/str_subset.html'>str_subset</a></span><span class='op'>(</span><span class='va'>fruit</span>, <span class='st'>"^a"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;apple&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_subset.html'>str_subset</a></span><span class='op'>(</span><span class='va'>fruit</span>, <span class='st'>"a$"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;banana&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_subset.html'>str_subset</a></span><span class='op'>(</span><span class='va'>fruit</span>, <span class='st'>"b"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;banana&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_subset.html'>str_subset</a></span><span class='op'>(</span><span class='va'>fruit</span>, <span class='st'>"[aeiou]"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;apple&quot;    &quot;banana&quot;   &quot;pear&quot;     &quot;pinapple&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_extract.html'>str_extract</a></span><span class='op'>(</span><span class='va'>fruit</span>, <span class='st'>"na"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] NA   &quot;na&quot; NA   &quot;na&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_extract.html'>str_extract</a></span><span class='op'>(</span><span class='va'>fruit</span>, <span class='st'>"^p"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] NA  NA  &quot;p&quot; &quot;p&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_extract.html'>str_extract_all</a></span><span class='op'>(</span><span class='va'>fruit</span>, <span class='st'>"na"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[[1]]
 character(0)
 
@@ -3063,6 +3292,10 @@ character(0)
 
 [[4]]
 [1] &quot;na&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_extract.html'>str_extract_all</a></span><span class='op'>(</span><span class='va'>fruit</span>, <span class='st'>"^p"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[[1]]
 character(0)
 
@@ -3074,11 +3307,19 @@ character(0)
 
 [[4]]
 [1] &quot;p&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_match.html'>str_match</a></span><span class='op'>(</span><span class='va'>fruit</span>, <span class='st'>"a"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>     [,1]
 [1,] &quot;a&quot; 
 [2,] &quot;a&quot; 
 [3,] &quot;a&quot; 
 [4,] &quot;a&quot; </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_match.html'>str_match_all</a></span><span class='op'>(</span><span class='va'>fruit</span>, <span class='st'>"a"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[[1]]
      [,1]
 [1,] &quot;a&quot; 
@@ -3100,15 +3341,43 @@ character(0)
 <h3 id="문자열-패턴-매치-제거">문자열 패턴 매치 제거</h3>
 <p>문자열에서 패턴 매치된 값들을 제거합니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>fruits</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"one apple"</span>, <span class='st'>"two pears"</span>, <span class='st'>"three bananas"</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://stringr.tidyverse.org/reference/str_remove.html'>str_remove</a></span><span class='op'>(</span><span class='va'>fruits</span>, <span class='st'>"[aeiou]"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;ne apple&quot;     &quot;tw pears&quot;     &quot;thre bananas&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_remove.html'>str_remove_all</a></span><span class='op'>(</span><span class='va'>fruits</span>, <span class='st'>"[aeiou]"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;n ppl&quot;    &quot;tw prs&quot;   &quot;thr bnns&quot;</code></pre>
 </div>
 <h3 id="문자열-패턴-매치-대체">문자열 패턴 매치 대체</h3>
 <p>문자열에서 패턴 매치된 값들을 다른 값으로 대체합니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>fruits</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"one apple"</span>, <span class='st'>"two pears"</span>, <span class='st'>"three bananas"</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='va'>fruits</span>, <span class='st'>"[aeiou]"</span>, <span class='st'>"-"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;-ne apple&quot;     &quot;tw- pears&quot;     &quot;thr-e bananas&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace_all</a></span><span class='op'>(</span><span class='va'>fruits</span>, <span class='st'>"[aeiou]"</span>, <span class='st'>"-"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;-n- -ppl-&quot;     &quot;tw- p--rs&quot;     &quot;thr-- b-n-n-s&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace_all</a></span><span class='op'>(</span><span class='va'>fruits</span>, <span class='st'>"[aeiou]"</span>, <span class='va'>toupper</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;OnE ApplE&quot;     &quot;twO pEArs&quot;     &quot;thrEE bAnAnAs&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace_all</a></span><span class='op'>(</span><span class='va'>fruits</span>, <span class='st'>"b"</span>, <span class='cn'>NA_character_</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;one apple&quot; &quot;two pears&quot; NA         </code></pre>
 </div>
 <div class="sourceCode" id="cb60"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>

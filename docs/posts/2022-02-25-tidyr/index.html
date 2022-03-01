@@ -101,14 +101,20 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <meta property="og:type" content="article"/>
 <meta property="og:description" content="tidyr 패키지로 데이터를 정형화하는 방법을 숙지합니다."/>
 <meta property="og:url" content="https://choonghyunryu.github.io/2022-02-25-tidyr/"/>
+<meta property="og:image" content="https://choonghyunryu.github.io/posts/2022-02-25-tidyr/img/tidyr.png"/>
+<meta property="og:image:width" content="736"/>
+<meta property="og:image:height" content="850"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:site_name" content="Dataholic"/>
 
 <!--  https://dev.twitter.com/cards/types/summary -->
-<meta property="twitter:card" content="summary"/>
+<meta property="twitter:card" content="summary_large_image"/>
 <meta property="twitter:title" content="Dataholic: Wrangle data with tidyr"/>
 <meta property="twitter:description" content="tidyr 패키지로 데이터를 정형화하는 방법을 숙지합니다."/>
 <meta property="twitter:url" content="https://choonghyunryu.github.io/2022-02-25-tidyr/"/>
+<meta property="twitter:image" content="https://choonghyunryu.github.io/posts/2022-02-25-tidyr/img/tidyr.png"/>
+<meta property="twitter:image:width" content="736"/>
+<meta property="twitter:image:height" content="850"/>
 
 <!--  https://scholar.google.com/intl/en/scholar/inclusion.html#indexing -->
 <meta name="citation_title" content="Dataholic: Wrangle data with tidyr"/>
@@ -2652,6 +2658,13 @@ d-appendix d-footnote-list a.footnote-backlink {
 <h2 id="데이터-살펴보기">데이터 살펴보기</h2>
 <h3 id="who">who</h3>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyr.tidyverse.org'>tidyr</a></span><span class='op'>)</span>
+
+<span class='va'>who</span>
+</code></pre>
+</div>
 <pre><code># A tibble: 7,240 x 60
    country     iso2  iso3   year new_sp_m014 new_sp_m1524 new_sp_m2534
    &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt; &lt;int&gt;       &lt;int&gt;        &lt;int&gt;        &lt;int&gt;
@@ -2684,6 +2697,12 @@ d-appendix d-footnote-list a.footnote-backlink {
 #   newrel_f014 &lt;int&gt;, newrel_f1524 &lt;int&gt;, newrel_f2534 &lt;int&gt;,
 #   newrel_f3544 &lt;int&gt;, newrel_f4554 &lt;int&gt;, newrel_f5564 &lt;int&gt;,
 #   newrel_f65 &lt;int&gt;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 한국의 인구통계</span>
+<span class='va'>who</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>country</span> <span class='op'>%in%</span> <span class='st'>"Republic of Korea"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code># A tibble: 34 x 60
    country     iso2  iso3   year new_sp_m014 new_sp_m1524 new_sp_m2534
    &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt; &lt;int&gt;       &lt;int&gt;        &lt;int&gt;        &lt;int&gt;
@@ -2719,6 +2738,10 @@ d-appendix d-footnote-list a.footnote-backlink {
 </div>
 <h3 id="population">population</h3>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>population</span>
+</code></pre>
+</div>
 <pre><code># A tibble: 4,060 x 3
    country      year population
    &lt;chr&gt;       &lt;int&gt;      &lt;int&gt;
@@ -2733,6 +2756,12 @@ d-appendix d-footnote-list a.footnote-backlink {
  9 Afghanistan  2003   23116142
 10 Afghanistan  2004   24018682
 # … with 4,050 more rows</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 한국의 인구통계</span>
+<span class='va'>population</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>country</span> <span class='op'>%in%</span> <span class='st'>"Republic of Korea"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code># A tibble: 19 x 3
    country            year population
    &lt;chr&gt;             &lt;int&gt;      &lt;int&gt;
@@ -2760,6 +2789,10 @@ d-appendix d-footnote-list a.footnote-backlink {
 <p>who 데이터 프레임의 변수 이름이 포맷에 벗어난 것이 있습니다. 이것을 바로 잡고 시작합니다.</p>
 <p>앞에서 변수에 대한 설명에서 new_sp_m014 - new_rel_f65의 첫번째 코드는 진단방법(method of diagnosis)입니다. 그런데 진단방법의 rel의 경우에는 다른 변수 이름과는 달리 “new”라는 접두어와 언다라인(_)으로 분리되지 않습니다. 그래서 일관성을 유지하기 위해서 언다라인을 붙입니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>who</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code> [1] &quot;country&quot;      &quot;iso2&quot;         &quot;iso3&quot;         &quot;year&quot;        
  [5] &quot;new_sp_m014&quot;  &quot;new_sp_m1524&quot; &quot;new_sp_m2534&quot; &quot;new_sp_m3544&quot;
  [9] &quot;new_sp_m4554&quot; &quot;new_sp_m5564&quot; &quot;new_sp_m65&quot;   &quot;new_sp_f014&quot; 
@@ -2775,6 +2808,13 @@ d-appendix d-footnote-list a.footnote-backlink {
 [49] &quot;newrel_m2534&quot; &quot;newrel_m3544&quot; &quot;newrel_m4554&quot; &quot;newrel_m5564&quot;
 [53] &quot;newrel_m65&quot;   &quot;newrel_f014&quot;  &quot;newrel_f1524&quot; &quot;newrel_f2534&quot;
 [57] &quot;newrel_f3544&quot; &quot;newrel_f4554&quot; &quot;newrel_f5564&quot; &quot;newrel_f65&quot;  </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>who</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>who</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='st'>"newrel"</span>, <span class='st'>"new_rel"</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>who</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code> [1] &quot;country&quot;       &quot;iso2&quot;          &quot;iso3&quot;          &quot;year&quot;         
  [5] &quot;new_sp_m014&quot;   &quot;new_sp_m1524&quot;  &quot;new_sp_m2534&quot;  &quot;new_sp_m3544&quot; 
  [9] &quot;new_sp_m4554&quot;  &quot;new_sp_m5564&quot;  &quot;new_sp_m65&quot;    &quot;new_sp_f014&quot;  
@@ -2820,6 +2860,13 @@ d-appendix d-footnote-list a.footnote-backlink {
 <h3 class="panel-name">dplyr 솔루션</h3>
 <p><code>rename_if()</code> 함수는 조건을 만족하는 변수들의 변수 이름을 변경하는 dplyr 패키지의 함수입니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 1.</span>
+<span class='va'>population</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>country</span> <span class='op'>%in%</span> <span class='st'>"Republic of Korea"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>year</span> <span class='op'>&gt;=</span> <span class='fl'>2010</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code># A tibble: 4 x 3
   country            year population
   &lt;chr&gt;             &lt;int&gt;      &lt;int&gt;
@@ -2827,10 +2874,29 @@ d-appendix d-footnote-list a.footnote-backlink {
 2 Republic of Korea  2011   48732640
 3 Republic of Korea  2012   49002683
 4 Republic of Korea  2013   49262698</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 2.</span>
+<span class='va'>population_wide</span> <span class='op'>&lt;-</span> <span class='va'>population</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>country</span> <span class='op'>%in%</span> <span class='st'>"Republic of Korea"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>year</span> <span class='op'>&gt;=</span> <span class='fl'>2010</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/pivot_wider.html'>pivot_wider</a></span><span class='op'>(</span>names_from <span class='op'>=</span> <span class='st'>"year"</span>,
+              values_from <span class='op'>=</span> <span class='st'>"population"</span><span class='op'>)</span>
+
+<span class='va'>population_wide</span>
+</code></pre>
+</div>
 <pre><code># A tibble: 1 x 5
   country             `2010`   `2011`   `2012`   `2013`
   &lt;chr&gt;                &lt;int&gt;    &lt;int&gt;    &lt;int&gt;    &lt;int&gt;
 1 Republic of Korea 48453931 48732640 49002683 49262698</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 3.</span>
+<span class='va'>population_wide2</span> <span class='op'>&lt;-</span> <span class='va'>population_wide</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select_all.html'>rename_if</a></span><span class='op'>(</span><span class='va'>is.integer</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"y"</span>, <span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>population_wide2</span>
+</code></pre>
+</div>
 <pre><code># A tibble: 1 x 5
   country              y2010    y2011    y2012    y2013
   &lt;chr&gt;                &lt;int&gt;    &lt;int&gt;    &lt;int&gt;    &lt;int&gt;
@@ -2858,6 +2924,16 @@ d-appendix d-footnote-list a.footnote-backlink {
 <h3 class="panel-name">dplyr 솔루션</h3>
 <p><code>population_long()</code> 함수는 <code>pivot_wider()</code> 함수의 역함수입니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 1.</span>
+<span class='va'>population_long</span> <span class='op'>&lt;-</span> <span class='va'>population_wide2</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/pivot_longer.html'>pivot_longer</a></span><span class='op'>(</span><span class='va'>y2010</span><span class='op'>:</span><span class='va'>y2013</span>, 
+               names_to <span class='op'>=</span> <span class='st'>"year"</span>,
+               values_to <span class='op'>=</span> <span class='st'>"population"</span><span class='op'>)</span>
+
+<span class='va'>population_long</span>
+</code></pre>
+</div>
 <pre><code># A tibble: 4 x 3
   country           year  population
   &lt;chr&gt;             &lt;chr&gt;      &lt;int&gt;
@@ -2865,6 +2941,15 @@ d-appendix d-footnote-list a.footnote-backlink {
 2 Republic of Korea y2011   48732640
 3 Republic of Korea y2012   49002683
 4 Republic of Korea y2013   49262698</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 2.</span>
+<span class='va'>population_long2</span> <span class='op'>&lt;-</span> <span class='va'>population_long</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>year <span class='op'>=</span> <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='va'>year</span>, <span class='st'>"y"</span>, <span class='st'>""</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+           <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>population_long2</span>
+</code></pre>
+</div>
 <pre><code># A tibble: 4 x 3
   country            year population
   &lt;chr&gt;             &lt;int&gt;      &lt;int&gt;
@@ -2927,6 +3012,19 @@ d-appendix d-footnote-list a.footnote-backlink {
 <p>stringr::str_detect(group_code, "_m“)은”_m"이 포함될 경우에 TRUE를 반환합니다.</p>
 <p>정규표현식 “[^[:digit:]]”은 숫자를 제외한 것과 패턴매칭됩니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 1.1</span>
+<span class='va'>ep_long</span> <span class='op'>&lt;-</span> <span class='va'>who</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>country</span> <span class='op'>%in%</span> <span class='st'>"Republic of Korea"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>year</span> <span class='op'>%in%</span> <span class='st'>"2010"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>new_ep_m014</span><span class='op'>:</span><span class='va'>new_ep_f65</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/pivot_longer.html'>pivot_longer</a></span><span class='op'>(</span><span class='va'>new_ep_m014</span><span class='op'>:</span><span class='va'>new_ep_f65</span>, 
+               names_to <span class='op'>=</span> <span class='st'>"group_code"</span>,
+               values_to <span class='op'>=</span> <span class='st'>"cases"</span><span class='op'>)</span>
+
+<span class='va'>ep_long</span>
+</code></pre>
+</div>
 <pre><code># A tibble: 14 x 2
    group_code   cases
    &lt;chr&gt;        &lt;int&gt;
@@ -2944,10 +3042,35 @@ d-appendix d-footnote-list a.footnote-backlink {
 12 new_ep_f4554   780
 13 new_ep_f5564   584
 14 new_ep_f65    1352</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 1.2</span>
+<span class='va'>ep_long</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='op'>(</span>total_cases <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>cases</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code># A tibble: 1 x 1
   total_cases
         &lt;int&gt;
 1        8795</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 2.1</span>
+<span class='va'>ep_wide</span> <span class='op'>&lt;-</span> <span class='va'>ep_long</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>gender <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span> <span class='op'>(</span>
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_detect.html'>str_detect</a></span><span class='op'>(</span><span class='va'>group_code</span>, <span class='st'>"_m"</span><span class='op'>)</span> <span class='op'>~</span> <span class='st'>"male"</span>,
+    <span class='op'>!</span><span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_detect.html'>str_detect</a></span><span class='op'>(</span><span class='va'>group_code</span>, <span class='st'>"_m"</span><span class='op'>)</span> <span class='op'>~</span> <span class='st'>"female"</span><span class='op'>)</span>
+  <span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>age_group <span class='op'>=</span> <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_remove.html'>str_remove_all</a></span><span class='op'>(</span><span class='va'>group_code</span>, <span class='st'>"[^[:digit:]]"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>age_group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='st'>"age"</span>, <span class='va'>age_group</span>, sep <span class='op'>=</span> <span class='st'>"_"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>group_code</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/pivot_wider.html'>pivot_wider</a></span><span class='op'>(</span>names_from <span class='op'>=</span> <span class='st'>"gender"</span>,
+              values_from <span class='op'>=</span> <span class='st'>"cases"</span><span class='op'>)</span>
+
+<span class='co'># 2.2</span>
+<span class='va'>ep_wide</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>total <span class='op'>=</span> <span class='va'>male</span> <span class='op'>+</span> <span class='va'>female</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>percent <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='va'>total</span> <span class='op'>/</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>total</span><span class='op'>)</span> <span class='op'>*</span> <span class='fl'>100</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code># A tibble: 7 x 5
   age_group  male female total percent
   &lt;chr&gt;     &lt;int&gt;  &lt;int&gt; &lt;int&gt;   &lt;dbl&gt;

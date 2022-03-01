@@ -102,8 +102,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <meta property="og:description" content="forcats 패키지로 범주형 데이터를 조작합니다."/>
 <meta property="og:url" content="https://choonghyunryu.github.io/2022-02-27-forcats/"/>
 <meta property="og:image" content="https://choonghyunryu.github.io/posts/2022-02-28-forcats/img/forcats.png"/>
-<meta property="og:image:width" content="736"/>
-<meta property="og:image:height" content="853"/>
+<meta property="og:image:width" content="696"/>
+<meta property="og:image:height" content="807"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:site_name" content="Dataholic"/>
 
@@ -113,8 +113,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <meta property="twitter:description" content="forcats 패키지로 범주형 데이터를 조작합니다."/>
 <meta property="twitter:url" content="https://choonghyunryu.github.io/2022-02-27-forcats/"/>
 <meta property="twitter:image" content="https://choonghyunryu.github.io/posts/2022-02-28-forcats/img/forcats.png"/>
-<meta property="twitter:image:width" content="736"/>
-<meta property="twitter:image:height" content="853"/>
+<meta property="twitter:image:width" content="696"/>
+<meta property="twitter:image:height" content="807"/>
 
 <!--  https://scholar.google.com/intl/en/scholar/inclusion.html#indexing -->
 <meta name="citation_title" content="Dataholic: Wrangle factor with forcats"/>
@@ -132,7 +132,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["2022-02-28-forcats_files/figure-html5/unnamed-chunk-10-1.png","2022-02-28-forcats_files/figure-html5/unnamed-chunk-3-1.png","2022-02-28-forcats_files/figure-html5/unnamed-chunk-3-2.png","2022-02-28-forcats_files/figure-html5/unnamed-chunk-8-1.png","2022-02-28-forcats_files/figure-html5/unnamed-chunk-9-1.png","img/forcats.png"]}
+  {"type":"character","attributes":{},"value":["2022-02-28-forcats_files/anchor-4.2.2/anchor.min.js","2022-02-28-forcats_files/bowser-1.9.3/bowser.min.js","2022-02-28-forcats_files/distill-2.2.21/template.v2.js","2022-02-28-forcats_files/figure-html5/unnamed-chunk-10-1.png","2022-02-28-forcats_files/figure-html5/unnamed-chunk-3-1.png","2022-02-28-forcats_files/figure-html5/unnamed-chunk-3-2.png","2022-02-28-forcats_files/figure-html5/unnamed-chunk-8-1.png","2022-02-28-forcats_files/figure-html5/unnamed-chunk-9-1.png","2022-02-28-forcats_files/font-awesome-5.13.0/css/all.css","2022-02-28-forcats_files/font-awesome-5.13.0/css/all.min.css","2022-02-28-forcats_files/font-awesome-5.13.0/css/v4-shims.css","2022-02-28-forcats_files/font-awesome-5.13.0/css/v4-shims.min.css","2022-02-28-forcats_files/font-awesome-5.13.0/webfonts/fa-brands-400.eot","2022-02-28-forcats_files/font-awesome-5.13.0/webfonts/fa-brands-400.svg","2022-02-28-forcats_files/font-awesome-5.13.0/webfonts/fa-brands-400.ttf","2022-02-28-forcats_files/font-awesome-5.13.0/webfonts/fa-brands-400.woff","2022-02-28-forcats_files/font-awesome-5.13.0/webfonts/fa-brands-400.woff2","2022-02-28-forcats_files/font-awesome-5.13.0/webfonts/fa-regular-400.eot","2022-02-28-forcats_files/font-awesome-5.13.0/webfonts/fa-regular-400.svg","2022-02-28-forcats_files/font-awesome-5.13.0/webfonts/fa-regular-400.ttf","2022-02-28-forcats_files/font-awesome-5.13.0/webfonts/fa-regular-400.woff","2022-02-28-forcats_files/font-awesome-5.13.0/webfonts/fa-regular-400.woff2","2022-02-28-forcats_files/font-awesome-5.13.0/webfonts/fa-solid-900.eot","2022-02-28-forcats_files/font-awesome-5.13.0/webfonts/fa-solid-900.svg","2022-02-28-forcats_files/font-awesome-5.13.0/webfonts/fa-solid-900.ttf","2022-02-28-forcats_files/font-awesome-5.13.0/webfonts/fa-solid-900.woff","2022-02-28-forcats_files/font-awesome-5.13.0/webfonts/fa-solid-900.woff2","2022-02-28-forcats_files/header-attrs-2.8/header-attrs.js","2022-02-28-forcats_files/jquery-1.11.3/jquery.min.js","2022-02-28-forcats_files/panelset-0.2.5.9000/panelset.css","2022-02-28-forcats_files/panelset-0.2.5.9000/panelset.js","2022-02-28-forcats_files/popper-2.6.0/popper.min.js","2022-02-28-forcats_files/tippy-6.2.7/tippy-bundle.umd.min.js","2022-02-28-forcats_files/tippy-6.2.7/tippy-light-border.css","2022-02-28-forcats_files/tippy-6.2.7/tippy.css","2022-02-28-forcats_files/tippy-6.2.7/tippy.umd.min.js","2022-02-28-forcats_files/webcomponents-2.0.0/webcomponents.js","img/forcats.png"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2607,10 +2607,26 @@ forcats 패키지는 R에서 조작하는 것이 까다롭다는 factor의 조�
 <h1 id="왜-factor인가">왜 factor인가?</h1>
 <p>성별을 나타내는 gender는 두 가지로 다음처럼 표현이 가능합니다. 어느 가족의 성별 데이터를 가정합니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>family</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"father"</span>, <span class='st'>"mother"</span>, <span class='st'>"child"</span>, <span class='st'>"child"</span><span class='op'>)</span>
+<span class='va'>gender</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"male"</span>, <span class='st'>"female"</span>, <span class='st'>"male"</span>, <span class='st'>"male"</span><span class='op'>)</span>
+<span class='va'>age</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>52</span>, <span class='fl'>49</span>, <span class='fl'>22</span>, <span class='fl'>18</span><span class='op'>)</span>
+
+<span class='va'>gender</span>
+</code></pre>
+</div>
 <pre><code>[1] &quot;male&quot;   &quot;female&quot; &quot;male&quot;   &quot;male&quot;  </code></pre>
 </div>
 <p>그런데, 어떤 R 사용자는 다음과 같이 데이터를 코딩합니다. 범주형 데이터를 문자인 character가 아닌 factor로 코딩하는 겁니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>family</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"father"</span>, <span class='st'>"mother"</span>, <span class='st'>"child"</span>, <span class='st'>"child"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>gender</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"male"</span>, <span class='st'>"female"</span>, <span class='st'>"male"</span>, <span class='st'>"male"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>age</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>52</span>, <span class='fl'>49</span>, <span class='fl'>22</span>, <span class='fl'>18</span><span class='op'>)</span>
+
+<span class='va'>gender</span>
+</code></pre>
+</div>
 <pre><code>[1] male   female male   male  
 Levels: female male</code></pre>
 </div>
@@ -2621,9 +2637,22 @@ Levels: female male</code></pre>
 <p><br></p>
 <p>R은 factor에 대해서 많은 유용한 기능을 제공하고 있습니다. 예를 들면, 가족의 성별의 구성을 시각화할 경우에 아래처럼 그저 <code>plot()</code> 함수만 호출하면 됩니다. <code>summary()</code> 함수는 알아서 돗수분포표를 계산해줍니다. character는 지원하지 않는 기능입니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>gender</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>female   male 
      1      3 </code></pre>
-<p><img src="2022-02-28-forcats_files/figure-html5/unnamed-chunk-3-1.png" width="576" style="display: block; margin: auto;" /><img src="2022-02-28-forcats_files/figure-html5/unnamed-chunk-3-2.png" width="576" style="display: block; margin: auto;" /></p>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>gender</span><span class='op'>)</span>
+</code></pre>
+</div>
+<img src="2022-02-28-forcats_files/figure-html5/unnamed-chunk-3-1.png" width="576" style="display: block; margin: auto;" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>family</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="2022-02-28-forcats_files/figure-html5/unnamed-chunk-3-2.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <h1 id="레벨-변경-함수">레벨 변경 함수</h1>
 <p>position factor에서의 “father”, “mother”, “child”를 레벨(levels)라 합니다. 쉽게 이야기하면 범주의 종류인 셈입니다. 여기서는 범주의 종류인 레벨을 변경할 때 사용하는 함수를 다룹니다.</p>
@@ -2658,8 +2687,19 @@ Levels: female male</code></pre>
 <p>가족을 나타내는 family의 레벨이 “father”, “mother”, “son”, “daughter”입니다. 이 영문 레벨을 한글 레벨로 고치고 싶습니다.</p>
 <p><code>fct_recode()</code> 함수는 레벨을 쉽게 재정의할 수 있습니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://forcats.tidyverse.org'>forcats</a></span><span class='op'>)</span>
+
+<span class='va'>family</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"father"</span>, <span class='st'>"mother"</span>, <span class='st'>"son"</span>, <span class='st'>"daughter"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>family</span>
+</code></pre>
+</div>
 <pre><code>[1] father   mother   son      daughter
 Levels: daughter father mother son</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://forcats.tidyverse.org/reference/fct_recode.html'>fct_recode</a></span><span class='op'>(</span><span class='va'>family</span>, 아빠 <span class='op'>=</span> <span class='st'>"father"</span>, 엄마 <span class='op'>=</span> <span class='st'>"mother"</span>, 자녀 <span class='op'>=</span> <span class='st'>"son"</span>, 자녀 <span class='op'>=</span> <span class='st'>"daughter"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] 아빠 엄마 자녀 자녀
 Levels: 자녀 아빠 엄마</code></pre>
 </div>
@@ -2690,10 +2730,27 @@ Levels: 자녀 아빠 엄마</code></pre>
 <h3 class="panel-name">purrr</h3>
 <p>다음은 변수를 minmax로 표준화하는 purrr 패키지 구문입니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>family</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"father"</span>, <span class='st'>"mother"</span>, <span class='st'>"son"</span>, <span class='st'>"daughter"</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># 1.1</span>
+<span class='fu'><a href='https://forcats.tidyverse.org/reference/fct_recode.html'>fct_recode</a></span><span class='op'>(</span><span class='va'>family</span>, child <span class='op'>=</span> <span class='st'>"son"</span>, child <span class='op'>=</span> <span class='st'>"daughter"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] father mother child  child 
 Levels: child father mother</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 1.2</span>
+<span class='fu'><a href='https://forcats.tidyverse.org/reference/fct_collapse.html'>fct_collapse</a></span><span class='op'>(</span><span class='va'>family</span>, child <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"son"</span>, <span class='st'>"daughter"</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] father mother child  child 
 Levels: child father mother</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 1.3</span>
+<span class='fu'><a href='https://forcats.tidyverse.org/reference/fct_other.html'>fct_other</a></span><span class='op'>(</span><span class='va'>family</span>, keep <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"father"</span>, <span class='st'>"mother"</span><span class='op'>)</span>, other_level <span class='op'>=</span> <span class='st'>"child"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] father mother child  child 
 Levels: father mother child</code></pre>
 </div>
@@ -2735,32 +2792,75 @@ Levels: father mother child</code></pre>
 <h2 id="fct_relevel">fct_relevel</h2>
 <p>앞의 예제에서 <code>fct_recode()</code>의 결과의 레벨 순서 “child”, “father”, “mother”은 알파벳 순서로 만들어진 것입니다. 이것을 <code>fct_relevel()</code> 함수를 이용해서 “father”, “mother”, “child”로 변경해 보겠습니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>family2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://forcats.tidyverse.org/reference/fct_recode.html'>fct_recode</a></span><span class='op'>(</span><span class='va'>family</span>, child <span class='op'>=</span> <span class='st'>"son"</span>, child <span class='op'>=</span> <span class='st'>"daughter"</span><span class='op'>)</span>
+<span class='va'>family2</span>
+</code></pre>
+</div>
 <pre><code>[1] father mother child  child 
 Levels: child father mother</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://forcats.tidyverse.org/reference/fct_relevel.html'>fct_relevel</a></span><span class='op'>(</span><span class='va'>family2</span>, <span class='st'>"father"</span>, <span class='st'>"mother"</span>, <span class='st'>"child"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] father mother child  child 
 Levels: father mother child</code></pre>
 </div>
 <h2 id="fct_rev">fct_rev</h2>
 <p><code>fct_rev()</code> 함수는 레벨의 순서를 역방향으로 바꿔주기 때문에, “child”, “father”, “mother” 순서가 “mother”, “father”, “child” 순서로 변경됩니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>family2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://forcats.tidyverse.org/reference/fct_recode.html'>fct_recode</a></span><span class='op'>(</span><span class='va'>family</span>, child <span class='op'>=</span> <span class='st'>"son"</span>, child <span class='op'>=</span> <span class='st'>"daughter"</span><span class='op'>)</span>
+<span class='va'>family2</span>
+</code></pre>
+</div>
 <pre><code>[1] father mother child  child 
 Levels: child father mother</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://forcats.tidyverse.org/reference/fct_rev.html'>fct_rev</a></span><span class='op'>(</span><span class='va'>family2</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] father mother child  child 
 Levels: mother father child</code></pre>
 </div>
 <h2 id="fct_infreq">fct_infreq</h2>
 <p>앞에서 plot(gender)로 그림 돗수분포 시각화는 돗수의 무관하게 출력되었습니다. 그런데, 이제는 돗수가 제일 큰 레벨이 왼쪽에 출력되도록 레벨의 순서를 변경하려 합니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>gender</span>
+</code></pre>
+</div>
 <pre><code>[1] male   female male   male  
 Levels: female male</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>gender2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://forcats.tidyverse.org/reference/fct_inorder.html'>fct_infreq</a></span><span class='op'>(</span><span class='va'>gender</span><span class='op'>)</span>
+<span class='va'>gender2</span>
+</code></pre>
+</div>
 <pre><code>[1] male   female male   male  
 Levels: male female</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>gender2</span><span class='op'>)</span>
+</code></pre>
+</div>
 <p><img src="2022-02-28-forcats_files/figure-html5/unnamed-chunk-8-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <h2 id="fct_reorder">fct_reorder</h2>
 <p>forcats 패키지에는 사회조사 샘플 데이터를 gss_cat라는 이름의 데이터 프레임으로 제공하고 있습니다.</p>
 <p>응답자의 결혼상태별로 일 평균 TV 시청시간을 막대 그래프로 그렸습니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
+
+<span class='va'>gss_cat</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>marital</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='op'>(</span>tvhours <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>tvhours</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>marital</span>, y <span class='op'>=</span> <span class='va'>tvhours</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
 <p><img src="2022-02-28-forcats_files/figure-html5/unnamed-chunk-9-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <p><br></p>
@@ -2782,6 +2882,16 @@ Levels: male female</code></pre>
 <h3 class="panel-name">purrr</h3>
 <p>다음은 변수를 minmax로 표준화하는 purrr 패키지 구문입니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>gss_cat</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>marital</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='op'>(</span>tvhours <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>tvhours</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>marital <span class='op'>=</span> <span class='fu'><a href='https://forcats.tidyverse.org/reference/fct_reorder.html'>fct_reorder</a></span><span class='op'>(</span><span class='va'>marital</span>, <span class='va'>tvhours</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>marital</span>, y <span class='op'>=</span> <span class='va'>tvhours</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
 <p><img src="2022-02-28-forcats_files/figure-html5/unnamed-chunk-10-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 </section>
@@ -2829,22 +2939,47 @@ fct_reorder() 함수를 사용하여 시각화에서의 범주 순서를 바꾸�
 <h2 id="fct_drop">fct_drop</h2>
 <p><code>fct_drop()</code> 함수는 불필요한 레벨을 삭제해 줍니다..</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>f</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"b"</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>f</span>
+</code></pre>
+</div>
 <pre><code>[1] a b
 Levels: a b c</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://forcats.tidyverse.org/reference/fct_drop.html'>fct_drop</a></span><span class='op'>(</span><span class='va'>f</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] a b
 Levels: a b</code></pre>
 </div>
 <h2 id="fct_expand">fct_expand</h2>
 <p><code>fct_expand()</code> 함수는 데이터로는 포함되어 있지 않는 새로운 레벨을 추가해 줍니다. 이 기능을 데이터를 모델링하기 위해서 테스트 셋과 트레이닝 셋을 나눌 때, 어느 한 쪽의 데이터 셋에서 특정 레벨이 누락되는 것을 막아줍니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>gender</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"male"</span>, <span class='st'>"male"</span>, <span class='st'>"male"</span>, <span class='st'>"male"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>gender</span>
+</code></pre>
+</div>
 <pre><code>[1] male male male male
 Levels: male</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://forcats.tidyverse.org/reference/fct_expand.html'>fct_expand</a></span><span class='op'>(</span><span class='va'>gender</span>, <span class='st'>"female"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] male male male male
 Levels: male female</code></pre>
 </div>
 <h2 id="fct_c">fct_c</h2>
 <p><code>fct_c()</code> 함수는 factor를 결합하고, 레벨을 합쳐줍니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>fa</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"b"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>fb</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='st'>"x"</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://forcats.tidyverse.org/reference/fct_c.html'>fct_c</a></span><span class='op'>(</span><span class='va'>fa</span>, <span class='va'>fb</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code>[1] a b x
 Levels: a b x</code></pre>
 </div>

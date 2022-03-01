@@ -7,7 +7,19 @@
     <description>Dataholic
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Mon, 28 Feb 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 01 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>네이버 오픈 API를 이용한 데이터 수집</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-03-01-open-api</link>
+      <description>네이버 오픈 API를 이용한 데이터 수집 로직을 구현해 봅니다.</description>
+      <category>Open API</category>
+      <category>XML</category>
+      <category>Data acquisition</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-03-01-open-api</guid>
+      <pubDate>Tue, 01 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-03-01-open-api/img/naver.jpeg" medium="image" type="image/jpeg"/>
+    </item>
     <item>
       <title>Wrangle factor with forcats</title>
       <dc:creator>유충현</dc:creator>
@@ -18,7 +30,7 @@
       <category>manipulate data</category>
       <guid>https://choonghyunryu.github.io/posts/2022-02-28-forcats</guid>
       <pubDate>Mon, 28 Feb 2022 00:00:00 +0000</pubDate>
-      <media:content url="https://choonghyunryu.github.io/posts/2022-02-28-forcats/img/forcats.png" medium="image" type="image/png" width="736" height="853"/>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-02-28-forcats/img/forcats.png" medium="image" type="image/png" width="696" height="807"/>
     </item>
     <item>
       <title>Operate string with stringr</title>
@@ -42,7 +54,7 @@
       <category>functional programming</category>
       <guid>https://choonghyunryu.github.io/posts/2022-02-26-purrr</guid>
       <pubDate>Sat, 26 Feb 2022 00:00:00 +0000</pubDate>
-      <media:content url="https://choonghyunryu.github.io/posts/2022-02-26-purrr/img/purrr.png" medium="image" type="image/png"/>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-02-26-purrr/img/purrr.png" medium="image" type="image/png" width="736" height="853"/>
     </item>
     <item>
       <title>Wrangle data with tidyr</title>
@@ -54,7 +66,7 @@
       <category>manipulate data</category>
       <guid>https://choonghyunryu.github.io/posts/2022-02-25-tidyr</guid>
       <pubDate>Fri, 25 Feb 2022 00:00:00 +0000</pubDate>
-      <media:content url="https://choonghyunryu.github.io/posts/2022-02-25-tidyr/img/tidyr.png" medium="image" type="image/png"/>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-02-25-tidyr/img/tidyr.png" medium="image" type="image/png" width="736" height="850"/>
     </item>
     <item>
       <title>Wrangle data with dplyr</title>
@@ -66,7 +78,7 @@
       <category>manipulate data</category>
       <guid>https://choonghyunryu.github.io/posts/2022-02-24-dplyr</guid>
       <pubDate>Thu, 24 Feb 2022 00:00:00 +0000</pubDate>
-      <media:content url="https://choonghyunryu.github.io/posts/2022-02-24-dplyr/img/dplyr.png" medium="image" type="image/png"/>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-02-24-dplyr/img/dplyr.png" medium="image" type="image/png" width="736" height="850"/>
     </item>
     <item>
       <title>Import data with readr</title>

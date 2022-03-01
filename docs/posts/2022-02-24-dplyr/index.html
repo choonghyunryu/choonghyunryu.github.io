@@ -101,14 +101,20 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <meta property="og:type" content="article"/>
 <meta property="og:description" content="dplyr 패키지로 데이터를 조작하는 방법을 숙지합니다."/>
 <meta property="og:url" content="https://choonghyunryu.github.io/2022-02-24-dplyr/"/>
+<meta property="og:image" content="https://choonghyunryu.github.io/posts/2022-02-24-dplyr/img/dplyr.png"/>
+<meta property="og:image:width" content="736"/>
+<meta property="og:image:height" content="850"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:site_name" content="Dataholic"/>
 
 <!--  https://dev.twitter.com/cards/types/summary -->
-<meta property="twitter:card" content="summary"/>
+<meta property="twitter:card" content="summary_large_image"/>
 <meta property="twitter:title" content="Dataholic: Wrangle data with dplyr"/>
 <meta property="twitter:description" content="dplyr 패키지로 데이터를 조작하는 방법을 숙지합니다."/>
 <meta property="twitter:url" content="https://choonghyunryu.github.io/2022-02-24-dplyr/"/>
+<meta property="twitter:image" content="https://choonghyunryu.github.io/posts/2022-02-24-dplyr/img/dplyr.png"/>
+<meta property="twitter:image:width" content="736"/>
+<meta property="twitter:image:height" content="850"/>
 
 <!--  https://scholar.google.com/intl/en/scholar/inclusion.html#indexing -->
 <meta name="citation_title" content="Dataholic: Wrangle data with dplyr"/>
@@ -2739,6 +2745,13 @@ SQL에 익숙한 당신, dplyr를 쉽게 배울 수 있습니다.
 <h2 id="데이터-살펴보기">데이터 살펴보기</h2>
 <p>flights 데이터 프레임에는 2013년에 뉴욕에서 출발한 모든 336,776개의 항공편이 포함되어 있습니다. 이 데이터는 미국 교통 통계국에서 가져왔습니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://github.com/hadley/nycflights13'>nycflights13</a></span><span class='op'>)</span>
+
+<span class='va'>flights</span>
+</code></pre>
+</div>
 <pre><code># A tibble: 336,776 x 19
     year month   day dep_time sched_dep_time dep_delay arr_time
    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
@@ -2789,12 +2802,28 @@ SQL에 익숙한 당신, dplyr를 쉽게 배울 수 있습니다.
 <h3 class="panel-name">dplyr 솔루션</h3>
 <p>건수만 살펴볼 경우에는 <code>tally()</code> 함수가 유용합니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>flights_1231_0101</span> <span class='op'>&lt;-</span> <span class='va'>flights</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>(</span><span class='va'>month</span> <span class='op'>==</span> <span class='fl'>12</span> <span class='op'>&amp;</span> <span class='va'>day</span> <span class='op'>==</span> <span class='fl'>31</span><span class='op'>)</span> <span class='op'>|</span>
+         <span class='op'>(</span><span class='va'>month</span> <span class='op'>==</span> <span class='fl'>1</span> <span class='op'>&amp;</span> <span class='va'>day</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>  
+
+<span class='va'>flights_1231_0101</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>month</span>, <span class='va'>day</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>summarise</span><span class='op'>(</span>cnt <span class='op'>=</span> <span class='fu'>n</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code># A tibble: 2 x 3
 # Groups:   month [2]
   month   day   cnt
   &lt;int&gt; &lt;int&gt; &lt;int&gt;
 1     1     1   842
 2    12    31   776</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>flights_1231_0101</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>month</span>, <span class='va'>day</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>tally</span><span class='op'>(</span><span class='op'>)</span> 
+</code></pre>
+</div>
 <pre><code># A tibble: 2 x 3
 # Groups:   month [2]
   month   day     n
@@ -2827,11 +2856,28 @@ SQL에 익숙한 당신, dplyr를 쉽게 배울 수 있습니다.
 <h3 class="panel-name">dplyr 솔루션</h3>
 <p><code>ifelse()</code> 함수 대신에 dplyr 패키지의 <code>case_when()</code> 함수를 사용해도 됩니다. 이 함수는 조건의 개수가 여러 개일 때 유용합니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>flights</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>mutate</span><span class='op'>(</span>class_date <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='op'>(</span><span class='va'>month</span> <span class='op'>==</span> <span class='fl'>12</span> <span class='op'>&amp;</span> <span class='va'>day</span> <span class='op'>==</span> <span class='fl'>31</span><span class='op'>)</span> <span class='op'>|</span>
+         <span class='op'>(</span><span class='va'>month</span> <span class='op'>==</span> <span class='fl'>1</span> <span class='op'>&amp;</span> <span class='va'>day</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span>, <span class='st'>"연말년초"</span>, <span class='st'>"연말년초 아님"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>   
+  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>class_date</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>summarise</span><span class='op'>(</span>dep_delay_avg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>dep_delay</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code># A tibble: 2 x 2
   class_date    dep_delay_avg
   &lt;chr&gt;                 &lt;dbl&gt;
 1 연말년초               9.38
 2 연말년초 아님         12.7 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>flights</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>mutate</span><span class='op'>(</span>class_date <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+    <span class='op'>(</span><span class='va'>month</span> <span class='op'>==</span> <span class='fl'>12</span> <span class='op'>&amp;</span> <span class='va'>day</span> <span class='op'>==</span> <span class='fl'>31</span><span class='op'>)</span> <span class='op'>|</span> <span class='op'>(</span><span class='va'>month</span> <span class='op'>==</span> <span class='fl'>1</span> <span class='op'>&amp;</span> <span class='va'>day</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>~</span> <span class='st'>"연말년초"</span>, 
+    <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='st'>"연말년초 아님"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>   
+  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>class_date</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>summarise</span><span class='op'>(</span>dep_delay_avg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>dep_delay</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code># A tibble: 2 x 2
   class_date    dep_delay_avg
   &lt;chr&gt;                 &lt;dbl&gt;
@@ -2861,6 +2907,15 @@ SQL에 익숙한 당신, dplyr를 쉽게 배울 수 있습니다.
 <h3 class="panel-name">dplyr 솔루션</h3>
 <p>상위 n개의 관측치를 가져오기 위해서 <code>filter()</code> 함수와 <code>row_number()</code> 함수를 사용할 수 있으나, <code>top_n()</code> 함수를 사용하면 쉽게 계산할 수 있습니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>flights</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>month</span>, <span class='va'>day</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>summarise</span><span class='op'>(</span>dep_delay_avg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>dep_delay</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
+            .groups <span class='op'>=</span> <span class='st'>"drop"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>arrange</span><span class='op'>(</span><span class='fu'>desc</span><span class='op'>(</span><span class='va'>dep_delay_avg</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='fu'>row_number</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>&lt;=</span> <span class='fl'>5</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code># A tibble: 5 x 3
   month   day dep_delay_avg
   &lt;int&gt; &lt;int&gt;         &lt;dbl&gt;
@@ -2869,6 +2924,15 @@ SQL에 익숙한 당신, dplyr를 쉽게 배울 수 있습니다.
 3     9     2          53.0
 4     7    10          52.9
 5    12     5          52.3</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>flights</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>month</span>, <span class='va'>day</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>summarise</span><span class='op'>(</span>dep_delay_avg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>dep_delay</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
+            .groups <span class='op'>=</span> <span class='st'>"drop"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>arrange</span><span class='op'>(</span><span class='fu'>desc</span><span class='op'>(</span><span class='va'>dep_delay_avg</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>top_n</span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span>
+</code></pre>
+</div>
 <pre><code># A tibble: 5 x 3
   month   day dep_delay_avg
   &lt;int&gt; &lt;int&gt;         &lt;dbl&gt;
@@ -2916,6 +2980,20 @@ SQL에 익숙한 당신, dplyr를 쉽게 배울 수 있습니다.
 <h3 class="panel-name">dplyr 솔루션</h3>
 <p>dplyr 결과를 바로 ggplot2 시각화 함수인 <code>ggplot() 함수</code>로 보낼 수 있습니다. <code>dplyr 패키지</code>의 파이프인 “%&gt;%”와 ggplot2의 파이프인 “+”를 혼동해서는 안됩니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>flights</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>dest</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>summarise</span><span class='op'>(</span>
+    cnt <span class='op'>=</span> <span class='fu'>n</span><span class='op'>(</span><span class='op'>)</span>,
+    dist <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>distance</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
+    delay <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>arr_delay</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+  <span class='op'>)</span> <span class='op'>%&gt;%</span>   
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>cnt</span> <span class='op'>&gt;</span> <span class='fl'>20</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>ggplot</span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>dist</span>, y <span class='op'>=</span> <span class='va'>delay</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_point</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>size <span class='op'>=</span> <span class='va'>cnt</span><span class='op'>)</span>, alpha <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_smooth</span><span class='op'>(</span>se <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</code></pre>
+</div>
 <p><img src="2022-02-24-dplyr_files/figure-html5/unnamed-chunk-9-1.png" width="1152" style="display: block; margin: auto;" /></p>
 </div>
 </section>
@@ -2947,6 +3025,19 @@ SQL에 익숙한 당신, dplyr를 쉽게 배울 수 있습니다.
 <h3 class="panel-name">dplyr 솔루션</h3>
 <p><code>summarise() 함수</code>에는 .groups = “drop”를 적용하지 않으면, 상위 n개가 아닌 전체 건이 추출됩니다. .groups = “drop”는 집계된 데이터에 그룹정보를 삭제하는 옵션입니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>flights</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>left_join</span><span class='op'>(</span>
+    <span class='va'>planes</span>,
+    by <span class='op'>=</span> <span class='st'>"tailnum"</span>
+  <span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>manufacturer</span>, <span class='va'>model</span>, <span class='va'>engine</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>summarise</span><span class='op'>(</span>delay <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>arr_delay</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
+            .groups <span class='op'>=</span> <span class='st'>"drop"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>arrange</span><span class='op'>(</span><span class='fu'>desc</span><span class='op'>(</span><span class='va'>delay</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>top_n</span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>            
+</code></pre>
+</div>
 <pre><code># A tibble: 10 x 4
    manufacturer         model    engine      delay
    &lt;chr&gt;                &lt;chr&gt;    &lt;chr&gt;       &lt;dbl&gt;
@@ -3003,6 +3094,19 @@ SQL에 익숙한 당신, dplyr를 쉽게 배울 수 있습니다.
 <h4 id="솔루션-1">솔루션 1</h4>
 <p><code>hms 패키지</code>도 Tidiverse 패키지군에 포함된 패키지입니다. 이 패키지는 시간 데이터를 조작하는 패키지입니다. <code>as.hms()</code> 함수로 문자열을 시간:분:초 포맷의 hms 데이터로 변환합니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 1.1</span>
+<span class='va'>top_delay</span> <span class='op'>&lt;-</span> <span class='va'>flights</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>month</span>, <span class='va'>day</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>summarise</span><span class='op'>(</span>cnt <span class='op'>=</span> <span class='fu'>n</span><span class='op'>(</span><span class='op'>)</span>,
+            cnt_delay <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>dep_delay</span> <span class='op'>&gt;</span> <span class='fl'>0</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
+            rate_delay <span class='op'>=</span> <span class='va'>cnt_delay</span> <span class='op'>/</span> <span class='va'>cnt</span>, .groups <span class='op'>=</span> <span class='st'>"drop"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>arrange</span><span class='op'>(</span><span class='fu'>desc</span><span class='op'>(</span><span class='va'>rate_delay</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>top_n</span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span>
+
+<span class='va'>top_delay</span>
+</code></pre>
+</div>
 <pre><code># A tibble: 10 x 5
    month   day   cnt cnt_delay rate_delay
    &lt;int&gt; &lt;int&gt; &lt;int&gt;     &lt;int&gt;      &lt;dbl&gt;
@@ -3016,11 +3120,41 @@ SQL에 익숙한 당신, dplyr를 쉽게 배울 수 있습니다.
  8     5    24   978       621      0.635
  9    12     9   962       606      0.630
 10     2    27   945       584      0.618</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 1.2</span>
+<span class='va'>flights</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>arrange</span><span class='op'>(</span><span class='va'>time_hour</span>, <span class='va'>sched_dep_time</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>month</span> <span class='op'>==</span> <span class='va'>top_delay</span><span class='op'>$</span><span class='va'>month</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&amp;</span> <span class='va'>day</span> <span class='op'>==</span> <span class='va'>top_delay</span><span class='op'>$</span><span class='va'>day</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>mutate</span><span class='op'>(</span>sched_time <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span><span class='op'>(</span><span class='st'>"%04d"</span>, <span class='va'>sched_dep_time</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>mutate</span><span class='op'>(</span>time_hour <span class='op'>=</span> 
+    <span class='fu'>hms</span><span class='fu'>::</span><span class='fu'><a href='https://hms.tidyverse.org/reference/Deprecated.html'>as.hms</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substr.html'>substr</a></span><span class='op'>(</span><span class='va'>sched_time</span>, <span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, 
+          <span class='fu'><a href='https://rdrr.io/r/base/substr.html'>substr</a></span><span class='op'>(</span><span class='va'>sched_time</span>, <span class='fl'>3</span>, <span class='fl'>4</span><span class='op'>)</span>, <span class='st'>"00"</span>, sep <span class='op'>=</span> <span class='st'>":"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>select</span><span class='op'>(</span><span class='va'>time_hour</span>, <span class='va'>dep_delay</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>time_hour</span>, y <span class='op'>=</span> <span class='va'>dep_delay</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_bar</span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"identity"</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>geom_smooth</span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
 <p><img src="2022-02-24-dplyr_files/figure-html5/unnamed-chunk-11-1.png" width="1152" style="display: block; margin: auto;" /></p>
 </div>
 <h4 id="솔루션-2">솔루션 2</h4>
 <p>sched_dep_time 변수는 출발 스케줄을 분 단위까지 포함하고 있기 때문에 윈도우 함수를 사용하기 전에 이 변수 기준으로 오름차순으로 정렬해야 합니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># 2.1</span>
+<span class='va'>top_increase</span> <span class='op'>&lt;-</span> <span class='va'>flights</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>month</span>, <span class='va'>day</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>arrange</span><span class='op'>(</span><span class='va'>sched_dep_time</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>mutate</span><span class='op'>(</span>delta_delay <span class='op'>=</span> <span class='va'>dep_delay</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lag.html'>lag</a></span><span class='op'>(</span><span class='va'>dep_delay</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>summarise</span><span class='op'>(</span>cnt <span class='op'>=</span> <span class='fu'>n</span><span class='op'>(</span><span class='op'>)</span>,
+            increase_delay <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>delta_delay</span> <span class='op'>&gt;</span> <span class='fl'>0</span> <span class='op'>&amp;</span> <span class='va'>dep_delay</span> <span class='op'>&gt;</span> <span class='fl'>0</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
+            rate_increase <span class='op'>=</span> <span class='va'>increase_delay</span> <span class='op'>/</span> <span class='va'>cnt</span>, .groups <span class='op'>=</span> <span class='st'>"drop"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>arrange</span><span class='op'>(</span><span class='fu'>desc</span><span class='op'>(</span><span class='va'>rate_increase</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>top_n</span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span>
+
+<span class='va'>top_increase</span>
+</code></pre>
+</div>
 <pre><code># A tibble: 10 x 5
    month   day   cnt increase_delay rate_increase
    &lt;int&gt; &lt;int&gt; &lt;int&gt;          &lt;int&gt;         &lt;dbl&gt;
@@ -3034,6 +3168,21 @@ SQL에 익숙한 당신, dplyr를 쉽게 배울 수 있습니다.
  8     7    23   997            490         0.491
  9    12     9   962            468         0.486
 10     2    27   945            459         0.486</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>flights</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>month</span> <span class='op'>==</span> <span class='va'>top_increase</span><span class='op'>$</span><span class='va'>month</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&amp;</span> <span class='va'>day</span> <span class='op'>==</span> <span class='va'>top_increase</span><span class='op'>$</span><span class='va'>day</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>mutate</span><span class='op'>(</span>sched_time <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span><span class='op'>(</span><span class='st'>"%04d"</span>, <span class='va'>sched_dep_time</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>mutate</span><span class='op'>(</span>time_hour <span class='op'>=</span> 
+    <span class='fu'>hms</span><span class='fu'>::</span><span class='fu'><a href='https://hms.tidyverse.org/reference/Deprecated.html'>as.hms</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substr.html'>substr</a></span><span class='op'>(</span><span class='va'>sched_time</span>, <span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, 
+          <span class='fu'><a href='https://rdrr.io/r/base/substr.html'>substr</a></span><span class='op'>(</span><span class='va'>sched_time</span>, <span class='fl'>3</span>, <span class='fl'>4</span><span class='op'>)</span>, <span class='st'>"00"</span>, sep <span class='op'>=</span> <span class='st'>":"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>arrange</span><span class='op'>(</span><span class='va'>time_hour</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>mutate</span><span class='op'>(</span>delta_delay <span class='op'>=</span> <span class='va'>dep_delay</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lag.html'>lag</a></span><span class='op'>(</span><span class='va'>dep_delay</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>   
+  <span class='fu'>mutate</span><span class='op'>(</span>delta <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>delta_delay</span> <span class='op'>&gt;</span> <span class='fl'>0</span>, <span class='st'>"Increase"</span>, <span class='st'>"Decrease"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+           <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>time_hour</span>, y <span class='op'>=</span> <span class='va'>delta_delay</span>, fill <span class='op'>=</span> <span class='va'>delta</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_bar</span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"identity"</span><span class='op'>)</span> 
+</code></pre>
+</div>
 <p><img src="2022-02-24-dplyr_files/figure-html5/unnamed-chunk-12-1.png" width="1152" style="display: block; margin: auto;" /></p>
 </div>
 </section>
