@@ -7,7 +7,19 @@
     <description>Dataholic
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Tue, 01 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 02 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>공공데이터포털 오픈 API를 이용한 데이터 수집</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-03-02-apt-api</link>
+      <description>공공데이터포털 오픈 API를 이용한 데이터 수집 로직을 구현해 봅니다.</description>
+      <category>Open API</category>
+      <category>XML</category>
+      <category>Data acquisition</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-03-02-apt-api</guid>
+      <pubDate>Wed, 02 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-03-02-apt-api/img/public.jpeg" medium="image" type="image/jpeg"/>
+    </item>
     <item>
       <title>네이버 오픈 API를 이용한 데이터 수집</title>
       <dc:creator>유충현</dc:creator>
