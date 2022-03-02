@@ -101,14 +101,20 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <meta property="og:type" content="article"/>
 <meta property="og:description" content="우리가 사항하는 즐겨 사용하는 R을 위해서 R 재단에 기부하는 방법을 살펴봅니다."/>
 <meta property="og:url" content="https://choonghyunryu.github.io/2022-01-27-donate/"/>
+<meta property="og:image" content="https://choonghyunryu.github.io/posts/2022-01-27-donate/img/invoice.png"/>
+<meta property="og:image:width" content="2724"/>
+<meta property="og:image:height" content="1544"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:site_name" content="Dataholic"/>
 
 <!--  https://dev.twitter.com/cards/types/summary -->
-<meta property="twitter:card" content="summary"/>
+<meta property="twitter:card" content="summary_large_image"/>
 <meta property="twitter:title" content="Dataholic: R 재단에 기부하기"/>
 <meta property="twitter:description" content="우리가 사항하는 즐겨 사용하는 R을 위해서 R 재단에 기부하는 방법을 살펴봅니다."/>
 <meta property="twitter:url" content="https://choonghyunryu.github.io/2022-01-27-donate/"/>
+<meta property="twitter:image" content="https://choonghyunryu.github.io/posts/2022-01-27-donate/img/invoice.png"/>
+<meta property="twitter:image:width" content="2724"/>
+<meta property="twitter:image:height" content="1544"/>
 
 <!--  https://scholar.google.com/intl/en/scholar/inclusion.html#indexing -->
 <meta name="citation_title" content="Dataholic: R 재단에 기부하기"/>
@@ -472,7 +478,7 @@ d-title {
 
 </style>
 
-<script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <link href="../../site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
 <link href="../../site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
 <script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
@@ -1879,7 +1885,10 @@ function init_distill() {
 
     // hoverable references
     $('span.citation[data-cites]').each(function() {
-      var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+      var refs = $(this).attr('data-cites').split(" ");
+      var refHtml = refs.map(function(ref) {
+        return "<p>" + $('#ref-' + ref).html() + "</p>";
+      }).join("\n");
       window.tippy(this, {
         allowHTML: true,
         content: refHtml,
@@ -2216,10 +2225,10 @@ d-appendix {
 .preface {
   font-size: 11pt;
   background-color: var(--custom-lightblue);
-  margin-top: 2em;
+  margin-top: 1em;
   margin-bottom: 0.5em;  
   padding: 1.5em;
-  padding-top: 1em;
+  padding-top: 0.5em;
   border-color: DodgerBlue;
 }
 
@@ -2255,22 +2264,10 @@ h3 {
   font-weight: bold;
 }
 
-d-byline h3 {
-  font-size: 0.6rem !important;   
-  font-weight: 400 !important;   
-  color: rgba(0, 0, 0, 0.5) !important;   
-  margin: 0 !important;   
+.tab-content {
+   top: 25px;
+   padding: 20px;
 }
-    
-d-byline {
-  contain: content;
-  overflow: hidden;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  font-size: 0.8rem;
-  line-height: 1.8em;
-  padding: 1.5rem 0;
-  min-height: 1.8em;
-} 
 
 .bg-blue,
 .bg-orange,
@@ -2293,7 +2290,59 @@ d-byline {
 .bg-grey > *:last-child {
   margin-bottom: 0;
   padding-bottom: 0;
-}</style>
+}
+
+.panelset {
+  --panel-tab-foreground: currentColor !important;
+  --panel-tab-active-foreground: var(--custom-blue) !important;
+  --panel-tab-active-background: var(--custom-lightblue) !important;  
+  --panel-tab-hover-foreground: var(--custom-blue) !important;
+  --panel-tabs-border-bottom: #ddd !important;
+  --panel-tab-inactive-opacity: 0.5 !important;
+}
+
+d-byline {
+    contain: content;
+    overflow: hidden;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 0.8rem;
+    line-height: 1.8em;
+    padding: 1.5rem 0;
+    min-height: 1.8em;
+}
+
+d-byline h3 {
+    font-size: 0.6rem !important;  
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.5) !important;  
+    margin: 4.8px 0px 0px 0px !important; 
+    padding: 0px 0px 0px 0px !important;  
+    text-transform: uppercase;
+}
+
+
+blockquote {
+  background: var(--custom-grey10);
+  border-left: 10px solid #ccc !important;  
+  margin: 1.5em 10px;
+  padding: 0.5em 10px;
+  quotes: "\201C""\201D""\2018""\2019";
+}
+
+blockquote:before {
+  color: #ccc;
+  content: open-quote;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+
+blockquote p {
+  display: inline;
+}
+
+</style>
 <style type="text/css">
 /* base style */
 
@@ -2470,7 +2519,7 @@ d-appendix d-footnote-list a.footnote-backlink {
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"R 재단에 기부하기","description":"우리가 사항하는 즐겨 사용하는 R을 위해서 R 재단에 기부하는 방법을 살펴봅니다.","authors":[{"author":"유충현","authorURL":"https://choonghyunryu.github.io","affiliation":"한화생명","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-01-27T00:00:00.000+00:00","citationText":"유충현, 2022"}
+{"title":"R 재단에 기부하기","description":"우리가 사항하는 즐겨 사용하는 R을 위해서 R 재단에 기부하는 방법을 살펴봅니다.","authors":[{"author":"유충현","authorURL":"https://choonghyunryu.github.io","affiliation":"한화생명","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-01-27T00:00:00.000+09:00","citationText":"유충현, 2022"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
