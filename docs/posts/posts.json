@@ -1,5 +1,27 @@
 [
   {
+    "path": "posts/2022-03-05-submit-package/",
+    "title": "Submit R package to CRAN",
+    "description": "개발한 R 패키지를 CRAN에 등록하는 방법을 살펴봅니다.",
+    "author": [
+      {
+        "name": "유충현",
+        "url": "https://choonghyunryu.github.io"
+      }
+    ],
+    "date": "2022-03-05",
+    "categories": [
+      "programming",
+      "package"
+    ],
+    "contents": "\n\nContents\n개요\nR-devel 환경 만들기\nDownloading R-devel\nBuilding R-devel\nInstall R-devel\n\nCRAN에 패키지 등록하기\nbuild package\nsubmit package\n\n\n\n\n\n\n\n들어가기\nCRAN!!!\n\n처음에는 어렵지만, 도전해볼만 합니다.\n\n자신만의 패키지가 모두의 패키지로 탈바꿈하니까요. 이 기회에 한번 도전해보세요.\n\n\n개요\nCRAN에 패키지를 submit하는 방법을 간단하게 다룹니다. 또한 CRAN에 패키지를 submit하기 위해서는 R-devel 환경에서도 무결성을 check해야 합니다. 생략할 수도 있지만, 특정 기능이 R development 버전에서 오류가 발생할 수도 있기 때문이다. 반드시 수행해야 합니다.\n본 note에서는 Mac OS X 버전의 R 3.5.2 환경에서 개발 버전을 설치하는 방법과 CRAN에 패키지를 submit하는 방법을 개괄적으로 다룹니다.\n\n\nsessionInfo()\n\n\nR version 4.1.2 (2021-11-01)\nPlatform: x86_64-apple-darwin17.0 (64-bit)\nRunning under: macOS Big Sur 10.16\n\nMatrix products: default\nBLAS:   /Library/Frameworks/R.framework/Versions/4.1/Resources/lib/libRblas.0.dylib\nLAPACK: /Library/Frameworks/R.framework/Versions/4.1/Resources/lib/libRlapack.dylib\n\nlocale:\n[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8\n\nattached base packages:\n[1] stats     graphics  grDevices utils     datasets  methods  \n[7] base     \n\nother attached packages:\n[1] htmltools_0.5.2 shiny_1.7.1    \n\nloaded via a namespace (and not attached):\n [1] Rcpp_1.0.8          rstudioapi_0.13     knitr_1.37         \n [4] magrittr_2.0.2      downlit_0.4.0       xtable_1.8-4       \n [7] R6_2.5.1            rlang_1.0.1         fastmap_1.1.0      \n[10] fansi_1.0.2         highr_0.9           stringr_1.4.0      \n[13] tools_4.1.2         xfun_0.29           cli_3.2.0          \n[16] jquerylib_0.1.4     ellipsis_0.3.2      yaml_2.3.5         \n[19] digest_0.6.29       lifecycle_1.0.1     later_1.3.0        \n[22] vctrs_0.3.8         sass_0.4.0          promises_1.2.0.1   \n[25] distill_1.3         memoise_2.0.1       cachem_1.0.6       \n[28] evaluate_0.15       mime_0.12           rmarkdown_2.11     \n[31] xaringanExtra_0.5.5 stringi_1.7.6       compiler_4.1.2     \n[34] bslib_0.3.1         jsonlite_1.8.0      httpuv_1.6.5       \n\nBuilding R-devel on Mac OS X를 참고하였습다.\nR-devel 환경 만들기\n아마 대부분의 R 사용자는 버전 번호는 다르지만, stable 버전의 R을 사용하고 있을 것입니다. 필자도 R을 CRAN에 제출하기 위해서 R development 버전을 설치하였습니다.\nDownloading R-devel\n다음처럼 https://stat.ethz.ch/R/daily URL에서 최신 R development 버전을 다운로드 합니다.:\n\ncurl -O https://stat.ethz.ch/R/daily/R-devel_2019-03-15.tar.gz\n\nBuilding R-devel\n소스 파일의 압축을 풉니다.:\n\ntar xvzf R-devel_2019-03-15.tar.gz\ncd R-devel\n\nconifg.site 파일의 FC 변수를 다음과 같이 정의합니다.\nF77=\"gfortran -arch x86_64\"\nFC=$F77\n소스 파일을 컴파일 합니다. CRAN에 패키지를 제출할 때 무결성 체크를 위한 목적으로만 사용하기 때문에 Gui 환경의 binary를 생성하지 않을 것입니다. configure 명령을 –without-x 옵션으로 수행하면 됩니다.\n\n./configure --without-x\nmake\nmake check\nmake pdf\nmake info\n\nInstall R-devel\nMac OS X 환경에서 prefix 변수의 값을 지정하지 않으면, 현재 설치된 stable 버전을 엎어칩니다. 그러므로 반드시 설치할 경로를 지정해야 합니다. 필자는 /usr/local/lib/R-devel 경로에 개발 버전을 설치하였습니다.\n\nmake prefix=/usr/local/lib/R-devel install\n\n이상으로 개발 버전을 설치하였다. 그리고 개발 버전은 다음과 같이 실행합니다.:\n\n/usr/local/lib/R-devel/bin/R\n\n다음처럼 심볼릭 링크를 생성하면 쉽게 사용할 수 있습니다.:\n\n\nln -s /usr/local/lib/R-devel/bin/R /usr/local/bin/R-devel\n\n\n\n이제는 콘솔에서 R-devel만 입력하면 R 개발 버전이 실행될 것입니다. 그러므로 다음과 같이 개발 버전 환경에서 패키지를 체크할 수 있습니다.\n\nR-devel CMD check –as-cran 패키지이름.tar.gz\n\nCRAN에 패키지 등록하기\nCRAN에 패키지를 등록하기 위해서는 몇 가지의 제약을 준수해야 합니다. 어쩌면 매우 까다로운 작업일 수도 있습니다. 아마 처음 패키지를 등록하는 패키지 개발자는 당황할 수도 있습니다.\nbuild package\n다음과 같이 패키지를 build합니다. 여기서는 dlookr 0.3.9 버전을 기준으로 설명합니다.\n예제에서 dlookr은 패키지 디렉토리를 의미합니다. R CMD build 명령로 패키지를 생성합니다.\n\nR CMD build dlookr\n\n상기 명령이 수행되면 DESCRIPTION 파일에서 패키지의 버전 번호를 가져와 컴파일된 패키지 파일을 생성합니다. 그러므로 dlookr_0.3.9.tar.gz이라는 파일이 생성됩니다.\n패키지의 무결성을 진단하기 위해서 다음의 명령을 차례로 입력합니다.:\n\nR CMD check --as-cran dlookr_0.3.9.tar.gz\nR-devel CMD check --as-cran dlookr_0.3.9.tar.gz\n\n오랜 시간동안 명령어가 수행됩니다. Error, Warning, Note 등이 발생된다면 원인을 찾아 수정해야 합니다. 그리고 그것들이 발생하지 않아야 CRAN에 제출할 수 있습니다.\nsubmit package\nhttps://cran.r-project.org/submit.html URL에서 패키지를 제출합니다. 이 URL은 그림처럼 개발자 이름, 이메일 주소 등을 입력하고 패키지 파일을 업로드할 수 있는 컴포넌트로 구성됩니다.\n\n\n\n(#fig:done_gtk)R 패키지 제출 화면\n\n\n\n정보를 입력하고, 파일을 업로드하면 면 단계 화면을 거치고 기술한 이메일 주소로 Submit 확인 메일이 발송됩니다. 발송된 메일의 URL에서 최종 제출 작업을 수행해야 합니다. 메일의 내용은 그림처럼 URL 링크를 포함하고 있습니다.\n\n\n\nFigure 1: R 패키지 제출 확인 메일\n\n\n\n패키지가 제출되면 몇 분 간격으로 접수되었다는 메일(그림)과 CRAN 사이트에 제출된 버전이 올라간다는 메일(그림)이 발송됩니다. 물론 제출된 패키지가 check에서 이상이 없었을 경우입니다.\n\n\n\nFigure 2: R 패키지 접수 확인 메일\n\n\n\n대부분의 정보는 DESCRIPTION 파일에 기재된 내용의 요약입니다.\n\n\n\n(#fig:goto_cran)R 패키지 등록 확인 메일\n\n\n\n접수 확인 메일 발송 후 정확히 30분 이후에 CRAN으로 패키지가 등록된다는 메일이 발송됨을 알 수 있습니다.\n\n\n\n",
+    "preview": "posts/2022-03-05-submit-package/img/CRAN.png",
+    "last_modified": "2022-03-05T00:08:16+09:00",
+    "input_file": {},
+    "preview_width": 225,
+    "preview_height": 225
+  },
+  {
     "path": "posts/2022-03-04-develop-package/",
     "title": "R 패키지 개발하기",
     "description": "몇 가지 Open API를 이용한 데이터 수집 기능을 구현한 R 패키지를 만들어 봅니다.",

@@ -7,7 +7,18 @@
     <description>Dataholic
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Fri, 04 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 05 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Submit R package to CRAN</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-03-05-submit-package</link>
+      <description>개발한 R 패키지를 CRAN에 등록하는 방법을 살펴봅니다.</description>
+      <category>programming</category>
+      <category>package</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-03-05-submit-package</guid>
+      <pubDate>Sat, 05 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-03-05-submit-package/img/CRAN.png" medium="image" type="image/png" width="225" height="225"/>
+    </item>
     <item>
       <title>R 패키지 개발하기</title>
       <dc:creator>유충현</dc:creator>
