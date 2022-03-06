@@ -7,13 +7,26 @@
     <description>Dataholic
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sun, 06 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 07 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>청크 옵션 이해하기</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-03-07-chunk-knitr</link>
+      <description>knitr R 코드 청크의 옵션을 활용하는 방법을 익힙니다.</description>
+      <category>Reproducible Research</category>
+      <category>R Markdown</category>
+      <category>knitr</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-03-07-chunk-knitr</guid>
+      <pubDate>Mon, 07 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-03-07-chunk-knitr/img/knitr.png" medium="image" type="image/png" width="200" height="232"/>
+    </item>
     <item>
       <title>첫 R 마크다운 문서 만들기</title>
       <dc:creator>유충현</dc:creator>
       <link>https://choonghyunryu.github.io/posts/2022-03-06-rstudio</link>
       <description>RStudio에서 R 마크다운 문서를 활용하는 방법을 익힙니다.</description>
       <category>Reproducible Research</category>
+      <category>R Markdown</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-06-rstudio</guid>
       <pubDate>Sun, 06 Mar 2022 00:00:00 +0000</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-06-rstudio/img/rstudio.png" medium="image" type="image/png" width="1280" height="449"/>
@@ -107,7 +120,7 @@
       <category>purrr</category>
       <category>Functional programming</category>
       <guid>https://choonghyunryu.github.io/posts/2022-02-26-purrr</guid>
-      <pubDate>Fri, 25 Feb 2022 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 26 Feb 2022 00:00:00 +0000</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-02-26-purrr/img/purrr.png" medium="image" type="image/png" width="736" height="853"/>
     </item>
     <item>

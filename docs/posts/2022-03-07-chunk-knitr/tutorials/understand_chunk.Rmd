@@ -1,0 +1,173 @@
+---
+title: "청크 옵션 이해하기"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 핸즈온
+
+### 1. R 코드 출력 제어하기
+
+#### 1.1. R 코드와 함께 결과 출력하기
+
+다음 지문을 수행할, **분석 경험을 위해 코드와 결과를 공유할 청크**를 만들려고 합니다.
+
+* iris 데이터에서 중복인 데이터가 1건 있습니다. 추출하여 출력해 보세요.
+* R 코드와 결과를 함께 출력해 보세요.
+* 청크 이름은 'dup_iris'로 정의합니다.
+
+```{}
+iris[duplicated(iris), ]
+```
+
+
+
+#### 1.2. 결과만 출력하기
+
+다음 지문을 수행할, 분석 결과만 공유할 청크를 만들려고 합니다.
+
+* summary() 함수로 iris 데이터의 각 변수들을 요약해 보세요.
+* 결과만 출력해 보세요.
+* 청크 이름은 'dup_iris_result'로 정의합니다.
+
+```{r dup_iris_result, echo=}
+summary(iris)
+```
+
+
+#### 1.3. 소스 코드만 출력하기
+
+소스만 설명하려 합니다. 즉, **소스를 실행하지 않고, 출력만 해야 합니다.**
+
+* summary() 함수로 iris 데이터의 각 변수들을 요약하는 소스만 출력하세요.
+* 청크 이름은 'iris_not_run'으로 정의합니다.
+
+```{r iris_not_run, echo=, echo= }
+summary(iris)
+```
+
+
+#### 1.4. 경고 메시지 출력하기
+
+다음을 수행해 보세요.
+
+* -2부터 2까지의 정수 5개의 로그 값을 계산해 보세요.
+* 청크 이름은 'log_integer'으로 정의합니다.
+* 어떤 결과가 출력되었나요?
+    + 음수일 경우에 발생하는 경고 메시가 출력됨을 확인하세요.  
+
+```{}
+log(-3:3)
+```
+
+
+#### 1.5. 경고 메시지 출력하지 않기
+
+다음을 수행할 때 경고 메시지가 출력되는 것을 이미 알고 있습니다.
+
+* -2부터 2까지의 정수 5개의 로그 값을 계산해 보세요.
+* 경고 메시지를 출력하고 싶지 않습니다.
+* 청크 이름은 'no_warning'으로 정의합니다.
+
+```{r no_warning}
+log(-3:3)
+```
+
+
+#### 1.6. 커맨트 변경하기
+
+앞의 튜토리얼 결과를 보면, 출련된 각 라인에 "##"가 앞에 출력되었습니다.
+
+* lm(Sepal.Width ~ Sepal.Length, data = iris)를 실행하세요.
+* "##"가 보기 싫습니다. 차라리 출력되지 않았으면 좋겠습니다.
+* 청크 이름은 'change_comment'로 정의합니다.
+
+```{r no_warning}
+log(-3:3)
+```
+
+
+### 2. 플롯 출력하기
+
+#### 2.1. R 코드와 함께 플롯 출력하기
+
+다음 지문을 수행할, **분석 경험을 위해 코드와 결과를 공유할 청크**를 만들려고 합니다.
+
+* iris 데이터에서 Sepal.Width ~ Sepal.Length 관계를 산점도로 시각화 하세요.
+    + Species별로 도형의 모양과 색상을 달리 그리세요.
+    + loess 산점도 위에 추세선도 출력하세요..
+* R 코드와 결과를 함께 출력해 보세요.
+* 청크 이름은 'scatter'로 정의합니다.
+
+```{}
+library(ggplot2)
+
+ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width, 
+                        color = Species, shape = Species)) +
+  geom_point() +
+  geom_smooth()
+```
+
+
+#### 2.2. 플롯만 출력하기
+
+2.1. 결과에서 R 소스와 메시지의 출력 없이 플롯만 출력하려 합니다.
+
+* 청크 이름은 'plot_only'로 정의합니다.
+
+```{r plot_only,}
+ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width, 
+                        color = Species, shape = Species)) +
+  geom_point() +
+  geom_smooth()
+```
+
+
+#### 2.3. 플롯 정렬하기
+
+2.2. 결과에서 플롯을 화면의 가운데 정렬로 출력하려 합니다.
+
+* 청크 이름은 'plot_center'로 정의합니다.
+
+```{r plot_center,}
+ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width, 
+                        color = Species, shape = Species)) +
+  geom_point() +
+  geom_smooth()
+```
+
+
+
+#### 2.4. 플롯 화면출력 크기 조절하기
+
+2.3. 결과에서 플롯을 화면의 영역의 1/2 사이즈로 출력하려 합니다.
+
+* 청크 이름은 'plot_half_width'로 정의합니다.
+
+```{r plot_half_width, echo=FALSE, message=FALSE, fig.align="center",}
+ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width, 
+                        color = Species, shape = Species)) +
+  geom_point() +
+  geom_smooth()
+```
+
+
+#### 2.5. 플롯 출력에 캡션 넣기
+
+2.3. 결과에 캡션을 출력하려 합니다.
+
+* "iris 품종별 산점도"라는 캡션을 추가합니다.
+* 청크 이름은 'plot_caption'로 정의합니다.
+
+```{r plot_half_width, echo=FALSE, message=FALSE, fig.align="center",}
+ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width, 
+                        color = Species, shape = Species)) +
+  geom_point() +
+  geom_smooth()
+```
+
+
+
