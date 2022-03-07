@@ -1,0 +1,34 @@
+---
+title: "두번째 R 마크다운"
+author: "홍길동"
+date: "10/31/2021"
+output:
+  word_document:
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+TOC 테스트를 위한 마크다운
+
+### knitr 청크
+#### 문서 서식 청크
+
+#### 플롯 서식 청크
+
+```{r cars}
+summary(cars)
+```
+
+### YAML 헤더
+
+## Including Plots
+
+테스트 플롯
+
+## Including Tables
+
+테스트 도표
