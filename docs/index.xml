@@ -7,7 +7,18 @@
     <description>Dataholic
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Tue, 08 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 09 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>마크다운 태그 이해하기</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-03-09-understand-markdown</link>
+      <description>마크다운 태그로 다양한 서식의 문서를 문들 수 있습니다.</description>
+      <category>Reproducible Research</category>
+      <category>Markdown</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-03-09-understand-markdown</guid>
+      <pubDate>Wed, 09 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-03-09-understand-markdown/img/markdown.png" medium="image" type="image/png" width="300" height="185"/>
+    </item>
     <item>
       <title>YAML 이해하기</title>
       <dc:creator>유충현</dc:creator>
