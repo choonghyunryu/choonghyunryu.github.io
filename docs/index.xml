@@ -9,6 +9,17 @@
     <generator>Distill</generator>
     <lastBuildDate>Thu, 10 Mar 2022 00:00:00 +0000</lastBuildDate>
     <item>
+      <title>Shiny 아키텍처 이해</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-03-11-introduce-shiny</link>
+      <description>Shiny 아키텍처를 이해합니다. UI, server, 입력 위젯(input widget), 출력 위젯(output widget), 렌더링(Rendering) 정도는 숙지해야 합니다.</description>
+      <category>Shiny</category>
+      <category>Development</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-03-11-introduce-shiny</guid>
+      <pubDate>Thu, 10 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-03-11-introduce-shiny/img/shiny.png" medium="image" type="image/png" width="2206" height="2557"/>
+    </item>
+    <item>
       <title>distill 패키지의 활용</title>
       <dc:creator>유충현</dc:creator>
       <link>https://choonghyunryu.github.io/posts/2022-03-10-use-distill</link>

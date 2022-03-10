@@ -1,5 +1,27 @@
 [
   {
+    "path": "posts/2022-03-11-introduce-shiny/",
+    "title": "Shiny 아키텍처 이해",
+    "description": "Shiny 아키텍처를 이해합니다. UI, server, 입력 위젯(input widget), 출력 위젯(output widget), 렌더링(Rendering) 정도는 숙지해야 합니다.",
+    "author": [
+      {
+        "name": "유충현",
+        "url": "https://choonghyunryu.github.io"
+      }
+    ],
+    "date": "2022-03-11",
+    "categories": [
+      "Shiny",
+      "Development"
+    ],
+    "contents": "\n\nContents\nShiny 아키텍처\nUI와 Server의 상호작용\nUI와 server의 상호작용 예시\nUI와 server의 상호작용 표준화\n\nShiny 첫 예제\n히스토그램 그리기 예제\n예제 실행해 보기\n\ntutorial\nShiny 공식 tutorial 페이지\n\n\n\n\n\n\n\n들어가기\n본 핸즈온(튜토리얼)은\nShiny를 이해하려는 대상의 OJT를 염두로\n작성되었습니다. 초심자 대상이기 때문에, Shiny의 ABC만   \n     다룹니다. 그 이상의 학습을 원하는 분들은\nResouces\n페이지를 참고하십시요.\n\n학습 내용은\nShiny in seven lessons\n(\nhttps://shiny.rstudio.com/tutorial/\n) 을 참조하여 작성하였습니다.\n\n\nShiny 아키텍처\nUI와 Server의 상호작용\nUI와 Server의 상호작용UI : 사용자 인터페이스(User Interface) 영역으로 입력 위젯(input widget)을 통해 사용자가 의도하는 파라미터(인수)를 server에 전달합니다.\nserver : 입력 위젯의 변화를 감지하여, 미리 정의된 작업을 수행한 후 그 결과를 출력 위젯(output widget)에 렌더링하여(rendering) 사용자에게 전달합니다.\nUI와 server의 상호작용 예시\nUI와 Server의 상호작용 예시sliderInput 위젯은 사용자 입력을 기다리고,\n입력 위젯(input widget)은 사용자의 입력을 대기\n\n입력을 인지한 후, sliderInput 위젯과 연결된 renderPlot() 함수를 호출\n위젯이 변경되면 변경된 위젯이 포함된 렌더링 함수가 자동 호출됩니다.\n\nrenderPlot() 함수는 sliderInput 위젯 값만큼의 막대가 포함된 히스토그램을 그리고,\n렌더링 함수가 실행됩니다.\n\n히스토그램은 출력 위젯(Output widget)인 plotOutput에 렌더링(그려짐)됩니다.\n출력 위젯에 렌더링된 결과가 반영됩니다.\n\nUI와 server의 상호작용 표준화\nUI와 server의 상호작용을 shiny 스크립트 관점에서 표준화해 봅니다.\n위젯들은 개별 위젯을 인식하도록 아이디를 부여해야 합니다.\n입력 위젯은 inputId,\n출력 위젯은 outputId\n\n입력 위젯의 이름은 “기능명 + Input” 포맷으로 정의됩니다.\nsliderInput = slider + Input,\n즉, 슬라이더로 사용자 입력을 받아서 서버로 전달하는 위젯\n\n출력 위젯의 이름은 “기능명 + Output” 포맷으로 정의됩니다.\nplotOutput = plot + Output,\n즉, 시각화된 R 플롯을 출력하는 위젯\n\n렌더링 함수 이름은 “render + 기능명” 포맷으로 정의됩니다.\nrenderPlot = render + Plot,\n즉, 플롯으로 렌더링하는(플롯을 그리는) 함수\n\nShiny 첫 예제\n히스토그램 그리기 예제\nUI와 Server의 상호작용 예시를 구현한 shiny 프로그램은 다음과 같습니다.\n눈으로 한번 쭉 훑어보세요. 이해할 것 같으면서도 어려운 겁니다.\n\n\nlibrary(shiny)\n\n# Define UI for application that draws a histogram\nui <- fluidPage(\n\n    # Application title\n    titlePanel(\"Old Faithful Geyser Data\"),\n\n    # Sidebar with a slider input for number of bins \n    sidebarLayout(\n        sidebarPanel(\n            sliderInput(\"bins\",\n                        \"Number of bins:\",\n                        min = 1,\n                        max = 50,\n                        value = 30)\n        ),\n\n        # Show a plot of the generated distribution\n        mainPanel(\n           plotOutput(\"distPlot\")\n        )\n    )\n)\n\n# Define server logic required to draw a histogram\nserver <- function(input, output) {\n\n    output$distPlot <- renderPlot({\n        # generate bins based on input$bins from ui.R\n        x    <- faithful[, 2]\n        bins <- seq(min(x), max(x), length.out = input$bins + 1)\n\n        # draw the histogram with the specified number of bins\n        hist(x, breaks = bins, col = 'darkgray', border = 'white')\n    })\n}\n\n# Run the application \nshinyApp(ui = ui, server = server)\n\n\n\n예제 실행해 보기\n아키텍처를 이해하려는 목적으로 결과를 보고 프로그램도 살펴 보세요.\n\n\nshiny::runExample(\"01_hello\")\n\n\n\ntutorial\nShiny 공식 tutorial 페이지\nShiny 공식 tutorial 페이지를 살펴보고, 앱을 실행시키는 방법을 숙지하세요.\nhttps://shiny.rstudio.com/tutorial/written-tutorial/lesson1/\n\n\n\n",
+    "preview": "posts/2022-03-11-introduce-shiny/img/shiny.png",
+    "last_modified": "2022-03-10T07:57:20+09:00",
+    "input_file": "2022-03-11-introduce-shiny.knit.md",
+    "preview_width": 2206,
+    "preview_height": 2557
+  },
+  {
     "path": "posts/2022-03-10-use-distill/",
     "title": "distill 패키지의 활용",
     "description": "distill 패키지를 사용해서 Knowledge Base 구축을 위한 홈페이지를 만듭니다.",
