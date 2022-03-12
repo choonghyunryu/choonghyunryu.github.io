@@ -7,7 +7,18 @@
     <description>Dataholic
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Fri, 11 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 12 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>사용자 인터페이스 만들기</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-03-12-userinterface</link>
+      <description>사용자 인터페이스(UI)를 이해합니다. page, layout, panel을 숙지해야 합니다.</description>
+      <category>Shiny</category>
+      <category>Development</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-03-12-userinterface</guid>
+      <pubDate>Sat, 12 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-03-12-userinterface/img/User-Interface.jpeg" medium="image" type="image/jpeg"/>
+    </item>
     <item>
       <title>Shiny 아키텍처 이해</title>
       <dc:creator>유충현</dc:creator>
