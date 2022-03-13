@@ -7,7 +7,40 @@
     <description>Dataholic
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sat, 12 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 15 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>예측력 점수에 대해서</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-03-15-introduce-pps</link>
+      <description>dlookr 0.5.5 버전에 예측력 점수관련 기능을 추가했습니다. 이제는 dlookr로 EDA 과정에서 예측력 점수를 사용할 수 있습니다. 예측력 점수는 비선형 상관관계를 파악할 수 있는 유용한 통계량입니다.</description>
+      <category>dlookr</category>
+      <category>Statistics</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-03-15-introduce-pps</guid>
+      <pubDate>Tue, 15 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-03-15-introduce-pps/img/pearson.png" medium="image" type="image/png" width="800" height="365"/>
+    </item>
+    <item>
+      <title>반응 출력</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-03-14-reactivity</link>
+      <description>반응 출력을 이해합니다. 랜더링 함수의 종류와 기능도 숙지해야 합니다.</description>
+      <category>Shiny</category>
+      <category>Development</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-03-14-reactivity</guid>
+      <pubDate>Mon, 14 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-03-14-reactivity/img/fib_no_conductor.png" medium="image" type="image/png" width="255" height="180"/>
+    </item>
+    <item>
+      <title>위젯 추가하기</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-03-13-control-widget</link>
+      <description>위젯을 이해합니다. 입력 위젯을 패널에 추가하는 방법을 숙지해야 합니다.</description>
+      <category>Shiny</category>
+      <category>Development</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-03-13-control-widget</guid>
+      <pubDate>Sun, 13 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-03-13-control-widget/img/Widget_icon.png" medium="image" type="image/png" width="128" height="128"/>
+    </item>
     <item>
       <title>사용자 인터페이스 만들기</title>
       <dc:creator>유충현</dc:creator>
