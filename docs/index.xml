@@ -7,7 +7,18 @@
     <description>Dataholic
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Tue, 15 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 16 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>docker 이미지 설치하기</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-03-16-install-docker-image</link>
+      <description>docker 기반으로 Shiny 서버를 운영하기 위한 기초작업을 수행합니다.</description>
+      <category>docker</category>
+      <category>Development</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-03-16-install-docker-image</guid>
+      <pubDate>Wed, 16 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-03-16-install-docker-image/img/shiny-logo.png" medium="image" type="image/png" width="2206" height="2557"/>
+    </item>
     <item>
       <title>예측력 점수에 대해서</title>
       <dc:creator>유충현</dc:creator>
