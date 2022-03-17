@@ -7,7 +7,19 @@
     <description>Dataholic
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Thu, 17 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 18 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>docker 이미지 만들기</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-03-18-custom-image</link>
+      <description>Shiny 애플리케이션에 필요로 하는 R 패키지를 추가로 설치하여 새로운 docker 이미지를 생성합니다.</description>
+      <category>docker</category>
+      <category>Development</category>
+      <category>Shiny</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-03-18-custom-image</guid>
+      <pubDate>Fri, 18 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-03-18-custom-image/img/Dockerfile.png" medium="image" type="image/png" width="1040" height="255"/>
+    </item>
     <item>
       <title>docker 컨테이너 환경 설정하기</title>
       <dc:creator>유충현</dc:creator>
