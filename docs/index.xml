@@ -7,7 +7,18 @@
     <description>Dataholic
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sat, 19 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 21 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>온라인 대화형 코스 플랫폼</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-03-21-introduce-online-course</link>
+      <description>온라인 데이터 과학 학습 플랫폼인 데이터캠프(DataCamp)는 R과 Python의 학습 커리큘럼이 풍부합니다. 그러나 2017년 CEO의 성추행 사건을 계기로, 몇몇 코스 컨텐츠 프로바이더들이 DataCamp와 결별하고 이네스 몬타니(Ines Montani)의 코스 플랫폼을 만들어 무료로 배포하고 있습니다.</description>
+      <category>R Markdown</category>
+      <category>Reproducible Research</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-03-21-introduce-online-course</guid>
+      <pubDate>Mon, 21 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-03-21-introduce-online-course/img/rbootcamp.png" medium="image" type="image/png" width="2226" height="1300"/>
+    </item>
     <item>
       <title>배치 처리하기</title>
       <dc:creator>유충현</dc:creator>
