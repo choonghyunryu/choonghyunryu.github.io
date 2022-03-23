@@ -7,7 +7,19 @@
     <description>Dataholic
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Wed, 23 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 24 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>코스 개발환경 구축하기</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-03-24-dev-infra</link>
+      <description>이네스 코스 개발 환경을 구축합니다.</description>
+      <category>R Markdown</category>
+      <category>Reproducible Research</category>
+      <category>Development</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-03-24-dev-infra</guid>
+      <pubDate>Thu, 24 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-03-24-dev-infra/img/Node.js_logo.png" medium="image" type="image/png" width="1200" height="734"/>
+    </item>
     <item>
       <title>이네스 코스 플랫폼 이해</title>
       <dc:creator>유충현</dc:creator>
