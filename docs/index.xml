@@ -7,7 +7,19 @@
     <description>Dataholic
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Fri, 25 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 26 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>코스 커스트마이징하기</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-03-26-custom-course</link>
+      <description>코스 템플리트를 사용자의 코스로 커스트마이징합니다.</description>
+      <category>R Markdown</category>
+      <category>Reproducible Research</category>
+      <category>Development</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-03-26-custom-course</guid>
+      <pubDate>Sat, 26 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-03-26-custom-course/img/images_logo.png" medium="image" type="image/png" width="225" height="225"/>
+    </item>
     <item>
       <title>코스 템플리트 실행하기</title>
       <dc:creator>유충현</dc:creator>

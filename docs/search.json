@@ -6,28 +6,28 @@
       "description": "데이터가 있는 대지는 생명이 있어 숨을 쉬고 있다. 그리고 아주 예민하고 변덕스럽다. 왜냐하면 조심스럽게 다듬어 주고, 물을 주어야 열매를 맺기 때문이다. 내가 오늘도 거기에 서 있는 이유다.",
       "author": [],
       "contents": "\nDataholic\n블로그의 이름을 데이터홀릭(Dataholic)으로 지었다. 데이터에 빠져서, 데이터와 함께 오랜 시간을 보내고 싶은 염원이다.\n\n저서\n“R을 활용한 데이터 시각화”, 2015, 인사이트\n“R을 이용한 통계학의 이해”, 2013, 자유아카데미\n“R 프로그래밍”, 2010, 자유아카데미\n“R 그래픽스”, 2005, 자유아카데미\n“S-PLUS를 이용한 통계학 이해”, 1997, 영지문화사\n“C로 배우는 통계학”, 1994, PC어드밴스\n\nR 패키지\ndlookr, “Tools for Data Diagnosis, Exploration, Transformation”\nCRAN\nGithub\n\nalookr, “Tools for Binary Classification Modeling”\nCRAN\nGithub\n\nBitStat, “Statistical Analytics using R and Shiny”\nGithub\n\n\n\n\n\n",
-      "last_modified": "2022-03-25T07:29:38+09:00"
+      "last_modified": "2022-03-26T09:50:14+09:00"
     },
     {
       "path": "gallery.html",
       "title": "Gallery of featured posts",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2022-03-25T07:29:39+09:00"
+      "last_modified": "2022-03-26T09:50:15+09:00"
     },
     {
       "path": "index.html",
       "title": "Dataholic",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2022-03-25T07:29:41+09:00"
+      "last_modified": "2022-03-26T09:50:16+09:00"
     },
     {
       "path": "mydev.html",
       "title": "My Developments",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2022-03-25T07:29:41+09:00"
+      "last_modified": "2022-03-26T09:50:17+09:00"
     }
   ],
   "collections": ["posts/posts.json"]
