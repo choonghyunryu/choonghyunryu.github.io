@@ -7,7 +7,19 @@
     <description>Dataholic
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sat, 26 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 27 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>코스 서비스 배포하기</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-03-27-deploy-course</link>
+      <description>개발한 코스 서비스를 배포하여, 수강자가 코스 학습을 할 수 있는 환경을 구축합니다.</description>
+      <category>R Markdown</category>
+      <category>Reproducible Research</category>
+      <category>Development</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-03-27-deploy-course</guid>
+      <pubDate>Sun, 27 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-03-27-deploy-course/img/repo.png" medium="image" type="image/png" width="610" height="465"/>
+    </item>
     <item>
       <title>코스 커스트마이징하기</title>
       <dc:creator>유충현</dc:creator>
@@ -18,7 +30,7 @@
       <category>Development</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-26-custom-course</guid>
       <pubDate>Sat, 26 Mar 2022 00:00:00 +0000</pubDate>
-      <media:content url="https://choonghyunryu.github.io/posts/2022-03-26-custom-course/img/images_logo.png" medium="image" type="image/png" width="225" height="225"/>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-03-26-custom-course/img/after-description.png" medium="image" type="image/png" width="1696" height="536"/>
     </item>
     <item>
       <title>코스 템플리트 실행하기</title>
@@ -30,7 +42,7 @@
       <category>Development</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-25-run-course</guid>
       <pubDate>Fri, 25 Mar 2022 00:00:00 +0000</pubDate>
-      <media:content url="https://choonghyunryu.github.io/posts/2022-03-25-run-course/img/profile_ines.jpeg" medium="image" type="image/jpeg"/>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-03-25-run-course/img/intro-app.png" medium="image" type="image/png" width="2656" height="2036"/>
     </item>
     <item>
       <title>코스 개발환경 구축하기</title>
@@ -155,7 +167,7 @@
       <category>Development</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-13-control-widget</guid>
       <pubDate>Sun, 13 Mar 2022 00:00:00 +0000</pubDate>
-      <media:content url="https://choonghyunryu.github.io/posts/2022-03-13-control-widget/img/Widget_icon.png" medium="image" type="image/png" width="128" height="128"/>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-03-13-control-widget/img/basic-widgets.png" medium="image" type="image/png" width="1920" height="1200"/>
     </item>
     <item>
       <title>사용자 인터페이스 만들기</title>
