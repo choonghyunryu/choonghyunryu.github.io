@@ -21,6 +21,18 @@
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-27-deploy-course/img/repo.png" medium="image" type="image/png" width="610" height="465"/>
     </item>
     <item>
+      <title>맥북에서 GPU를 이용해서 딥러닝 수행하기</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-03-28-plaidml-mac-gpu</link>
+      <description>CUDA를 사용하는 Nvidia의 GPU가 딥러닝 세상을 평정한 지금, 맥북에 설치되어 있는 AMD GPU를 사용해서 딥러닝 학습을 수행할 수 있다는 것 만으로도 의미가 있습니다.</description>
+      <category>Deep Learning</category>
+      <category>Keras</category>
+      <category>python</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-03-28-plaidml-mac-gpu</guid>
+      <pubDate>Sun, 27 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-03-28-plaidml-mac-gpu/img/plaidml_logo.png" medium="image" type="image/png" width="356" height="142"/>
+    </item>
+    <item>
       <title>코스 커스트마이징하기</title>
       <dc:creator>유충현</dc:creator>
       <link>https://choonghyunryu.github.io/posts/2022-03-26-custom-course</link>

@@ -1,0 +1,3096 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007ba5; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #007ba5; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #007ba5; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+
+  <!--radix_placeholder_meta_tags-->
+<title>Dataholic: 맥북에서 GPU를 이용해서 딥러닝 수행하기</title>
+
+<meta property="description" itemprop="description" content="CUDA를 사용하는 Nvidia의 GPU가 딥러닝 세상을 평정한 지금, 맥북에 설치되어 있는 AMD GPU를 사용해서 딥러닝 학습을 수행할 수 있다는 것 만으로도 의미가 있습니다."/>
+
+<link rel="canonical" href="https://choonghyunryu.github.io/2022-03-28-plaidml-mac-gpu/"/>
+
+<!--  https://schema.org/Article -->
+<meta property="article:published" itemprop="datePublished" content="2022-03-28"/>
+<meta property="article:created" itemprop="dateCreated" content="2022-03-28"/>
+<meta name="article:author" content="유충현"/>
+
+<!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+<meta property="og:title" content="Dataholic: 맥북에서 GPU를 이용해서 딥러닝 수행하기"/>
+<meta property="og:type" content="article"/>
+<meta property="og:description" content="CUDA를 사용하는 Nvidia의 GPU가 딥러닝 세상을 평정한 지금, 맥북에 설치되어 있는 AMD GPU를 사용해서 딥러닝 학습을 수행할 수 있다는 것 만으로도 의미가 있습니다."/>
+<meta property="og:url" content="https://choonghyunryu.github.io/2022-03-28-plaidml-mac-gpu/"/>
+<meta property="og:image" content="https://choonghyunryu.github.io/posts/2022-03-28-plaidml-mac-gpu/img/plaidml_logo.png"/>
+<meta property="og:image:width" content="356"/>
+<meta property="og:image:height" content="142"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Dataholic"/>
+
+<!--  https://dev.twitter.com/cards/types/summary -->
+<meta property="twitter:card" content="summary_large_image"/>
+<meta property="twitter:title" content="Dataholic: 맥북에서 GPU를 이용해서 딥러닝 수행하기"/>
+<meta property="twitter:description" content="CUDA를 사용하는 Nvidia의 GPU가 딥러닝 세상을 평정한 지금, 맥북에 설치되어 있는 AMD GPU를 사용해서 딥러닝 학습을 수행할 수 있다는 것 만으로도 의미가 있습니다."/>
+<meta property="twitter:url" content="https://choonghyunryu.github.io/2022-03-28-plaidml-mac-gpu/"/>
+<meta property="twitter:image" content="https://choonghyunryu.github.io/posts/2022-03-28-plaidml-mac-gpu/img/plaidml_logo.png"/>
+<meta property="twitter:image:width" content="356"/>
+<meta property="twitter:image:height" content="142"/>
+
+<!--  https://scholar.google.com/intl/en/scholar/inclusion.html#indexing -->
+<meta name="citation_title" content="Dataholic: 맥북에서 GPU를 이용해서 딥러닝 수행하기"/>
+<meta name="citation_fulltext_html_url" content="https://choonghyunryu.github.io/2022-03-28-plaidml-mac-gpu"/>
+<meta name="citation_online_date" content="2022/03/28"/>
+<meta name="citation_publication_date" content="2022/03/28"/>
+<meta name="citation_author" content="유충현"/>
+<meta name="citation_author_institution" content="한국알사용자회"/>
+<!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+<script type="text/json" id="radix-rmarkdown-metadata">
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","citation_url","date","categories","preview","output","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["맥북에서 GPU를 이용해서 딥러닝 수행하기"]},{"type":"character","attributes":{},"value":["CUDA를 사용하는 Nvidia의 GPU가 딥러닝 세상을 평정한 지금, 맥북에 설치되어 있는 AMD GPU를 사용해서 딥러닝 학습을 수행할 수 있다는 것 만으로도 의미가 있습니다."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation"]}},"value":[{"type":"character","attributes":{},"value":["유충현"]},{"type":"character","attributes":{},"value":["https://choonghyunryu.github.io"]},{"type":"character","attributes":{},"value":["한국알사용자회"]}]}]},{"type":"character","attributes":{},"value":["https://choonghyunryu.github.io/2022-03-28-plaidml-mac-gpu"]},{"type":"character","attributes":{},"value":["2022-03-28"]},{"type":"character","attributes":{},"value":["Deep Learning","Keras","python"]},{"type":"character","attributes":{},"value":["img/plaidml_logo.png"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_depth"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]}]}]},{"type":"character","attributes":{},"value":["https://choonghyunryu.github.io/2022-03-28-plaidml-mac-gpu/"]}]}
+</script>
+<!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["2022-03-28-plaidml-mac-gpu_files/anchor-4.2.2/anchor.min.js","2022-03-28-plaidml-mac-gpu_files/bowser-1.9.3/bowser.min.js","2022-03-28-plaidml-mac-gpu_files/distill-2.2.21/template.v2.js","2022-03-28-plaidml-mac-gpu_files/font-awesome-5.15.3/css/all.css","2022-03-28-plaidml-mac-gpu_files/font-awesome-5.15.3/css/all.min.css","2022-03-28-plaidml-mac-gpu_files/font-awesome-5.15.3/css/v4-shims.css","2022-03-28-plaidml-mac-gpu_files/font-awesome-5.15.3/css/v4-shims.min.css","2022-03-28-plaidml-mac-gpu_files/font-awesome-5.15.3/webfonts/fa-brands-400.ttf","2022-03-28-plaidml-mac-gpu_files/font-awesome-5.15.3/webfonts/fa-brands-400.woff","2022-03-28-plaidml-mac-gpu_files/font-awesome-5.15.3/webfonts/fa-regular-400.ttf","2022-03-28-plaidml-mac-gpu_files/font-awesome-5.15.3/webfonts/fa-regular-400.woff","2022-03-28-plaidml-mac-gpu_files/font-awesome-5.15.3/webfonts/fa-solid-900.ttf","2022-03-28-plaidml-mac-gpu_files/font-awesome-5.15.3/webfonts/fa-solid-900.woff","2022-03-28-plaidml-mac-gpu_files/header-attrs-2.11/header-attrs.js","2022-03-28-plaidml-mac-gpu_files/jquery-3.6.0/jquery-3.6.0.js","2022-03-28-plaidml-mac-gpu_files/jquery-3.6.0/jquery-3.6.0.min.js","2022-03-28-plaidml-mac-gpu_files/jquery-3.6.0/jquery-3.6.0.min.map","2022-03-28-plaidml-mac-gpu_files/panelset-0.2.6/panelset.css","2022-03-28-plaidml-mac-gpu_files/panelset-0.2.6/panelset.js","2022-03-28-plaidml-mac-gpu_files/popper-2.6.0/popper.min.js","2022-03-28-plaidml-mac-gpu_files/tippy-6.2.7/tippy-bundle.umd.min.js","2022-03-28-plaidml-mac-gpu_files/tippy-6.2.7/tippy-light-border.css","2022-03-28-plaidml-mac-gpu_files/tippy-6.2.7/tippy.css","2022-03-28-plaidml-mac-gpu_files/tippy-6.2.7/tippy.umd.min.js","2022-03-28-plaidml-mac-gpu_files/webcomponents-2.0.0/webcomponents.js","img/gauge_cpu.png","img/gauge_gpu.png","img/notebook_spec.png","img/plaidml_logo.png","img/woolsan4_raw.png","img/woolsan4.png"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+<meta name="distill:offset" content="../.."/>
+
+<script type="application/javascript">
+
+  window.headroom_prevent_pin = false;
+
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+
+    // initialize headroom for banner
+    var header = $('header').get(0);
+    var headerHeight = header.offsetHeight;
+    var headroom = new Headroom(header, {
+      tolerance: 5,
+      onPin : function() {
+        if (window.headroom_prevent_pin) {
+          window.headroom_prevent_pin = false;
+          headroom.unpin();
+        }
+      }
+    });
+    headroom.init();
+    if(window.location.hash)
+      headroom.unpin();
+    $(header).addClass('headroom--transition');
+
+    // offset scroll location for banner on hash change
+    // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+    window.addEventListener("hashchange", function(event) {
+      window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+    });
+
+    // responsive menu
+    $('.distill-site-header').each(function(i, val) {
+      var topnav = $(this);
+      var toggle = topnav.find('.nav-toggle');
+      toggle.on('click', function() {
+        topnav.toggleClass('responsive');
+      });
+    });
+
+    // nav dropdowns
+    $('.nav-dropbtn').click(function(e) {
+      $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+      $(this).parent().siblings('.nav-dropdown')
+         .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $("body").click(function(e){
+      $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $(".nav-dropdown").click(function(e){
+      e.stopPropagation();
+    });
+  });
+</script>
+
+<style type="text/css">
+
+/* Theme (user-documented overrideables for nav appearance) */
+
+.distill-site-nav {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: #0F2E3D;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.distill-site-nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.distill-site-nav a:hover {
+  color: white;
+}
+
+@media print {
+  .distill-site-nav {
+    display: none;
+  }
+}
+
+.distill-site-header {
+
+}
+
+.distill-site-footer {
+
+}
+
+
+/* Site Header */
+
+.distill-site-header {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.distill-site-header .nav-left {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header .nav-left {
+    margin-left: 0;
+  }
+}
+
+
+.distill-site-header .nav-right {
+  float: right;
+  margin-right: 8px;
+}
+
+.distill-site-header a,
+.distill-site-header .title {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 10px 14px 10px;
+}
+
+.distill-site-header .title {
+  font-size: 18px;
+  min-width: 150px;
+}
+
+.distill-site-header .logo {
+  padding: 0;
+}
+
+.distill-site-header .logo img {
+  display: none;
+  max-height: 20px;
+  width: auto;
+  margin-bottom: -4px;
+}
+
+.distill-site-header .nav-image img {
+  max-height: 18px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: -3px;
+}
+
+
+
+@media screen and (min-width: 1000px) {
+  .distill-site-header .logo img {
+    display: inline-block;
+  }
+  .distill-site-header .nav-left {
+    margin-left: 20px;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 20px;
+  }
+  .distill-site-header .title {
+    padding-left: 12px;
+  }
+}
+
+
+.distill-site-header .nav-toggle {
+  display: none;
+}
+
+.nav-dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.nav-dropdown .nav-dropbtn {
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 10px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  margin-top: 1px;
+  z-index: 2;
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+  z-index: 1;
+  margin-top: 2px;
+  white-space: nowrap;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.nav-dropdown-content hr {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-dropdown-active {
+  display: block;
+}
+
+.nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
+  color: black;
+  padding: 6px 24px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.nav-dropdown-content .nav-dropdown-header {
+  display: block;
+  padding: 5px 24px;
+  padding-bottom: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999;
+  white-space: nowrap;
+}
+
+.nav-dropdown:hover .nav-dropbtn {
+  color: white;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.nav-right .nav-dropdown-content {
+  margin-left: -45%;
+  right: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
+  .distill-site-header a.nav-toggle {
+    float: right;
+    display: block;
+  }
+  .distill-site-header .title {
+    margin-left: 0;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 0;
+  }
+  .distill-site-header {
+    overflow: hidden;
+  }
+  .nav-right .nav-dropdown-content {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-header.responsive {position: relative; min-height: 500px; }
+  .distill-site-header.responsive a.nav-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .distill-site-header.responsive a,
+  .distill-site-header.responsive .nav-dropdown {
+    display: block;
+    text-align: left;
+  }
+  .distill-site-header.responsive .nav-left,
+  .distill-site-header.responsive .nav-right {
+    width: 100%;
+  }
+  .distill-site-header.responsive .nav-dropdown {float: none;}
+  .distill-site-header.responsive .nav-dropdown-content {position: relative;}
+  .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Site Footer */
+
+.distill-site-footer {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 3;
+  margin-top: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+/* Headroom */
+
+d-title {
+  padding-top: 6rem;
+}
+
+@media print {
+  d-title {
+    padding-top: 4rem;
+  }
+}
+
+.headroom {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.headroom--transition {
+  transition: all .4s ease-in-out;
+}
+
+.headroom--unpinned {
+  top: -100px;
+}
+
+.headroom--pinned {
+  top: 0;
+}
+
+/* adjust viewport for navbar height */
+/* helps vertically center bootstrap (non-distill) content */
+.min-vh-100 {
+  min-height: calc(100vh - 100px) !important;
+}
+
+</style>
+
+<script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="../../site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
+<link href="../../site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
+<script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
+<script src="../../site_libs/autocomplete-0.37.1/autocomplete.min.js"></script>
+<script src="../../site_libs/fuse-6.4.1/fuse.min.js"></script>
+
+<script type="application/javascript">
+
+function getMeta(metaName) {
+  var metas = document.getElementsByTagName('meta');
+  for (let i = 0; i < metas.length; i++) {
+    if (metas[i].getAttribute('name') === metaName) {
+      return metas[i].getAttribute('content');
+    }
+  }
+  return '';
+}
+
+function offsetURL(url) {
+  var offset = getMeta('distill:offset');
+  return offset ? offset + '/' + url : url;
+}
+
+function createFuseIndex() {
+
+  // create fuse index
+  var options = {
+    keys: [
+      { name: 'title', weight: 20 },
+      { name: 'categories', weight: 15 },
+      { name: 'description', weight: 10 },
+      { name: 'contents', weight: 5 },
+    ],
+    ignoreLocation: true,
+    threshold: 0
+  };
+  var fuse = new window.Fuse([], options);
+
+  // fetch the main search.json
+  return fetch(offsetURL('search.json'))
+    .then(function(response) {
+      if (response.status == 200) {
+        return response.json().then(function(json) {
+          // index main articles
+          json.articles.forEach(function(article) {
+            fuse.add(article);
+          });
+          // download collections and index their articles
+          return Promise.all(json.collections.map(function(collection) {
+            return fetch(offsetURL(collection)).then(function(response) {
+              if (response.status === 200) {
+                return response.json().then(function(articles) {
+                  articles.forEach(function(article) {
+                    fuse.add(article);
+                  });
+                })
+              } else {
+                return Promise.reject(
+                  new Error('Unexpected status from search index request: ' +
+                            response.status)
+                );
+              }
+            });
+          })).then(function() {
+            return fuse;
+          });
+        });
+
+      } else {
+        return Promise.reject(
+          new Error('Unexpected status from search index request: ' +
+                      response.status)
+        );
+      }
+    });
+}
+
+window.document.addEventListener("DOMContentLoaded", function (event) {
+
+  // get search element (bail if we don't have one)
+  var searchEl = window.document.getElementById('distill-search');
+  if (!searchEl)
+    return;
+
+  createFuseIndex()
+    .then(function(fuse) {
+
+      // make search box visible
+      searchEl.classList.remove('hidden');
+
+      // initialize autocomplete
+      var options = {
+        autoselect: true,
+        hint: false,
+        minLength: 2,
+      };
+      window.autocomplete(searchEl, options, [{
+        source: function(query, callback) {
+          const searchOptions = {
+            isCaseSensitive: false,
+            shouldSort: true,
+            minMatchCharLength: 2,
+            limit: 10,
+          };
+          var results = fuse.search(query, searchOptions);
+          callback(results
+            .map(function(result) { return result.item; })
+          );
+        },
+        templates: {
+          suggestion: function(suggestion) {
+            var img = suggestion.preview && Object.keys(suggestion.preview).length > 0
+              ? `<img src="${offsetURL(suggestion.preview)}"</img>`
+              : '';
+            var html = `
+              <div class="search-item">
+                <h3>${suggestion.title}</h3>
+                <div class="search-item-description">
+                  ${suggestion.description || ''}
+                </div>
+                <div class="search-item-preview">
+                  ${img}
+                </div>
+              </div>
+            `;
+            return html;
+          }
+        }
+      }]).on('autocomplete:selected', function(event, suggestion) {
+        window.location.href = offsetURL(suggestion.path);
+      });
+      // remove inline display style on autocompleter (we want to
+      // manage responsive display via css)
+      $('.algolia-autocomplete').css("display", "");
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+
+});
+
+</script>
+
+<style type="text/css">
+
+.nav-search {
+  font-size: x-small;
+}
+
+/* Algolioa Autocomplete */
+
+.algolia-autocomplete {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: sub;
+  background-color: white;
+  color: black;
+  padding: 6px;
+  padding-top: 8px;
+  padding-bottom: 0;
+  border-radius: 6px;
+  border: 1px #0F2E3D solid;
+  width: 180px;
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-nav .algolia-autocomplete {
+    display: none;
+    visibility: hidden;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete {
+    display: inline-block;
+    visibility: visible;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete .aa-dropdown-menu {
+    margin-left: 0;
+    width: 400px;
+    max-height: 400px;
+  }
+}
+
+.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+  width: 90%;
+  outline: none;
+  border: none;
+}
+
+.algolia-autocomplete .aa-hint {
+  color: #999;
+}
+.algolia-autocomplete .aa-dropdown-menu {
+  width: 550px;
+  max-height: 70vh;
+  overflow-x: visible;
+  overflow-y: scroll;
+  padding: 5px;
+  margin-top: 3px;
+  margin-left: -150px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #999;
+  border-top: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+  cursor: pointer;
+  padding: 5px 4px;
+  border-bottom: 1px solid #eee;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion:last-of-type {
+  border-bottom: none;
+  margin-bottom: 2px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item {
+  overflow: hidden;
+  font-size: 0.8em;
+  line-height: 1.4em;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item h3 {
+  font-size: 1rem;
+  margin-block-start: 0;
+  margin-block-end: 5px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-description {
+  display: inline-block;
+  overflow: hidden;
+  height: 2.8em;
+  width: 80%;
+  margin-right: 4%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview {
+  display: inline-block;
+  width: 15%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img {
+  height: 3em;
+  width: auto;
+  display: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img[src] {
+  display: initial;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+  background-color: #eee;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+  font-weight: bold;
+  font-style: normal;
+}
+
+</style>
+
+
+<!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+<style type="text/css">
+
+body {
+  background-color: white;
+}
+
+.pandoc-table {
+  width: 100%;
+}
+
+.pandoc-table>caption {
+  margin-bottom: 10px;
+}
+
+.pandoc-table th:not([align]) {
+  text-align: left;
+}
+
+.pagedtable-footer {
+  font-size: 15px;
+}
+
+d-byline .byline {
+  grid-template-columns: 2fr 2fr;
+}
+
+d-byline .byline h3 {
+  margin-block-start: 1.5em;
+}
+
+d-byline .byline .authors-affiliations h3 {
+  margin-block-start: 0.5em;
+}
+
+.authors-affiliations .orcid-id {
+  width: 16px;
+  height:16px;
+  margin-left: 4px;
+  margin-right: 4px;
+  vertical-align: middle;
+  padding-bottom: 2px;
+}
+
+d-title .dt-tags {
+  margin-top: 1em;
+  grid-column: text;
+}
+
+.dt-tags .dt-tag {
+  text-decoration: none;
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0em 0.4em;
+  margin-right: 0.5em;
+  margin-bottom: 0.4em;
+  font-size: 70%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+d-article table.gt_table td,
+d-article table.gt_table th {
+  border-bottom: none;
+}
+
+.html-widget {
+  margin-bottom: 2.0em;
+}
+
+.l-screen-inset {
+  padding-right: 16px;
+}
+
+.l-screen .caption {
+  margin-left: 10px;
+}
+
+.shaded {
+  background: rgb(247, 247, 247);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .html-widget {
+  margin-bottom: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .shaded-content {
+  background: white;
+}
+
+.text-output {
+  margin-top: 0;
+  line-height: 1.5em;
+}
+
+.hidden {
+  display: none !important;
+}
+
+d-article {
+  padding-top: 2.5rem;
+  padding-bottom: 30px;
+}
+
+d-appendix {
+  padding-top: 30px;
+}
+
+d-article>p>img {
+  width: 100%;
+}
+
+d-article h2 {
+  margin: 1rem 0 1.5rem 0;
+}
+
+d-article h3 {
+  margin-top: 1.5rem;
+}
+
+d-article iframe {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 2.0em;
+  width: 100%;
+}
+
+/* Tweak code blocks */
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: auto;
+}
+
+d-article div.sourceCode {
+  background-color: white;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 10px;
+  font-size: 12px;
+  border-left: 2px solid rgba(0,0,0,0.1);
+}
+
+d-article pre {
+  font-size: 12px;
+  color: black;
+  background: none;
+  margin-top: 0;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+d-article pre a {
+  border-bottom: none;
+}
+
+d-article pre a:hover {
+  border-bottom: none;
+  text-decoration: underline;
+}
+
+d-article details {
+  grid-column: text;
+  margin-bottom: 0.8em;
+}
+
+@media(min-width: 768px) {
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: visible !important;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 18px;
+  font-size: 14px;
+}
+
+d-article pre {
+  font-size: 14px;
+}
+
+}
+
+figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+/* CSS for d-contents */
+
+.d-contents {
+  grid-column: text;
+  color: rgba(0,0,0,0.8);
+  font-size: 0.9em;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+  padding-bottom: 0.5em;
+  margin-bottom: 1em;
+  padding-left: 0.25em;
+  justify-self: start;
+}
+
+@media(min-width: 1000px) {
+  .d-contents.d-contents-float {
+    height: 0;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    justify-self: center;
+    padding-right: 3em;
+    padding-left: 2em;
+  }
+}
+
+.d-contents nav h3 {
+  font-size: 18px;
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+.d-contents li {
+  list-style-type: none
+}
+
+.d-contents nav > ul {
+  padding-left: 0;
+}
+
+.d-contents ul {
+  padding-left: 1em
+}
+
+.d-contents nav ul li {
+  margin-top: 0.6em;
+  margin-bottom: 0.2em;
+}
+
+.d-contents nav a {
+  font-size: 13px;
+  border-bottom: none;
+  text-decoration: none
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.d-contents nav a:hover {
+  text-decoration: underline solid rgba(0, 0, 0, 0.6)
+}
+
+.d-contents nav > ul > li > a {
+  font-weight: 600;
+}
+
+.d-contents nav > ul > li > ul {
+  font-weight: inherit;
+}
+
+.d-contents nav > ul > li > ul > li {
+  margin-top: 0.2em;
+}
+
+
+.d-contents nav ul {
+  margin-top: 0;
+  margin-bottom: 0.25em;
+}
+
+.d-article-with-toc h2:nth-child(2) {
+  margin-top: 0;
+}
+
+
+/* Figure */
+
+.figure {
+  position: relative;
+  margin-bottom: 2.5em;
+  margin-top: 1.5em;
+}
+
+.figure img {
+  width: 100%;
+}
+
+.figure .caption {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  line-height: 1.5em;
+}
+
+.figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.figure .caption a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.figure .caption b,
+.figure .caption strong, {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1.0);
+}
+
+/* Citations */
+
+d-article .citation {
+  color: inherit;
+  cursor: inherit;
+}
+
+div.hanging-indent{
+  margin-left: 1em; text-indent: -1em;
+}
+
+/* Citation hover box */
+
+.tippy-box[data-theme~=light-border] {
+  background-color: rgba(250, 250, 250, 0.95);
+}
+
+.tippy-content > p {
+  margin-bottom: 0;
+  padding: 2px;
+}
+
+
+/* Tweak 1000px media break to show more text */
+
+@media(min-width: 1000px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 16px;
+  }
+
+  .grid {
+    grid-column-gap: 16px;
+  }
+
+  d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+  }
+  figure .caption, .figure .caption, figure figcaption {
+    font-size: 13px;
+  }
+}
+
+@media(min-width: 1180px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 32px;
+  }
+
+  .grid {
+    grid-column-gap: 32px;
+  }
+}
+
+
+/* Get the citation styles for the appendix (not auto-injected on render since
+   we do our own rendering of the citation appendix) */
+
+d-appendix .citation-appendix,
+.d-appendix .citation-appendix {
+  font-size: 11px;
+  line-height: 15px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 18px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.02);
+  padding: 10px 18px;
+  border-radius: 3px;
+  color: rgba(150, 150, 150, 1);
+  overflow: hidden;
+  margin-top: -12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Include appendix styles here so they can be overridden */
+
+d-appendix {
+  contain: layout style;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-top: 60px;
+  margin-bottom: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  color: rgba(0,0,0,0.5);
+  padding-top: 60px;
+  padding-bottom: 48px;
+}
+
+d-appendix h3 {
+  grid-column: page-start / text-start;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 1em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.65);
+}
+
+d-appendix h3 + * {
+  margin-top: 1em;
+}
+
+d-appendix ol {
+  padding: 0 0 0 15px;
+}
+
+@media (min-width: 768px) {
+  d-appendix ol {
+    padding: 0 0 0 30px;
+    margin-left: -30px;
+  }
+}
+
+d-appendix li {
+  margin-bottom: 1em;
+}
+
+d-appendix a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+d-appendix > * {
+  grid-column: text;
+}
+
+d-appendix > d-footnote-list,
+d-appendix > d-citation-list,
+d-appendix > distill-appendix {
+  grid-column: screen;
+}
+
+/* Include footnote styles here so they can be overridden */
+
+d-footnote-list {
+  contain: layout style;
+}
+
+d-footnote-list > * {
+  grid-column: text;
+}
+
+d-footnote-list a.footnote-backlink {
+  color: rgba(0,0,0,0.3);
+  padding-left: 0.5em;
+}
+
+
+
+/* Anchor.js */
+
+.anchorjs-link {
+  /*transition: all .25s linear; */
+  text-decoration: none;
+  border-bottom: none;
+}
+*:hover > .anchorjs-link {
+  margin-left: -1.125em !important;
+  text-decoration: none;
+  border-bottom: none;
+}
+
+/* Social footer */
+
+.social_footer {
+  margin-top: 30px;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.67);
+}
+
+.disqus-comments {
+  margin-right: 30px;
+}
+
+.disqus-comment-count {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+#disqus_thread {
+  margin-top: 30px;
+}
+
+.article-sharing a {
+  border-bottom: none;
+  margin-right: 8px;
+}
+
+.article-sharing a:hover {
+  border-bottom: none;
+}
+
+.sidebar-section.subscribe {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.subscribe p {
+  margin-bottom: 0.5em;
+}
+
+
+.article-footer .subscribe {
+  font-size: 15px;
+  margin-top: 45px;
+}
+
+
+.sidebar-section.custom {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.custom p {
+  margin-bottom: 0.5em;
+}
+
+/* Styles for listing layout (hide title) */
+.layout-listing d-title, .layout-listing .d-title {
+  display: none;
+}
+
+/* Styles for posts lists (not auto-injected) */
+
+
+.posts-with-sidebar {
+  padding-left: 45px;
+  padding-right: 45px;
+}
+
+.posts-list .description h2,
+.posts-list .description p {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+.posts-list .description h2 {
+  font-weight: 700;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.posts-list h2.post-tag {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding-bottom: 12px;
+}
+.posts-list {
+  margin-top: 60px;
+  margin-bottom: 24px;
+}
+
+.posts-list .post-preview {
+  text-decoration: none;
+  overflow: hidden;
+  display: block;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 24px 0;
+}
+
+.post-preview-last {
+  border-bottom: none !important;
+}
+
+.posts-list .posts-list-caption {
+  grid-column: screen;
+  font-weight: 400;
+}
+
+.posts-list .post-preview h2 {
+  margin: 0 0 6px 0;
+  line-height: 1.2em;
+  font-style: normal;
+  font-size: 24px;
+}
+
+.posts-list .post-preview p {
+  margin: 0 0 12px 0;
+  line-height: 1.4em;
+  font-size: 16px;
+}
+
+.posts-list .post-preview .thumbnail {
+  box-sizing: border-box;
+  margin-bottom: 24px;
+  position: relative;
+  max-width: 500px;
+}
+.posts-list .post-preview img {
+  width: 100%;
+  display: block;
+}
+
+.posts-list .metadata {
+  font-size: 12px;
+  line-height: 1.4em;
+  margin-bottom: 18px;
+}
+
+.posts-list .metadata > * {
+  display: inline-block;
+}
+
+.posts-list .metadata .publishedDate {
+  margin-right: 2em;
+}
+
+.posts-list .metadata .dt-authors {
+  display: block;
+  margin-top: 0.3em;
+  margin-right: 2em;
+}
+
+.posts-list .dt-tags {
+  display: block;
+  line-height: 1em;
+}
+
+.posts-list .dt-tags .dt-tag {
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0.3em 0.4em;
+  margin-right: 0.2em;
+  margin-bottom: 0.4em;
+  font-size: 60%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.posts-list img {
+  opacity: 1;
+}
+
+.posts-list img[data-src] {
+  opacity: 0;
+}
+
+.posts-more {
+  clear: both;
+}
+
+
+.posts-sidebar {
+  font-size: 16px;
+}
+
+.posts-sidebar h3 {
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.sidebar-section {
+  margin-bottom: 30px;
+}
+
+.categories ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.categories li {
+  color: rgba(0, 0, 0, 0.8);
+  margin-bottom: 0;
+}
+
+.categories li>a {
+  border-bottom: none;
+}
+
+.categories li>a:hover {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.categories .active {
+  font-weight: 600;
+}
+
+.categories .category-count {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+
+@media(min-width: 768px) {
+  .posts-list .post-preview h2 {
+    font-size: 26px;
+  }
+  .posts-list .post-preview .thumbnail {
+    float: right;
+    width: 30%;
+    margin-bottom: 0;
+  }
+  .posts-list .post-preview .description {
+    float: left;
+    width: 45%;
+  }
+  .posts-list .post-preview .metadata {
+    float: left;
+    width: 20%;
+    margin-top: 8px;
+  }
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.5em;
+    font-size: 16px;
+  }
+  .posts-with-sidebar .posts-list {
+    float: left;
+    width: 75%;
+  }
+  .posts-with-sidebar .posts-sidebar {
+    float: right;
+    width: 20%;
+    margin-top: 60px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+}
+
+
+/* Improve display for browsers without grid (IE/Edge <= 15) */
+
+.downlevel {
+  line-height: 1.6em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
+
+.downlevel .d-title {
+  padding-top: 6rem;
+  padding-bottom: 1.5rem;
+}
+
+.downlevel .d-title h1 {
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1.1em;
+  margin: 0 0 0.5rem;
+}
+
+.downlevel .d-title p {
+  font-weight: 300;
+  font-size: 1.2rem;
+  line-height: 1.55em;
+  margin-top: 0;
+}
+
+.downlevel .d-byline {
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  font-size: 0.8rem;
+  line-height: 1.8em;
+}
+
+.downlevel .section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.downlevel .d-article {
+  font-size: 1.06rem;
+  line-height: 1.7em;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+
+.downlevel .d-appendix {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.5);
+  padding-top: 40px;
+  padding-bottom: 48px;
+}
+
+.downlevel .footnotes ol {
+  padding-left: 13px;
+}
+
+.downlevel .base-grid,
+.downlevel .distill-header,
+.downlevel .d-title,
+.downlevel .d-abstract,
+.downlevel .d-article,
+.downlevel .d-appendix,
+.downlevel .distill-appendix,
+.downlevel .d-byline,
+.downlevel .d-footnote-list,
+.downlevel .d-citation-list,
+.downlevel .distill-footer,
+.downlevel .appendix-bottom,
+.downlevel .posts-container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+@media(min-width: 768px) {
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+  padding-left: 150px;
+  padding-right: 150px;
+  max-width: 900px;
+}
+}
+
+.downlevel pre code {
+  display: block;
+  border-left: 2px solid rgba(0, 0, 0, .1);
+  padding: 0 0 0 20px;
+  font-size: 14px;
+}
+
+.downlevel code, .downlevel pre {
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+.downlevel .posts-list .post-preview {
+  color: inherit;
+}
+
+
+
+</style>
+
+<script type="application/javascript">
+
+function is_downlevel_browser() {
+  if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                 window.navigator.userAgent)) {
+    return true;
+  } else {
+    return window.load_distill_framework === undefined;
+  }
+}
+
+// show body when load is complete
+function on_load_complete() {
+
+  // add anchors
+  if (window.anchors) {
+    window.anchors.options.placement = 'left';
+    window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+  }
+
+
+  // set body to visible
+  document.body.style.visibility = 'visible';
+
+  // force redraw for leaflet widgets
+  if (window.HTMLWidgets) {
+    var maps = window.HTMLWidgets.findAll(".leaflet");
+    $.each(maps, function(i, el) {
+      var map = this.getMap();
+      map.invalidateSize();
+      map.eachLayer(function(layer) {
+        if (layer instanceof L.TileLayer)
+          layer.redraw();
+      });
+    });
+  }
+
+  // trigger 'shown' so htmlwidgets resize
+  $('d-article').trigger('shown');
+}
+
+function init_distill() {
+
+  init_common();
+
+  // create front matter
+  var front_matter = $('<d-front-matter></d-front-matter>');
+  $('#distill-front-matter').wrap(front_matter);
+
+  // create d-title
+  $('.d-title').changeElementType('d-title');
+
+  // create d-byline
+  var byline = $('<d-byline></d-byline>');
+  $('.d-byline').replaceWith(byline);
+
+  // create d-article
+  var article = $('<d-article></d-article>');
+  $('.d-article').wrap(article).children().unwrap();
+
+  // move posts container into article
+  $('.posts-container').appendTo($('d-article'));
+
+  // create d-appendix
+  $('.d-appendix').changeElementType('d-appendix');
+
+  // flag indicating that we have appendix items
+  var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+  // replace footnotes with <d-footnote>
+  $('.footnote-ref').each(function(i, val) {
+    appendix = true;
+    var href = $(this).attr('href');
+    var id = href.replace('#', '');
+    var fn = $('#' + id);
+    var fn_p = $('#' + id + '>p');
+    fn_p.find('.footnote-back').remove();
+    var text = fn_p.html();
+    var dtfn = $('<d-footnote></d-footnote>');
+    dtfn.html(text);
+    $(this).replaceWith(dtfn);
+  });
+  // remove footnotes
+  $('.footnotes').remove();
+
+  // move refs into #references-listing
+  $('#references-listing').replaceWith($('#refs'));
+
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    var id = $(this).attr('id');
+    $('.d-contents a[href="#' + id + '"]').parent().remove();
+    appendix = true;
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+  });
+
+  // show d-appendix if we have appendix content
+  $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+  // localize layout chunks to just output
+  $('.layout-chunk').each(function(i, val) {
+
+    // capture layout
+    var layout = $(this).attr('data-layout');
+
+    // apply layout to markdown level block elements
+    var elements = $(this).children().not('details, div.sourceCode, pre, script');
+    elements.each(function(i, el) {
+      var layout_div = $('<div class="' + layout + '"></div>');
+      if (layout_div.hasClass('shaded')) {
+        var shaded_content = $('<div class="shaded-content"></div>');
+        $(this).wrap(shaded_content);
+        $(this).parent().wrap(layout_div);
+      } else {
+        $(this).wrap(layout_div);
+      }
+    });
+
+
+    // unwrap the layout-chunk div
+    $(this).children().unwrap();
+  });
+
+  // remove code block used to force  highlighting css
+  $('.distill-force-highlighting-css').parent().remove();
+
+  // remove empty line numbers inserted by pandoc when using a
+  // custom syntax highlighting theme
+  $('code.sourceCode a:empty').remove();
+
+  // load distill framework
+  load_distill_framework();
+
+  // wait for window.distillRunlevel == 4 to do post processing
+  function distill_post_process() {
+
+    if (!window.distillRunlevel || window.distillRunlevel < 4)
+      return;
+
+    // hide author/affiliations entirely if we have no authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+    if (!have_authors)
+      $('d-byline').addClass('hidden');
+
+    // article with toc class
+    $('.d-contents').parent().addClass('d-article-with-toc');
+
+    // strip links that point to #
+    $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+    // add orcid ids
+    $('.authors-affiliations').find('.author').each(function(i, el) {
+      var orcid_id = front_matter.authors[i].orcidID;
+      if (orcid_id) {
+        var a = $('<a></a>');
+        a.attr('href', 'https://orcid.org/' + orcid_id);
+        var img = $('<img></img>');
+        img.addClass('orcid-id');
+        img.attr('alt', 'ORCID ID');
+        img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+        a.append(img);
+        $(this).append(a);
+      }
+    });
+
+    // hide elements of author/affiliations grid that have no value
+    function hide_byline_column(caption) {
+      $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+    }
+
+    // affiliations
+    var have_affiliations = false;
+    for (var i = 0; i<front_matter.authors.length; ++i) {
+      var author = front_matter.authors[i];
+      if (author.affiliation !== "&nbsp;") {
+        have_affiliations = true;
+        break;
+      }
+    }
+    if (!have_affiliations)
+      $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+    // published date
+    if (!front_matter.publishedDate)
+      hide_byline_column("Published");
+
+    // document object identifier
+    var doi = $('d-byline').find('h3:contains("DOI")');
+    var doi_p = doi.next().empty();
+    if (!front_matter.doi) {
+      // if we have a citation and valid citationText then link to that
+      if ($('#citation').length > 0 && front_matter.citationText) {
+        doi.html('Citation');
+        $('<a href="#citation"></a>')
+          .text(front_matter.citationText)
+          .appendTo(doi_p);
+      } else {
+        hide_byline_column("DOI");
+      }
+    } else {
+      $('<a></a>')
+         .attr('href', "https://doi.org/" + front_matter.doi)
+         .html(front_matter.doi)
+         .appendTo(doi_p);
+    }
+
+     // change plural form of authors/affiliations
+    if (front_matter.authors.length === 1) {
+      var grid = $('.authors-affiliations');
+      grid.children('h3:contains("Authors")').text('Author');
+      grid.children('h3:contains("Affiliations")').text('Affiliation');
+    }
+
+    // remove d-appendix and d-footnote-list local styles
+    $('d-appendix > style:first-child').remove();
+    $('d-footnote-list > style:first-child').remove();
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // hoverable references
+    $('span.citation[data-cites]').each(function() {
+      var refs = $(this).attr('data-cites').split(" ");
+      var refHtml = refs.map(function(ref) {
+        return "<p>" + $('#ref-' + ref).html() + "</p>";
+      }).join("\n");
+      window.tippy(this, {
+        allowHTML: true,
+        content: refHtml,
+        maxWidth: 500,
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start'
+      });
+    });
+
+    // clear polling timer
+    clearInterval(tid);
+
+    // show body now that everything is ready
+    on_load_complete();
+  }
+
+  var tid = setInterval(distill_post_process, 50);
+  distill_post_process();
+
+}
+
+function init_downlevel() {
+
+  init_common();
+
+   // insert hr after d-title
+  $('.d-title').after($('<hr class="section-separator"/>'));
+
+  // check if we have authors
+  var front_matter = JSON.parse($("#distill-front-matter").html());
+  var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+  // manage byline/border
+  if (!have_authors)
+    $('.d-byline').remove();
+  $('.d-byline').after($('<hr class="section-separator"/>'));
+  $('.d-byline a').remove();
+
+  // remove toc
+  $('.d-contents').remove();
+
+  // move appendix elements
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+  });
+
+
+  // inject headers into references and footnotes
+  var refs_header = $('<h3></h3>');
+  refs_header.text('References');
+  $('#refs').prepend(refs_header);
+
+  var footnotes_header = $('<h3></h3');
+  footnotes_header.text('Footnotes');
+  $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+  // move appendix-bottom entries to the bottom
+  $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+  $('.appendix-bottom').remove();
+
+  // remove appendix if it's empty
+  if ($('.d-appendix').children().length === 0)
+    $('.d-appendix').remove();
+
+  // prepend separator above appendix
+  $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+  // trim code
+  $('pre>code').each(function(i, val) {
+    $(this).html($.trim($(this).html()));
+  });
+
+  // move posts-container right before article
+  $('.posts-container').insertBefore($('.d-article'));
+
+  $('body').addClass('downlevel');
+
+  on_load_complete();
+}
+
+
+function init_common() {
+
+  // jquery plugin to change element types
+  (function($) {
+    $.fn.changeElementType = function(newType) {
+      var attrs = {};
+
+      $.each(this[0].attributes, function(idx, attr) {
+        attrs[attr.nodeName] = attr.nodeValue;
+      });
+
+      this.replaceWith(function() {
+        return $("<" + newType + "/>", attrs).append($(this).contents());
+      });
+    };
+  })(jQuery);
+
+  // prevent underline for linked images
+  $('a > img').parent().css({'border-bottom' : 'none'});
+
+  // mark non-body figures created by knitr chunks as 100% width
+  $('.layout-chunk').each(function(i, val) {
+    var figures = $(this).find('img, .html-widget');
+    if ($(this).attr('data-layout') !== "l-body") {
+      figures.css('width', '100%');
+    } else {
+      figures.css('max-width', '100%');
+      figures.filter("[width]").each(function(i, val) {
+        var fig = $(this);
+        fig.css('width', fig.attr('width') + 'px');
+      });
+
+    }
+  });
+
+  // auto-append index.html to post-preview links in file: protocol
+  // and in rstudio ide preview
+  $('.post-preview').each(function(i, val) {
+    if (window.location.protocol === "file:")
+      $(this).attr('href', $(this).attr('href') + "index.html");
+  });
+
+  // get rid of index.html references in header
+  if (window.location.protocol !== "file:") {
+    $('.distill-site-header a[href]').each(function(i,val) {
+      $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+    });
+  }
+
+  // add class to pandoc style tables
+  $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+  $('.kable-table').children('table').addClass('pandoc-table');
+
+  // add figcaption style to table captions
+  $('caption').parent('table').addClass("figcaption");
+
+  // initialize posts list
+  if (window.init_posts_list)
+    window.init_posts_list();
+
+  // implmement disqus comment link
+  $('.disqus-comment-count').click(function() {
+    window.headroom_prevent_pin = true;
+    $('#disqus_thread').toggleClass('hidden');
+    if (!$('#disqus_thread').hasClass('hidden')) {
+      var offset = $(this).offset();
+      $(window).resize();
+      $('html, body').animate({
+        scrollTop: offset.top - 35
+      });
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (is_downlevel_browser())
+    init_downlevel();
+  else
+    window.addEventListener('WebComponentsReady', init_distill);
+});
+
+</script>
+
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+
+
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    sans-serif;
+  --mono-font:       monospace;
+  --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
+}
+
+/*-- ARTICLE METADATA --*/
+d-byline {
+  --heading-size:    0.6rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    18px;
+  --contents-size:   13px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       18px;
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+.distill-site-footer {
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+</style>
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+
+:root {
+  --custom-grey60: rgb(102, 102, 102);
+  --custom-grey20: rgb(204, 204, 204);
+  --custom-grey10: rgb(230, 230, 230);
+  --custom-blue: rgb(0, 114, 188);
+  --custom-lightblue: rgb(204, 227, 242);
+  --custom-orange: rgb(255, 127, 42); 
+  --custom-lightorange: rgb(255, 204, 170); 
+}
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    sans-serif;
+  --mono-font:       monospace;
+  --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
+}
+
+/*-- ARTICLE METADATA --*/
+d-byline {
+  --heading-size:    0.6rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    18px;
+  --contents-size:   13px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       18px;
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       var(--custom-blue);
+}
+
+.distill-site-footer {
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       var(--custom-blue);
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+
+.preface {
+  font-size: 11pt;
+  background-color: var(--custom-lightblue);
+  margin-top: 1em;
+  margin-bottom: 0.5em;  
+  padding: 1.5em;
+  padding-top: 0.5em;
+  border-color: DodgerBlue;
+}
+
+h1 {
+  font-size: 30px !important;  
+  color: var(--custom-blue) !important;
+  font-family: NanumSquare !important;
+  margin-top: 15px !important;
+  padding-top: 15px !important;  
+  margin-bottom: 15px !important;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 25px !important;  
+  color: var(--custom-blue) !important;  
+  font-family: NanumSquare !important;  
+  padding-top: 15px !important;  
+  margin-top: 15px !important;
+  padding-bottom: 10px !important;  
+  margin-bottom: 10px !important;    
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 20px !important;  
+  color: var(--custom-blue) !important;  
+  font-family: NanumSquare !important;  
+  margin-top: 10px !important;
+  margin-bottom: 10px !important; 
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;   
+  font-weight: bold;
+}
+
+.tab-content {
+   top: 25px;
+   padding: 20px;
+}
+
+.bg-blue,
+.bg-orange,
+.bg-grey {
+  padding: 1.6em;
+  margin-top: 1.0em;
+  margin-bottom: 1.0em;
+}
+.bg-blue {
+  background-color: var(--custom-lightblue);
+}
+.bg-orange {
+  background-color: var(--custom-lightorange);
+}
+.bg-grey {
+  background-color: var(--custom-grey20);
+}
+.bg-blue > *:last-child,
+.bg-orange > *:last-child,
+.bg-grey > *:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.panelset {
+  --panel-tab-foreground: currentColor !important;
+  --panel-tab-active-foreground: var(--custom-blue) !important;
+  --panel-tab-active-background: var(--custom-lightblue) !important;  
+  --panel-tab-hover-foreground: var(--custom-blue) !important;
+  --panel-tabs-border-bottom: #ddd !important;
+  --panel-tab-inactive-opacity: 0.5 !important;
+}
+
+d-byline {
+    contain: content;
+    overflow: hidden;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 0.8rem;
+    line-height: 1.8em;
+    padding: 1.5rem 0;
+    min-height: 1.8em;
+}
+
+d-byline h3 {
+    font-size: 0.6rem !important;  
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.5) !important;  
+    margin: 4.8px 0px 0px 0px !important; 
+    padding: 0px 0px 0px 0px !important;  
+    text-transform: uppercase;
+}
+
+
+blockquote {
+  background: var(--custom-grey10);
+  border-left: 10px solid #ccc !important;  
+  margin: 1.5em 10px;
+  padding: 0.5em 10px;
+  quotes: "\201C""\201D""\2018""\2019";
+}
+
+blockquote:before {
+  color: #ccc;
+  content: open-quote;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+
+blockquote p {
+  display: inline;
+}
+
+</style>
+<style type="text/css">
+/* base style */
+
+/* FONT FAMILIES */
+
+:root {
+  --heading-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono-default: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  --body-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+body,
+.posts-list .post-preview p,
+.posts-list .description p {
+  font-family: var(--body-font), var(--body-default);
+}
+
+h1, h2, h3, h4, h5, h6,
+.posts-list .post-preview h2,
+.posts-list .description h2 {
+  font-family: var(--heading-font), var(--heading-default);
+}
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: var(--mono-font), var(--mono-default);
+}
+
+
+/*-- TITLE --*/
+d-title h1,
+.posts-list > h1 {
+  color: var(--title-color, black);
+}
+
+d-title h1 {
+  font-size: var(--title-size, 50px);
+}
+
+/*-- HEADERS --*/
+d-article h1,
+d-article h2,
+d-article h3,
+d-article h4,
+d-article h5,
+d-article h6 {
+  color: var(--header-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- BODY --*/
+d-article > p,  /* only text inside of <p> tags */
+d-article > ul, /* lists */
+d-article > ol {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+  font-size: var(--body-size, 1.06rem);
+}
+
+
+/*-- CODE --*/
+d-article div.sourceCode code,
+d-article pre code {
+  font-size: var(--code-size, 14px);
+}
+
+/*-- ASIDE --*/
+d-article aside {
+  font-size: var(--aside-size, 12px);
+  color: var(--aside-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- FIGURE CAPTIONS --*/
+figure .caption,
+figure figcaption,
+.figure .caption {
+  font-size: var(--fig-cap-size, 13px);
+  color: var(--fig-cap-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- METADATA --*/
+d-byline h3 {
+  font-size: var(--heading-size, 0.6rem);
+  color: var(--heading-color, rgba(0, 0, 0, 0.5));
+}
+
+d-byline {
+  font-size: var(--body-size, 0.8rem);
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+d-byline a,
+d-article d-byline a {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- TABLE OF CONTENTS --*/
+.d-contents nav h3 {
+  font-size: var(--heading-size, 18px);
+}
+
+.d-contents nav a {
+  font-size: var(--contents-size, 13px);
+}
+
+/*-- APPENDIX --*/
+d-appendix h3 {
+  font-size: var(--heading-size, 15px);
+  color: var(--heading-color, rgba(0, 0, 0, 0.65));
+}
+
+d-appendix {
+  font-size: var(--text-size, 0.8em);
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+d-appendix d-footnote-list a.footnote-backlink {
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+.distill-site-header .title {
+  font-size: var(--title-size, 18px);
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.distill-site-header a,
+.nav-dropdown .nav-dropbtn {
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.nav-dropdown .nav-dropbtn {
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  font-size: var(--text-size, 15px);
+}
+
+.distill-site-header a:hover,
+.nav-dropdown:hover .nav-dropbtn {
+  color: var(--hover-color, white);
+}
+
+.distill-site-header {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer a:hover {
+  color: var(--hover-color, white);
+}</style>
+<!--/radix_placeholder_distill-->
+  <script src="../../site_libs/header-attrs-2.11/header-attrs.js"></script>
+  <link href="../../site_libs/panelset-0.2.6/panelset.css" rel="stylesheet" />
+  <script src="../../site_libs/panelset-0.2.6/panelset.js"></script>
+  <script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+  <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
+  <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="../../site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="../../site_libs/tippy-6.2.7/tippy.umd.min.js"></script>
+  <script src="../../site_libs/anchor-4.2.2/anchor.min.js"></script>
+  <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
+  <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="../../site_libs/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+<script type="text/javascript" cookie-consent="tracking" async src="https://www.googletagmanager.com/gtag/js?id=UA-118779401-1"></script>
+<script type="text/javascript" cookie-consent="tracking">
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-118779401-1');
+</script>
+<!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"맥북에서 GPU를 이용해서 딥러닝 수행하기","description":"CUDA를 사용하는 Nvidia의 GPU가 딥러닝 세상을 평정한 지금, 맥북에 설치되어 있는 AMD GPU를 사용해서 딥러닝 학습을 수행할 수 있다는 것 만으로도 의미가 있습니다.","authors":[{"author":"유충현","authorURL":"https://choonghyunryu.github.io","affiliation":"한국알사용자회","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-03-28T00:00:00.000+09:00","citationText":"유충현, 2022"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="distill-site-nav distill-site-header">
+<div class="nav-left">
+<a class="logo">
+<img src="../../images/rubik-cube-white.png" alt="Logo"/>
+</a>
+<a href="../../index.html" class="title">Dataholic</a>
+<input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
+</div>
+<div class="nav-right">
+<a href="../../index.html">Home</a>
+<a href="../../mydev.html">MyDevs</a>
+<a href="../../gallery.html">Gallery</a>
+<a href="../../about.html">About</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>맥북에서 GPU를 이용해서 딥러닝 수행하기</h1>
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+  <a href="../../index.html#category:Deep_Learning" class="dt-tag">Deep Learning</a>
+  <a href="../../index.html#category:Keras" class="dt-tag">Keras</a>
+  <a href="../../index.html#category:python" class="dt-tag">python</a>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>CUDA를 사용하는 Nvidia의 GPU가 딥러닝 세상을 평정한 지금, 맥북에 설치되어 있는 AMD GPU를 사용해서 딥러닝 학습을 수행할 수 있다는 것 만으로도 의미가 있습니다.</p></p>
+</div>
+
+<div class="d-byline">
+  유충현 <a href="https://choonghyunryu.github.io" class="uri">https://choonghyunryu.github.io</a> (한국알사용자회)
+  
+<br/>2022-03-28
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#neural-style-transfer의-단상">Neural style transfer의 단상</a>
+<ul>
+<li><a href="#정선의-울산제색도">정선의 울산제색도</a></li>
+<li><a href="#코스-사이트-url-변경">코스 사이트 URL 변경</a></li>
+<li><a href="#나의-노트북-스팩은요">나의 노트북 스팩은요</a></li>
+<li><a href="#딥러닝과-gpu">딥러닝과 GPU</a></li>
+</ul></li>
+<li><a href="#plaidml">PlaidML</a>
+<ul>
+<li><a href="#plaidml-설치">PlaidML 설치</a></li>
+<li><a href="#plaidml-환경설정">PlaidML 환경설정</a></li>
+<li><a href="#plaidml-테스트">PlaidML 테스트</a></li>
+</ul></li>
+<li><a href="#cpu와-gpu-수행속도-비교">CPU와 GPU 수행속도 비교</a>
+<ul>
+<li><a href="#cpu-수행-코드-및-수행-속도">CPU 수행 코드 및 수행 속도</a></li>
+<li><a href="#gpu-수행-코드-및-수행-속도">GPU 수행 코드 및 수행 속도</a></li>
+<li><a href="#cpu와-gpu의-수행-속도-비교">CPU와 GPU의 수행 속도 비교</a></li>
+</ul></li>
+<li><a href="#향후-일정과-소회">향후 일정과 소회</a></li>
+</ul>
+</nav>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="img/plaidml_logo.png" width="70%" style="display: block; margin: auto;" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="preface">
+<h4>들어가기</h4>
+코인 채굴의 수요로 Nvidia의 GPU의 가격이 넘사벽이라 가끔 CPU에서 딥러닝 코드를 수행했었습니다. 
+<br/>
+업무적인 용도라기 보다는 취미에 가까운 이미지 프로세싱 작업이라 딥러닝이라 부르기도 애매합니다. 그런데 너무 느린 수행 속도로 인해서 그 취미는 오래가지 못했습니다. 우연히 사용하는 맥북의 GPU를 사용할 수 있다는 정보를 접했고, 이 방법을 시도해 봅니다.
+</div>
+</div>
+<h2 id="neural-style-transfer의-단상">Neural style transfer의 단상</h2>
+<p>딥러닝을 이용해서 원하는 이미지를 다른 스타일의 이미지로 변환하는 방법을 Neural style transfer라 합니다. Neural style transfer은 콘텐츠(content) 이미지와 스타일 참조(style reference) 이미지를 이용하여, 콘텐츠 이미지의 콘텐츠는 유지하되 스타일 참조 이미지의 화풍으로 채색한 것 같은 새로운 이미지를 생성하는 최적화 기술입니다. <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>보통 스타일 참조 이미지는 유명한 작가의 대표적인 작품을 사용합니다. 아마 당신은 고흐의 <strong>‘별이 빛나는 밤’</strong>이나 뭉크의 <strong>‘절규’</strong>로 이미지 변환을 한 작품을 본 적이 있을 겁니다. 본적인 없다면, <a href="https://www.tensorflow.org/tutorials/generative/style_transfer?hl=ko" target="_blank">https://www.tensorflow.org/tutorials/generative/style_transfer?hl=ko</a>를 방문하여 유사한 사례를 경험해 보시기 바랍니다.</p>
+<h3 id="정선의-울산제색도">정선의 울산제색도</h3>
+<p>2018년도 봄에 와이프와 울산바위 등반 전, 바로 아래서 울산바위를 바라보다 앵글에 담은 사진을 정선의 인왕제색도를 스타일 이미지로 사용하여 변환한 이미지가 다음과 같습니다. 좌측은 원본 사진 이미지이고, 오른쪽인 변환한 이미지입니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p align="middle">
+<img src="img/woolsan4_raw.png" width="35%"/>
+<img src="img/woolsan4.png" width="35%"/>
+</p>
+</div>
+<p>기억으로는 2018년도에 재미삼아 이미지 변환을 수행하는 데 걸리는 시간이 인내하기에는 다소 길었던 기억이 있습니다. 그래서 취미같은 작업이 오래가지 못했었습니다.</p>
+<h3 id="코스-사이트-url-변경">코스 사이트 URL 변경</h3>
+<p>코스 사이트 컨텐츠를 배포해서 서비스할 사이트 URL은 다음처럼 meta.json의 “siteUrl”에 기술합니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='st'>"siteUrl"</span><span class='op'>:</span> <span class='st'>"https://course-starter-dlookr.netlify.com"</span>
+</code></pre>
+</div>
+</div>
+<h3 id="나의-노트북-스팩은요">나의 노트북 스팩은요</h3>
+<p>나의 노트북 스팩은 애플의 맥북프로로 Intel Core i7 6코어 CPU와 4GB 비디오램을 가진 Radeon Pro 560X GPU를 가지고 있습니다. 이 GPU는 NVIDIA GeForce GTX 1050 Mobile과 유사하거나 조금 못한 성능을 가지고 있습니다. 그러나 tensorflow, keras등의 딥러닝 엔진에서는 사용할 수 없습니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="img/notebook_spec.png" width="85%" style="display: block; margin: auto;" /></p>
+</div>
+<h3 id="딥러닝과-gpu">딥러닝과 GPU</h3>
+<p>그래픽 처리 장치로 알려진 GPU는 분명히 처음부터 딥 러닝을 수행하도록 설계되지 않았습니다. 그러나 <strong>병렬 컴퓨팅의 본질은 그래픽 처리의 본질과 유사</strong>해 보입니다. <strong>GPU의 코어는 비록 약하지만 고도의 병렬 구조와 수많은 데이터 블록</strong>으로 인해 대용량 데이터 블록을 처리하는 알고리즘의 경우 CPU보다 더 효율적 입니다. 그래픽 처리와 딥러닝의 유사한 내부 특성(대부분의 작업을 순차적으로 수행하는 대신 동시에 수행할 수 있음)으로 인해, GPU는 자연스럽게 딥러닝 및 병렬 컴퓨팅에 활용하는 첫 번째 선택지가 되었습니다.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<h2 id="plaidml">PlaidML</h2>
+<p>PlaidML는 AMD와 Intel GPU를 지원하는 딥러닝 프레임워크입니다.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> AMD를 지원하기 때문에, PlaidML를 사용하면 나의 맥북프로의 Radeon Pro 560X GPU를 딥러닝 연산에 사용할 수 있게 됩니다.</p>
+<h3 id="plaidml-설치">PlaidML 설치</h3>
+<p>나의 노트북에는 이미 아나콘다와 tensorflow, keras가 설치되어 있습니다. conda env list 명령어로 2개의 콘다 가상환경을 가지고 있음을 알 수 있습니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>(base) choonghyunryu<span class="sc">@</span>myWorld 73_mashup_python % conda env list</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># conda environments:</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>base                  <span class="sc">*</span>  <span class="er">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>neural<span class="sc">-</span>style<span class="sc">-</span>tf          <span class="sc">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>neural<span class="sc">-</span>style<span class="sc">-</span>tf</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>r<span class="sc">-</span>reticulate             <span class="sc">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate</span></code></pre></div>
+</div>
+<p>그중 r-reticulate라는 이름의 콘다 가상환경에 PlaidML를 설치하려 합니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(base) choonghyunryu<span class="sc">@</span>myWorld 73_mashup_python % conda activate r<span class="sc">-</span>reticulate</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># conda environments:</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>base                  <span class="sc">*</span>  <span class="er">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>neural<span class="sc">-</span>style<span class="sc">-</span>tf          <span class="sc">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>neural<span class="sc">-</span>style<span class="sc">-</span>tf</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>r<span class="sc">-</span>reticulate             <span class="sc">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate</span></code></pre></div>
+</div>
+<p>콘다에서는 <strong>pip install -U plaidml-keras</strong>로 PlaidML을 설치합니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>(r<span class="sc">-</span>reticulate) choonghyunryu<span class="sc">@</span>myWorld 73_mashup_python % pip install <span class="sc">-</span>U plaidml<span class="sc">-</span>keras</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>Collecting plaidml<span class="sc">-</span>keras</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  Downloading plaidml_keras<span class="dv">-0</span>.<span class="fl">7.0</span><span class="sc">-</span>py2.py3<span class="sc">-</span>none<span class="sc">-</span><span class="fu">any.whl</span> (<span class="dv">19</span> kB)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>Requirement already satisfied<span class="sc">:</span> six <span class="cf">in</span> <span class="sc">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate<span class="sc">/</span>lib<span class="sc">/</span>python3<span class="fl">.7</span><span class="sc">/</span>site<span class="sc">-</span><span class="fu">packages</span> (from plaidml<span class="sc">-</span>keras) (<span class="dv">1</span>.<span class="fl">15.0</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>Collecting keras<span class="sc">==</span><span class="dv">2</span>.<span class="fl">2.4</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  Downloading Keras<span class="dv">-2</span>.<span class="fl">2.4</span><span class="sc">-</span>py2.py3<span class="sc">-</span>none<span class="sc">-</span><span class="fu">any.whl</span> (<span class="dv">312</span> kB)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>     <span class="sc">|</span>████████████████████████████████<span class="sc">|</span> <span class="dv">312</span> kB <span class="fl">12.4</span> MB<span class="sc">/</span>s </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>Requirement already satisfied<span class="sc">:</span> scipy<span class="sc">&gt;=</span><span class="fl">0.14</span> <span class="cf">in</span> <span class="sc">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate<span class="sc">/</span>lib<span class="sc">/</span>python3<span class="fl">.7</span><span class="sc">/</span>site<span class="sc">-</span><span class="fu">packages</span> (from keras<span class="sc">==</span><span class="dv">2</span>.<span class="fl">2.4</span><span class="ot">-&gt;</span>plaidml<span class="sc">-</span>keras) (<span class="dv">1</span>.<span class="fl">4.1</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>Requirement already satisfied<span class="sc">:</span> h5py <span class="cf">in</span> <span class="sc">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate<span class="sc">/</span>lib<span class="sc">/</span>python3<span class="fl">.7</span><span class="sc">/</span>site<span class="sc">-</span><span class="fu">packages</span> (from keras<span class="sc">==</span><span class="dv">2</span>.<span class="fl">2.4</span><span class="ot">-&gt;</span>plaidml<span class="sc">-</span>keras) (<span class="dv">2</span>.<span class="fl">10.0</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>Requirement already satisfied<span class="sc">:</span> numpy<span class="sc">&gt;=</span><span class="dv">1</span>.<span class="fl">9.1</span> <span class="cf">in</span> <span class="sc">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate<span class="sc">/</span>lib<span class="sc">/</span>python3<span class="fl">.7</span><span class="sc">/</span>site<span class="sc">-</span><span class="fu">packages</span> (from keras<span class="sc">==</span><span class="dv">2</span>.<span class="fl">2.4</span><span class="ot">-&gt;</span>plaidml<span class="sc">-</span>keras) (<span class="dv">1</span>.<span class="fl">19.4</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>Requirement already satisfied<span class="sc">:</span> pyyaml <span class="cf">in</span> <span class="sc">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate<span class="sc">/</span>lib<span class="sc">/</span>python3<span class="fl">.7</span><span class="sc">/</span>site<span class="sc">-</span><span class="fu">packages</span> (from keras<span class="sc">==</span><span class="dv">2</span>.<span class="fl">2.4</span><span class="ot">-&gt;</span>plaidml<span class="sc">-</span>keras) (<span class="fl">3.12</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>Requirement already satisfied<span class="sc">:</span> keras<span class="sc">-</span>preprocessing<span class="sc">&gt;=</span><span class="dv">1</span>.<span class="fl">0.5</span> <span class="cf">in</span> <span class="sc">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate<span class="sc">/</span>lib<span class="sc">/</span>python3<span class="fl">.7</span><span class="sc">/</span>site<span class="sc">-</span><span class="fu">packages</span> (from keras<span class="sc">==</span><span class="dv">2</span>.<span class="fl">2.4</span><span class="ot">-&gt;</span>plaidml<span class="sc">-</span>keras) (<span class="dv">1</span>.<span class="fl">1.2</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>Collecting keras<span class="sc">-</span>applications<span class="sc">&gt;=</span><span class="dv">1</span>.<span class="fl">0.6</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  Downloading Keras_Applications<span class="dv">-1</span>.<span class="fl">0.8</span><span class="sc">-</span>py3<span class="sc">-</span>none<span class="sc">-</span><span class="fu">any.whl</span> (<span class="dv">50</span> kB)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>     <span class="sc">|</span>████████████████████████████████<span class="sc">|</span> <span class="dv">50</span> kB <span class="fl">18.4</span> MB<span class="sc">/</span>s </span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>Collecting plaidml</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  Downloading plaidml<span class="dv">-0</span>.<span class="fl">7.0</span><span class="sc">-</span>py2.py3<span class="sc">-</span>none<span class="sc">-</span><span class="fu">macosx_10_10_x86_64.whl</span> (<span class="fl">17.8</span> MB)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>     <span class="sc">|</span>████████████████████████████████<span class="sc">|</span> <span class="fl">17.8</span> MB <span class="fl">48.8</span> MB<span class="sc">/</span>s </span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>Collecting enum34<span class="sc">&gt;=</span><span class="dv">1</span>.<span class="fl">1.6</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  Downloading enum34<span class="dv">-1</span>.<span class="fl">1.10</span><span class="sc">-</span>py3<span class="sc">-</span>none<span class="sc">-</span><span class="fu">any.whl</span> (<span class="dv">11</span> kB)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>Collecting cffi</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  Downloading cffi<span class="dv">-1</span>.<span class="fl">15.0</span><span class="sc">-</span>cp37<span class="sc">-</span>cp37m<span class="sc">-</span><span class="fu">macosx_10_9_x86_64.whl</span> (<span class="dv">178</span> kB)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>     <span class="sc">|</span>████████████████████████████████<span class="sc">|</span> <span class="dv">178</span> kB <span class="fl">31.7</span> MB<span class="sc">/</span>s </span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>Collecting pycparser</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  Downloading pycparser<span class="fl">-2.21</span><span class="sc">-</span>py2.py3<span class="sc">-</span>none<span class="sc">-</span><span class="fu">any.whl</span> (<span class="dv">118</span> kB)</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>     <span class="sc">|</span>████████████████████████████████<span class="sc">|</span> <span class="dv">118</span> kB <span class="fl">61.2</span> MB<span class="sc">/</span>s </span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>Installing collected packages<span class="sc">:</span> pycparser, keras<span class="sc">-</span>applications, enum34, cffi, plaidml, keras, plaidml<span class="sc">-</span>keras</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  Attempting uninstall<span class="sc">:</span> keras</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    Found existing installation<span class="sc">:</span> Keras <span class="dv">2</span>.<span class="fl">4.3</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    Uninstalling Keras<span class="dv">-2</span>.<span class="fl">4.3</span><span class="sc">:</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>      Successfully uninstalled Keras<span class="dv">-2</span>.<span class="fl">4.3</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>Successfully installed cffi<span class="dv">-1</span>.<span class="fl">15.0</span> enum34<span class="dv">-1</span>.<span class="fl">1.10</span> keras<span class="dv">-2</span>.<span class="fl">2.4</span> keras<span class="sc">-</span>applications<span class="dv">-1</span>.<span class="fl">0.8</span> plaidml<span class="dv">-0</span>.<span class="fl">7.0</span> plaidml<span class="sc">-</span>keras<span class="dv">-0</span>.<span class="fl">7.0</span> pycparser<span class="fl">-2.21</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>(r<span class="sc">-</span>reticulate) choonghyunryu<span class="sc">@</span>myWorld 73_mashup_python % </span></code></pre></div>
+</div>
+<h3 id="plaidml-환경설정">PlaidML 환경설정</h3>
+<p>설치한 후에는 <strong>plaidml-setup</strong>로 환경설정을 수행해야 합니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>(r<span class="sc">-</span>reticulate) choonghyunryu<span class="sc">@</span>myWorld 73_mashup_python % plaidml<span class="sc">-</span>setup</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>PlaidML <span class="fu">Setup</span> (<span class="dv">0</span>.<span class="fl">7.0</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>Thanks <span class="cf">for</span> using PlaidML<span class="sc">!</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>The feedback we have received from our users indicates an ever<span class="sc">-</span>increasing need</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> performance, programmability, and portability. During the past few months,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>we have been restructuring PlaidML to address those needs.  To make all the</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>changes we need to make <span class="cf">while</span> supporting our current user base, all development</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>of PlaidML has moved to a branch — plaidml<span class="sc">-</span>v1. We will continue to maintain and</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>support the master branch of PlaidML and the stable <span class="dv">0</span>.<span class="fl">7.0</span> release.</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>Read more here<span class="sc">:</span> https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>plaidml<span class="sc">/</span>plaidml </span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>Some Notes<span class="sc">:</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="er">*</span> Bugs and other issues<span class="sc">:</span> https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>plaidml<span class="sc">/</span>plaidml<span class="sc">/</span>issues</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="sc">*</span> Questions<span class="sc">:</span> https<span class="sc">:</span><span class="er">//</span>stackoverflow.com<span class="sc">/</span>questions<span class="sc">/</span>tagged<span class="sc">/</span>plaidml</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="sc">*</span> Say hello<span class="sc">:</span> https<span class="sc">:</span><span class="er">//</span>groups.google.com<span class="sc">/</span>forum<span class="sc">/</span><span class="co">#!forum/plaidml-dev</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="er">*</span> PlaidML is licensed under the Apache License <span class="fl">2.0</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>Default Config Devices<span class="sc">:</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>   llvm_cpu<span class="fl">.0</span> <span class="sc">:</span> <span class="fu">CPU</span> (via LLVM)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>   metal_amd_radeon_pro_560x<span class="fl">.0</span> <span class="sc">:</span> AMD Radeon Pro 560X (Metal)</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>   <span class="fu">metal_intel</span>(r)_uhd_graphics_630<span class="fl">.0</span> <span class="sc">:</span> <span class="fu">Intel</span>(R) UHD Graphics <span class="dv">630</span> (Metal)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>Experimental Config Devices<span class="sc">:</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>   llvm_cpu<span class="fl">.0</span> <span class="sc">:</span> <span class="fu">CPU</span> (via LLVM)</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>   opencl_amd_radeon_pro_560x_compute_engine<span class="fl">.0</span> <span class="sc">:</span> AMD AMD Radeon Pro 560X Compute <span class="fu">Engine</span> (OpenCL)</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>   opencl_intel_uhd_graphics_630<span class="fl">.0</span> <span class="sc">:</span> Intel Inc. <span class="fu">Intel</span>(R) UHD Graphics <span class="dv">630</span> (OpenCL)</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>   metal_amd_radeon_pro_560x<span class="fl">.0</span> <span class="sc">:</span> AMD Radeon Pro 560X (Metal)</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>   <span class="fu">metal_intel</span>(r)_uhd_graphics_630<span class="fl">.0</span> <span class="sc">:</span> <span class="fu">Intel</span>(R) UHD Graphics <span class="dv">630</span> (Metal)</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>Using experimental devices can cause poor performance, crashes, and other nastiness.</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>Enable experimental device support? (y,n)[n]<span class="sc">:</span>y</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>Multiple devices <span class="fu">detected</span> (You can override by setting PLAIDML_DEVICE_IDS).</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>Please choose a default device<span class="sc">:</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>   <span class="dv">1</span> <span class="sc">:</span> llvm_cpu<span class="fl">.0</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>   <span class="dv">2</span> <span class="sc">:</span> opencl_amd_radeon_pro_560x_compute_engine<span class="fl">.0</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>   <span class="dv">3</span> <span class="sc">:</span> opencl_intel_uhd_graphics_630<span class="fl">.0</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>   <span class="dv">4</span> <span class="sc">:</span> metal_amd_radeon_pro_560x<span class="fl">.0</span></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>   <span class="dv">5</span> <span class="sc">:</span> <span class="fu">metal_intel</span>(r)_uhd_graphics_630<span class="fl">.0</span></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>Default device? (<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>)[<span class="dv">1</span>]<span class="sc">:</span><span class="dv">4</span></span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>Selected device<span class="sc">:</span></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>    metal_amd_radeon_pro_560x<span class="fl">.0</span></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>Almost done. Multiplying some matrices...</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>Tile code<span class="sc">:</span></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span> (B[X,Z], C[Z,Y]) <span class="ot">-&gt;</span> (A) { A[x,y <span class="sc">:</span> X,Y] <span class="ot">=</span> <span class="sc">+</span>(B[x,z] <span class="sc">*</span> C[z,y]); }</span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>Whew. That worked.</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>Save settings to <span class="sc">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>.plaidml? (y,n)[y]<span class="sc">:</span>y</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>Success<span class="sc">!</span></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>(r<span class="sc">-</span>reticulate) choonghyunryu<span class="sc">@</span>myWorld 73_mashup_python % </span></code></pre></div>
+</div>
+<p>설치 과정에서는 사용자의 선택을 위한 세번의 프롬프트가 나타납니다.</p>
+<ul>
+<li>첫번째는 Experimental Config Devices를 지원할지의 여부를 묻습니다.
+<ul>
+<li>y를 선택합니다.</li>
+</ul></li>
+<li>두번째는 PlaidML이 사용할 기본 디바이스를 선택하는 질문이 나타나는데,
+<ul>
+<li>4 : metal_amd_radeon_pro_560x.0를 선택했습니다.</li>
+<li>Radeon Pro 560X GPU를 의미합니다.</li>
+</ul></li>
+<li>세번째는 설정파일을 저장할 경로를 묻습니다.
+<ul>
+<li>사용자 홈디렉토리에 저장할지를 묻는데,</li>
+<li>y를 입력하여 사용자 홈디렉토리에 저장하였습니다.</li>
+</ul></li>
+</ul>
+<h3 id="plaidml-테스트">PlaidML 테스트</h3>
+<p>설치한 후에는 PlaidML의 정상 작동 여부를 테스트합니다. 파이썬의 plaidbench 패키지를 설치합니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>(r<span class="sc">-</span>reticulate) choonghyunryu<span class="sc">@</span>myWorld 73_mashup_python % pip install plaidbench</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>Collecting plaidbench</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  Downloading plaidbench<span class="dv">-0</span>.<span class="fl">7.0</span><span class="sc">-</span>py2.py3<span class="sc">-</span>none<span class="sc">-</span><span class="fu">any.whl</span> (<span class="fl">10.1</span> MB)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>     <span class="sc">|</span>████████████████████████████████<span class="sc">|</span> <span class="fl">10.1</span> MB <span class="fl">12.5</span> MB<span class="sc">/</span>s </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>Requirement already satisfied<span class="sc">:</span> six <span class="cf">in</span> <span class="sc">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate<span class="sc">/</span>lib<span class="sc">/</span>python3<span class="fl">.7</span><span class="sc">/</span>site<span class="sc">-</span><span class="fu">packages</span> (from plaidbench) (<span class="dv">1</span>.<span class="fl">15.0</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>Requirement already satisfied<span class="sc">:</span> h5py<span class="sc">&gt;=</span><span class="dv">2</span>.<span class="fl">7.0</span> <span class="cf">in</span> <span class="sc">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate<span class="sc">/</span>lib<span class="sc">/</span>python3<span class="fl">.7</span><span class="sc">/</span>site<span class="sc">-</span><span class="fu">packages</span> (from plaidbench) (<span class="dv">2</span>.<span class="fl">10.0</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>Requirement already satisfied<span class="sc">:</span> colorama <span class="cf">in</span> <span class="sc">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate<span class="sc">/</span>lib<span class="sc">/</span>python3<span class="fl">.7</span><span class="sc">/</span>site<span class="sc">-</span><span class="fu">packages</span> (from plaidbench) (<span class="dv">0</span>.<span class="fl">4.4</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>Requirement already satisfied<span class="sc">:</span> numpy <span class="cf">in</span> <span class="sc">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate<span class="sc">/</span>lib<span class="sc">/</span>python3<span class="fl">.7</span><span class="sc">/</span>site<span class="sc">-</span><span class="fu">packages</span> (from plaidbench) (<span class="dv">1</span>.<span class="fl">19.4</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>Requirement already satisfied<span class="sc">:</span> enum34<span class="sc">&gt;=</span><span class="dv">1</span>.<span class="fl">1.6</span> <span class="cf">in</span> <span class="sc">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate<span class="sc">/</span>lib<span class="sc">/</span>python3<span class="fl">.7</span><span class="sc">/</span>site<span class="sc">-</span><span class="fu">packages</span> (from plaidbench) (<span class="dv">1</span>.<span class="fl">1.10</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>Requirement already satisfied<span class="sc">:</span> plaidml <span class="cf">in</span> <span class="sc">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate<span class="sc">/</span>lib<span class="sc">/</span>python3<span class="fl">.7</span><span class="sc">/</span>site<span class="sc">-</span><span class="fu">packages</span> (from plaidbench) (<span class="dv">0</span>.<span class="fl">7.0</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>Collecting click<span class="sc">&gt;=</span><span class="dv">6</span>.<span class="fl">0.0</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  Downloading click<span class="dv">-8</span>.<span class="fl">0.4</span><span class="sc">-</span>py3<span class="sc">-</span>none<span class="sc">-</span><span class="fu">any.whl</span> (<span class="dv">97</span> kB)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>     <span class="sc">|</span>████████████████████████████████<span class="sc">|</span> <span class="dv">97</span> kB <span class="fl">22.0</span> MB<span class="sc">/</span>s </span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>Requirement already satisfied<span class="sc">:</span> importlib<span class="sc">-</span>metadata <span class="cf">in</span> <span class="sc">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate<span class="sc">/</span>lib<span class="sc">/</span>python3<span class="fl">.7</span><span class="sc">/</span>site<span class="sc">-</span><span class="fu">packages</span> (from click<span class="sc">&gt;=</span><span class="dv">6</span>.<span class="fl">0.0</span><span class="ot">-&gt;</span>plaidbench) (<span class="dv">3</span>.<span class="fl">3.0</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>Requirement already satisfied<span class="sc">:</span> zipp<span class="sc">&gt;=</span><span class="fl">0.5</span> <span class="cf">in</span> <span class="sc">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate<span class="sc">/</span>lib<span class="sc">/</span>python3<span class="fl">.7</span><span class="sc">/</span>site<span class="sc">-</span><span class="fu">packages</span> (from importlib<span class="sc">-</span>metadata<span class="ot">-&gt;</span>click<span class="sc">&gt;=</span><span class="dv">6</span>.<span class="fl">0.0</span><span class="ot">-&gt;</span>plaidbench) (<span class="dv">3</span>.<span class="fl">4.0</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>Requirement already satisfied<span class="sc">:</span> typing<span class="sc">-</span>extensions<span class="sc">&gt;=</span><span class="dv">3</span>.<span class="fl">6.4</span> <span class="cf">in</span> <span class="sc">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate<span class="sc">/</span>lib<span class="sc">/</span>python3<span class="fl">.7</span><span class="sc">/</span>site<span class="sc">-</span><span class="fu">packages</span> (from importlib<span class="sc">-</span>metadata<span class="ot">-&gt;</span>click<span class="sc">&gt;=</span><span class="dv">6</span>.<span class="fl">0.0</span><span class="ot">-&gt;</span>plaidbench) (<span class="dv">3</span>.<span class="dv">7</span>.<span class="fl">4.3</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>Requirement already satisfied<span class="sc">:</span> cffi <span class="cf">in</span> <span class="sc">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate<span class="sc">/</span>lib<span class="sc">/</span>python3<span class="fl">.7</span><span class="sc">/</span>site<span class="sc">-</span><span class="fu">packages</span> (from plaidml<span class="ot">-&gt;</span>plaidbench) (<span class="dv">1</span>.<span class="fl">15.0</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>Requirement already satisfied<span class="sc">:</span> pycparser <span class="cf">in</span> <span class="sc">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate<span class="sc">/</span>lib<span class="sc">/</span>python3<span class="fl">.7</span><span class="sc">/</span>site<span class="sc">-</span><span class="fu">packages</span> (from cffi<span class="ot">-&gt;</span>plaidml<span class="ot">-&gt;</span>plaidbench) (<span class="fl">2.21</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>Installing collected packages<span class="sc">:</span> click, plaidbench</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>Successfully installed click<span class="dv">-8</span>.<span class="fl">0.4</span> plaidbench<span class="dv">-0</span>.<span class="fl">7.0</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>(r<span class="sc">-</span>reticulate) choonghyunryu<span class="sc">@</span>myWorld 73_mashup_python % </span></code></pre></div>
+</div>
+<p>그리고 mobilenet을 실행하여 PlaidML의 정상 작동 여부를 점검합니다. 결과의 INFO를 보면 PlaidML가 “metal_amd_radeon_pro_560x.0” 디바이스를 정상적으로 오픈한 것이 확인됩니다. 정상적으로 수행됨을 확인한 것입니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>(r<span class="sc">-</span>reticulate) choonghyunryu<span class="sc">@</span>myWorld 73_mashup_python % plaidbench keras mobilenet</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>Running <span class="dv">1024</span> examples with mobilenet, batch size <span class="dv">1</span>, on backend plaid</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>INFO<span class="sc">:</span>plaidml<span class="sc">:</span>Opening device <span class="st">&quot;metal_amd_radeon_pro_560x.0&quot;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>Downloading data from https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>fchollet<span class="sc">/</span>deep<span class="sc">-</span>learning<span class="sc">-</span>models<span class="sc">/</span>releases<span class="sc">/</span>download<span class="sc">/</span>v0<span class="fl">.6</span><span class="sc">/</span>mobilenet_1_0_224_tf.h5</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="dv">17227776</span><span class="sc">/</span><span class="dv">17225924</span> [<span class="sc">==</span><span class="er">============================</span>] <span class="sc">-</span> 3s 0us<span class="sc">/</span>step</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>Compiling network... Warming up... Running...</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>Example finished, elapsed<span class="sc">:</span> <span class="fl">1.994</span><span class="fu">s</span> (compile), <span class="fl">7.569</span><span class="fu">s</span> (execution)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="sc">-----------------------------------------------------------------------------------------</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>Network Name         Inference Latency         Time <span class="sc">/</span> FPS          </span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="sc">-----------------------------------------------------------------------------------------</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>mobilenet            <span class="fl">7.39</span> ms                   <span class="fl">0.00</span> ms <span class="sc">/</span> <span class="fl">1000000000.00</span> fps</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>Correctness<span class="sc">:</span> PASS, max_error<span class="sc">:</span> <span class="fl">1.675534622336272e-05</span>, max_abs_error<span class="sc">:</span> <span class="fl">7.674098014831543e-07</span>, fail_ratio<span class="sc">:</span> <span class="fl">0.0</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>(r<span class="sc">-</span>reticulate) choonghyunryu<span class="sc">@</span>myWorld 73_mashup_python % </span></code></pre></div>
+</div>
+<h2 id="cpu와-gpu-수행속도-비교">CPU와 GPU 수행속도 비교</h2>
+<p>맥북프로의 CPU와 GPU의 딥러닝 수행 성능을 비교하기 위해서 다음 사이트에서 파이썬 소스를 참고하여 두 개의 파이썬 코드를 작성했습니다. 이 소스는 Fashion MNIST 이미지를 분류하는 기능을 담고 있습니다.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<p><a href="" target="_blank">https://github.com/franknb/Medium/blob/master/PlaidML_CNN/PlaidML_Fashion_mnist.ipynb</a></p>
+<h3 id="cpu-수행-코드-및-수행-속도">CPU 수행 코드 및 수행 속도</h3>
+<p>CPU에서 Fashion MNIST 이미지를 분류하는 소스는 다음과 같고 test_no_plaidml.py라는 파일에 저장되어 있습니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>import time</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>import tensorflow as tf</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>from tensorflow import keras</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>from tensorflow.keras.models import Sequential</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>from tensorflow.keras.layers import Dense, Dropout, Flatten</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>from tensorflow.keras.layers import Conv2D, MaxPooling2D</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>from tensorflow.keras import backend as K</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Download fashion dataset from Keras</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>fashion_mnist <span class="ot">=</span> keras.datasets.fashion_mnist</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>(x_train, y_train), (x_test, y_test) <span class="ot">=</span> <span class="fu">keras.datasets.fashion_mnist.load_data</span>()</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Reshape and normalize the data</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>x_train <span class="ot">=</span> <span class="fu">x_train.astype</span>(<span class="st">&#39;float32&#39;</span>)<span class="fu">.reshape</span>(<span class="dv">60000</span>,<span class="dv">28</span>,<span class="dv">28</span>,<span class="dv">1</span>) <span class="sc">/</span> <span class="dv">255</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>x_test <span class="ot">=</span> <span class="fu">x_test.astype</span>(<span class="st">&#39;float32&#39;</span>)<span class="fu">.reshape</span>(<span class="dv">10000</span>,<span class="dv">28</span>,<span class="dv">28</span>,<span class="dv">1</span>) <span class="sc">/</span> <span class="dv">255</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Build a CNN model. You should see &quot;INFO:plaidml:Opening device xxx&quot; after you run this chunk</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>model <span class="ot">=</span> <span class="fu">tf.keras.Sequential</span>()</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="fu">model.add</span>(<span class="fu">keras.layers.Conv2D</span>(<span class="at">filters=</span><span class="dv">64</span>, <span class="at">kernel_size=</span><span class="dv">2</span>, <span class="at">padding=</span><span class="st">&#39;same&#39;</span>, <span class="at">activation=</span><span class="st">&#39;relu&#39;</span>, <span class="at">input_shape=</span>(<span class="dv">28</span>,<span class="dv">28</span>,<span class="dv">1</span>))) </span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="fu">model.add</span>(<span class="fu">keras.layers.MaxPooling2D</span>(<span class="at">pool_size=</span><span class="dv">2</span>))</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="fu">model.add</span>(<span class="fu">keras.layers.Dropout</span>(<span class="fl">0.3</span>))</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="fu">model.add</span>(<span class="fu">keras.layers.Conv2D</span>(<span class="at">filters=</span><span class="dv">32</span>, <span class="at">kernel_size=</span><span class="dv">2</span>, <span class="at">padding=</span><span class="st">&#39;same&#39;</span>, <span class="at">activation=</span><span class="st">&#39;relu&#39;</span>))</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="fu">model.add</span>(<span class="fu">keras.layers.MaxPooling2D</span>(<span class="at">pool_size=</span><span class="dv">2</span>))</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="fu">model.add</span>(<span class="fu">keras.layers.Dropout</span>(<span class="fl">0.3</span>))</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="fu">model.add</span>(<span class="fu">keras.layers.Flatten</span>())</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="fu">model.add</span>(<span class="fu">keras.layers.Dense</span>(<span class="dv">256</span>, <span class="at">activation=</span><span class="st">&#39;relu&#39;</span>))</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="fu">model.add</span>(<span class="fu">keras.layers.Dropout</span>(<span class="fl">0.5</span>))</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="fu">model.add</span>(<span class="fu">keras.layers.Dense</span>(<span class="dv">10</span>, <span class="at">activation=</span><span class="st">&#39;softmax&#39;</span>))</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Compile the model</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="fu">model.compile</span>(<span class="at">optimizer=</span><span class="st">&#39;adam&#39;</span>,</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>              <span class="at">loss=</span>keras.losses.sparse_categorical_crossentropy,</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>              <span class="at">metrics=</span>[<span class="st">&#39;accuracy&#39;</span>])</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>              </span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the model on training set</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">&quot;Timing inference...&quot;</span>)</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>start <span class="ot">=</span> <span class="fu">time.time</span>()</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="fu">model.fit</span>(x_train, y_train,</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>          <span class="at">batch_size=</span><span class="dv">64</span>,</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>          <span class="at">epochs=</span><span class="dv">10</span>)</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">&quot;Ran in {} seconds&quot;</span><span class="fu">.format</span>(<span class="fu">time.time</span>() <span class="sc">-</span> start))</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the model on test set</span></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>score <span class="ot">=</span> <span class="fu">model.evaluate</span>(x_test, y_test, <span class="at">verbose=</span><span class="dv">0</span>)</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Print test accuracy</span></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">&#39;</span><span class="sc">\n</span><span class="st">&#39;</span>, <span class="st">&#39;Test accuracy:&#39;</span>, score[<span class="dv">1</span>])</span></code></pre></div>
+</div>
+<p>콘다 가상환경에서 다음같이 실행합니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>(r<span class="sc">-</span>reticulate) choonghyunryu<span class="sc">@</span>myWorld 73_mashup_python % python test_no_plaidml.py</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="dv">2022-03-27</span> <span class="dv">18</span><span class="sc">:</span><span class="dv">21</span><span class="sc">:</span><span class="fl">25.216124</span><span class="sc">:</span> I tensorflow<span class="sc">/</span>core<span class="sc">/</span>platform<span class="sc">/</span>cpu_feature_guard.cc<span class="sc">:</span><span class="dv">143</span>] Your CPU supports instructions that this TensorFlow binary was not compiled to use<span class="sc">:</span> AVX2 FMA</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="dv">2022-03-27</span> <span class="dv">18</span><span class="sc">:</span><span class="dv">21</span><span class="sc">:</span><span class="fl">25.232006</span><span class="sc">:</span> I tensorflow<span class="sc">/</span>compiler<span class="sc">/</span>xla<span class="sc">/</span>service<span class="sc">/</span>service.cc<span class="sc">:</span><span class="dv">168</span>] XLA service <span class="dv">0x7fc23dc24d20</span> initialized <span class="cf">for</span> platform <span class="fu">Host</span> (this does not guarantee that XLA will be used). Devices<span class="sc">:</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2022-03-27</span> <span class="dv">18</span><span class="sc">:</span><span class="dv">21</span><span class="sc">:</span><span class="fl">25.232025</span><span class="sc">:</span> I tensorflow<span class="sc">/</span>compiler<span class="sc">/</span>xla<span class="sc">/</span>service<span class="sc">/</span>service.cc<span class="sc">:</span><span class="dv">176</span>]   StreamExecutor <span class="fu">device</span> (<span class="dv">0</span>)<span class="sc">:</span> Host, Default Version</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>Timing inference...</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>Epoch <span class="dv">1</span><span class="sc">/</span><span class="dv">10</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="dv">938</span><span class="sc">/</span><span class="dv">938</span> [<span class="sc">==</span><span class="er">============================</span>] <span class="sc">-</span> 27s 29ms<span class="sc">/</span>step <span class="sc">-</span> loss<span class="sc">:</span> <span class="fl">0.5820</span> <span class="sc">-</span> accuracy<span class="sc">:</span> <span class="fl">0.7855</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>Epoch <span class="dv">2</span><span class="sc">/</span><span class="dv">10</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="dv">938</span><span class="sc">/</span><span class="dv">938</span> [<span class="sc">==</span><span class="er">============================</span>] <span class="sc">-</span> 36s 38ms<span class="sc">/</span>step <span class="sc">-</span> loss<span class="sc">:</span> <span class="fl">0.4101</span> <span class="sc">-</span> accuracy<span class="sc">:</span> <span class="fl">0.8508</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>Epoch <span class="dv">3</span><span class="sc">/</span><span class="dv">10</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="dv">938</span><span class="sc">/</span><span class="dv">938</span> [<span class="sc">==</span><span class="er">============================</span>] <span class="sc">-</span> 39s 41ms<span class="sc">/</span>step <span class="sc">-</span> loss<span class="sc">:</span> <span class="fl">0.3642</span> <span class="sc">-</span> accuracy<span class="sc">:</span> <span class="fl">0.8675</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>Epoch <span class="dv">4</span><span class="sc">/</span><span class="dv">10</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="dv">938</span><span class="sc">/</span><span class="dv">938</span> [<span class="sc">==</span><span class="er">============================</span>] <span class="sc">-</span> 39s 41ms<span class="sc">/</span>step <span class="sc">-</span> loss<span class="sc">:</span> <span class="fl">0.3379</span> <span class="sc">-</span> accuracy<span class="sc">:</span> <span class="fl">0.8765</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>Epoch <span class="dv">5</span><span class="sc">/</span><span class="dv">10</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="dv">938</span><span class="sc">/</span><span class="dv">938</span> [<span class="sc">==</span><span class="er">============================</span>] <span class="sc">-</span> 38s 41ms<span class="sc">/</span>step <span class="sc">-</span> loss<span class="sc">:</span> <span class="fl">0.3214</span> <span class="sc">-</span> accuracy<span class="sc">:</span> <span class="fl">0.8818</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>Epoch <span class="dv">6</span><span class="sc">/</span><span class="dv">10</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="dv">938</span><span class="sc">/</span><span class="dv">938</span> [<span class="sc">==</span><span class="er">============================</span>] <span class="sc">-</span> 39s 42ms<span class="sc">/</span>step <span class="sc">-</span> loss<span class="sc">:</span> <span class="fl">0.3032</span> <span class="sc">-</span> accuracy<span class="sc">:</span> <span class="fl">0.8877</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>Epoch <span class="dv">7</span><span class="sc">/</span><span class="dv">10</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="dv">938</span><span class="sc">/</span><span class="dv">938</span> [<span class="sc">==</span><span class="er">============================</span>] <span class="sc">-</span> 41s 43ms<span class="sc">/</span>step <span class="sc">-</span> loss<span class="sc">:</span> <span class="fl">0.2917</span> <span class="sc">-</span> accuracy<span class="sc">:</span> <span class="fl">0.8923</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>Epoch <span class="dv">8</span><span class="sc">/</span><span class="dv">10</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="dv">938</span><span class="sc">/</span><span class="dv">938</span> [<span class="sc">==</span><span class="er">============================</span>] <span class="sc">-</span> 40s 43ms<span class="sc">/</span>step <span class="sc">-</span> loss<span class="sc">:</span> <span class="fl">0.2833</span> <span class="sc">-</span> accuracy<span class="sc">:</span> <span class="fl">0.8955</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>Epoch <span class="dv">9</span><span class="sc">/</span><span class="dv">10</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="dv">938</span><span class="sc">/</span><span class="dv">938</span> [<span class="sc">==</span><span class="er">============================</span>] <span class="sc">-</span> 42s 45ms<span class="sc">/</span>step <span class="sc">-</span> loss<span class="sc">:</span> <span class="fl">0.2742</span> <span class="sc">-</span> accuracy<span class="sc">:</span> <span class="fl">0.8976</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>Epoch <span class="dv">10</span><span class="sc">/</span><span class="dv">10</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="dv">938</span><span class="sc">/</span><span class="dv">938</span> [<span class="sc">==</span><span class="er">============================</span>] <span class="sc">-</span> 42s 45ms<span class="sc">/</span>step <span class="sc">-</span> loss<span class="sc">:</span> <span class="fl">0.2683</span> <span class="sc">-</span> accuracy<span class="sc">:</span> <span class="fl">0.9015</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>Ran <span class="cf">in</span> <span class="fl">385.2737982273102</span> seconds</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>Test accuracy<span class="sc">:</span> <span class="fl">0.9103000164031982</span></span></code></pre></div>
+</div>
+<p>모델을 빌드하는데 약 385초가 소요되었으며, 작업을 수행하는 과정의 CPU와 GPU의 사용량을 보면 다음과 같습니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="img/gauge_cpu.png" width="85%" style="display: block; margin: auto;" /></p>
+</div>
+<h3 id="gpu-수행-코드-및-수행-속도">GPU 수행 코드 및 수행 속도</h3>
+<p>GPU에서 Fashion MNIST 이미지를 분류하는 소스는 다음과 같고 test_plaidml.py라는 파일에 저장되어 있습니다.</p>
+<p>CPU에서 수행하는 코드와의 가장 큰 차이점은 실행에 앞서 다음의 두 줄을 삽입하는 것입니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>import os</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">&quot;KERAS_BACKEND&quot;</span>] <span class="ot">=</span> <span class="st">&quot;plaidml.keras.backend&quot;</span></span></code></pre></div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>import time</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>import os</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">&quot;KERAS_BACKEND&quot;</span>] <span class="ot">=</span> <span class="st">&quot;plaidml.keras.backend&quot;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>import keras</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>from keras.models import Sequential</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>from keras.layers import Dense, Dropout, Flatten</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>from keras.layers import Conv2D, MaxPooling2D</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>from keras import backend as K</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Download fashion dataset from Keras</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>fashion_mnist <span class="ot">=</span> keras.datasets.fashion_mnist</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>(x_train, y_train), (x_test, y_test) <span class="ot">=</span> <span class="fu">keras.datasets.fashion_mnist.load_data</span>()</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Reshape and normalize the data</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>x_train <span class="ot">=</span> <span class="fu">x_train.astype</span>(<span class="st">&#39;float32&#39;</span>)<span class="fu">.reshape</span>(<span class="dv">60000</span>,<span class="dv">28</span>,<span class="dv">28</span>,<span class="dv">1</span>) <span class="sc">/</span> <span class="dv">255</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>x_test <span class="ot">=</span> <span class="fu">x_test.astype</span>(<span class="st">&#39;float32&#39;</span>)<span class="fu">.reshape</span>(<span class="dv">10000</span>,<span class="dv">28</span>,<span class="dv">28</span>,<span class="dv">1</span>) <span class="sc">/</span> <span class="dv">255</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Build a CNN model. You should see &quot;INFO:plaidml:Opening device xxx&quot; after you run this chunk</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>model <span class="ot">=</span> <span class="fu">keras.Sequential</span>()</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="fu">model.add</span>(<span class="fu">keras.layers.Conv2D</span>(<span class="at">filters=</span><span class="dv">64</span>, <span class="at">kernel_size=</span><span class="dv">2</span>, <span class="at">padding=</span><span class="st">&#39;same&#39;</span>, <span class="at">activation=</span><span class="st">&#39;relu&#39;</span>, <span class="at">input_shape=</span>(<span class="dv">28</span>,<span class="dv">28</span>,<span class="dv">1</span>))) </span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="fu">model.add</span>(<span class="fu">keras.layers.MaxPooling2D</span>(<span class="at">pool_size=</span><span class="dv">2</span>))</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="fu">model.add</span>(<span class="fu">keras.layers.Dropout</span>(<span class="fl">0.3</span>))</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="fu">model.add</span>(<span class="fu">keras.layers.Conv2D</span>(<span class="at">filters=</span><span class="dv">32</span>, <span class="at">kernel_size=</span><span class="dv">2</span>, <span class="at">padding=</span><span class="st">&#39;same&#39;</span>, <span class="at">activation=</span><span class="st">&#39;relu&#39;</span>))</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="fu">model.add</span>(<span class="fu">keras.layers.MaxPooling2D</span>(<span class="at">pool_size=</span><span class="dv">2</span>))</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="fu">model.add</span>(<span class="fu">keras.layers.Dropout</span>(<span class="fl">0.3</span>))</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a><span class="fu">model.add</span>(<span class="fu">keras.layers.Flatten</span>())</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="fu">model.add</span>(<span class="fu">keras.layers.Dense</span>(<span class="dv">256</span>, <span class="at">activation=</span><span class="st">&#39;relu&#39;</span>))</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a><span class="fu">model.add</span>(<span class="fu">keras.layers.Dropout</span>(<span class="fl">0.5</span>))</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a><span class="fu">model.add</span>(<span class="fu">keras.layers.Dense</span>(<span class="dv">10</span>, <span class="at">activation=</span><span class="st">&#39;softmax&#39;</span>))</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Compile the model</span></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a><span class="fu">model.compile</span>(<span class="at">optimizer=</span><span class="st">&#39;adam&#39;</span>,</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>              <span class="at">loss=</span>keras.losses.sparse_categorical_crossentropy,</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>              <span class="at">metrics=</span>[<span class="st">&#39;accuracy&#39;</span>])</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>              </span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the model on training set</span></span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">&quot;Timing inference...&quot;</span>)</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>start <span class="ot">=</span> <span class="fu">time.time</span>()</span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a><span class="fu">model.fit</span>(x_train, y_train,</span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>          <span class="at">batch_size=</span><span class="dv">64</span>,</span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>          <span class="at">epochs=</span><span class="dv">10</span>)</span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">&quot;Ran in {} seconds&quot;</span><span class="fu">.format</span>(<span class="fu">time.time</span>() <span class="sc">-</span> start))</span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the model on test set</span></span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>score <span class="ot">=</span> <span class="fu">model.evaluate</span>(x_test, y_test, <span class="at">verbose=</span><span class="dv">0</span>)</span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a><span class="co"># Print test accuracy</span></span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">&#39;</span><span class="sc">\n</span><span class="st">&#39;</span>, <span class="st">&#39;Test accuracy:&#39;</span>, score[<span class="dv">1</span>])</span></code></pre></div>
+</div>
+<p>콘다 가상환경에서 다음같이 실행합니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>(r<span class="sc">-</span>reticulate) choonghyunryu<span class="sc">@</span>myWorld 73_mashup_python % python test_plaidml.py</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>Using plaidml.keras.backend backend.</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>INFO<span class="sc">:</span>plaidml<span class="sc">:</span>Opening device <span class="st">&quot;metal_amd_radeon_pro_560x.0&quot;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>Timing inference...</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>Epoch <span class="dv">1</span><span class="sc">/</span><span class="dv">10</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="dv">60000</span><span class="sc">/</span><span class="dv">60000</span> [<span class="sc">==</span><span class="er">============================</span>] <span class="sc">-</span> 14s 229us<span class="sc">/</span>step <span class="sc">-</span> loss<span class="sc">:</span> <span class="fl">0.5890</span> <span class="sc">-</span> acc<span class="sc">:</span> <span class="fl">0.7848</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>Epoch <span class="dv">2</span><span class="sc">/</span><span class="dv">10</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="dv">60000</span><span class="sc">/</span><span class="dv">60000</span> [<span class="sc">==</span><span class="er">============================</span>] <span class="sc">-</span> 13s 217us<span class="sc">/</span>step <span class="sc">-</span> loss<span class="sc">:</span> <span class="fl">0.4089</span> <span class="sc">-</span> acc<span class="sc">:</span> <span class="fl">0.8522</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>Epoch <span class="dv">3</span><span class="sc">/</span><span class="dv">10</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="dv">60000</span><span class="sc">/</span><span class="dv">60000</span> [<span class="sc">==</span><span class="er">============================</span>] <span class="sc">-</span> 13s 217us<span class="sc">/</span>step <span class="sc">-</span> loss<span class="sc">:</span> <span class="fl">0.3662</span> <span class="sc">-</span> acc<span class="sc">:</span> <span class="fl">0.8672</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>Epoch <span class="dv">4</span><span class="sc">/</span><span class="dv">10</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="dv">60000</span><span class="sc">/</span><span class="dv">60000</span> [<span class="sc">==</span><span class="er">============================</span>] <span class="sc">-</span> 13s 219us<span class="sc">/</span>step <span class="sc">-</span> loss<span class="sc">:</span> <span class="fl">0.3373</span> <span class="sc">-</span> acc<span class="sc">:</span> <span class="fl">0.8771</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>Epoch <span class="dv">5</span><span class="sc">/</span><span class="dv">10</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="dv">60000</span><span class="sc">/</span><span class="dv">60000</span> [<span class="sc">==</span><span class="er">============================</span>] <span class="sc">-</span> 13s 220us<span class="sc">/</span>step <span class="sc">-</span> loss<span class="sc">:</span> <span class="fl">0.3179</span> <span class="sc">-</span> acc<span class="sc">:</span> <span class="fl">0.8823</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>Epoch <span class="dv">6</span><span class="sc">/</span><span class="dv">10</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="dv">60000</span><span class="sc">/</span><span class="dv">60000</span> [<span class="sc">==</span><span class="er">============================</span>] <span class="sc">-</span> 14s 226us<span class="sc">/</span>step <span class="sc">-</span> loss<span class="sc">:</span> <span class="fl">0.3016</span> <span class="sc">-</span> acc<span class="sc">:</span> <span class="fl">0.8902</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>Epoch <span class="dv">7</span><span class="sc">/</span><span class="dv">10</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="dv">60000</span><span class="sc">/</span><span class="dv">60000</span> [<span class="sc">==</span><span class="er">============================</span>] <span class="sc">-</span> 14s 228us<span class="sc">/</span>step <span class="sc">-</span> loss<span class="sc">:</span> <span class="fl">0.2882</span> <span class="sc">-</span> acc<span class="sc">:</span> <span class="fl">0.8942</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>Epoch <span class="dv">8</span><span class="sc">/</span><span class="dv">10</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="dv">60000</span><span class="sc">/</span><span class="dv">60000</span> [<span class="sc">==</span><span class="er">============================</span>] <span class="sc">-</span> 13s 223us<span class="sc">/</span>step <span class="sc">-</span> loss<span class="sc">:</span> <span class="fl">0.2790</span> <span class="sc">-</span> acc<span class="sc">:</span> <span class="fl">0.8977</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>Epoch <span class="dv">9</span><span class="sc">/</span><span class="dv">10</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="dv">60000</span><span class="sc">/</span><span class="dv">60000</span> [<span class="sc">==</span><span class="er">============================</span>] <span class="sc">-</span> 13s 217us<span class="sc">/</span>step <span class="sc">-</span> loss<span class="sc">:</span> <span class="fl">0.2721</span> <span class="sc">-</span> acc<span class="sc">:</span> <span class="fl">0.9009</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>Epoch <span class="dv">10</span><span class="sc">/</span><span class="dv">10</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="dv">60000</span><span class="sc">/</span><span class="dv">60000</span> [<span class="sc">==</span><span class="er">============================</span>] <span class="sc">-</span> 13s 218us<span class="sc">/</span>step <span class="sc">-</span> loss<span class="sc">:</span> <span class="fl">0.2617</span> <span class="sc">-</span> acc<span class="sc">:</span> <span class="fl">0.9036</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>Ran <span class="cf">in</span> <span class="fl">132.7856879234314</span> seconds</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>Test accuracy<span class="sc">:</span> <span class="fl">0.9095</span></span></code></pre></div>
+</div>
+<p>모델을 빌드하는데 약 132초가 소요되었으며, 작업을 수행하는 과정의 CPU와 GPU의 사용량을 보면 다음과 같습니다. GPU가 사용되는 것을 쉽게 확인할 수 있습니다. 실제로 수행되는 시간은 GPU의 게이지가 풀로 차기 시작한 시점부터입니다. 그 이전은 다른 작업을 수행한 시간입니다. 작업이 전체 구간을 다 채우지 않고 끝났기 때문입니다. 그런데, 온전히 GPU만 수행되는 것이 아니라, CPU도 어느정도 연산을 수행함을 알 수 있습니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="img/gauge_gpu.png" width="85%" style="display: block; margin: auto;" /></p>
+</div>
+<h3 id="cpu와-gpu의-수행-속도-비교">CPU와 GPU의 수행 속도 비교</h3>
+<p>CPU가 385초, GPU가 132초 걸려서 GPU가 약 3배 정도 빠르게 수행되었습니다. 참고한 자료에 의하면 15배 정보의 차이가 있었다고 하니, 사용자 환경이나 수행하는 딥러닝 코드에 따라 차이가 있을 것으로 보입니다.</p>
+<h2 id="향후-일정과-소회">향후 일정과 소회</h2>
+<p>이제는 맥북프로의 내장 GPU를 딥러닝에 사용할 수 있다는 것을 확인했습니다. 다음에는 R의 reticulate 패키지를 이용해서 R에서 딥러닝을 위한 python과의 협업에 대해서 살펴보겠습니다.</p>
+<p>노트북에서 수행하는 딥러닝 모델 개발에는 한계가 분명이 존재합니다. 장난감 수준의 환경이지만, 그동안 사용하지 못한 리소스를 사용할 수 있다는 것에 만족하려 합니다.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>tf.keras를 사용한 Neural Style Transfer. <a href="https://www.tensorflow.org/tutorials/generative/style_transfer?hl=ko" class="uri">https://www.tensorflow.org/tutorials/generative/style_transfer?hl=ko</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>Deep Learning using GPU on your MacBook. <a href="https://towardsdatascience.com/deep-learning-using-gpu-on-your-macbook-c9becba7c43" class="uri">https://towardsdatascience.com/deep-learning-using-gpu-on-your-macbook-c9becba7c43</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p><a href="https://plaidml.github.io/plaidml/" class="uri">https://plaidml.github.io/plaidml/</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4" role="doc-endnote"><p>PlaidML_Fashion_mnist.ipynb. <a href="https://github.com/franknb/Medium/blob/master/PlaidML_CNN/PlaidML_Fashion_mnist.ipynb" class="uri">https://github.com/franknb/Medium/blob/master/PlaidML_CNN/PlaidML_Fashion_mnist.ipynb</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+<!--radix_placeholder_article_footer-->
+<div class="article-footer">
+  <p class="social_footer">
+    <span class="disqus-comments">
+      <i class="fas fa-comments"></i>
+      &nbsp;
+      <span class="disqus-comment-count" data-disqus-identifier="posts/2022-03-28-plaidml-mac-gpu/">Comment on this article</span>
+    </span>
+    <span class="article-sharing">
+      Share: &nbsp;
+      <a href="https://twitter.com/share?text=%EB%A7%A5%EB%B6%81%EC%97%90%EC%84%9C%20GPU%EB%A5%BC%20%EC%9D%B4%EC%9A%A9%ED%95%B4%EC%84%9C%20%EB%94%A5%EB%9F%AC%EB%8B%9D%20%EC%88%98%ED%96%89%ED%95%98%EA%B8%B0&amp;url=https%3A%2F%2Fchoonghyunryu.github.io%2Fposts%2F2022-03-28-plaidml-mac-gpu%2F">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fchoonghyunryu.github.io%2Fposts%2F2022-03-28-plaidml-mac-gpu%2F&amp;title=%EB%A7%A5%EB%B6%81%EC%97%90%EC%84%9C%20GPU%EB%A5%BC%20%EC%9D%B4%EC%9A%A9%ED%95%B4%EC%84%9C%20%EB%94%A5%EB%9F%AC%EB%8B%9D%20%EC%88%98%ED%96%89%ED%95%98%EA%B8%B0">
+        <i class="fab fa-linkedin"></i>
+      </a>
+      <a href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https%3A%2F%2Fchoonghyunryu.github.io%2Fposts%2F2022-03-28-plaidml-mac-gpu%2F">
+        <i class="fab fa-facebook"></i>
+      </a>
+    </span>
+  </p>
+  <script id="dsq-count-scr" src="https://Dataholic.disqus.com/count.js" async></script>
+  <div id="disqus_thread"></div>
+  <script type="text/javascript" cookie-consent="functionality">
+var disqus_config = function () {
+  this.page.url = 'https://choonghyunryu.github.io/posts/2022-03-28-plaidml-mac-gpu/';
+  this.page.identifier = 'posts/2022-03-28-plaidml-mac-gpu/';
+};
+(function() {
+  var d = document, s = d.createElement('script');
+  s.src = 'https://Dataholic.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+</div>
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<div class="distill-site-nav distill-site-footer">
+  <span>
+    Copyright 2021 DATAHOLIC. All Rights Reserved</p>
+  </span> 
+  <!--Licensed under the <a href="https://opensource.org/licenses/lgpl-3.0.html" target="_blank">GNU General Public License version 3.0</a-->
+<br>
+</div>
+
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom">
+  <h3 id="citation">Citation</h3>
+  <p>For attribution, please cite this work as</p>
+  <pre class="citation-appendix short">유충현 (2022, March 28). Dataholic: 맥북에서 GPU를 이용해서 딥러닝 수행하기. Retrieved from https://choonghyunryu.github.io/2022-03-28-plaidml-mac-gpu</pre>
+  <p>BibTeX citation</p>
+  <pre class="citation-appendix long">@misc{유충현2022맥북에서,
+  author = {유충현, },
+  title = {Dataholic: 맥북에서 GPU를 이용해서 딥러닝 수행하기},
+  url = {https://choonghyunryu.github.io/2022-03-28-plaidml-mac-gpu},
+  year = {2022}
+}</pre>
+</div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>
