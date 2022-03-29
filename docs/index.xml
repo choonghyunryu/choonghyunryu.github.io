@@ -7,7 +7,19 @@
     <description>Dataholic
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Mon, 28 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 29 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>R을 위한 Python 설치하기</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-03-29-anaconda</link>
+      <description>R과 Python은 데이터 분석을 위한 상호 보완재라고 생각합니다. 물론 단일 솔루션을 사용하여 데이터 분석을 수행할 수도 있으나, 서로의 장단점을 이해하고 적절하게 섞어 쓰면 좀더 효율적인 데이터 분석을 수행할 수 있습니다. 그래서 이번에는 R을 위한 Python을 설치하는 방법을 다룹니다.</description>
+      <category>reticulate</category>
+      <category>Anaconda</category>
+      <category>python</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-03-29-anaconda</guid>
+      <pubDate>Tue, 29 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-03-29-anaconda/img/anaconda_logo.png" medium="image" type="image/png" width="318" height="158"/>
+    </item>
     <item>
       <title>맥북에서 GPU를 이용해서 딥러닝 수행하기</title>
       <dc:creator>유충현</dc:creator>

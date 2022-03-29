@@ -1,0 +1,2946 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007ba5; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #007ba5; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #007ba5; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+
+  <!--radix_placeholder_meta_tags-->
+<title>Dataholic: R을 위한 Python 설치하기</title>
+
+<meta property="description" itemprop="description" content="R과 Python은 데이터 분석을 위한 상호 보완재라고 생각합니다. 물론 단일 솔루션을 사용하여 데이터 분석을 수행할 수도 있으나, 서로의 장단점을 이해하고 적절하게 섞어 쓰면 좀더 효율적인 데이터 분석을 수행할 수 있습니다. 그래서 이번에는 R을 위한 Python을 설치하는 방법을 다룹니다."/>
+
+<link rel="canonical" href="https://choonghyunryu.github.io/2022-03-29-anaconda/"/>
+
+<!--  https://schema.org/Article -->
+<meta property="article:published" itemprop="datePublished" content="2022-03-29"/>
+<meta property="article:created" itemprop="dateCreated" content="2022-03-29"/>
+<meta name="article:author" content="유충현"/>
+
+<!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+<meta property="og:title" content="Dataholic: R을 위한 Python 설치하기"/>
+<meta property="og:type" content="article"/>
+<meta property="og:description" content="R과 Python은 데이터 분석을 위한 상호 보완재라고 생각합니다. 물론 단일 솔루션을 사용하여 데이터 분석을 수행할 수도 있으나, 서로의 장단점을 이해하고 적절하게 섞어 쓰면 좀더 효율적인 데이터 분석을 수행할 수 있습니다. 그래서 이번에는 R을 위한 Python을 설치하는 방법을 다룹니다."/>
+<meta property="og:url" content="https://choonghyunryu.github.io/2022-03-29-anaconda/"/>
+<meta property="og:image" content="https://choonghyunryu.github.io/posts/2022-03-29-anaconda/img/anaconda_logo.png"/>
+<meta property="og:image:width" content="318"/>
+<meta property="og:image:height" content="158"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Dataholic"/>
+
+<!--  https://dev.twitter.com/cards/types/summary -->
+<meta property="twitter:card" content="summary_large_image"/>
+<meta property="twitter:title" content="Dataholic: R을 위한 Python 설치하기"/>
+<meta property="twitter:description" content="R과 Python은 데이터 분석을 위한 상호 보완재라고 생각합니다. 물론 단일 솔루션을 사용하여 데이터 분석을 수행할 수도 있으나, 서로의 장단점을 이해하고 적절하게 섞어 쓰면 좀더 효율적인 데이터 분석을 수행할 수 있습니다. 그래서 이번에는 R을 위한 Python을 설치하는 방법을 다룹니다."/>
+<meta property="twitter:url" content="https://choonghyunryu.github.io/2022-03-29-anaconda/"/>
+<meta property="twitter:image" content="https://choonghyunryu.github.io/posts/2022-03-29-anaconda/img/anaconda_logo.png"/>
+<meta property="twitter:image:width" content="318"/>
+<meta property="twitter:image:height" content="158"/>
+
+<!--  https://scholar.google.com/intl/en/scholar/inclusion.html#indexing -->
+<meta name="citation_title" content="Dataholic: R을 위한 Python 설치하기"/>
+<meta name="citation_fulltext_html_url" content="https://choonghyunryu.github.io/2022-03-29-anaconda"/>
+<meta name="citation_online_date" content="2022/03/29"/>
+<meta name="citation_publication_date" content="2022/03/29"/>
+<meta name="citation_author" content="유충현"/>
+<meta name="citation_author_institution" content="한국알사용자회"/>
+<!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+<script type="text/json" id="radix-rmarkdown-metadata">
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","citation_url","date","categories","preview","output","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["R을 위한 Python 설치하기"]},{"type":"character","attributes":{},"value":["R과 Python은 데이터 분석을 위한 상호 보완재라고 생각합니다. 물론 단일 솔루션을 사용하여 데이터 분석을 수행할 수도 있으나, 서로의 장단점을 이해하고 적절하게 섞어 쓰면 좀더 효율적인 데이터 분석을 수행할 수 있습니다. 그래서 이번에는 R을 위한 Python을 설치하는 방법을 다룹니다."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation"]}},"value":[{"type":"character","attributes":{},"value":["유충현"]},{"type":"character","attributes":{},"value":["https://choonghyunryu.github.io"]},{"type":"character","attributes":{},"value":["한국알사용자회"]}]}]},{"type":"character","attributes":{},"value":["https://choonghyunryu.github.io/2022-03-29-anaconda"]},{"type":"character","attributes":{},"value":["2022-03-29"]},{"type":"character","attributes":{},"value":["reticulate","Anaconda","python"]},{"type":"character","attributes":{},"value":["img/anaconda_logo.png"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_depth"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]}]}]},{"type":"character","attributes":{},"value":["https://choonghyunryu.github.io/2022-03-29-anaconda/"]}]}
+</script>
+<!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["2022-03-29-anaconda_files/anchor-4.2.2/anchor.min.js","2022-03-29-anaconda_files/bowser-1.9.3/bowser.min.js","2022-03-29-anaconda_files/distill-2.2.21/template.v2.js","2022-03-29-anaconda_files/header-attrs-2.11/header-attrs.js","2022-03-29-anaconda_files/jquery-3.6.0/jquery-3.6.0.js","2022-03-29-anaconda_files/jquery-3.6.0/jquery-3.6.0.min.js","2022-03-29-anaconda_files/jquery-3.6.0/jquery-3.6.0.min.map","2022-03-29-anaconda_files/panelset-0.2.6/panelset.css","2022-03-29-anaconda_files/panelset-0.2.6/panelset.js","2022-03-29-anaconda_files/popper-2.6.0/popper.min.js","2022-03-29-anaconda_files/tippy-6.2.7/tippy-bundle.umd.min.js","2022-03-29-anaconda_files/tippy-6.2.7/tippy-light-border.css","2022-03-29-anaconda_files/tippy-6.2.7/tippy.css","2022-03-29-anaconda_files/tippy-6.2.7/tippy.umd.min.js","2022-03-29-anaconda_files/webcomponents-2.0.0/webcomponents.js","img/anaconda_logo.png","img/anaconda.png","img/python.png","img/reticulate.jpeg"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+<meta name="distill:offset" content="../.."/>
+
+<script type="application/javascript">
+
+  window.headroom_prevent_pin = false;
+
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+
+    // initialize headroom for banner
+    var header = $('header').get(0);
+    var headerHeight = header.offsetHeight;
+    var headroom = new Headroom(header, {
+      tolerance: 5,
+      onPin : function() {
+        if (window.headroom_prevent_pin) {
+          window.headroom_prevent_pin = false;
+          headroom.unpin();
+        }
+      }
+    });
+    headroom.init();
+    if(window.location.hash)
+      headroom.unpin();
+    $(header).addClass('headroom--transition');
+
+    // offset scroll location for banner on hash change
+    // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+    window.addEventListener("hashchange", function(event) {
+      window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+    });
+
+    // responsive menu
+    $('.distill-site-header').each(function(i, val) {
+      var topnav = $(this);
+      var toggle = topnav.find('.nav-toggle');
+      toggle.on('click', function() {
+        topnav.toggleClass('responsive');
+      });
+    });
+
+    // nav dropdowns
+    $('.nav-dropbtn').click(function(e) {
+      $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+      $(this).parent().siblings('.nav-dropdown')
+         .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $("body").click(function(e){
+      $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $(".nav-dropdown").click(function(e){
+      e.stopPropagation();
+    });
+  });
+</script>
+
+<style type="text/css">
+
+/* Theme (user-documented overrideables for nav appearance) */
+
+.distill-site-nav {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: #0F2E3D;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.distill-site-nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.distill-site-nav a:hover {
+  color: white;
+}
+
+@media print {
+  .distill-site-nav {
+    display: none;
+  }
+}
+
+.distill-site-header {
+
+}
+
+.distill-site-footer {
+
+}
+
+
+/* Site Header */
+
+.distill-site-header {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.distill-site-header .nav-left {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header .nav-left {
+    margin-left: 0;
+  }
+}
+
+
+.distill-site-header .nav-right {
+  float: right;
+  margin-right: 8px;
+}
+
+.distill-site-header a,
+.distill-site-header .title {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 10px 14px 10px;
+}
+
+.distill-site-header .title {
+  font-size: 18px;
+  min-width: 150px;
+}
+
+.distill-site-header .logo {
+  padding: 0;
+}
+
+.distill-site-header .logo img {
+  display: none;
+  max-height: 20px;
+  width: auto;
+  margin-bottom: -4px;
+}
+
+.distill-site-header .nav-image img {
+  max-height: 18px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: -3px;
+}
+
+
+
+@media screen and (min-width: 1000px) {
+  .distill-site-header .logo img {
+    display: inline-block;
+  }
+  .distill-site-header .nav-left {
+    margin-left: 20px;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 20px;
+  }
+  .distill-site-header .title {
+    padding-left: 12px;
+  }
+}
+
+
+.distill-site-header .nav-toggle {
+  display: none;
+}
+
+.nav-dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.nav-dropdown .nav-dropbtn {
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 10px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  margin-top: 1px;
+  z-index: 2;
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+  z-index: 1;
+  margin-top: 2px;
+  white-space: nowrap;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.nav-dropdown-content hr {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-dropdown-active {
+  display: block;
+}
+
+.nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
+  color: black;
+  padding: 6px 24px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.nav-dropdown-content .nav-dropdown-header {
+  display: block;
+  padding: 5px 24px;
+  padding-bottom: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999;
+  white-space: nowrap;
+}
+
+.nav-dropdown:hover .nav-dropbtn {
+  color: white;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.nav-right .nav-dropdown-content {
+  margin-left: -45%;
+  right: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
+  .distill-site-header a.nav-toggle {
+    float: right;
+    display: block;
+  }
+  .distill-site-header .title {
+    margin-left: 0;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 0;
+  }
+  .distill-site-header {
+    overflow: hidden;
+  }
+  .nav-right .nav-dropdown-content {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-header.responsive {position: relative; min-height: 500px; }
+  .distill-site-header.responsive a.nav-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .distill-site-header.responsive a,
+  .distill-site-header.responsive .nav-dropdown {
+    display: block;
+    text-align: left;
+  }
+  .distill-site-header.responsive .nav-left,
+  .distill-site-header.responsive .nav-right {
+    width: 100%;
+  }
+  .distill-site-header.responsive .nav-dropdown {float: none;}
+  .distill-site-header.responsive .nav-dropdown-content {position: relative;}
+  .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Site Footer */
+
+.distill-site-footer {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 3;
+  margin-top: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+/* Headroom */
+
+d-title {
+  padding-top: 6rem;
+}
+
+@media print {
+  d-title {
+    padding-top: 4rem;
+  }
+}
+
+.headroom {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.headroom--transition {
+  transition: all .4s ease-in-out;
+}
+
+.headroom--unpinned {
+  top: -100px;
+}
+
+.headroom--pinned {
+  top: 0;
+}
+
+/* adjust viewport for navbar height */
+/* helps vertically center bootstrap (non-distill) content */
+.min-vh-100 {
+  min-height: calc(100vh - 100px) !important;
+}
+
+</style>
+
+<script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="../../site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
+<link href="../../site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
+<script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
+<script src="../../site_libs/autocomplete-0.37.1/autocomplete.min.js"></script>
+<script src="../../site_libs/fuse-6.4.1/fuse.min.js"></script>
+
+<script type="application/javascript">
+
+function getMeta(metaName) {
+  var metas = document.getElementsByTagName('meta');
+  for (let i = 0; i < metas.length; i++) {
+    if (metas[i].getAttribute('name') === metaName) {
+      return metas[i].getAttribute('content');
+    }
+  }
+  return '';
+}
+
+function offsetURL(url) {
+  var offset = getMeta('distill:offset');
+  return offset ? offset + '/' + url : url;
+}
+
+function createFuseIndex() {
+
+  // create fuse index
+  var options = {
+    keys: [
+      { name: 'title', weight: 20 },
+      { name: 'categories', weight: 15 },
+      { name: 'description', weight: 10 },
+      { name: 'contents', weight: 5 },
+    ],
+    ignoreLocation: true,
+    threshold: 0
+  };
+  var fuse = new window.Fuse([], options);
+
+  // fetch the main search.json
+  return fetch(offsetURL('search.json'))
+    .then(function(response) {
+      if (response.status == 200) {
+        return response.json().then(function(json) {
+          // index main articles
+          json.articles.forEach(function(article) {
+            fuse.add(article);
+          });
+          // download collections and index their articles
+          return Promise.all(json.collections.map(function(collection) {
+            return fetch(offsetURL(collection)).then(function(response) {
+              if (response.status === 200) {
+                return response.json().then(function(articles) {
+                  articles.forEach(function(article) {
+                    fuse.add(article);
+                  });
+                })
+              } else {
+                return Promise.reject(
+                  new Error('Unexpected status from search index request: ' +
+                            response.status)
+                );
+              }
+            });
+          })).then(function() {
+            return fuse;
+          });
+        });
+
+      } else {
+        return Promise.reject(
+          new Error('Unexpected status from search index request: ' +
+                      response.status)
+        );
+      }
+    });
+}
+
+window.document.addEventListener("DOMContentLoaded", function (event) {
+
+  // get search element (bail if we don't have one)
+  var searchEl = window.document.getElementById('distill-search');
+  if (!searchEl)
+    return;
+
+  createFuseIndex()
+    .then(function(fuse) {
+
+      // make search box visible
+      searchEl.classList.remove('hidden');
+
+      // initialize autocomplete
+      var options = {
+        autoselect: true,
+        hint: false,
+        minLength: 2,
+      };
+      window.autocomplete(searchEl, options, [{
+        source: function(query, callback) {
+          const searchOptions = {
+            isCaseSensitive: false,
+            shouldSort: true,
+            minMatchCharLength: 2,
+            limit: 10,
+          };
+          var results = fuse.search(query, searchOptions);
+          callback(results
+            .map(function(result) { return result.item; })
+          );
+        },
+        templates: {
+          suggestion: function(suggestion) {
+            var img = suggestion.preview && Object.keys(suggestion.preview).length > 0
+              ? `<img src="${offsetURL(suggestion.preview)}"</img>`
+              : '';
+            var html = `
+              <div class="search-item">
+                <h3>${suggestion.title}</h3>
+                <div class="search-item-description">
+                  ${suggestion.description || ''}
+                </div>
+                <div class="search-item-preview">
+                  ${img}
+                </div>
+              </div>
+            `;
+            return html;
+          }
+        }
+      }]).on('autocomplete:selected', function(event, suggestion) {
+        window.location.href = offsetURL(suggestion.path);
+      });
+      // remove inline display style on autocompleter (we want to
+      // manage responsive display via css)
+      $('.algolia-autocomplete').css("display", "");
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+
+});
+
+</script>
+
+<style type="text/css">
+
+.nav-search {
+  font-size: x-small;
+}
+
+/* Algolioa Autocomplete */
+
+.algolia-autocomplete {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: sub;
+  background-color: white;
+  color: black;
+  padding: 6px;
+  padding-top: 8px;
+  padding-bottom: 0;
+  border-radius: 6px;
+  border: 1px #0F2E3D solid;
+  width: 180px;
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-nav .algolia-autocomplete {
+    display: none;
+    visibility: hidden;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete {
+    display: inline-block;
+    visibility: visible;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete .aa-dropdown-menu {
+    margin-left: 0;
+    width: 400px;
+    max-height: 400px;
+  }
+}
+
+.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+  width: 90%;
+  outline: none;
+  border: none;
+}
+
+.algolia-autocomplete .aa-hint {
+  color: #999;
+}
+.algolia-autocomplete .aa-dropdown-menu {
+  width: 550px;
+  max-height: 70vh;
+  overflow-x: visible;
+  overflow-y: scroll;
+  padding: 5px;
+  margin-top: 3px;
+  margin-left: -150px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #999;
+  border-top: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+  cursor: pointer;
+  padding: 5px 4px;
+  border-bottom: 1px solid #eee;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion:last-of-type {
+  border-bottom: none;
+  margin-bottom: 2px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item {
+  overflow: hidden;
+  font-size: 0.8em;
+  line-height: 1.4em;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item h3 {
+  font-size: 1rem;
+  margin-block-start: 0;
+  margin-block-end: 5px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-description {
+  display: inline-block;
+  overflow: hidden;
+  height: 2.8em;
+  width: 80%;
+  margin-right: 4%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview {
+  display: inline-block;
+  width: 15%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img {
+  height: 3em;
+  width: auto;
+  display: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img[src] {
+  display: initial;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+  background-color: #eee;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+  font-weight: bold;
+  font-style: normal;
+}
+
+</style>
+
+
+<!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+<style type="text/css">
+
+body {
+  background-color: white;
+}
+
+.pandoc-table {
+  width: 100%;
+}
+
+.pandoc-table>caption {
+  margin-bottom: 10px;
+}
+
+.pandoc-table th:not([align]) {
+  text-align: left;
+}
+
+.pagedtable-footer {
+  font-size: 15px;
+}
+
+d-byline .byline {
+  grid-template-columns: 2fr 2fr;
+}
+
+d-byline .byline h3 {
+  margin-block-start: 1.5em;
+}
+
+d-byline .byline .authors-affiliations h3 {
+  margin-block-start: 0.5em;
+}
+
+.authors-affiliations .orcid-id {
+  width: 16px;
+  height:16px;
+  margin-left: 4px;
+  margin-right: 4px;
+  vertical-align: middle;
+  padding-bottom: 2px;
+}
+
+d-title .dt-tags {
+  margin-top: 1em;
+  grid-column: text;
+}
+
+.dt-tags .dt-tag {
+  text-decoration: none;
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0em 0.4em;
+  margin-right: 0.5em;
+  margin-bottom: 0.4em;
+  font-size: 70%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+d-article table.gt_table td,
+d-article table.gt_table th {
+  border-bottom: none;
+}
+
+.html-widget {
+  margin-bottom: 2.0em;
+}
+
+.l-screen-inset {
+  padding-right: 16px;
+}
+
+.l-screen .caption {
+  margin-left: 10px;
+}
+
+.shaded {
+  background: rgb(247, 247, 247);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .html-widget {
+  margin-bottom: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .shaded-content {
+  background: white;
+}
+
+.text-output {
+  margin-top: 0;
+  line-height: 1.5em;
+}
+
+.hidden {
+  display: none !important;
+}
+
+d-article {
+  padding-top: 2.5rem;
+  padding-bottom: 30px;
+}
+
+d-appendix {
+  padding-top: 30px;
+}
+
+d-article>p>img {
+  width: 100%;
+}
+
+d-article h2 {
+  margin: 1rem 0 1.5rem 0;
+}
+
+d-article h3 {
+  margin-top: 1.5rem;
+}
+
+d-article iframe {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 2.0em;
+  width: 100%;
+}
+
+/* Tweak code blocks */
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: auto;
+}
+
+d-article div.sourceCode {
+  background-color: white;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 10px;
+  font-size: 12px;
+  border-left: 2px solid rgba(0,0,0,0.1);
+}
+
+d-article pre {
+  font-size: 12px;
+  color: black;
+  background: none;
+  margin-top: 0;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+d-article pre a {
+  border-bottom: none;
+}
+
+d-article pre a:hover {
+  border-bottom: none;
+  text-decoration: underline;
+}
+
+d-article details {
+  grid-column: text;
+  margin-bottom: 0.8em;
+}
+
+@media(min-width: 768px) {
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: visible !important;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 18px;
+  font-size: 14px;
+}
+
+d-article pre {
+  font-size: 14px;
+}
+
+}
+
+figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+/* CSS for d-contents */
+
+.d-contents {
+  grid-column: text;
+  color: rgba(0,0,0,0.8);
+  font-size: 0.9em;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+  padding-bottom: 0.5em;
+  margin-bottom: 1em;
+  padding-left: 0.25em;
+  justify-self: start;
+}
+
+@media(min-width: 1000px) {
+  .d-contents.d-contents-float {
+    height: 0;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    justify-self: center;
+    padding-right: 3em;
+    padding-left: 2em;
+  }
+}
+
+.d-contents nav h3 {
+  font-size: 18px;
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+.d-contents li {
+  list-style-type: none
+}
+
+.d-contents nav > ul {
+  padding-left: 0;
+}
+
+.d-contents ul {
+  padding-left: 1em
+}
+
+.d-contents nav ul li {
+  margin-top: 0.6em;
+  margin-bottom: 0.2em;
+}
+
+.d-contents nav a {
+  font-size: 13px;
+  border-bottom: none;
+  text-decoration: none
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.d-contents nav a:hover {
+  text-decoration: underline solid rgba(0, 0, 0, 0.6)
+}
+
+.d-contents nav > ul > li > a {
+  font-weight: 600;
+}
+
+.d-contents nav > ul > li > ul {
+  font-weight: inherit;
+}
+
+.d-contents nav > ul > li > ul > li {
+  margin-top: 0.2em;
+}
+
+
+.d-contents nav ul {
+  margin-top: 0;
+  margin-bottom: 0.25em;
+}
+
+.d-article-with-toc h2:nth-child(2) {
+  margin-top: 0;
+}
+
+
+/* Figure */
+
+.figure {
+  position: relative;
+  margin-bottom: 2.5em;
+  margin-top: 1.5em;
+}
+
+.figure img {
+  width: 100%;
+}
+
+.figure .caption {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  line-height: 1.5em;
+}
+
+.figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.figure .caption a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.figure .caption b,
+.figure .caption strong, {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1.0);
+}
+
+/* Citations */
+
+d-article .citation {
+  color: inherit;
+  cursor: inherit;
+}
+
+div.hanging-indent{
+  margin-left: 1em; text-indent: -1em;
+}
+
+/* Citation hover box */
+
+.tippy-box[data-theme~=light-border] {
+  background-color: rgba(250, 250, 250, 0.95);
+}
+
+.tippy-content > p {
+  margin-bottom: 0;
+  padding: 2px;
+}
+
+
+/* Tweak 1000px media break to show more text */
+
+@media(min-width: 1000px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 16px;
+  }
+
+  .grid {
+    grid-column-gap: 16px;
+  }
+
+  d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+  }
+  figure .caption, .figure .caption, figure figcaption {
+    font-size: 13px;
+  }
+}
+
+@media(min-width: 1180px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 32px;
+  }
+
+  .grid {
+    grid-column-gap: 32px;
+  }
+}
+
+
+/* Get the citation styles for the appendix (not auto-injected on render since
+   we do our own rendering of the citation appendix) */
+
+d-appendix .citation-appendix,
+.d-appendix .citation-appendix {
+  font-size: 11px;
+  line-height: 15px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 18px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.02);
+  padding: 10px 18px;
+  border-radius: 3px;
+  color: rgba(150, 150, 150, 1);
+  overflow: hidden;
+  margin-top: -12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Include appendix styles here so they can be overridden */
+
+d-appendix {
+  contain: layout style;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-top: 60px;
+  margin-bottom: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  color: rgba(0,0,0,0.5);
+  padding-top: 60px;
+  padding-bottom: 48px;
+}
+
+d-appendix h3 {
+  grid-column: page-start / text-start;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 1em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.65);
+}
+
+d-appendix h3 + * {
+  margin-top: 1em;
+}
+
+d-appendix ol {
+  padding: 0 0 0 15px;
+}
+
+@media (min-width: 768px) {
+  d-appendix ol {
+    padding: 0 0 0 30px;
+    margin-left: -30px;
+  }
+}
+
+d-appendix li {
+  margin-bottom: 1em;
+}
+
+d-appendix a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+d-appendix > * {
+  grid-column: text;
+}
+
+d-appendix > d-footnote-list,
+d-appendix > d-citation-list,
+d-appendix > distill-appendix {
+  grid-column: screen;
+}
+
+/* Include footnote styles here so they can be overridden */
+
+d-footnote-list {
+  contain: layout style;
+}
+
+d-footnote-list > * {
+  grid-column: text;
+}
+
+d-footnote-list a.footnote-backlink {
+  color: rgba(0,0,0,0.3);
+  padding-left: 0.5em;
+}
+
+
+
+/* Anchor.js */
+
+.anchorjs-link {
+  /*transition: all .25s linear; */
+  text-decoration: none;
+  border-bottom: none;
+}
+*:hover > .anchorjs-link {
+  margin-left: -1.125em !important;
+  text-decoration: none;
+  border-bottom: none;
+}
+
+/* Social footer */
+
+.social_footer {
+  margin-top: 30px;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.67);
+}
+
+.disqus-comments {
+  margin-right: 30px;
+}
+
+.disqus-comment-count {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+#disqus_thread {
+  margin-top: 30px;
+}
+
+.article-sharing a {
+  border-bottom: none;
+  margin-right: 8px;
+}
+
+.article-sharing a:hover {
+  border-bottom: none;
+}
+
+.sidebar-section.subscribe {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.subscribe p {
+  margin-bottom: 0.5em;
+}
+
+
+.article-footer .subscribe {
+  font-size: 15px;
+  margin-top: 45px;
+}
+
+
+.sidebar-section.custom {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.custom p {
+  margin-bottom: 0.5em;
+}
+
+/* Styles for listing layout (hide title) */
+.layout-listing d-title, .layout-listing .d-title {
+  display: none;
+}
+
+/* Styles for posts lists (not auto-injected) */
+
+
+.posts-with-sidebar {
+  padding-left: 45px;
+  padding-right: 45px;
+}
+
+.posts-list .description h2,
+.posts-list .description p {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+.posts-list .description h2 {
+  font-weight: 700;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.posts-list h2.post-tag {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding-bottom: 12px;
+}
+.posts-list {
+  margin-top: 60px;
+  margin-bottom: 24px;
+}
+
+.posts-list .post-preview {
+  text-decoration: none;
+  overflow: hidden;
+  display: block;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 24px 0;
+}
+
+.post-preview-last {
+  border-bottom: none !important;
+}
+
+.posts-list .posts-list-caption {
+  grid-column: screen;
+  font-weight: 400;
+}
+
+.posts-list .post-preview h2 {
+  margin: 0 0 6px 0;
+  line-height: 1.2em;
+  font-style: normal;
+  font-size: 24px;
+}
+
+.posts-list .post-preview p {
+  margin: 0 0 12px 0;
+  line-height: 1.4em;
+  font-size: 16px;
+}
+
+.posts-list .post-preview .thumbnail {
+  box-sizing: border-box;
+  margin-bottom: 24px;
+  position: relative;
+  max-width: 500px;
+}
+.posts-list .post-preview img {
+  width: 100%;
+  display: block;
+}
+
+.posts-list .metadata {
+  font-size: 12px;
+  line-height: 1.4em;
+  margin-bottom: 18px;
+}
+
+.posts-list .metadata > * {
+  display: inline-block;
+}
+
+.posts-list .metadata .publishedDate {
+  margin-right: 2em;
+}
+
+.posts-list .metadata .dt-authors {
+  display: block;
+  margin-top: 0.3em;
+  margin-right: 2em;
+}
+
+.posts-list .dt-tags {
+  display: block;
+  line-height: 1em;
+}
+
+.posts-list .dt-tags .dt-tag {
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0.3em 0.4em;
+  margin-right: 0.2em;
+  margin-bottom: 0.4em;
+  font-size: 60%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.posts-list img {
+  opacity: 1;
+}
+
+.posts-list img[data-src] {
+  opacity: 0;
+}
+
+.posts-more {
+  clear: both;
+}
+
+
+.posts-sidebar {
+  font-size: 16px;
+}
+
+.posts-sidebar h3 {
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.sidebar-section {
+  margin-bottom: 30px;
+}
+
+.categories ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.categories li {
+  color: rgba(0, 0, 0, 0.8);
+  margin-bottom: 0;
+}
+
+.categories li>a {
+  border-bottom: none;
+}
+
+.categories li>a:hover {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.categories .active {
+  font-weight: 600;
+}
+
+.categories .category-count {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+
+@media(min-width: 768px) {
+  .posts-list .post-preview h2 {
+    font-size: 26px;
+  }
+  .posts-list .post-preview .thumbnail {
+    float: right;
+    width: 30%;
+    margin-bottom: 0;
+  }
+  .posts-list .post-preview .description {
+    float: left;
+    width: 45%;
+  }
+  .posts-list .post-preview .metadata {
+    float: left;
+    width: 20%;
+    margin-top: 8px;
+  }
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.5em;
+    font-size: 16px;
+  }
+  .posts-with-sidebar .posts-list {
+    float: left;
+    width: 75%;
+  }
+  .posts-with-sidebar .posts-sidebar {
+    float: right;
+    width: 20%;
+    margin-top: 60px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+}
+
+
+/* Improve display for browsers without grid (IE/Edge <= 15) */
+
+.downlevel {
+  line-height: 1.6em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
+
+.downlevel .d-title {
+  padding-top: 6rem;
+  padding-bottom: 1.5rem;
+}
+
+.downlevel .d-title h1 {
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1.1em;
+  margin: 0 0 0.5rem;
+}
+
+.downlevel .d-title p {
+  font-weight: 300;
+  font-size: 1.2rem;
+  line-height: 1.55em;
+  margin-top: 0;
+}
+
+.downlevel .d-byline {
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  font-size: 0.8rem;
+  line-height: 1.8em;
+}
+
+.downlevel .section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.downlevel .d-article {
+  font-size: 1.06rem;
+  line-height: 1.7em;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+
+.downlevel .d-appendix {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.5);
+  padding-top: 40px;
+  padding-bottom: 48px;
+}
+
+.downlevel .footnotes ol {
+  padding-left: 13px;
+}
+
+.downlevel .base-grid,
+.downlevel .distill-header,
+.downlevel .d-title,
+.downlevel .d-abstract,
+.downlevel .d-article,
+.downlevel .d-appendix,
+.downlevel .distill-appendix,
+.downlevel .d-byline,
+.downlevel .d-footnote-list,
+.downlevel .d-citation-list,
+.downlevel .distill-footer,
+.downlevel .appendix-bottom,
+.downlevel .posts-container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+@media(min-width: 768px) {
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+  padding-left: 150px;
+  padding-right: 150px;
+  max-width: 900px;
+}
+}
+
+.downlevel pre code {
+  display: block;
+  border-left: 2px solid rgba(0, 0, 0, .1);
+  padding: 0 0 0 20px;
+  font-size: 14px;
+}
+
+.downlevel code, .downlevel pre {
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+.downlevel .posts-list .post-preview {
+  color: inherit;
+}
+
+
+
+</style>
+
+<script type="application/javascript">
+
+function is_downlevel_browser() {
+  if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                 window.navigator.userAgent)) {
+    return true;
+  } else {
+    return window.load_distill_framework === undefined;
+  }
+}
+
+// show body when load is complete
+function on_load_complete() {
+
+  // add anchors
+  if (window.anchors) {
+    window.anchors.options.placement = 'left';
+    window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+  }
+
+
+  // set body to visible
+  document.body.style.visibility = 'visible';
+
+  // force redraw for leaflet widgets
+  if (window.HTMLWidgets) {
+    var maps = window.HTMLWidgets.findAll(".leaflet");
+    $.each(maps, function(i, el) {
+      var map = this.getMap();
+      map.invalidateSize();
+      map.eachLayer(function(layer) {
+        if (layer instanceof L.TileLayer)
+          layer.redraw();
+      });
+    });
+  }
+
+  // trigger 'shown' so htmlwidgets resize
+  $('d-article').trigger('shown');
+}
+
+function init_distill() {
+
+  init_common();
+
+  // create front matter
+  var front_matter = $('<d-front-matter></d-front-matter>');
+  $('#distill-front-matter').wrap(front_matter);
+
+  // create d-title
+  $('.d-title').changeElementType('d-title');
+
+  // create d-byline
+  var byline = $('<d-byline></d-byline>');
+  $('.d-byline').replaceWith(byline);
+
+  // create d-article
+  var article = $('<d-article></d-article>');
+  $('.d-article').wrap(article).children().unwrap();
+
+  // move posts container into article
+  $('.posts-container').appendTo($('d-article'));
+
+  // create d-appendix
+  $('.d-appendix').changeElementType('d-appendix');
+
+  // flag indicating that we have appendix items
+  var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+  // replace footnotes with <d-footnote>
+  $('.footnote-ref').each(function(i, val) {
+    appendix = true;
+    var href = $(this).attr('href');
+    var id = href.replace('#', '');
+    var fn = $('#' + id);
+    var fn_p = $('#' + id + '>p');
+    fn_p.find('.footnote-back').remove();
+    var text = fn_p.html();
+    var dtfn = $('<d-footnote></d-footnote>');
+    dtfn.html(text);
+    $(this).replaceWith(dtfn);
+  });
+  // remove footnotes
+  $('.footnotes').remove();
+
+  // move refs into #references-listing
+  $('#references-listing').replaceWith($('#refs'));
+
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    var id = $(this).attr('id');
+    $('.d-contents a[href="#' + id + '"]').parent().remove();
+    appendix = true;
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+  });
+
+  // show d-appendix if we have appendix content
+  $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+  // localize layout chunks to just output
+  $('.layout-chunk').each(function(i, val) {
+
+    // capture layout
+    var layout = $(this).attr('data-layout');
+
+    // apply layout to markdown level block elements
+    var elements = $(this).children().not('details, div.sourceCode, pre, script');
+    elements.each(function(i, el) {
+      var layout_div = $('<div class="' + layout + '"></div>');
+      if (layout_div.hasClass('shaded')) {
+        var shaded_content = $('<div class="shaded-content"></div>');
+        $(this).wrap(shaded_content);
+        $(this).parent().wrap(layout_div);
+      } else {
+        $(this).wrap(layout_div);
+      }
+    });
+
+
+    // unwrap the layout-chunk div
+    $(this).children().unwrap();
+  });
+
+  // remove code block used to force  highlighting css
+  $('.distill-force-highlighting-css').parent().remove();
+
+  // remove empty line numbers inserted by pandoc when using a
+  // custom syntax highlighting theme
+  $('code.sourceCode a:empty').remove();
+
+  // load distill framework
+  load_distill_framework();
+
+  // wait for window.distillRunlevel == 4 to do post processing
+  function distill_post_process() {
+
+    if (!window.distillRunlevel || window.distillRunlevel < 4)
+      return;
+
+    // hide author/affiliations entirely if we have no authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+    if (!have_authors)
+      $('d-byline').addClass('hidden');
+
+    // article with toc class
+    $('.d-contents').parent().addClass('d-article-with-toc');
+
+    // strip links that point to #
+    $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+    // add orcid ids
+    $('.authors-affiliations').find('.author').each(function(i, el) {
+      var orcid_id = front_matter.authors[i].orcidID;
+      if (orcid_id) {
+        var a = $('<a></a>');
+        a.attr('href', 'https://orcid.org/' + orcid_id);
+        var img = $('<img></img>');
+        img.addClass('orcid-id');
+        img.attr('alt', 'ORCID ID');
+        img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+        a.append(img);
+        $(this).append(a);
+      }
+    });
+
+    // hide elements of author/affiliations grid that have no value
+    function hide_byline_column(caption) {
+      $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+    }
+
+    // affiliations
+    var have_affiliations = false;
+    for (var i = 0; i<front_matter.authors.length; ++i) {
+      var author = front_matter.authors[i];
+      if (author.affiliation !== "&nbsp;") {
+        have_affiliations = true;
+        break;
+      }
+    }
+    if (!have_affiliations)
+      $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+    // published date
+    if (!front_matter.publishedDate)
+      hide_byline_column("Published");
+
+    // document object identifier
+    var doi = $('d-byline').find('h3:contains("DOI")');
+    var doi_p = doi.next().empty();
+    if (!front_matter.doi) {
+      // if we have a citation and valid citationText then link to that
+      if ($('#citation').length > 0 && front_matter.citationText) {
+        doi.html('Citation');
+        $('<a href="#citation"></a>')
+          .text(front_matter.citationText)
+          .appendTo(doi_p);
+      } else {
+        hide_byline_column("DOI");
+      }
+    } else {
+      $('<a></a>')
+         .attr('href', "https://doi.org/" + front_matter.doi)
+         .html(front_matter.doi)
+         .appendTo(doi_p);
+    }
+
+     // change plural form of authors/affiliations
+    if (front_matter.authors.length === 1) {
+      var grid = $('.authors-affiliations');
+      grid.children('h3:contains("Authors")').text('Author');
+      grid.children('h3:contains("Affiliations")').text('Affiliation');
+    }
+
+    // remove d-appendix and d-footnote-list local styles
+    $('d-appendix > style:first-child').remove();
+    $('d-footnote-list > style:first-child').remove();
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // hoverable references
+    $('span.citation[data-cites]').each(function() {
+      var refs = $(this).attr('data-cites').split(" ");
+      var refHtml = refs.map(function(ref) {
+        return "<p>" + $('#ref-' + ref).html() + "</p>";
+      }).join("\n");
+      window.tippy(this, {
+        allowHTML: true,
+        content: refHtml,
+        maxWidth: 500,
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start'
+      });
+    });
+
+    // clear polling timer
+    clearInterval(tid);
+
+    // show body now that everything is ready
+    on_load_complete();
+  }
+
+  var tid = setInterval(distill_post_process, 50);
+  distill_post_process();
+
+}
+
+function init_downlevel() {
+
+  init_common();
+
+   // insert hr after d-title
+  $('.d-title').after($('<hr class="section-separator"/>'));
+
+  // check if we have authors
+  var front_matter = JSON.parse($("#distill-front-matter").html());
+  var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+  // manage byline/border
+  if (!have_authors)
+    $('.d-byline').remove();
+  $('.d-byline').after($('<hr class="section-separator"/>'));
+  $('.d-byline a').remove();
+
+  // remove toc
+  $('.d-contents').remove();
+
+  // move appendix elements
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+  });
+
+
+  // inject headers into references and footnotes
+  var refs_header = $('<h3></h3>');
+  refs_header.text('References');
+  $('#refs').prepend(refs_header);
+
+  var footnotes_header = $('<h3></h3');
+  footnotes_header.text('Footnotes');
+  $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+  // move appendix-bottom entries to the bottom
+  $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+  $('.appendix-bottom').remove();
+
+  // remove appendix if it's empty
+  if ($('.d-appendix').children().length === 0)
+    $('.d-appendix').remove();
+
+  // prepend separator above appendix
+  $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+  // trim code
+  $('pre>code').each(function(i, val) {
+    $(this).html($.trim($(this).html()));
+  });
+
+  // move posts-container right before article
+  $('.posts-container').insertBefore($('.d-article'));
+
+  $('body').addClass('downlevel');
+
+  on_load_complete();
+}
+
+
+function init_common() {
+
+  // jquery plugin to change element types
+  (function($) {
+    $.fn.changeElementType = function(newType) {
+      var attrs = {};
+
+      $.each(this[0].attributes, function(idx, attr) {
+        attrs[attr.nodeName] = attr.nodeValue;
+      });
+
+      this.replaceWith(function() {
+        return $("<" + newType + "/>", attrs).append($(this).contents());
+      });
+    };
+  })(jQuery);
+
+  // prevent underline for linked images
+  $('a > img').parent().css({'border-bottom' : 'none'});
+
+  // mark non-body figures created by knitr chunks as 100% width
+  $('.layout-chunk').each(function(i, val) {
+    var figures = $(this).find('img, .html-widget');
+    if ($(this).attr('data-layout') !== "l-body") {
+      figures.css('width', '100%');
+    } else {
+      figures.css('max-width', '100%');
+      figures.filter("[width]").each(function(i, val) {
+        var fig = $(this);
+        fig.css('width', fig.attr('width') + 'px');
+      });
+
+    }
+  });
+
+  // auto-append index.html to post-preview links in file: protocol
+  // and in rstudio ide preview
+  $('.post-preview').each(function(i, val) {
+    if (window.location.protocol === "file:")
+      $(this).attr('href', $(this).attr('href') + "index.html");
+  });
+
+  // get rid of index.html references in header
+  if (window.location.protocol !== "file:") {
+    $('.distill-site-header a[href]').each(function(i,val) {
+      $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+    });
+  }
+
+  // add class to pandoc style tables
+  $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+  $('.kable-table').children('table').addClass('pandoc-table');
+
+  // add figcaption style to table captions
+  $('caption').parent('table').addClass("figcaption");
+
+  // initialize posts list
+  if (window.init_posts_list)
+    window.init_posts_list();
+
+  // implmement disqus comment link
+  $('.disqus-comment-count').click(function() {
+    window.headroom_prevent_pin = true;
+    $('#disqus_thread').toggleClass('hidden');
+    if (!$('#disqus_thread').hasClass('hidden')) {
+      var offset = $(this).offset();
+      $(window).resize();
+      $('html, body').animate({
+        scrollTop: offset.top - 35
+      });
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (is_downlevel_browser())
+    init_downlevel();
+  else
+    window.addEventListener('WebComponentsReady', init_distill);
+});
+
+</script>
+
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+
+
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    sans-serif;
+  --mono-font:       monospace;
+  --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
+}
+
+/*-- ARTICLE METADATA --*/
+d-byline {
+  --heading-size:    0.6rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    18px;
+  --contents-size:   13px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       18px;
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+.distill-site-footer {
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+</style>
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+
+:root {
+  --custom-grey60: rgb(102, 102, 102);
+  --custom-grey20: rgb(204, 204, 204);
+  --custom-grey10: rgb(230, 230, 230);
+  --custom-blue: rgb(0, 114, 188);
+  --custom-lightblue: rgb(204, 227, 242);
+  --custom-orange: rgb(255, 127, 42); 
+  --custom-lightorange: rgb(255, 204, 170); 
+}
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    sans-serif;
+  --mono-font:       monospace;
+  --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
+}
+
+/*-- ARTICLE METADATA --*/
+d-byline {
+  --heading-size:    0.6rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    18px;
+  --contents-size:   13px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       18px;
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       var(--custom-blue);
+}
+
+.distill-site-footer {
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       var(--custom-blue);
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+
+.preface {
+  font-size: 11pt;
+  background-color: var(--custom-lightblue);
+  margin-top: 1em;
+  margin-bottom: 0.5em;  
+  padding: 1.5em;
+  padding-top: 0.5em;
+  border-color: DodgerBlue;
+}
+
+h1 {
+  font-size: 30px !important;  
+  color: var(--custom-blue) !important;
+  font-family: NanumSquare !important;
+  margin-top: 15px !important;
+  padding-top: 15px !important;  
+  margin-bottom: 15px !important;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 25px !important;  
+  color: var(--custom-blue) !important;  
+  font-family: NanumSquare !important;  
+  padding-top: 15px !important;  
+  margin-top: 15px !important;
+  padding-bottom: 10px !important;  
+  margin-bottom: 10px !important;    
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 20px !important;  
+  color: var(--custom-blue) !important;  
+  font-family: NanumSquare !important;  
+  margin-top: 10px !important;
+  margin-bottom: 10px !important; 
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;   
+  font-weight: bold;
+}
+
+.tab-content {
+   top: 25px;
+   padding: 20px;
+}
+
+.bg-blue,
+.bg-orange,
+.bg-grey {
+  padding: 1.6em;
+  margin-top: 1.0em;
+  margin-bottom: 1.0em;
+}
+.bg-blue {
+  background-color: var(--custom-lightblue);
+}
+.bg-orange {
+  background-color: var(--custom-lightorange);
+}
+.bg-grey {
+  background-color: var(--custom-grey20);
+}
+.bg-blue > *:last-child,
+.bg-orange > *:last-child,
+.bg-grey > *:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.panelset {
+  --panel-tab-foreground: currentColor !important;
+  --panel-tab-active-foreground: var(--custom-blue) !important;
+  --panel-tab-active-background: var(--custom-lightblue) !important;  
+  --panel-tab-hover-foreground: var(--custom-blue) !important;
+  --panel-tabs-border-bottom: #ddd !important;
+  --panel-tab-inactive-opacity: 0.5 !important;
+}
+
+d-byline {
+    contain: content;
+    overflow: hidden;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 0.8rem;
+    line-height: 1.8em;
+    padding: 1.5rem 0;
+    min-height: 1.8em;
+}
+
+d-byline h3 {
+    font-size: 0.6rem !important;  
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.5) !important;  
+    margin: 4.8px 0px 0px 0px !important; 
+    padding: 0px 0px 0px 0px !important;  
+    text-transform: uppercase;
+}
+
+
+blockquote {
+  background: var(--custom-grey10);
+  border-left: 10px solid #ccc !important;  
+  margin: 1.5em 10px;
+  padding: 0.5em 10px;
+  quotes: "\201C""\201D""\2018""\2019";
+}
+
+blockquote:before {
+  color: #ccc;
+  content: open-quote;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+
+blockquote p {
+  display: inline;
+}
+
+</style>
+<style type="text/css">
+/* base style */
+
+/* FONT FAMILIES */
+
+:root {
+  --heading-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono-default: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  --body-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+body,
+.posts-list .post-preview p,
+.posts-list .description p {
+  font-family: var(--body-font), var(--body-default);
+}
+
+h1, h2, h3, h4, h5, h6,
+.posts-list .post-preview h2,
+.posts-list .description h2 {
+  font-family: var(--heading-font), var(--heading-default);
+}
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: var(--mono-font), var(--mono-default);
+}
+
+
+/*-- TITLE --*/
+d-title h1,
+.posts-list > h1 {
+  color: var(--title-color, black);
+}
+
+d-title h1 {
+  font-size: var(--title-size, 50px);
+}
+
+/*-- HEADERS --*/
+d-article h1,
+d-article h2,
+d-article h3,
+d-article h4,
+d-article h5,
+d-article h6 {
+  color: var(--header-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- BODY --*/
+d-article > p,  /* only text inside of <p> tags */
+d-article > ul, /* lists */
+d-article > ol {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+  font-size: var(--body-size, 1.06rem);
+}
+
+
+/*-- CODE --*/
+d-article div.sourceCode code,
+d-article pre code {
+  font-size: var(--code-size, 14px);
+}
+
+/*-- ASIDE --*/
+d-article aside {
+  font-size: var(--aside-size, 12px);
+  color: var(--aside-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- FIGURE CAPTIONS --*/
+figure .caption,
+figure figcaption,
+.figure .caption {
+  font-size: var(--fig-cap-size, 13px);
+  color: var(--fig-cap-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- METADATA --*/
+d-byline h3 {
+  font-size: var(--heading-size, 0.6rem);
+  color: var(--heading-color, rgba(0, 0, 0, 0.5));
+}
+
+d-byline {
+  font-size: var(--body-size, 0.8rem);
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+d-byline a,
+d-article d-byline a {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- TABLE OF CONTENTS --*/
+.d-contents nav h3 {
+  font-size: var(--heading-size, 18px);
+}
+
+.d-contents nav a {
+  font-size: var(--contents-size, 13px);
+}
+
+/*-- APPENDIX --*/
+d-appendix h3 {
+  font-size: var(--heading-size, 15px);
+  color: var(--heading-color, rgba(0, 0, 0, 0.65));
+}
+
+d-appendix {
+  font-size: var(--text-size, 0.8em);
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+d-appendix d-footnote-list a.footnote-backlink {
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+.distill-site-header .title {
+  font-size: var(--title-size, 18px);
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.distill-site-header a,
+.nav-dropdown .nav-dropbtn {
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.nav-dropdown .nav-dropbtn {
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  font-size: var(--text-size, 15px);
+}
+
+.distill-site-header a:hover,
+.nav-dropdown:hover .nav-dropbtn {
+  color: var(--hover-color, white);
+}
+
+.distill-site-header {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer a:hover {
+  color: var(--hover-color, white);
+}</style>
+<!--/radix_placeholder_distill-->
+  <script src="../../site_libs/header-attrs-2.11/header-attrs.js"></script>
+  <link href="../../site_libs/panelset-0.2.6/panelset.css" rel="stylesheet" />
+  <script src="../../site_libs/panelset-0.2.6/panelset.js"></script>
+  <script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+  <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
+  <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="../../site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="../../site_libs/tippy-6.2.7/tippy.umd.min.js"></script>
+  <script src="../../site_libs/anchor-4.2.2/anchor.min.js"></script>
+  <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
+  <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="../../site_libs/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+<script type="text/javascript" cookie-consent="tracking" async src="https://www.googletagmanager.com/gtag/js?id=UA-118779401-1"></script>
+<script type="text/javascript" cookie-consent="tracking">
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-118779401-1');
+</script>
+<!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"R을 위한 Python 설치하기","description":"R과 Python은 데이터 분석을 위한 상호 보완재라고 생각합니다. 물론 단일 솔루션을 사용하여 데이터 분석을 수행할 수도 있으나, 서로의 장단점을 이해하고 적절하게 섞어 쓰면 좀더 효율적인 데이터 분석을 수행할 수 있습니다. 그래서 이번에는 R을 위한 Python을 설치하는 방법을 다룹니다.","authors":[{"author":"유충현","authorURL":"https://choonghyunryu.github.io","affiliation":"한국알사용자회","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-03-29T00:00:00.000+09:00","citationText":"유충현, 2022"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="distill-site-nav distill-site-header">
+<div class="nav-left">
+<a class="logo">
+<img src="../../images/rubik-cube-white.png" alt="Logo"/>
+</a>
+<a href="../../index.html" class="title">Dataholic</a>
+<input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
+</div>
+<div class="nav-right">
+<a href="../../index.html">Home</a>
+<a href="../../mydev.html">MyDevs</a>
+<a href="../../gallery.html">Gallery</a>
+<a href="../../about.html">About</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>R을 위한 Python 설치하기</h1>
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+  <a href="../../index.html#category:reticulate" class="dt-tag">reticulate</a>
+  <a href="../../index.html#category:Anaconda" class="dt-tag">Anaconda</a>
+  <a href="../../index.html#category:python" class="dt-tag">python</a>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>R과 Python은 데이터 분석을 위한 상호 보완재라고 생각합니다. 물론 단일 솔루션을 사용하여 데이터 분석을 수행할 수도 있으나, 서로의 장단점을 이해하고 적절하게 섞어 쓰면 좀더 효율적인 데이터 분석을 수행할 수 있습니다. 그래서 이번에는 R을 위한 Python을 설치하는 방법을 다룹니다.</p></p>
+</div>
+
+<div class="d-byline">
+  유충현 <a href="https://choonghyunryu.github.io" class="uri">https://choonghyunryu.github.io</a> (한국알사용자회)
+  
+<br/>2022-03-29
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#비단뱀-전성시대">비단뱀 전성시대</a></li>
+<li><a href="#anaconda-설치">Anaconda 설치</a>
+<ul>
+<li><a href="#anaconda란">Anaconda란</a></li>
+<li><a href="#anaconda-설치-1">Anaconda 설치</a></li>
+<li><a href="#anaconda-환경-구성">Anaconda 환경 구성</a>
+<ul>
+<li><a href="#conda-가상환경-생성">conda 가상환경 생성</a></li>
+<li><a href="#가상환경-활성화">가상환경 활성화</a></li>
+<li><a href="#가상환경-비활성화">가상환경 비활성화</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#deep-learing-엔진-설치">Deep Learing 엔진 설치</a>
+<ul>
+<li><a href="#tensorflow와-keras-설치">tensorflow와 keras 설치</a>
+<ul>
+<li><a href="#tensorflow와-keras-r-패키지-설치">tensorflow와 keras R 패키지 설치</a></li>
+<li><a href="#tensorflow와-keras-python-패키지-설치">tensorflow와 keras python 패키지 설치</a></li>
+<li><a href="#conda-가상환경-연결-확인">conda 가상환경 연결 확인</a></li>
+<li><a href="#tensorflow-설치-확인">tensorflow 설치 확인</a></li>
+<li><a href="#keras-설치-확인">keras 설치 확인</a></li>
+</ul></li>
+<li><a href="#opencv-python-패키지-설치">opencv python 패키지 설치</a></li>
+</ul></li>
+</ul>
+</nav>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="img/anaconda_logo.png" width="70%" style="display: block; margin: auto;" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="preface">
+<h4>들어가기</h4>
+기억이 가물거리지만, 내 노트북에는 Anaconda가 설치되어 있습니다.
+<br/>
+리소스 관리를 잘 못하는지라 앞서 다룬 PlaidML를 사용하면서 발견한 간단한 메모를 공유합니다. 몇년된 자료지만 reticulate 패키지를 설치하면서 작성한 자료로 RStudio 환경에서 Python을 사용할 수 있는 환경을 구축합니다.
+</div>
+</div>
+<h1 id="비단뱀-전성시대">비단뱀 전성시대</h1>
+<p>Python의 사전적인 뜻은, 고대 신화속의 파르나수스(Parnassus) 산의 동굴에 살던 큰 뱀<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>이라고 합니다. 또한 Python 배포본인 아나콘다(Anaconda)는 비단뱀의 일종입니다. 그리고 R과 Python을 연동하는 R 패키지인 reticulate는 그물무늬비단뱀입니다. 디지털 세상에서의 암묵적인 작명법에 의해서 비단뱀이 지금도 많은 데이터 과학자들의 입에 오르내리고 있습니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p align="middle">
+<img src="img/python.png" width="30%"/>
+<img src="img/anaconda.png" width="35%"/>
+<img src="img/reticulate.jpeg" width="30%"/>
+</p>
+</div>
+<h1 id="anaconda-설치">Anaconda 설치</h1>
+<h2 id="anaconda란">Anaconda란</h2>
+<p>아나콘다(Anaconda)는 데이터 과학과 관련된 데이터 조작 및 분석 용도로 여러 패키지를 묶어 만든 python과 R의 오픈소스 배포본입니다. 복잡한 패키지의 관리 및 설치를 쉽게하기 위한 목적으로 만들어졌습니다.</p>
+<h2 id="anaconda-설치-1">Anaconda 설치</h2>
+<p>Anaconda는 <a href="https://docs.anaconda.com/anaconda/install/index.html" target="_blank">https://docs.anaconda.com/anaconda/install/index.html</a> 도움말 페이지를 참고해서 설치합니다. 설치를 위한 배포본은 <a href="https://www.anaconda.com/products/distribution" target="_blank">https://www.anaconda.com/products/distribution</a>에서 다운로드합니다. 필자가 설치할 운영체제는 MacOS이기 때문에 MacOS을 위한 Anaconda3-2020.11-MacOSX-x86_64.pkg를 다운로드하여 설치하였습니다. 2022년 3월 기준으로는 Anaconda3-2021.11-MacOSX-x86_64.pkg을 다운로드할 수 있습니다.</p>
+<h2 id="anaconda-환경-구성">Anaconda 환경 구성</h2>
+<h3 id="conda-가상환경-생성">conda 가상환경 생성</h3>
+<p>아나콘다의 가상환경(virtual environment)을 conda라 합니다. 여기서는 앞으로 데이터 분석에 사용할 python 가상환경을 생성합니다.</p>
+<p>아나콘다를 설치하면 콘솔의 프롬프트가 변경됩니다. 그것은 콘솔에서 현재 어떤 환경에서 작업을 수행하는지를 알려주는 역할을 합니다. 프롬프트에 prefix(접두어)로 (bash)가 추가됨을 알 수 있습니다. 즉, 현재 콘솔에서의 작업 환경은 bash shell 환경이라는 것을 알려줍니다.</p>
+<p>macOS 버전 10.15인 카탈리나부터 기본 쉘(Shell) 이 bash에서 zsh(Z shell)로 변경되었습니다. macOS 버전이 11.0.1인 Big Sur를 사용했었던(현재는 12.3인 Monterey를 사용합니다.) 필자의 콘솔에는 프롬프트에 (bash)가 추가되지만 사실은 zsh 환경입니다. 이 (bash)의 의미를 아나콘다의 가상환경이 아닌 사용자의 시스템 콘솔의 쉘 환경을 알려주는 것이라고 이해하면 됩니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>(bash) <span class="sc">$</span> ps</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  PID TTY           TIME CMD</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dv">45033</span> ttys000    <span class="dv">0</span><span class="sc">:</span><span class="fl">00.10</span> <span class="sc">-</span>zsh</span></code></pre></div>
+</div>
+<p>다음과 같은 조건의 가상환경을 생성합니다.</p>
+<ul>
+<li>python 버전
+<ul>
+<li>3.7</li>
+</ul></li>
+<li>가상환경의 이름
+<ul>
+<li>r-reticulate</li>
+</ul></li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(bash) <span class="sc">$</span> conda create <span class="sc">--</span>name r<span class="sc">-</span>reticulate python<span class="ot">=</span><span class="fl">3.7</span></span></code></pre></div>
+</div>
+<p>만들어진 가상환경의 목록을 다음처럼 조회할 수 있습니다. 앞서 만든 r-reticulate라는 이름의 가상환경이 조회되었습니다. 필자의 경우에는 아나콘다가 사용자 홈 디렉토리/opt/anaconda3에 설치되었고 가상환경은 아나콘다 <strong>{리렉토리}/envs/{가상환경 이름}</strong>으로 생성되었음을 알 수 있습니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>(bash) <span class="sc">$</span> conda env list</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># conda environments:</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>base                  <span class="sc">*</span>  <span class="er">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>r<span class="sc">-</span>reticulate             <span class="sc">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate</span></code></pre></div>
+</div>
+<h3 id="가상환경-활성화">가상환경 활성화</h3>
+<p>가상 환경에서 작업을 수행하기 위해서는 가상환경을 활성화 해야 합니다. <code>conda activate</code> 명령어를 수행하여 <strong>r-reticulate 가상환경을 활성화</strong>하면 프롬프트의 <code>(bash)</code>가 <code>(가상환경 이름)</code>으로 변경됩니다. 즉, 현재의 작업 환경이 아나콘다에 가상환경에 머물러 있다는 것을 주지시키는 것입니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>(base) <span class="sc">$</span> conda activate r<span class="sc">-</span>reticulate</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>(r<span class="sc">-</span>reticulate) <span class="sc">$</span> </span></code></pre></div>
+</div>
+<p>가상환경에는 python 3.7 버전이 설치되었으며, 아나콘다의 python임을 알 수 있는 정보가 출력되었습니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>(r<span class="sc">-</span>reticulate) <span class="sc">$</span> python <span class="sc">--</span>version   </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>Python <span class="dv">3</span>.<span class="fl">7.9</span></span></code></pre></div>
+</div>
+<h3 id="가상환경-비활성화">가상환경 비활성화</h3>
+<p>가상환경의 비활성화는 <code>conda deactivate</code> 명령어를 사용한합니다. 예제의 프롬프트를 보면 가상환경에서 시스템 쉘 모드로 변경된 것을 알 수 있습니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>(r<span class="sc">-</span>reticulate) <span class="sc">$</span> conda deactivate</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>(base) <span class="sc">$</span></span></code></pre></div>
+</div>
+<h1 id="deep-learing-엔진-설치">Deep Learing 엔진 설치</h1>
+<p>R이 python보다 취약한 것은 딥러닝 관련 분야일 것입니다. 그래서 python의 힘을 빌려서 딥러닝을 수행할 수 있는 몇 가지 python 패키지와 R 패키지를 설치합니다.</p>
+<h2 id="tensorflow와-keras-설치">tensorflow와 keras 설치</h2>
+<p>R에서 딥러닝을 수행할 수 있도록 tensorflow와 keras를 설치합니다. 설치는 두 단계로 진행됩니다.</p>
+<ol type="1">
+<li>먼저 tensorflow와 keras를 R 환경에서 사용할 수 있는 tensorflow와 keras R 패키지를 설치한 다음,</li>
+<li>tensorflow와 keras python 패키지를 설치합니다.</li>
+</ol>
+<h3 id="tensorflow와-keras-r-패키지-설치">tensorflow와 keras R 패키지 설치</h3>
+<p>R 패키지는 R 환경에서 다음과 같이 설치합니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='st'>"tensorflow"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='st'>"keras"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h3 id="tensorflow와-keras-python-패키지-설치">tensorflow와 keras python 패키지 설치</h3>
+<p>우리가 사용할 keras는 뉴럴 네트워크 분석을 위해 tensorflow로 개발된 고수준(high-level) API입니다. 그러므로 tensorflow 설치 없이 동작하지 못합니다. 그래서 tensorflow와 keras를 함께 설치해야 합니다. 만약 tensorflow만 연동할 경우에는 keras를 설치하지 않아도 됩니다.</p>
+<p>tensorflow와 keras python 패키지는 사용자 시스템의 python 환경에 설치하지 않고, 다음처럼 아나콘다 가상환경에 설치합니다. <code>method</code>, <code>envname</code> 인수를 사용해서 앞에서 만들어 놓은 <code>r-reticulate</code> 가상환경에 설치할 수 있습니다. 앞에서 설치한 conda의 python 버전이 3.7이었으므로 <code>conda_python_version</code> 인수에 해당 버전을 지정합니다.</p>
+<p>keras 패키지의 <code>install_keras()</code> 함수는 tensorflow와 keras python 패키지를 설치합니다. <code>install_keras()</code> 함수는 내부적으로 tensorflow 패키지의 <code>install_tensorflow()</code> 함수를 호출하기 때문에 <code>install_keras()</code> 함수로 한번에 설치하는 것이 효율적입니다. 아니면 tensorflow 패키지의 <code>install_tensorflow()</code> 함수로 tensorflow를 설치한 후에 keras 패키지의 <code>install_keras()</code> 함수로 keras를 설치할 수도 있습니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://keras.rstudio.com'>keras</a></span><span class='op'>)</span>
+<span class='fu'><a href='https://keras.rstudio.com/reference/install_keras.html'>install_keras</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"conda"</span>, envname <span class='op'>=</span> <span class='st'>"r-reticulate"</span>, 
+              conda_python_version <span class='op'>=</span> <span class='st'>"3.7"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h3 id="conda-가상환경-연결-확인">conda 가상환경 연결 확인</h3>
+<p>reticulate 패키지는 R에서 python을 사용할 수 있게 도와주는 패키지입니다. 이 패키지를 이용해서 R에서 conda 가상환경의 리소스를 사용할 수 있는 환경을 설정합니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(reticulate)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">use_condaenv</span>(<span class="st">&quot;r-reticulate&quot;</span>, <span class="at">required =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">print</span>(<span class="fu">py_config</span>())</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>python<span class="sc">:</span>         <span class="er">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate<span class="sc">/</span>bin<span class="sc">/</span>python</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>libpython<span class="sc">:</span>      <span class="er">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate<span class="sc">/</span>lib<span class="sc">/</span>libpython3<span class="fl">.7</span>m.dylib</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>pythonhome<span class="sc">:</span>     <span class="er">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate<span class="sc">:</span><span class="er">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>version<span class="sc">:</span>        <span class="dv">3</span>.<span class="fl">7.9</span> (default, Aug <span class="dv">31</span> <span class="dv">2020</span>, <span class="dv">07</span><span class="sc">:</span><span class="dv">22</span><span class="sc">:</span><span class="dv">35</span>)  [Clang <span class="dv">10</span>.<span class="fl">0.0</span> ]</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>numpy<span class="sc">:</span>          <span class="er">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate<span class="sc">/</span>lib<span class="sc">/</span>python3<span class="fl">.7</span><span class="sc">/</span>site<span class="sc">-</span>packages<span class="sc">/</span>numpy</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>numpy_version<span class="sc">:</span>  <span class="dv">1</span>.<span class="fl">19.2</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>NOTE<span class="sc">:</span> Python version was forced by use_python <span class="cf">function</span></span></code></pre></div>
+</div>
+<h3 id="tensorflow-설치-확인">tensorflow 설치 확인</h3>
+<p>python <code>tensorflow</code> 패키지의 <code>tf.constant()</code>를 다음처럼 R의 <code>tensorflow</code> 패키지로 호출해 본다. python 환경에서의 ‘.’이 R 환경에서’$’로 변경되었을 뿐 호출 방법은 유사합니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(tensorflow)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> tf<span class="sc">$</span><span class="fu">constant</span>(<span class="st">&quot;Hellow Tensorflow&quot;</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Tensor(&quot;Const:0&quot;, shape=(), dtype=string)</span></span></code></pre></div>
+</div>
+<h3 id="keras-설치-확인">keras 설치 확인</h3>
+<p>python <code>keras</code> 패키지는, 간단하게 2행 3열 행렬의 표준화를 수행하는 예제로 설치를 확인합니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(keras)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">set.seed</span>(123L)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> x <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">6</span>), <span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> x</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="do">##            [,1]       [,2]      [,3]</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] -0.5604756 1.55870831 0.1292877</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] -0.2301775 0.07050839 1.7150650</span></span></code></pre></div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">normalize</span>(x)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="do">##            [,1]      [,2]       [,3]</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] -0.3373410 0.9381608 0.07781615</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] -0.1329063 0.0407121 0.99029210</span></span></code></pre></div>
+</div>
+<h2 id="opencv-python-패키지-설치">opencv python 패키지 설치</h2>
+<p>가상 환경인 <code>r-reticulate</code>에 <code>opencv</code> python 패키지를 설치합니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>(base) <span class="sc">$</span> conda activate r<span class="sc">-</span>reticulate</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>(r<span class="sc">-</span>reticulate) <span class="sc">$</span> conda install opencv </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>Collecting package <span class="fu">metadata</span> (current_repodata.json)<span class="sc">:</span> done</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>Solving environment<span class="sc">:</span> done</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Package Plan ##</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  environment location<span class="sc">:</span> <span class="er">/</span>Users<span class="sc">/</span>choonghyunryu<span class="sc">/</span>opt<span class="sc">/</span>anaconda3<span class="sc">/</span>envs<span class="sc">/</span>r<span class="sc">-</span>reticulate</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  added <span class="sc">/</span> updated specs<span class="sc">:</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span> opencv</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>The following packages will be downloaded<span class="sc">:</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    package                    <span class="sc">|</span>            build</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    <span class="sc">---------------------------</span><span class="er">|</span><span class="sc">-----------------</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    cairo<span class="dv">-1</span>.<span class="fl">14.12</span>              <span class="sc">|</span>       hc4e6be7_4         <span class="dv">860</span> KB</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    ffmpeg<span class="fl">-4.0</span>                 <span class="sc">|</span>       h01ea3c9_0        <span class="fl">21.8</span> MB</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    fontconfig<span class="dv">-2</span>.<span class="fl">13.0</span>          <span class="sc">|</span>       h5d5b041_1         <span class="dv">202</span> KB</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    graphite2<span class="dv">-1</span>.<span class="fl">3.14</span>           <span class="sc">|</span>       h38d11af_0          <span class="dv">80</span> KB</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    harfbuzz<span class="dv">-1</span>.<span class="fl">8.8</span>             <span class="sc">|</span>       hb8d4a28_0         <span class="dv">414</span> KB</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    hdf5<span class="dv">-1</span>.<span class="fl">10.2</span>                <span class="sc">|</span>       hfa1e0ec_1         <span class="fl">3.0</span> MB</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    jasper<span class="dv">-2</span>.<span class="fl">0.14</span>              <span class="sc">|</span>       h636a363_1         <span class="dv">654</span> KB</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    libopencv<span class="dv">-3</span>.<span class="fl">4.2</span>            <span class="sc">|</span>       h7c891bd_1        <span class="fl">18.5</span> MB</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    libopus<span class="dv">-1</span>.<span class="fl">3.1</span>              <span class="sc">|</span>       h1de35cc_0         <span class="dv">480</span> KB</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    libvpx<span class="dv">-1</span>.<span class="fl">7.0</span>               <span class="sc">|</span>       h378b8a2_0         <span class="fl">1.3</span> MB</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    mkl<span class="sc">-</span>service<span class="dv">-2</span>.<span class="fl">3.0</span>          <span class="sc">|</span>   py37h9ed2024_0          <span class="dv">40</span> KB</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    mkl_fft<span class="dv">-1</span>.<span class="fl">2.0</span>              <span class="sc">|</span>   py37hc64f4ea_0         <span class="dv">141</span> KB</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>    mkl_random<span class="dv">-1</span>.<span class="fl">1.1</span>           <span class="sc">|</span>   py37h959d312_0         <span class="dv">284</span> KB</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>    numpy<span class="dv">-1</span>.<span class="fl">19.2</span>               <span class="sc">|</span>   py37h456fd55_0          <span class="dv">21</span> KB</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>    numpy<span class="sc">-</span>base<span class="dv">-1</span>.<span class="fl">19.2</span>          <span class="sc">|</span>   py37hcfb5961_0         <span class="fl">4.0</span> MB</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>    opencv<span class="dv">-3</span>.<span class="fl">4.2</span>               <span class="sc">|</span>   py37h6fd60c2_1          <span class="dv">11</span> KB</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>    pixman<span class="dv">-0</span>.<span class="fl">40.0</span>              <span class="sc">|</span>       haf1e3a3_0         <span class="dv">340</span> KB</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>    py<span class="sc">-</span>opencv<span class="dv">-3</span>.<span class="fl">4.2</span>            <span class="sc">|</span>   py37h7c891bd_1         <span class="fl">1.0</span> MB</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>    six<span class="dv">-1</span>.<span class="fl">15.0</span>                 <span class="sc">|</span>   py37hecd8cb5_0          <span class="dv">27</span> KB</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>    <span class="sc">------------------------------------------------------------</span></span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>                                           Total<span class="sc">:</span>        <span class="fl">53.1</span> MB</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>The following NEW packages will be INSTALLED<span class="sc">:</span></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>  blas               pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>blas<span class="fl">-1.0</span><span class="sc">-</span>mkl</span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>  bzip2              pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>bzip2<span class="dv">-1</span>.<span class="fl">0.8</span><span class="sc">-</span>h1de35cc_0</span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>  cairo              pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>cairo<span class="dv">-1</span>.<span class="fl">14.12</span><span class="sc">-</span>hc4e6be7_4</span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>  ffmpeg             pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>ffmpeg<span class="fl">-4.0</span><span class="sc">-</span>h01ea3c9_0</span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>  fontconfig         pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>fontconfig<span class="dv">-2</span>.<span class="fl">13.0</span><span class="sc">-</span>h5d5b041_1</span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>  freetype           pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>freetype<span class="dv">-2</span>.<span class="fl">10.4</span><span class="sc">-</span>ha233b18_0</span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>  gettext            pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>gettext<span class="dv">-0</span>.<span class="dv">19</span>.<span class="fl">8.1</span><span class="sc">-</span>hb0f4f8b_2</span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>  glib               pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>glib<span class="dv">-2</span>.<span class="fl">66.1</span><span class="sc">-</span>h9bbe63b_0</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>  graphite2          pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>graphite2<span class="dv">-1</span>.<span class="fl">3.14</span><span class="sc">-</span>h38d11af_0</span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>  harfbuzz           pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>harfbuzz<span class="dv">-1</span>.<span class="fl">8.8</span><span class="sc">-</span>hb8d4a28_0</span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>  hdf5               pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>hdf5<span class="dv">-1</span>.<span class="fl">10.2</span><span class="sc">-</span>hfa1e0ec_1</span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>  icu                pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>icu<span class="fl">-58.2</span><span class="sc">-</span>h0a44026_3</span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>  intel<span class="sc">-</span>openmp       pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>intel<span class="sc">-</span>openmp<span class="fl">-2019.4</span><span class="dv">-233</span></span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>  jasper             pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>jasper<span class="dv">-2</span>.<span class="fl">0.14</span><span class="sc">-</span>h636a363_1</span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>  jpeg               pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>jpeg<span class="sc">-</span>9b<span class="sc">-</span>he5867d9_2</span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>  libgfortran        pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>libgfortran<span class="dv">-3</span>.<span class="fl">0.1</span><span class="sc">-</span>h93005f0_2</span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>  libiconv           pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>libiconv<span class="fl">-1.16</span><span class="sc">-</span>h1de35cc_0</span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>  libopencv          pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>libopencv<span class="dv">-3</span>.<span class="fl">4.2</span><span class="sc">-</span>h7c891bd_1</span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a>  libopus            pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>libopus<span class="dv">-1</span>.<span class="fl">3.1</span><span class="sc">-</span>h1de35cc_0</span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a>  libpng             pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>libpng<span class="dv">-1</span>.<span class="fl">6.37</span><span class="sc">-</span>ha441bb4_0</span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>  libtiff            pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>libtiff<span class="dv">-4</span>.<span class="fl">1.0</span><span class="sc">-</span>hcb84e12_1</span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>  libvpx             pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>libvpx<span class="dv">-1</span>.<span class="fl">7.0</span><span class="sc">-</span>h378b8a2_0</span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a>  libxml2            pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>libxml2<span class="dv">-2</span>.<span class="fl">9.10</span><span class="sc">-</span>h7cdb67c_3</span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a>  lz4<span class="sc">-</span>c              pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>lz4<span class="sc">-</span>c<span class="dv">-1</span>.<span class="fl">9.2</span><span class="sc">-</span>h79c402e_3</span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>  mkl                pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>mkl<span class="fl">-2019.4</span><span class="dv">-233</span></span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>  mkl<span class="sc">-</span>service        pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>mkl<span class="sc">-</span>service<span class="dv">-2</span>.<span class="fl">3.0</span><span class="sc">-</span>py37h9ed2024_0</span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a>  mkl_fft            pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>mkl_fft<span class="dv">-1</span>.<span class="fl">2.0</span><span class="sc">-</span>py37hc64f4ea_0</span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a>  mkl_random         pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>mkl_random<span class="dv">-1</span>.<span class="fl">1.1</span><span class="sc">-</span>py37h959d312_0</span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a>  numpy              pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>numpy<span class="dv">-1</span>.<span class="fl">19.2</span><span class="sc">-</span>py37h456fd55_0</span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a>  numpy<span class="sc">-</span>base         pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>numpy<span class="sc">-</span>base<span class="dv">-1</span>.<span class="fl">19.2</span><span class="sc">-</span>py37hcfb5961_0</span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a>  opencv             pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>opencv<span class="dv">-3</span>.<span class="fl">4.2</span><span class="sc">-</span>py37h6fd60c2_1</span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a>  pcre               pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>pcre<span class="fl">-8.44</span><span class="sc">-</span>hb1e8313_0</span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a>  pixman             pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>pixman<span class="dv">-0</span>.<span class="fl">40.0</span><span class="sc">-</span>haf1e3a3_0</span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a>  py<span class="sc">-</span>opencv          pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>py<span class="sc">-</span>opencv<span class="dv">-3</span>.<span class="fl">4.2</span><span class="sc">-</span>py37h7c891bd_1</span>
+<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a>  six                pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>six<span class="dv">-1</span>.<span class="fl">15.0</span><span class="sc">-</span>py37hecd8cb5_0</span>
+<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a>  zstd               pkgs<span class="sc">/</span>main<span class="sc">/</span>osx<span class="dv">-64</span><span class="sc">::</span>zstd<span class="dv">-1</span>.<span class="fl">4.5</span><span class="sc">-</span>h41d2c2f_0</span>
+<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a><span class="fu">Proceed</span> ([y]<span class="sc">/</span>n)? y</span>
+<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a>Downloading and Extracting Packages</span>
+<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a>hdf5<span class="dv">-1</span>.<span class="fl">10.2</span>          <span class="sc">|</span> <span class="fl">3.0</span> MB    <span class="sc">|</span> <span class="do">################################################################### | 100% </span></span>
+<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a>cairo<span class="dv">-1</span>.<span class="fl">14.12</span>        <span class="sc">|</span> <span class="dv">860</span> KB    <span class="sc">|</span> <span class="do">################################################################### | 100% </span></span>
+<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a>jasper<span class="dv">-2</span>.<span class="fl">0.14</span>        <span class="sc">|</span> <span class="dv">654</span> KB    <span class="sc">|</span> <span class="do">################################################################### | 100% </span></span>
+<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a>numpy<span class="sc">-</span>base<span class="dv">-1</span>.<span class="fl">19.2</span>    <span class="sc">|</span> <span class="fl">4.0</span> MB    <span class="sc">|</span> <span class="do">################################################################### | 100% </span></span>
+<span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a>mkl_random<span class="dv">-1</span>.<span class="fl">1.1</span>     <span class="sc">|</span> <span class="dv">284</span> KB    <span class="sc">|</span> <span class="do">################################################################### | 100% </span></span>
+<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a>mkl_fft<span class="dv">-1</span>.<span class="fl">2.0</span>        <span class="sc">|</span> <span class="dv">141</span> KB    <span class="sc">|</span> <span class="do">################################################################### | 100% </span></span>
+<span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a>py<span class="sc">-</span>opencv<span class="dv">-3</span>.<span class="fl">4.2</span>      <span class="sc">|</span> <span class="fl">1.0</span> MB    <span class="sc">|</span> <span class="do">################################################################### | 100% </span></span>
+<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a>libopencv<span class="dv">-3</span>.<span class="fl">4.2</span>      <span class="sc">|</span> <span class="fl">18.5</span> MB   <span class="sc">|</span> <span class="do">################################################################### | 100% </span></span>
+<span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a>libopus<span class="dv">-1</span>.<span class="fl">3.1</span>        <span class="sc">|</span> <span class="dv">480</span> KB    <span class="sc">|</span> <span class="do">################################################################### | 100% </span></span>
+<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a>mkl<span class="sc">-</span>service<span class="dv">-2</span>.<span class="fl">3.0</span>    <span class="sc">|</span> <span class="dv">40</span> KB     <span class="sc">|</span> <span class="do">################################################################### | 100% </span></span>
+<span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a>pixman<span class="dv">-0</span>.<span class="fl">40.0</span>        <span class="sc">|</span> <span class="dv">340</span> KB    <span class="sc">|</span> <span class="do">################################################################### | 100% </span></span>
+<span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a>fontconfig<span class="dv">-2</span>.<span class="fl">13.0</span>    <span class="sc">|</span> <span class="dv">202</span> KB    <span class="sc">|</span> <span class="do">################################################################### | 100% </span></span>
+<span id="cb11-96"><a href="#cb11-96" aria-hidden="true" tabindex="-1"></a>graphite2<span class="dv">-1</span>.<span class="fl">3.14</span>     <span class="sc">|</span> <span class="dv">80</span> KB     <span class="sc">|</span> <span class="do">################################################################### | 100% </span></span>
+<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a>six<span class="dv">-1</span>.<span class="fl">15.0</span>           <span class="sc">|</span> <span class="dv">27</span> KB     <span class="sc">|</span> <span class="do">################################################################### | 100% </span></span>
+<span id="cb11-98"><a href="#cb11-98" aria-hidden="true" tabindex="-1"></a>libvpx<span class="dv">-1</span>.<span class="fl">7.0</span>         <span class="sc">|</span> <span class="fl">1.3</span> MB    <span class="sc">|</span> <span class="do">################################################################### | 100% </span></span>
+<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a>numpy<span class="dv">-1</span>.<span class="fl">19.2</span>         <span class="sc">|</span> <span class="dv">21</span> KB     <span class="sc">|</span> <span class="do">################################################################### | 100% </span></span>
+<span id="cb11-100"><a href="#cb11-100" aria-hidden="true" tabindex="-1"></a>ffmpeg<span class="fl">-4.0</span>           <span class="sc">|</span> <span class="fl">21.8</span> MB   <span class="sc">|</span> <span class="do">################################################################### | 100% </span></span>
+<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a>harfbuzz<span class="dv">-1</span>.<span class="fl">8.8</span>       <span class="sc">|</span> <span class="dv">414</span> KB    <span class="sc">|</span> <span class="do">################################################################### | 100% </span></span>
+<span id="cb11-102"><a href="#cb11-102" aria-hidden="true" tabindex="-1"></a>opencv<span class="dv">-3</span>.<span class="fl">4.2</span>         <span class="sc">|</span> <span class="dv">11</span> KB     <span class="sc">|</span> <span class="do">################################################################### | 100% </span></span>
+<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a>Preparing transaction<span class="sc">:</span> done</span>
+<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a>Verifying transaction<span class="sc">:</span> done</span>
+<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a>Executing transaction<span class="sc">:</span> done</span></code></pre></div>
+</div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>파이썬이란 무엇인가?. <a href="https://ghgus0702.tistory.com/9" class="uri">https://ghgus0702.tistory.com/9</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+<!--radix_placeholder_article_footer-->
+<div class="article-footer">
+  <p class="social_footer">
+    <span class="disqus-comments">
+      <i class="fas fa-comments"></i>
+      &nbsp;
+      <span class="disqus-comment-count" data-disqus-identifier="posts/2022-03-29-anaconda/">Comment on this article</span>
+    </span>
+    <span class="article-sharing">
+      Share: &nbsp;
+      <a href="https://twitter.com/share?text=R%EC%9D%84%20%EC%9C%84%ED%95%9C%20Python%20%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0&amp;url=https%3A%2F%2Fchoonghyunryu.github.io%2Fposts%2F2022-03-29-anaconda%2F">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fchoonghyunryu.github.io%2Fposts%2F2022-03-29-anaconda%2F&amp;title=R%EC%9D%84%20%EC%9C%84%ED%95%9C%20Python%20%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0">
+        <i class="fab fa-linkedin"></i>
+      </a>
+      <a href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https%3A%2F%2Fchoonghyunryu.github.io%2Fposts%2F2022-03-29-anaconda%2F">
+        <i class="fab fa-facebook"></i>
+      </a>
+    </span>
+  </p>
+  <script id="dsq-count-scr" src="https://Dataholic.disqus.com/count.js" async></script>
+  <div id="disqus_thread"></div>
+  <script type="text/javascript" cookie-consent="functionality">
+var disqus_config = function () {
+  this.page.url = 'https://choonghyunryu.github.io/posts/2022-03-29-anaconda/';
+  this.page.identifier = 'posts/2022-03-29-anaconda/';
+};
+(function() {
+  var d = document, s = d.createElement('script');
+  s.src = 'https://Dataholic.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+</div>
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<div class="distill-site-nav distill-site-footer">
+  <span>
+    Copyright 2021 DATAHOLIC. All Rights Reserved</p>
+  </span> 
+  <!--Licensed under the <a href="https://opensource.org/licenses/lgpl-3.0.html" target="_blank">GNU General Public License version 3.0</a-->
+<br>
+</div>
+
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom">
+  <h3 id="citation">Citation</h3>
+  <p>For attribution, please cite this work as</p>
+  <pre class="citation-appendix short">유충현 (2022, March 29). Dataholic: R을 위한 Python 설치하기. Retrieved from https://choonghyunryu.github.io/2022-03-29-anaconda</pre>
+  <p>BibTeX citation</p>
+  <pre class="citation-appendix long">@misc{유충현2022r을,
+  author = {유충현, },
+  title = {Dataholic: R을 위한 Python 설치하기},
+  url = {https://choonghyunryu.github.io/2022-03-29-anaconda},
+  year = {2022}
+}</pre>
+</div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>
