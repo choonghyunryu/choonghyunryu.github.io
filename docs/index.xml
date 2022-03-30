@@ -9,6 +9,18 @@
     <generator>Distill</generator>
     <lastBuildDate>Tue, 29 Mar 2022 00:00:00 +0000</lastBuildDate>
     <item>
+      <title>TensorFlow용 Metal 플러그인</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-03-30-tensorflow-metal</link>
+      <description>궁하면 통한다고 했나요? 맥에 탑재된 AMD GPU가 딥러닝 분야에서 무용지물이었는데, 이제 하나둘씩 활용할 수 있는 대안이 나오고 있습니다. PlaidML에 이어서 tensorflow-metal PluggableDevice로 맥의 AMD GPU를 딥러닝 학습에 사용하는 방법을 다룹니다.</description>
+      <category>tensorflow</category>
+      <category>Mac</category>
+      <category>python</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-03-30-tensorflow-metal</guid>
+      <pubDate>Tue, 29 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-03-30-tensorflow-metal/img/TensorFlowLogo.jpeg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
       <title>R을 위한 Python 설치하기</title>
       <dc:creator>유충현</dc:creator>
       <link>https://choonghyunryu.github.io/posts/2022-03-29-anaconda</link>
