@@ -7,7 +7,7 @@
     <description>Dataholic
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Tue, 29 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 30 Mar 2022 00:00:00 +0000</lastBuildDate>
     <item>
       <title>TensorFlow용 Metal 플러그인</title>
       <dc:creator>유충현</dc:creator>
@@ -17,7 +17,7 @@
       <category>Mac</category>
       <category>python</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-30-tensorflow-metal</guid>
-      <pubDate>Tue, 29 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 30 Mar 2022 00:00:00 +0000</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-30-tensorflow-metal/img/TensorFlowLogo.jpeg" medium="image" type="image/jpeg"/>
     </item>
     <item>
