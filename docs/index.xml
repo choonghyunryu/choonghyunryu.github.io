@@ -7,7 +7,18 @@
     <description>Dataholic
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Wed, 30 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 03 Apr 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>GitHub 개인 액세스 토큰 변경</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-04-03-change-github-pat</link>
+      <description>GitHub의 개인 액세스 토큰을 변경한 후, R 환경에서 git에 토큰을 등록해서 RStudio에서 Github을 연동하는 방법을 다룹니다.</description>
+      <category>github</category>
+      <category>RStudio</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-04-03-change-github-pat</guid>
+      <pubDate>Sun, 03 Apr 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-04-03-change-github-pat/img/github.png" medium="image" type="image/png" width="300" height="168"/>
+    </item>
     <item>
       <title>TensorFlow용 Metal 플러그인</title>
       <dc:creator>유충현</dc:creator>

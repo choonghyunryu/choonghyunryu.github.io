@@ -1,5 +1,27 @@
 [
   {
+    "path": "posts/2022-04-03-change-github-pat/",
+    "title": "GitHub 개인 액세스 토큰 변경",
+    "description": "GitHub의 개인 액세스 토큰을 변경한 후, R 환경에서 git에 토큰을 등록해서 RStudio에서 Github을 연동하는 방법을 다룹니다.",
+    "author": [
+      {
+        "name": "유충현",
+        "url": "https://choonghyunryu.github.io"
+      }
+    ],
+    "date": "2022-04-03",
+    "categories": [
+      "github",
+      "RStudio"
+    ],
+    "contents": "\n\nContents\nGitHub 개인 액세스 토큰 변경\nGitHub 개인 액세스 토큰 변경 안내\nGitHub 개인 액세스 토큰 변경\n\nRStudio에서의 Github 연동 설정하기\nGit에 개인 액세스 토큰 변경하기\n\n참고자료\n\n\n\n\n\n\n\n들어가기\n이제는 R 세션에서 Github을 연동하는 것은 필수 사항입니다.\n\nGithub의 개인 액세스 토큰을 변경하니, 당연히 RStudio과 Github이 연동되지 않았습니다. 이를 해결하는 방법을 알아봅니다.\n\n\nGitHub 개인 액세스 토큰 변경\nGitHub 개인 액세스 토큰 변경 안내\n한통의 메일을 받았습니다. 최근에 Github의 API 인증 토큰의 형식이 업데이트되었으니, 추가적인 보안 혜택을 받으려면 개인 액세스 토큰(PAT, personal access token)을 재발급받으라는 안내였습니다.\n\n\n\nGitHub 개인 액세스 토큰 변경\n메일의 ‘Regenerate your personal access token’ 버튼을 눌렀더니 개인 액세스 토큰을 수정할 수 있는 다음 화면으로 이동했습니다.\n\n\n\n액세스 토큰을 변경하기 위해서 ‘Regenerate token’ 버튼을 누릅니다. 이동한 다음 화면에서 Expiration 날짜를 선택한 후 토큰을 생성합니다. 필자는 1년 후의 토큰이 만기되도록 날짜를 설정했습니다.\n\n\n\n새로 생성된 토큰은 잘 메모해 두어야 합니다.\nRStudio에서의 Github 연동 설정하기\n이제 기존에 RStudio에서 정상적으로 사용던 Github 연동작업은 정상적으로 수행되지 않습니다. Git에 새로운 개인 액세스 토큰을 등록해야, RStudio에서 Git 리파지토리에서 연동이 가능합니다.\n이 작업은 자주 있는 작업이 아니기 때문에, 작업을 수행할때마다 새롭습니다. 역시나 Googling을 통해서 해결했습니다.\nGit에 개인 액세스 토큰 변경하기\nGit의 개인 액세스 토큰 변경(동록)은 gitcreds::gitcreds_set()로 수행합니다.\n’3: See the password / token’을 선택하면, 기존에 등록된 토큰일 출력됩니다. 보안을 위해서 ’OldOldOldOldOldOldOldOldOldOldOld’로 표현했습니다.\n’2: Replace these credentials’를 선택한 후, 변경된 토큰을 입력합니다. 역시, 보안을 위해서 ’NewNewNewNewNewNewNewNewNewNewNew’로 표현했습니다. 이것을 따라 입력하시면 안됩니다.\n\n> gitcreds::gitcreds_set()\n\n-> Your current credentials for 'https://github.com':\n\n  protocol: https\n  host    : github.com\n  username: PersonalAccessToken\n  password: <-- hidden -->\n\n-> What would you like to do? \n\n1: Keep these credentials\n2: Replace these credentials\n3: See the password / token\n\nSelection: 3\n\nCurrent password: OldOldOldOldOldOldOldOldOldOldOld\n\n\n-> What would you like to do? \n\n1: Keep these credentials\n2: Replace these credentials\n3: See the password / token\n\nSelection: 2\n\n-> Removing current credentials...\n\n? Enter new password or token: NewNewNewNewNewNewNewNewNewNewNew\n-> Adding new credentials...\n-> Removing credetials from cache...\n-> Done.\n>\n\nusethis::git_sitrep()로 Github의 자격증명을 확인할 수 있습니다. 결과를 공유하기 어려워서 이 작업은 수행하지 않겠습니다.\n\n\n\n참고자료\n앞에서 언급한 것처럼, 자주 수행하는 작업이 아니기 때문에 암묵적인 Knowledge에 내재화되지 않았습니다. 그래서 아래의 페이지1를 참고하여 작업을 수월하게 진행할 수 있었습니다.\nSetting Up a Personal Access Token via R\n\nSetting Up a Personal Access Token via R. https://carpentries.github.io/sandpaper-docs/github-pat.html↩︎\n",
+    "preview": "posts/2022-04-03-change-github-pat/img/github.png",
+    "last_modified": "2022-04-02T21:17:46+09:00",
+    "input_file": {},
+    "preview_width": 300,
+    "preview_height": 168
+  },
+  {
     "path": "posts/2022-03-30-tensorflow-metal/",
     "title": "TensorFlow용 Metal 플러그인",
     "description": "궁하면 통한다고 했나요? 맥에 탑재된 AMD GPU가 딥러닝 분야에서 무용지물이었는데, 이제 하나둘씩 활용할 수 있는 대안이 나오고 있습니다. PlaidML에 이어서 tensorflow-metal PluggableDevice로 맥의 AMD GPU를 딥러닝 학습에 사용하는 방법을 다룹니다.",
