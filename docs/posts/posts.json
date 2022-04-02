@@ -305,11 +305,11 @@
       "Development"
     ],
     "contents": "\n\nContents\nShiny 서버를 사용하는 이유\nShiny 서버 설치하기\ndocker 이미지 가져오기\nShiny 서버 실행하기\n\n결언\n\n\n\n\n\n\n\n들어가기\nShiny 서버 docker 이미지를 설치하여, 컨테이너를 구동하는 방법을 설명합니다.\n\ndocker가 설치된 환경을 전제로 설명합니다. docker 환경 구축하는 방법은 다루지 않습니다.\n\n\n\nShiny 서버를 사용하는 이유\nRStudio에서 Shiny 애플리케이션을 실행하면 애플리케이션을 종료하기 전까지 RStudio를 사용할 수 없습니다. 그러나 Shiny 서버에서 Shiny 애플리케이션을 구동하면, 언제든지 웹 브라우저에서 애플리케이션을 실행할 수 있고 RStudio는 애플리케이션의 구동과 독립적으로 사용할 수 있습니다.\nShiny 서버를 사용하는 이유에서 눈치챘겠지만, 이 글은 Shiny 애플리케이션을 호스팅할 목적의 작업이라기 보다는 개인 노트북에 Shiny 애플리케이션 데모 환경을 구축하기 위함입니다. 그러나 Shiny 애플리케이션을 호스팅할 목적으로도 활용할 수 있습니다.\nShiny 서버 설치하기\ndocker 이미지 가져오기\nShiny 서버의 운영을 위해서 rocker/shiny-verse 이미지를 가져옵니다. 이 이미지는 Shiny 이미지와 Tidyverse 패키지를 포함하고 있습니다.\nrocker/shiny + rocker/shiny-verse\n다음 명령으로 docker hub 저장소로부터 docker 이미지를 가져옵니다.\n\npull rocker/shiny-verse\n\n이미지 목록에서 가져온 Shiny 이미지를 확인할 수 있습니다.\n\ndocker images \n\nShiny 서버 실행하기\n다음 run 명령으로 docker 컨테이너를 생성하고 실행합니다. 즉, Shiny 서버를 실행합니다.\n\ndocker run --rm -p 3838:3838 rocker/shiny-verse\n\n서버가 실행되면, http://localhost:3838 URL에서 Shiny 데모 애플리케이션을 실행할 수 있습니다.\nShiny 데모 애플리케이션결언\ndocker 컨테이너로 Shiny 데모 애플리케이션을 구동할 수 있습니다. 그러나 아직은 사용자가 개발한 애플리케이션을 구동하기 위한 docker 환경은 아닙니다. 추가적인 환경 설정이 필요해 보입니다.\n\n\n\n",
-    "preview": "posts/2022-03-16-install-docker-image/img/shiny-logo.png",
-    "last_modified": "2022-03-16T08:08:06+09:00",
+    "preview": "posts/2022-03-16-install-docker-image/img/docker-logo.png",
+    "last_modified": "2022-04-02T20:10:42+09:00",
     "input_file": {},
-    "preview_width": 2206,
-    "preview_height": 2557
+    "preview_width": 336,
+    "preview_height": 287
   },
   {
     "path": "posts/2022-03-15-introduce-pps/",
