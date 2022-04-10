@@ -7,7 +7,19 @@
     <description>Dataholic
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sun, 03 Apr 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 09 Apr 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>deprecated 종속성 오류 해결하기</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-04-09-cran-check</link>
+      <description>dlookr 0.5.5 버전을 CRAN에 제출했습니다. 정상적으로 여러 패키지로 빌드되는 중에서, 이슈를 해결하라는 메일을 받았습니다. 이슈의 원인과 해결하는 방법을 살펴봅니다.</description>
+      <category>CRAN</category>
+      <category>Development</category>
+      <category>R Package</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-04-09-cran-check</guid>
+      <pubDate>Sat, 09 Apr 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-04-09-cran-check/img/issue_list.png" medium="image" type="image/png" width="641" height="614"/>
+    </item>
     <item>
       <title>GitHub 개인 액세스 토큰 변경</title>
       <dc:creator>유충현</dc:creator>
