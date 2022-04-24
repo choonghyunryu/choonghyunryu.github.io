@@ -7,7 +7,7 @@
     <description>Dataholic
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sat, 23 Apr 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 24 Apr 2022 00:00:00 +0000</lastBuildDate>
     <item>
       <title>미국 주가정보 가져오기</title>
       <dc:creator>유충현</dc:creator>
@@ -16,7 +16,7 @@
       <category>Crawling</category>
       <category>Stock</category>
       <guid>https://choonghyunryu.github.io/posts/2022-04-24-usa-stock</guid>
-      <pubDate>Sat, 23 Apr 2022 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 24 Apr 2022 00:00:00 +0000</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-04-24-usa-stock/img/stock.jpeg" medium="image" type="image/jpeg"/>
     </item>
     <item>

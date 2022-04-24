@@ -2878,6 +2878,7 @@ NYSE
 <li>해당 기업의 주식 정보를 조회할 수 있는 URL입니다.<br />
 </li>
 <li><a href="https://www.nasdaq.com/에" class="uri">https://www.nasdaq.com/에</a> 해당 URL을 붙여 조회할 수 있습니다.</li>
+<li>예를 들어, 애플은 <a href="https://www.nasdaq.com/market-activity/stocks/aapl" target="_blank">https://www.nasdaq.com/market-activity/stocks/aapl</a>로 조회합니다.</li>
 </ul></li>
 <li>exchange :
 <ul>
@@ -2996,6 +2997,10 @@ NYSE
 </div>
 <p>첫 상장일의 종가대비 최근 거래일의 종가를 보면 약 1613배 주가가 상승했음을 알 수 있습니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>compare_trade</span><span class='op'>$</span><span class='va'>AAPL.Adjusted</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span> <span class='op'>/</span> <span class='va'>compare_trade</span><span class='op'>$</span><span class='va'>AAPL.Adjusted</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>
+</code></pre>
+</div>
 <pre><code>[1] 1612.643</code></pre>
 </div>
 <h2 id="테슬라">테슬라</h2>
@@ -3012,27 +3017,60 @@ NYSE
 </div>
 <p>xts 객체를 핸들링하는 방법으로 테슬라의 상장일의 종가와 최근 거래일인 2022-04-22일의 종가를 비교해 봅니다. 4.8 달러로 시작한 주가가 약 210배 상승하여 1005달러에 거래를 마쳤습니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>trade_tesla</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>NROW</a></span><span class='op'>(</span><span class='va'>trade_tesla</span><span class='op'>)</span><span class='op'>)</span>, <span class='op'>]</span>
+</code></pre>
+</div>
 <pre><code>           TSLA.Open TSLA.High TSLA.Low TSLA.Close TSLA.Volume
 2010-06-29      3.80      5.00    3.508      4.778    93831500
 2022-04-22   1014.91   1034.85  994.000   1005.050    23181600
            TSLA.Adjusted
 2010-06-29         4.778
 2022-04-22      1005.050</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>trade_tesla</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>NROW</a></span><span class='op'>(</span><span class='va'>trade_tesla</span><span class='op'>)</span>, <span class='st'>"TSLA.Adjusted"</span><span class='op'>]</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='st'>"/"</span> <span class='op'>(</span><span class='va'>trade_tesla</span><span class='op'>[</span><span class='fl'>1</span>, <span class='st'>"TSLA.Adjusted"</span><span class='op'>]</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='va'>as.numeric</span><span class='op'>)</span> 
+</code></pre>
+</div>
 <pre><code>[1] 210.3495</code></pre>
 </div>
 <h1 id="주식거래-정보의-시각화">주식거래 정보의 시각화</h1>
 <p>일반적으로 주식거래에 대한 시계열 데이터는 캔들차트(Candlestick Chart)로 시각화합니다. 캔들차트는 quantmod 패키지의 chartSeries() 함수를 사용합니다. 테마를 이용하여, 다음처럼 상승의 패턴은 빨간색, 하락의 패턴은 파란색으로 표시합니다.</p>
 <h2 id="애플-1">애플</h2>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>trade_apple</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'>quantmod</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/quantmod/man/chartSeries.html'>chartSeries</a></span><span class='op'>(</span>
+    theme <span class='op'>=</span> <span class='fu'>quantmod</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/quantmod/man/chartTheme.html'>chartTheme</a></span><span class='op'>(</span><span class='st'>"white"</span>, up.col <span class='op'>=</span> <span class='st'>"red"</span>, dn.col <span class='op'>=</span> <span class='st'>"blue"</span><span class='op'>)</span>
+  <span class='op'>)</span>
+</code></pre>
+</div>
 <p><img src="2022-04-24-usa-stock_files/figure-html5/unnamed-chunk-6-1.png" width="768" style="display: block; margin: auto;" /></p>
 </div>
 <p>워낙 긴 기간의 트랜드이라 캔들차트인지, 단순 시계열 라인차트인지 구분이 되지 않습니다. 그래서 출력 기간을 올해 1월부터 제한을 해 봅니다. 이제 캔들차트처럼 보입니다. 지금이 하락장인가보군요. 주가가 하락하는 트랜드를 보이고 있습니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>trade_apple</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'>quantmod</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/quantmod/man/chartSeries.html'>chartSeries</a></span><span class='op'>(</span>
+    subset<span class='op'>=</span><span class='st'>"2022-01-01::2022-04-22"</span>, 
+    theme <span class='op'>=</span> <span class='fu'>quantmod</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/quantmod/man/chartTheme.html'>chartTheme</a></span><span class='op'>(</span><span class='st'>"white"</span>, up.col <span class='op'>=</span> <span class='st'>"red"</span>, dn.col <span class='op'>=</span> <span class='st'>"blue"</span><span class='op'>)</span>
+  <span class='op'>)</span>
+</code></pre>
+</div>
 <p><img src="2022-04-24-usa-stock_files/figure-html5/unnamed-chunk-7-1.png" width="768" style="display: block; margin: auto;" /></p>
 </div>
 <h2 id="테슬라-1">테슬라</h2>
 <p>테슬라의 주가 흐름도 애플과 거의 유사한 것 같습니다. 주식의 문외한이라 좀 더 정교한 해석은 어렵지만, 기술 우량주인 두 주가와 비슷한 패턴으로 NASDAQ의 주가 흐름도 유사할 것 같습니다.</p>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>trade_tesla</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'>quantmod</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/quantmod/man/chartSeries.html'>chartSeries</a></span><span class='op'>(</span>
+    subset<span class='op'>=</span><span class='st'>"2022-01-01::2022-04-22"</span>, 
+    theme <span class='op'>=</span> <span class='fu'>quantmod</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/quantmod/man/chartTheme.html'>chartTheme</a></span><span class='op'>(</span><span class='st'>"white"</span>, up.col <span class='op'>=</span> <span class='st'>"red"</span>, dn.col <span class='op'>=</span> <span class='st'>"blue"</span><span class='op'>)</span>
+  <span class='op'>)</span>
+</code></pre>
+</div>
 <p><img src="2022-04-24-usa-stock_files/figure-html5/unnamed-chunk-8-1.png" width="768" style="display: block; margin: auto;" /></p>
 </div>
 <h1 id="마무리">마무리</h1>
