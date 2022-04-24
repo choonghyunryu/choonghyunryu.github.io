@@ -7,7 +7,18 @@
     <description>Dataholic
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Fri, 15 Apr 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 23 Apr 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>미국 주가정보 가져오기</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-04-24-usa-stock</link>
+      <description>필자는 재테크에는 재능이 없습니다. 주식 투자도 하지 않습니다. 그러나 최근에는 동학개미, 서학개미라는 사회 이슈적인 신조어를 심심치 않게 듣습니다. 2017년도 금융 데이터 수집을 위해서 국내외 데이터 수집을 위한 프토토타입을 만든 적이 있습니다. 그 때의 기억을 소환해서 서학개미가 관심있을 미국 주식 데이터를 수집하는 방법을 다룹니다.</description>
+      <category>Crawling</category>
+      <category>Stock</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-04-24-usa-stock</guid>
+      <pubDate>Sat, 23 Apr 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-04-24-usa-stock/img/stock.jpeg" medium="image" type="image/jpeg"/>
+    </item>
     <item>
       <title>불암산 트래킹</title>
       <dc:creator>유충현</dc:creator>
@@ -15,7 +26,7 @@
       <description>노원구는 서울의 여러 명산으로서의 접근성이 높습니다. 주말에 노원구에 위치한 불암산 둘레길을 트래킹하였습니다. 가까운 곳에 소소한 행복을 누릴 수 있는 자연이 있어 즐거운 하루였습니다.</description>
       <category>Gallery</category>
       <guid>https://choonghyunryu.github.io/posts/2022-04-17-bulamsan</guid>
-      <pubDate>Fri, 15 Apr 2022 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 16 Apr 2022 00:00:00 +0000</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-04-17-bulamsan/img/IMG_2751.png" medium="image" type="image/png" width="4032" height="3024"/>
     </item>
     <item>
