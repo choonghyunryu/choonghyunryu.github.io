@@ -2700,10 +2700,10 @@ gtag('config', 'UA-118779401-1');
 AMEX
 </td>
 <td style="text-align:right;">
-281
+279
 </td>
 <td style="text-align:right;">
-3.32
+3.42
 </td>
 </tr>
 <tr>
@@ -2711,10 +2711,10 @@ AMEX
 NASDAQ
 </td>
 <td style="text-align:right;">
-5,014
+4,745
 </td>
 <td style="text-align:right;">
-59.26
+58.09
 </td>
 </tr>
 <tr>
@@ -2722,17 +2722,16 @@ NASDAQ
 NYSE
 </td>
 <td style="text-align:right;">
-3,166
+3,144
 </td>
 <td style="text-align:right;">
-37.42
+38.49
 </td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>미국 증권시장에 11개 한국 기업이 상장되어 있습니다. 포스코, SK텔레콤, KT, 한국전력공사, LG디스플레이, KB금융그룹, 산한금융그룹, 우리금융그룹과 게임회사인 그라비티, 더블다운인터렛티브, 쿠팡입니다. 쿠팡의 경우는 쿠팡의 지분 100%를 가진 모기업 <code>쿠팡 LLC</code>인 미국회사가 상장되어 있습니다. 그래서 국적으로 조회할 수 없고, 이름으로 조회해야 합니다. 엄밀하게 말해서 국내회사는 아닌 것입니다.</p>
-<p>출처 : 포춘코리아(FORTUNE KOREA)(<a href="http://www.fortunekorea.co.kr" class="uri">http://www.fortunekorea.co.kr</a>)</p>
+<p>미국 증권시장에 11개 한국 기업이 상장되어 있습니다. 포스코, SK텔레콤, KT, 한국전력공사, LG디스플레이, KB금융그룹, 산한금융그룹, 우리금융그룹과 게임회사인 그라비티, 더블다운인터렛티브, 쿠팡입니다. 쿠팡의 경우는 쿠팡의 지분 100%를 가진 모기업 <code>쿠팡 LLC</code>인 미국회사가 상장되어 있습니다.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> 그래서 국적으로 조회할 수 없고, 이름으로 조회해야 합니다. 엄밀하게 말해서 국내회사는 아닌 것입니다.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>symbol_usa</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
@@ -2770,7 +2769,7 @@ NYSE
    lastsale netchange pctchange  volume      marketCap     country
 1    $48.07     -0.31   -0.641%  226861 18729722483.00 South Korea
 2     $8.49     -0.16    -1.85%   82695 10900550027.00 South Korea
-3    $14.33     -0.14   -0.968%  936385  6758261464.00 South Korea
+3    $14.33     -0.14   -0.968%  937310  6758261464.00 South Korea
 4     $7.25     -0.01   -0.138%  474246  5188327650.00 South Korea
 5    $57.45     -1.09   -1.862%  213956 18114982102.00 South Korea
 6    $33.11      0.01     0.03%  104582 16979510462.00 South Korea
@@ -2778,19 +2777,19 @@ NYSE
 8    $39.51      0.76    1.961%   13613  9584027069.00 South Korea
 9    $11.03      0.08    0.731%    9895   546574443.00 South Korea
 10   $50.00     -1.24    -2.42%   13879   347445000.00 South Korea
-11   $14.07     -0.36   -2.495% 7658808 24702130023.00            
-   ipoyear                        industry           sector
-1                         Commercial Banks          Finance
-2     1994     Electric Utilities: Central Public Utilities
-3             Telecommunications Equipment Public Utilities
-4     2004 Industrial Machinery/Components    Capital Goods
-5     1994                  Steel/Iron Ore Basic Industries
-6                              Major Banks          Finance
-7             Telecommunications Equipment Public Utilities
-8                         Commercial Banks          Finance
-9     2021                    EDP Services       Technology
-10    2005               Business Services    Miscellaneous
-11    2021      Recreational Products/Toys    Capital Goods
+11   $14.07     -0.36   -2.495% 7664960 24702130023.00            
+   ipoyear                        industry            sector
+1                         Commercial Banks           Finance
+2     1994             Electrical Products Consumer Durables
+3             Telecommunications Equipment  Public Utilities
+4     2004 Industrial Machinery/Components     Capital Goods
+5     1994                  Steel/Iron Ore  Basic Industries
+6                              Major Banks           Finance
+7             Telecommunications Equipment  Public Utilities
+8                         Commercial Banks           Finance
+9     2021                    EDP Services        Technology
+10    2005               Business Services     Miscellaneous
+11    2021      Recreational Products/Toys     Capital Goods
                             url exchange
 1    /market-activity/stocks/kb     NYSE
 2   /market-activity/stocks/kep     NYSE
@@ -2816,9 +2815,9 @@ NYSE
 2   NVDA NVIDIA Corporation Common Stock  $195.15     -6.68    -3.31%
 3   TSLA         Tesla Inc. Common Stock $1005.05     -3.73    -0.37%
     volume        marketCap       country ipoyear
-1 84769297 2805008238600.00 United States    1980
-2 62354085  488658400598.00 United States    1999
-3 23181314 1038726824436.00 United States    2010
+1 84882424 2805008238600.00 United States    1980
+2 62471343  488658400598.00 United States    1999
+3 23232186 1038726824436.00 United States    2010
                 industry        sector                          url
 1 Computer Manufacturing    Technology /market-activity/stocks/aapl
 2         Semiconductors    Technology /market-activity/stocks/nvda
@@ -3079,6 +3078,12 @@ NYSE
 <p>결국 외부 API를 이용하는 패키지의 안정성은 보장할 수 없을 것 같습니다. <a href="https://cran.r-project.org/web/packages/TTR/index.html">TTR</a>{target="_blank} 패키지처럼 API의 정책의 변화로 정상적인 기능이 어느 순간에 비정상적인 상태로 변화할 수 있으니까요. 그러나 “구더기 무서워 장 못담그랴.”는 속담처럼, 유용한 기능의 제공을 위해서는 시도해야할 작업들인 것이지요.</p>
 <p>다음에는 국내 업체의 주식 거래 정보를 수집하고, 수익률과 Value-at-Risk, 연간 성장률을 구하는 방법을 다루어 보겠습니다. 5년 전에 만들었던 책자에 포함되었던 주제입니다.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>출처 : 포춘코리아(FORTUNE KOREA)(<a href="http://www.fortunekorea.co.kr/news/articleView.html?idxno=20925" class="uri">http://www.fortunekorea.co.kr/news/articleView.html?idxno=20925</a>)<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
 <!--radix_placeholder_article_footer-->
 <div class="article-footer">
   <p class="social_footer">
