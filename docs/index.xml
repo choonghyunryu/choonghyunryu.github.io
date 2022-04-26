@@ -7,7 +7,18 @@
     <description>Dataholic
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sat, 23 Apr 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 25 Apr 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>한국 주가정보 가져오기</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-04-25-korea-stock</link>
+      <description>동학개미를 위한 국내 주식 시장의 거래 정보를 수집하고, 이 데이터를 이용해서 수익률과 Value-at-Risk, 연간 성장률을 구하는 방법을 다루어 봅니다.</description>
+      <category>Crawling</category>
+      <category>Stock</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-04-25-korea-stock</guid>
+      <pubDate>Mon, 25 Apr 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-04-25-korea-stock/img/chart.jpeg" medium="image" type="image/jpeg"/>
+    </item>
     <item>
       <title>미국 주가정보 가져오기</title>
       <dc:creator>유충현</dc:creator>
@@ -16,7 +27,7 @@
       <category>Crawling</category>
       <category>Stock</category>
       <guid>https://choonghyunryu.github.io/posts/2022-04-24-usa-stock</guid>
-      <pubDate>Sat, 23 Apr 2022 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 24 Apr 2022 00:00:00 +0000</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-04-24-usa-stock/img/stock.jpeg" medium="image" type="image/jpeg"/>
     </item>
     <item>
