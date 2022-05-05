@@ -7,7 +7,19 @@
     <description>Dataholic
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Mon, 25 Apr 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 05 May 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>learnr에서 한글 사용하기</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-05-05-learnr-ko</link>
+      <description>learnr 패키지는 R 환경에서 데이터 분석 학습 튜토리얼이나 자기주도학습 교재를 만들기 위한 훌륭한 도구입니다. 물론 학습교재 저작에서 컨텐츠는 한글로 작성하겠으나, 메시지나 위젯은 영문으로 출력됩니다. 이제 이 영문 출력을 한글로 바꿔보시기 바랍니다.</description>
+      <category>Education</category>
+      <category>Reproducible Research</category>
+      <category>R Markdown</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-05-05-learnr-ko</guid>
+      <pubDate>Thu, 05 May 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-05-05-learnr-ko/img/learnr-social.png" medium="image" type="image/png" width="1012" height="506"/>
+    </item>
     <item>
       <title>한국 주가정보 가져오기</title>
       <dc:creator>유충현</dc:creator>

@@ -1,5 +1,28 @@
 [
   {
+    "path": "posts/2022-05-05-learnr-ko/",
+    "title": "learnr에서 한글 사용하기",
+    "description": "learnr 패키지는 R 환경에서 데이터 분석 학습 튜토리얼이나 자기주도학습 교재를 만들기 위한 훌륭한 도구입니다. 물론 학습교재 저작에서 컨텐츠는 한글로 작성하겠으나, 메시지나 위젯은 영문으로 출력됩니다. 이제 이 영문 출력을 한글로 바꿔보시기 바랍니다.",
+    "author": [
+      {
+        "name": "유충현",
+        "url": "https://choonghyunryu.github.io"
+      }
+    ],
+    "date": "2022-05-05",
+    "categories": [
+      "Education",
+      "Reproducible Research",
+      "R Markdown"
+    ],
+    "contents": "\n\nContents\nTL;DR\nInternationalization\nBitStat\nBitStat 한글 화면\nBitStat 영문 화면\n\nlearnr\nlearnr 한글 화면\nlearnr 영문 화면\n\n\n언어 선택 방법\nYAML 헤더의 수정\nlearnr의 I18N\nI18N 상세\n\nlearnr 패키지 컨트리뷰터\n\n마무리\n\n\n\n\n\n\n들어가기\nlearnr의 메시지나 위젯 라벨에 한글을 사용하세요.\n\nlearnr의 메시지와 위젯 라벨의 영문은 짧은 글이라 누구나 이해할 정도입니다. 그러나 영문의 한글과의 동거는 다소 어색합니다. 이제 간단한 방법으로 메시지와 위젯의 라벨을 한글로 바꿔보세요.\n\n\nTL;DR\nlearnr 개발 버전을 설치하면 간단하게 메시지나 위젯 라벨에 한글을 사용할 수 있습니다 .\nremotes::install_github(“rstudio/learnr”)\n2022-05-05 기준 CRAN의 0.10.1 버전에는 해당 기능이 없습니다.\n\nYAML 헤더에 다음을 추가하면 간단하게 한글로 전환됩니다.\nlanguage: ko\n\nInternationalization\nInternationalization 너무 깁니다. 그래서 줄여서 I18N으로 표기하기도 합니다. 20자의 앞뒤 두 문자는 살리고 그 안에 18자의 문자가 더 있다는 의미죠. 암묵적으로 통용되는 단어이기 때문에 Internationalization(국제화)는 사용하는 국가의 언어로 쉽게 전환할 수 있는 기능을 의미합니다.\nBitStat\n현재 개발 중인 R 기반의 통계분석 패키지인 BitStat도 I18N을 지원합니다. 아직은 한글과 영어만 지원합니다만, 향후에는 몇 개 국가의 언어도 지원하려 합니다. 개인적으로 장기간 업무 출장을 다녀온 동남아의 어느 나라일 것 같습니다.\nBitStat 한글 화면\n\n\n\nBitStat 영문 화면\n\n\n\nlearnr\nlearnr의 컨텐츠는 어차피 저자가 저자가 사용하는 언어로 만들어야 하지요. 그러나 메시지나 위젯의 라벨은 저자가 손을 댈 수 있는 영역이 아닙니다. 그러나 선택은 가능합니다.\nlearnr 한글 화면\n\n\n\nlearnr 영문 화면\n\n\n\n언어 선택 방법\nYAML 헤더의 수정\nR 마크다운 문서의 YAML 헤더를 수정하여 메시지나 위젯 라벨의 언어를 지정할 수 있습니다.\n\n\n\nYAML 헤더의 갈무리 화면에서 찾아보세요. 다음의 기술로 한글로 변환합니다.\n\n\nlanguane: ko\n\n\n\n아주 간단합니다. ko을 en으로 바꾸면 영문으로 바뀝니다.\nlearnr의 I18N\nI18N 상세\nhttps://rstudio.github.io/learnr/index.html는 learnr 패키지의 홈페입니다.\n다음 그림처럼 Articles > Internationalization 메뉴를 들어가면,\n\n\n\nI18N에 대한 설명 페이지가 나옵니다. 다음처럼 언어 설정 방법과 지원하는 언어의 목록을 확인할 수 있습니다.\n\n\n\nlearnr 패키지 컨트리뷰터\n사실 learnr의 한글 메시지와 위젯 라벨의 한글화의 제 코드가 커밋되었습니다. 전체 패키지의 아주 작은 일부분이지만, learnr 패키지의 컨트리뷰터(Contributor)로 이름을 올렸습니다.\n\n\n\n마무리\n아직은 개발 버전에 포함된 기능입니다. 그리고 learnr 패키지의 CRAN submit 주기가 길기 때문에 언제 개발 버전이 CRAN에 올라올지 장담할 수 없습니다. 이 기능이 필요하신 분은 github의 개발 버전을 설치하시기 바랍니다.\n\n\n\n",
+    "preview": "posts/2022-05-05-learnr-ko/img/learnr-social.png",
+    "last_modified": "2022-05-05T10:44:58+09:00",
+    "input_file": {},
+    "preview_width": 1012,
+    "preview_height": 506
+  },
+  {
     "path": "posts/2022-04-25-korea-stock/",
     "title": "한국 주가정보 가져오기",
     "description": "동학개미를 위한 국내 주식 시장의 거래 정보를 수집하고, 이 데이터를 이용해서 수익률과 Value-at-Risk, 연간 성장률을 구하는 방법을 다루어 봅니다.",
