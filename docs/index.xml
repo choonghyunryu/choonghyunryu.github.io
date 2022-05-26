@@ -7,7 +7,20 @@
     <description>Dataholic
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Thu, 05 May 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 26 May 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>R 패키지 개발의 희노애락</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-05-26-manage-packages</link>
+      <description>R 패키지를 개발하고 유지보수하는 패키지 관리자는 여러 이벤트에 접하게 됩니다. 즐겁고 보람있는 일도, 아쉽고 안타까운 일들도 접하게됩니다. 며칠 사이로 발생했던 그 이야기를 공유합니다.</description>
+      <category>R Packages</category>
+      <category>CRAN</category>
+      <category>dlookr</category>
+      <category>alookr</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-05-26-manage-packages</guid>
+      <pubDate>Thu, 26 May 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-05-26-manage-packages/img/cran.png" medium="image" type="image/png" width="978" height="517"/>
+    </item>
     <item>
       <title>learnr에서 한글 사용하기</title>
       <dc:creator>유충현</dc:creator>
