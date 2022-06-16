@@ -7,7 +7,19 @@
     <description>Dataholic
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Thu, 26 May 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 15 Jun 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>고아 패키지를 아시나요?</title>
+      <dc:creator>유충현</dc:creator>
+      <link>https://choonghyunryu.github.io/posts/2022-06-15-orphaned-package</link>
+      <description>R 패키지에도 고아가 있는 것을 알았습니다. 부모가 없는 즉, 관리자가 없는 패키지를 고아 패키지라 부르더군요. 어떻게 알아냈는지 궁금하시죠? 자세하게 알려드립니다.</description>
+      <category>R Packages</category>
+      <category>CRAN</category>
+      <category>alookr</category>
+      <guid>https://choonghyunryu.github.io/posts/2022-06-15-orphaned-package</guid>
+      <pubDate>Wed, 15 Jun 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://choonghyunryu.github.io/posts/2022-06-15-orphaned-package/img/alone.png" medium="image" type="image/png" width="1920" height="1278"/>
+    </item>
     <item>
       <title>R 패키지 개발의 희노애락</title>
       <dc:creator>유충현</dc:creator>
