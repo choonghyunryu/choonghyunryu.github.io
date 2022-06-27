@@ -2526,7 +2526,7 @@ gtag('config', 'UA-118779401-1');
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"잃어버린 30분","description":"데이터 타입이 날짜-시간인 데이터를 다루는 것은 여간 성가시지 않습니다. 그런데도 아주 가끔 사용하는지라 작업을 할 때마다 새롭기만 합니다. 그런데, 날짜-시간 데이터에 심오한 것이 숨어 있더군요. 무엇이 또 즐겁게 해줄까요?","authors":[{"author":"유충현","authorURL":"https://choonghyunryu.github.io","affiliation":"한국알사용자회","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-06-25T00:00:00.000-09:00","citationText":"유충현, 2022"}
+{"title":"잃어버린 30분","description":"데이터 타입이 날짜-시간인 데이터를 다루는 것은 여간 성가시지 않습니다. 그런데도 아주 가끔 사용하는지라 작업을 할 때마다 새롭기만 합니다. 그런데, 날짜-시간 데이터에 심오한 것이 숨어 있더군요. 무엇이 또 즐겁게 해줄까요?","authors":[{"author":"유충현","authorURL":"https://choonghyunryu.github.io","affiliation":"한국알사용자회","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-06-25T00:00:00.000+09:00","citationText":"유충현, 2022"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2595,6 +2595,7 @@ class="uri">https://choonghyunryu.github.io</a> (한국알사용자회)
 <li><a href="#posixct">POSIXct</a></li>
 <li><a href="#한국-표준시의-이슈">한국 표준시의 이슈</a></li>
 <li><a href="#이슈의-해결">이슈의 해결</a></li>
+<li><a href="#또-다른-이슈와-해결">또 다른 이슈와 해결</a></li>
 </ul></li>
 <li><a href="#단상">단상</a></li>
 </ul>
@@ -2616,7 +2617,7 @@ R에서 우연치 않게 접한 에러로 역사를 들춰서 감탄사를 내�
 <h1 id="tldr">TL;DR</h1>
 <ul>
 <li>날짜-시간인 POSIXct에 잃어버린 구간이 있습니다.</li>
-<li>잃어버린 구간을 표현하려면, 타임존을 “Etc/GMT+9”으로 사용해야
+<li>잃어버린 구간을 표현하려면, 타임존을 “Asia/Tokyo”로 사용해야
 합니다.</li>
 </ul>
 <h1 id="년-8월-10일-0시">1961년 8월 10일 0시</h1>
@@ -2776,7 +2777,7 @@ Figure 3: 시간대(time zone), 출처: 금성교과서
 <span class='va'>z</span>
 </code></pre>
 </div>
-<pre><code>[1] &quot;2022-06-24 16:10:19 GMT&quot;</code></pre>
+<pre><code>[1] &quot;2022-06-26 19:29:09 -09&quot;</code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>z</span><span class='op'>)</span>
 </code></pre>
@@ -2786,10 +2787,10 @@ Figure 3: 시간대(time zone), 출처: 금성교과서
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span><span class='op'>(</span><span class='va'>z</span><span class='op'>)</span> 
 </code></pre>
 </div>
-<pre><code>[1] 1656119420</code></pre>
+<pre><code>[1] 1656304149</code></pre>
 </div>
 <p>시간에 표현된 KST는 한국 표준시(Korea Standard Time)를 의미합니다. 즉
-한국 표준시로 2022-06-24 16:10:19라는 의미입니다.</p>
+한국 표준시로 2022-06-26 19:29:09라는 의미입니다.</p>
 <p>POSIXct 클래스는 시간대를 지정해 줘야 합니다. 그리고 R에서는 기본
 시간대로 “Asia/Seoul”이 설정되어 있습니다. 이 설정으로 시간에 있어서,
 한국 표준시를 생성하게 됩니다.</p>
@@ -2800,12 +2801,12 @@ Figure 3: 시간대(time zone), 출처: 금성교과서
 <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='va'>z</span>, origin <span class='op'>=</span> <span class='st'>"1970-01-01"</span><span class='op'>)</span>       
 </code></pre>
 </div>
-<pre><code>[1] &quot;2016-08-30 04:16:28 GMT&quot;</code></pre>
+<pre><code>[1] &quot;2016-08-30 04:16:28 -09&quot;</code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='va'>z</span>, origin <span class='op'>=</span> <span class='st'>"1960-01-01"</span><span class='op'>)</span>                <span class='co'># local (KST)</span>
 </code></pre>
 </div>
-<pre><code>[1] &quot;2006-08-30 04:16:28 GMT&quot;</code></pre>
+<pre><code>[1] &quot;2006-08-30 04:16:28 -09&quot;</code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='va'>z</span>, origin <span class='op'>=</span> <span class='st'>"1960-01-01"</span>, tz <span class='op'>=</span> <span class='st'>"GMT"</span><span class='op'>)</span>    <span class='co'># in UTC</span>
 </code></pre>
@@ -2816,7 +2817,7 @@ Figure 3: 시간대(time zone), 출처: 금성교과서
 <span class='fu'><a href='https://rdrr.io/r/base/timezones.html'>Sys.timezone</a></span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>[1] &quot;GMT+9&quot;</code></pre>
+<pre><code>[1] &quot;Etc/GMT+9&quot;</code></pre>
 </div>
 <h2 id="한국-표준시의-이슈">한국 표준시의 이슈</h2>
 <p>앞에서 살펴본 것처럼 한국 표준시를 변경하면서 30분의 시간이
@@ -2827,7 +2828,7 @@ Figure 3: 시간대(time zone), 출처: 금성교과서
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"1961-08-09 23:59:59"</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>[1] &quot;1961-08-09 23:59:59 GMT&quot;</code></pre>
+<pre><code>[1] &quot;1961-08-09 23:59:59 -09&quot;</code></pre>
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">as.POSIXct</span>(<span class="st">&quot;1961-08-10 00:00:00&quot;</span>)</span>
@@ -2843,12 +2844,12 @@ Figure 3: 시간대(time zone), 출처: 금성교과서
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"1961-08-10 00:30:00"</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>[1] &quot;1961-08-10 00:30:00 GMT&quot;</code></pre>
+<pre><code>[1] &quot;1961-08-10 00:30:00 -09&quot;</code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"1961-08-11 00:00:00"</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>[1] &quot;1961-08-11 GMT&quot;</code></pre>
+<pre><code>[1] &quot;1961-08-11 -09&quot;</code></pre>
 </div>
 <p>문제의 30분인 1961-08-09 [00:00:00, 00:29:59] 구간에서 날짜-시간
 인식을 하지 못하고 에러가 발생합니다. 없는 시간을 만들려고 했기
@@ -2895,12 +2896,12 @@ Figure 3: 시간대(time zone), 출처: 금성교과서
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv</a></span><span class='op'>(</span><span class='st'>"TZ"</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>[1] &quot;GMT+9&quot;</code></pre>
+<pre><code>[1] &quot;Etc/GMT+9&quot;</code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>[1] &quot;2022-06-24 16:10:20 GMT&quot;</code></pre>
+<pre><code>[1] &quot;2022-06-26 19:29:09 -09&quot;</code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/Sys.setenv.html'>Sys.setenv</a></span><span class='op'>(</span>TZ <span class='op'>=</span> <span class='st'>"Etc/GMT+9"</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"1961-08-10 00:29:59"</span><span class='op'>)</span>
@@ -2908,19 +2909,62 @@ Figure 3: 시간대(time zone), 출처: 금성교과서
 </div>
 <pre><code>[1] &quot;1961-08-10 00:29:59 -09&quot;</code></pre>
 </div>
+<h2 id="또-다른-이슈와-해결">또 다른 이슈와 해결</h2>
+<p>이번에는 직원이 또다른 문제를 제기했습니다. <code>Sys.time()</code>
+함수로 시간 연산을 수행하는데, 현재 시간을 조회하는 <strong>Sys.time()
+함수는 “Etc/GMT+9”가 적용된 환경에서 9시간 전의 시간을
+반환</strong>한다는 것입니다. 한국 시간을 기대했는데, 영국 시간이
+조회되어 버그가 발생한 것입니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/Sys.setenv.html'>Sys.setenv</a></span><span class='op'>(</span>TZ <span class='op'>=</span> <span class='st'>"Asia/Seoul"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] &quot;2022-06-27 13:29:09 KST&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/Sys.setenv.html'>Sys.setenv</a></span><span class='op'>(</span>TZ <span class='op'>=</span> <span class='st'>"Etc/GMT+9"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] &quot;2022-06-26 19:29:09 -09&quot;</code></pre>
+</div>
+<p>시간대를 “Etc/GMT+9”로 변경해서 해결된 것이 아닙니다. 그래서 시간대를
+일본 기준인 “Asia/Tokyo”로 변경해야 했습니다. 다음처럼
+<code>9시간 차</code>의 문제가 발생하지 않습니다.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/Sys.setenv.html'>Sys.setenv</a></span><span class='op'>(</span>TZ <span class='op'>=</span> <span class='st'>"Asia/Seoul"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] &quot;2022-06-27 13:29:09 KST&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/Sys.setenv.html'>Sys.setenv</a></span><span class='op'>(</span>TZ <span class='op'>=</span> <span class='st'>"Asia/Tokyo"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] &quot;2022-06-27 13:29:09 JST&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"1961-08-10 00:29:59"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] &quot;1961-08-10 00:29:59 JST&quot;</code></pre>
+</div>
 <blockquote>
-<p>반드시 “Etc/GMT+9”로 지정해야 합니다. “GMT+9”라는 시간대를 R에서는
-인식을 하지 않습니다. “GMT+9”로 지정하면, R은 없는 시간대로 인식해서
-“GMT”로 시간대를 설정합니다. 부작용(side effect)이 발생합니다. 버그가
-있는 스크립트를 작성할 수 있습니다.</p>
+<p>어쩔 수 없습니다. 기분은 썩 좋지 않지만, 부작용을 회피하면서 잃어버린
+30분을 찾기 위해서는 시간대를 “Asia/Tokyo”를 사용해야 합니다.</p>
 </blockquote>
+<p>한국 표준시를 토교에 맞추었기 때문에 시간이 변경될 일은 없습니다.
+그리고 일본의 역사에는 잃어버린 30분이 없습니다. 이제 원하는 솔루션을
+찾은 것 같습니다.</p>
 <h1 id="단상">단상</h1>
 <p>역사적 사건의 흔적은 우리가 의식하지 못한 채로 여기 저기에 남아
 있습니다. R에서 발생한 에러를 풀기 위한 실마리가 역사의 한 켠에 숨어
 있었습니다.</p>
 <p>오늘 작성한 이 포스트도 훗날 R 역사의 한 페이지로 남아 있기를
 기원합니다.</p>
-<div class="sourceCode" id="cb24"><pre
+<div class="sourceCode" id="cb29"><pre
 class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <section class="footnotes footnotes-end-of-document"
 role="doc-endnotes">
