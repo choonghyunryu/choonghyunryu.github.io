@@ -7,7 +7,7 @@
     <description>Dataholic
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sat, 04 Feb 2023 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>2023-02-04</lastBuildDate>
     <item>
       <title>장강의 뒷물이 앞물을 밀어내며 흐르고</title>
       <dc:creator>유충현</dc:creator>
@@ -16,7 +16,7 @@
       <category>package</category>
       <category>sf</category>
       <guid>https://choonghyunryu.github.io/posts/2023-02-04-new_packages</guid>
-      <pubDate>Sat, 04 Feb 2023 00:00:00 +0000</pubDate>
+      <pubDate>2023-02-04</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2023-02-04-new_packages/img/sf.jpeg" medium="image" type="image/jpeg"/>
     </item>
     <item>
@@ -27,7 +27,7 @@
       <category>Programming</category>
       <category>manipulate data</category>
       <guid>https://choonghyunryu.github.io/posts/2022-06-25-lost_time</guid>
-      <pubDate>Sat, 25 Jun 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-06-25</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-06-25-lost_time/img/earth.jpeg" medium="image" type="image/jpeg"/>
     </item>
     <item>
@@ -39,7 +39,7 @@
       <category>CRAN</category>
       <category>alookr</category>
       <guid>https://choonghyunryu.github.io/posts/2022-06-15-orphaned-package</guid>
-      <pubDate>Wed, 15 Jun 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-06-15</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-06-15-orphaned-package/img/alone.png" medium="image" type="image/png" width="1920" height="1278"/>
     </item>
     <item>
@@ -52,7 +52,7 @@
       <category>dlookr</category>
       <category>alookr</category>
       <guid>https://choonghyunryu.github.io/posts/2022-05-26-manage-packages</guid>
-      <pubDate>Thu, 26 May 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-05-26</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-05-26-manage-packages/img/cran.png" medium="image" type="image/png" width="978" height="517"/>
     </item>
     <item>
@@ -64,7 +64,7 @@
       <category>Reproducible Research</category>
       <category>R Markdown</category>
       <guid>https://choonghyunryu.github.io/posts/2022-05-05-learnr-ko</guid>
-      <pubDate>Thu, 05 May 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-05-05</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-05-05-learnr-ko/img/learnr-social.png" medium="image" type="image/png" width="1012" height="506"/>
     </item>
     <item>
@@ -75,7 +75,7 @@
       <category>Crawling</category>
       <category>Stock</category>
       <guid>https://choonghyunryu.github.io/posts/2022-04-25-korea-stock</guid>
-      <pubDate>Mon, 25 Apr 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-04-25</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-04-25-korea-stock/img/chart.jpeg" medium="image" type="image/jpeg"/>
     </item>
     <item>
@@ -86,7 +86,7 @@
       <category>Crawling</category>
       <category>Stock</category>
       <guid>https://choonghyunryu.github.io/posts/2022-04-24-usa-stock</guid>
-      <pubDate>Sun, 24 Apr 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-04-24</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-04-24-usa-stock/img/stock.jpeg" medium="image" type="image/jpeg"/>
     </item>
     <item>
@@ -96,7 +96,7 @@
       <description>노원구는 서울의 여러 명산으로서의 접근성이 높습니다. 주말에 노원구에 위치한 불암산 둘레길을 트래킹하였습니다. 가까운 곳에 소소한 행복을 누릴 수 있는 자연이 있어 즐거운 하루였습니다.</description>
       <category>Gallery</category>
       <guid>https://choonghyunryu.github.io/posts/2022-04-17-bulamsan</guid>
-      <pubDate>Sat, 16 Apr 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-04-16</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-04-17-bulamsan/img/IMG_2751.png" medium="image" type="image/png" width="4032" height="3024"/>
     </item>
     <item>
@@ -108,7 +108,7 @@
       <category>Development</category>
       <category>R Package</category>
       <guid>https://choonghyunryu.github.io/posts/2022-04-09-cran-check</guid>
-      <pubDate>Sat, 09 Apr 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-04-09</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-04-09-cran-check/img/issue_list.png" medium="image" type="image/png" width="641" height="614"/>
     </item>
     <item>
@@ -119,7 +119,7 @@
       <category>github</category>
       <category>RStudio</category>
       <guid>https://choonghyunryu.github.io/posts/2022-04-03-change-github-pat</guid>
-      <pubDate>Sun, 03 Apr 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-04-03</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-04-03-change-github-pat/img/github.png" medium="image" type="image/png" width="300" height="168"/>
     </item>
     <item>
@@ -131,7 +131,7 @@
       <category>Mac</category>
       <category>python</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-30-tensorflow-metal</guid>
-      <pubDate>Wed, 30 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-30</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-30-tensorflow-metal/img/TensorFlowLogo.jpeg" medium="image" type="image/jpeg"/>
     </item>
     <item>
@@ -143,7 +143,7 @@
       <category>Anaconda</category>
       <category>python</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-29-anaconda</guid>
-      <pubDate>Tue, 29 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-29</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-29-anaconda/img/anaconda_logo.png" medium="image" type="image/png" width="318" height="158"/>
     </item>
     <item>
@@ -155,7 +155,7 @@
       <category>Keras</category>
       <category>python</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-28-plaidml-mac-gpu</guid>
-      <pubDate>Mon, 28 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-28</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-28-plaidml-mac-gpu/img/plaidml_logo.png" medium="image" type="image/png" width="356" height="142"/>
     </item>
     <item>
@@ -167,7 +167,7 @@
       <category>Reproducible Research</category>
       <category>Development</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-27-deploy-course</guid>
-      <pubDate>Sun, 27 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-27</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-27-deploy-course/img/repo.png" medium="image" type="image/png" width="610" height="465"/>
     </item>
     <item>
@@ -179,7 +179,7 @@
       <category>Reproducible Research</category>
       <category>Development</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-26-custom-course</guid>
-      <pubDate>Sat, 26 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-26</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-26-custom-course/img/after-description.png" medium="image" type="image/png" width="1696" height="536"/>
     </item>
     <item>
@@ -191,7 +191,7 @@
       <category>Reproducible Research</category>
       <category>Development</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-25-run-course</guid>
-      <pubDate>Fri, 25 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-25</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-25-run-course/img/intro-app.png" medium="image" type="image/png" width="2656" height="2036"/>
     </item>
     <item>
@@ -203,7 +203,7 @@
       <category>Reproducible Research</category>
       <category>Development</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-24-dev-infra</guid>
-      <pubDate>Thu, 24 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-24</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-24-dev-infra/img/Node.js_logo.png" medium="image" type="image/png" width="1200" height="734"/>
     </item>
     <item>
@@ -214,7 +214,7 @@
       <category>R Markdown</category>
       <category>Reproducible Research</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-23-understand-ines</guid>
-      <pubDate>Wed, 23 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-23</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-23-understand-ines/img/ines.jpeg" medium="image" type="image/jpeg"/>
     </item>
     <item>
@@ -225,7 +225,7 @@
       <category>R Markdown</category>
       <category>Reproducible Research</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-22-understand-learnr</guid>
-      <pubDate>Tue, 22 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-22</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-22-understand-learnr/img/learnr_logo.png" medium="image" type="image/png" width="240" height="275"/>
     </item>
     <item>
@@ -236,7 +236,7 @@
       <category>R Markdown</category>
       <category>Reproducible Research</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-21-introduce-online-course</guid>
-      <pubDate>Mon, 21 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-21</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-21-introduce-online-course/img/rbootcamp.png" medium="image" type="image/png" width="2226" height="1300"/>
     </item>
     <item>
@@ -248,7 +248,7 @@
       <category>Data acquisition</category>
       <category>programming</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-19-run-batch</guid>
-      <pubDate>Sat, 19 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-19</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-19-run-batch/img/batch_job.jpeg" medium="image" type="image/jpeg"/>
     </item>
     <item>
@@ -260,7 +260,7 @@
       <category>Development</category>
       <category>Shiny</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-18-custom-image</guid>
-      <pubDate>Fri, 18 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-18</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-18-custom-image/img/Dockerfile.png" medium="image" type="image/png" width="1040" height="255"/>
     </item>
     <item>
@@ -272,7 +272,7 @@
       <category>Development</category>
       <category>Shiny</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-17-custom-docker</guid>
-      <pubDate>Thu, 17 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-17</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-17-custom-docker/img/docker-container.png" medium="image" type="image/png" width="500" height="389"/>
     </item>
     <item>
@@ -283,7 +283,7 @@
       <category>docker</category>
       <category>Development</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-16-install-docker-image</guid>
-      <pubDate>Wed, 16 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-16</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-16-install-docker-image/img/docker-logo.png" medium="image" type="image/png" width="336" height="287"/>
     </item>
     <item>
@@ -294,7 +294,7 @@
       <category>dlookr</category>
       <category>Statistics</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-15-introduce-pps</guid>
-      <pubDate>Tue, 15 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-15</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-15-introduce-pps/img/pearson.png" medium="image" type="image/png" width="800" height="365"/>
     </item>
     <item>
@@ -305,7 +305,7 @@
       <category>Shiny</category>
       <category>Development</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-14-reactivity</guid>
-      <pubDate>Mon, 14 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-14</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-14-reactivity/img/fib_no_conductor.png" medium="image" type="image/png" width="255" height="180"/>
     </item>
     <item>
@@ -316,7 +316,7 @@
       <category>Shiny</category>
       <category>Development</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-13-control-widget</guid>
-      <pubDate>Sun, 13 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-13</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-13-control-widget/img/basic-widgets.png" medium="image" type="image/png" width="1920" height="1200"/>
     </item>
     <item>
@@ -327,7 +327,7 @@
       <category>Shiny</category>
       <category>Development</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-12-userinterface</guid>
-      <pubDate>Sat, 12 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-12</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-12-userinterface/img/User-Interface.jpeg" medium="image" type="image/jpeg"/>
     </item>
     <item>
@@ -338,7 +338,7 @@
       <category>Shiny</category>
       <category>Development</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-11-introduce-shiny</guid>
-      <pubDate>Fri, 11 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-11</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-11-introduce-shiny/img/shiny.png" medium="image" type="image/png" width="2206" height="2557"/>
     </item>
     <item>
@@ -350,7 +350,7 @@
       <category>Markdown</category>
       <category>distill</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-10-use-distill</guid>
-      <pubDate>Thu, 10 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-10</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-10-use-distill/img/distill_logo.png" medium="image" type="image/png" width="240" height="277"/>
     </item>
     <item>
@@ -361,7 +361,7 @@
       <category>Reproducible Research</category>
       <category>Markdown</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-09-understand-markdown</guid>
-      <pubDate>Wed, 09 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-09</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-09-understand-markdown/img/markdown.png" medium="image" type="image/png" width="300" height="185"/>
     </item>
     <item>
@@ -372,7 +372,7 @@
       <category>Reproducible Research</category>
       <category>R Markdown</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-08-rmarkdown-yaml</guid>
-      <pubDate>Tue, 08 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-08</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-08-rmarkdown-yaml/img/rmarkdown.png" medium="image" type="image/png" width="240" height="277"/>
     </item>
     <item>
@@ -384,7 +384,7 @@
       <category>R Markdown</category>
       <category>knitr</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-07-chunk-knitr</guid>
-      <pubDate>Mon, 07 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-07</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-07-chunk-knitr/img/knitr.png" medium="image" type="image/png" width="200" height="232"/>
     </item>
     <item>
@@ -395,7 +395,7 @@
       <category>Reproducible Research</category>
       <category>R Markdown</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-06-rstudio</guid>
-      <pubDate>Sun, 06 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-06</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-06-rstudio/img/rstudio.png" medium="image" type="image/png" width="1280" height="449"/>
     </item>
     <item>
@@ -406,7 +406,7 @@
       <category>programming</category>
       <category>package</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-05-submit-package</guid>
-      <pubDate>Sat, 05 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-05</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-05-submit-package/img/CRAN.png" medium="image" type="image/png" width="225" height="225"/>
     </item>
     <item>
@@ -417,7 +417,7 @@
       <category>programming</category>
       <category>package</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-04-develop-package</guid>
-      <pubDate>Fri, 04 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-04</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-04-develop-package/img/rpackage.jpeg" medium="image" type="image/jpeg"/>
     </item>
     <item>
@@ -427,7 +427,7 @@
       <description>패키지 개발에 앞서서, 중요하지만 간과하는 R 코딩 스타일을 살펴봅니다.</description>
       <category>programming</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-03-coding-style</guid>
-      <pubDate>Thu, 03 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-03</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-03-coding-style/img/coding.jpeg" medium="image" type="image/jpeg"/>
     </item>
     <item>
@@ -439,7 +439,7 @@
       <category>XML</category>
       <category>Data acquisition</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-02-apt-api</guid>
-      <pubDate>Wed, 02 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-02</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-02-apt-api/img/public.jpeg" medium="image" type="image/jpeg"/>
     </item>
     <item>
@@ -451,7 +451,7 @@
       <category>XML</category>
       <category>Data acquisition</category>
       <guid>https://choonghyunryu.github.io/posts/2022-03-01-open-api</guid>
-      <pubDate>Tue, 01 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-01</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-03-01-open-api/img/naver.jpeg" medium="image" type="image/jpeg"/>
     </item>
     <item>
@@ -463,7 +463,7 @@
       <category>forcats</category>
       <category>manipulate data</category>
       <guid>https://choonghyunryu.github.io/posts/2022-02-28-forcats</guid>
-      <pubDate>Mon, 28 Feb 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-02-28</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-02-28-forcats/img/forcats.png" medium="image" type="image/png" width="696" height="807"/>
     </item>
     <item>
@@ -475,7 +475,7 @@
       <category>stringr</category>
       <category>manipulate data</category>
       <guid>https://choonghyunryu.github.io/posts/2022-02-27-stringr</guid>
-      <pubDate>Sun, 27 Feb 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-02-27</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-02-27-stringr/img/stringr.png" medium="image" type="image/png" width="736" height="853"/>
     </item>
     <item>
@@ -487,7 +487,7 @@
       <category>purrr</category>
       <category>Functional programming</category>
       <guid>https://choonghyunryu.github.io/posts/2022-02-26-purrr</guid>
-      <pubDate>Sat, 26 Feb 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-02-26</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-02-26-purrr/img/purrr.png" medium="image" type="image/png" width="736" height="853"/>
     </item>
     <item>
@@ -499,7 +499,7 @@
       <category>tidyr</category>
       <category>manipulate data</category>
       <guid>https://choonghyunryu.github.io/posts/2022-02-25-tidyr</guid>
-      <pubDate>Fri, 25 Feb 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-02-25</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-02-25-tidyr/img/tidyr.png" medium="image" type="image/png" width="736" height="850"/>
     </item>
     <item>
@@ -511,7 +511,7 @@
       <category>dplyr</category>
       <category>manipulate data</category>
       <guid>https://choonghyunryu.github.io/posts/2022-02-24-dplyr</guid>
-      <pubDate>Thu, 24 Feb 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-02-24</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-02-24-dplyr/img/dplyr.png" medium="image" type="image/png" width="736" height="850"/>
     </item>
     <item>
@@ -523,7 +523,7 @@
       <category>readr</category>
       <category>import data</category>
       <guid>https://choonghyunryu.github.io/posts/2022-02-23-readr</guid>
-      <pubDate>Wed, 23 Feb 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-02-23</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-02-23-readr/img/readr.png" medium="image" type="image/png" width="736" height="853"/>
     </item>
     <item>
@@ -533,7 +533,7 @@
       <description>우리가 사항하는 즐겨 사용하는 R을 위해서 R 재단에 기부하는 방법을 살펴봅니다.</description>
       <category>R-Foundation</category>
       <guid>https://choonghyunryu.github.io/posts/2022-01-27-donate</guid>
-      <pubDate>Thu, 27 Jan 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-01-27</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2022-01-27-donate/img/invoice.png" medium="image" type="image/png" width="2724" height="1544"/>
     </item>
     <item>
@@ -543,7 +543,7 @@
       <description>로컬 호스트에서 구동되는 Shiny 애플리케이션을 Remote 서버에서 구현할 때의 이슈와 대안을 살펴봅니다.</description>
       <category>Shiny</category>
       <guid>https://choonghyunryu.github.io/posts/2022-01-23-serverside</guid>
-      <pubDate>Sun, 23 Jan 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-01-23</pubDate>
     </item>
     <item>
       <title>R 패키지 유지보수하기</title>
@@ -552,7 +552,7 @@
       <description>CRAN에 올라간 패키지를 유지보수하는 에피소드를 소개합니다.</description>
       <category>R Packages</category>
       <guid>https://choonghyunryu.github.io/posts/2021-11-24-rpackage</guid>
-      <pubDate>Wed, 24 Nov 2021 00:00:00 +0000</pubDate>
+      <pubDate>2021-11-24</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2021-11-24-rpackage/img/rcoreteam.png" medium="image" type="image/png" width="1826" height="1452"/>
     </item>
     <item>
@@ -562,7 +562,7 @@
       <description>재현가능한 연구의 개념과 Sweave, knitr, rmarkdown을 통해 R Markdown을 이해합니다.</description>
       <category>Reproducible Research</category>
       <guid>https://choonghyunryu.github.io/posts/2021-10-31-rmarkdown</guid>
-      <pubDate>Sun, 31 Oct 2021 00:00:00 +0000</pubDate>
+      <pubDate>2021-10-31</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2021-10-31-rmarkdown/img/markdown.png" medium="image" type="image/png" width="300" height="185"/>
     </item>
     <item>
@@ -572,7 +572,7 @@
       <description>"그동안 blogdown 패키지를 이용해서 블로그를 운영해왔으나, 이번에 distill 패키지를 이용해서 블로그를 리뉴얼했습니다. 사실 그동안 블로그 운영이 활발하지 않았습니다. 이번 리뉴얼을 계기로 좀 더 분발해 보겠습니다."</description>
       <category>Reproducible Research</category>
       <guid>https://choonghyunryu.github.io/posts/2021-10-24-renewal</guid>
-      <pubDate>Sun, 24 Oct 2021 00:00:00 +0000</pubDate>
+      <pubDate>2021-10-24</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2021-10-24-renewal/img/logo.png" medium="image" type="image/png" width="240" height="277"/>
     </item>
     <item>
@@ -582,7 +582,7 @@
       <description>"웹앱이나 앱을 개발할 때 UI/UX를 설계를 목적으로 화면 단위의 레이아웃을 디자인하는 것을 와이어프레임(wireframe)이라 합니다.   와이어프레임이 좀더 정적으로 구체화되면 목업(mockup)이라고 합니다. 용어는 차이가 있으나 두 개 모두 화면을 설계한다는 것에는 차이가 없습니다."</description>
       <category>UI Design</category>
       <guid>https://choonghyunryu.github.io/posts/2021-10-23-powermockup</guid>
-      <pubDate>Sat, 23 Oct 2021 00:00:00 +0000</pubDate>
+      <pubDate>2021-10-23</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2021-10-23-powermockup/img/homepage.png" medium="image" type="image/png" width="773" height="441"/>
     </item>
     <item>
@@ -592,7 +592,7 @@
       <description>"Shiny 웹앱을 개발할 때, 기능에 대한 설명을 위한 도움말 기능의 구현이 필요할 수 있다. 아마도 Rmarkdown으로 HTML 기반의 웹 문서를 떠올릴 것이다. 이 글에서 해당 솔루션을 제시한다."</description>
       <category>R-Programming</category>
       <guid>https://choonghyunryu.github.io/posts/2021-10-19-includehtml</guid>
-      <pubDate>Tue, 19 Oct 2021 00:00:00 +0000</pubDate>
+      <pubDate>2021-10-19</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2021-10-19-includehtml/img/includehtml.png" medium="image" type="image/png" width="3416" height="1802"/>
     </item>
     <item>
@@ -602,7 +602,7 @@
       <description>"이진분류에 lasso regression을 이용하기 위해서 glmnet 패키지를 이용하여 모델을 적합한 후 predict할 경우에 발생할 수 있는 오류와 해결 방법을 제시한다."</description>
       <category>Statistics</category>
       <guid>https://choonghyunryu.github.io/posts/2021-10-17-glmnet</guid>
-      <pubDate>Sun, 17 Oct 2021 00:00:00 +0000</pubDate>
+      <pubDate>2021-10-17</pubDate>
     </item>
     <item>
       <title>BitStat 패키지 소개</title>
@@ -611,7 +611,7 @@
       <description>"부족함이 많이 있다. 하지만 이 책이 훌륭한 통계적 알고리즘의 개발과 성능 좋은 한국형 통계분석기 개발에 일말의 보탬이 되었으면 좋겠다. 한 것 없이  길고 고독한 시간이었다. 이제 밖에 나가 쏟아지는 별들을 가슴에 담고 들어오리라. 통계분석기도 만들어 봐야겠다. 언제까지나 SAS만 돌릴 수 없을 테니까."</description>
       <category>Statistics</category>
       <guid>https://choonghyunryu.github.io/posts/2021-10-10-introduce_bitstat</guid>
-      <pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate>
+      <pubDate>2021-10-10</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2021-10-10-introduce_bitstat/img/bitstat_kor.jpg" medium="image" type="image/jpeg"/>
     </item>
     <item>
@@ -621,7 +621,7 @@
       <description>"R 데이터 분석에서의 시각화는 ggplot2 패키지다." 이 명제는 부정할 수 없는 현실이다. lattice 패키지가 S-PLUS의 Trellis 그래프를 R에 구현하였기에 늘 감사한 마음으로 애용했었다. 그런데 언젠가부터 ggplot2 패키지가 lattice 패키지를 대체하게 되었고, 이제는 ggplot2 패키지 이전과 이후로 나눌 정도로 표준이 되어 버렸다.</description>
       <category>Visualization</category>
       <guid>https://choonghyunryu.github.io/posts/2021-09-19-ggplot_aes</guid>
-      <pubDate>Sun, 19 Sep 2021 00:00:00 +0000</pubDate>
+      <pubDate>2021-09-19</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2021-09-19-ggplot_aes/2021-09-19-ggplot_aes_files/figure-html5/unnamed-chunk-1-1.png" medium="image" type="image/png" width="1344" height="768"/>
     </item>
     <item>
@@ -631,7 +631,7 @@
       <description>0.5.0 버전에서는 데이터 진단, EDA, 데이터 변환을 지원하는 리포트의 개선이 가장 두드러진 변화다. 이번 포스트에서 변화된 새로운 리포트에 대해서 소개한다.</description>
       <category>R Analytics</category>
       <guid>https://choonghyunryu.github.io/posts/2021-08-04-dlookr_report</guid>
-      <pubDate>Wed, 04 Aug 2021 00:00:00 +0000</pubDate>
+      <pubDate>2021-08-04</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2021-08-04-dlookr_report/img/diag_web_title.jpg" medium="image" type="image/jpeg"/>
     </item>
     <item>
@@ -641,7 +641,7 @@
       <description>R의 수치연산에서 32-비트의 정수와 IEC 60559 스팩의 부동 소수점(배정밀도)의 산술연산을 사용한다. R이 설치된 모든 머신에서 공통적으로 적용된다.</description>
       <category>R-Programming</category>
       <guid>https://choonghyunryu.github.io/posts/2021-06-30-numeric_precision</guid>
-      <pubDate>Wed, 30 Jun 2021 00:00:00 +0000</pubDate>
+      <pubDate>2021-06-30</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2021-06-30-numeric_precision/img/iec.gif" medium="image" type="image/gif"/>
     </item>
     <item>
@@ -651,7 +651,7 @@
       <description>금융권에서 사용하는 스코어카드(scorecard) 기법에서는 연속형 변수를 범주형 변수로 변환하는 작업을 빈번히 사용한다. 이번에는 일반적인 비닝 방법이 아닌 최적 비닝(optimal binning) 방법을 사용한다.</description>
       <category>R Analytics</category>
       <guid>https://choonghyunryu.github.io/posts/2021-02-07-optimal_binning</guid>
-      <pubDate>Sun, 07 Feb 2021 00:00:00 +0000</pubDate>
+      <pubDate>2021-02-07</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2021-02-07-optimal_binning/img/increase.png" medium="image" type="image/png" width="1422" height="697"/>
     </item>
     <item>
@@ -661,7 +661,7 @@
       <description>모든 경우는 아니지만 연속형 변수를 비닝하면, 데이터의 분포에 따라서 이상치(outliers)로 발생할 수 있는 이슈를 회피하거나 과적합(over fitting)을 완화시켜주기도 한다. 그래서 흔하지 않지만, 가끔은 연속형 변수를 범주형 변수로 변환할 필요가 있다. 특히 금융권에서 사용하는 스코어카드 기법에서는 연속형 변수를 범주형 변수로 변환하는 작업을 빈번히 사용한다.</description>
       <category>R Analytics</category>
       <guid>https://choonghyunryu.github.io/posts/2021-02-06-binning</guid>
-      <pubDate>Sat, 06 Feb 2021 00:00:00 +0000</pubDate>
+      <pubDate>2021-02-06</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2021-02-06-binning/2021-02-06-binning_files/figure-html5/unnamed-chunk-1-1.png" medium="image" type="image/png" width="1248" height="768"/>
     </item>
     <item>
@@ -671,7 +671,7 @@
       <description>R로 그린 플롯에서 우리는 기하학적인 요소로 데이터의 현황을 이해한다. 그런데 라벨이나 제목, 범례, 축의 구간 단위에 표현하는 텍스트도 데이터를 이해하는 데 중요한 역할을 한다. 플롯의 텍스트는 폰트로 그리는데, R에서의 폰트와  폰트를 시각화하는 매커니즘을 다룬다.</description>
       <category>Visualization</category>
       <guid>https://choonghyunryu.github.io/posts/2021-01-27-rfonts</guid>
-      <pubDate>Wed, 27 Jan 2021 00:00:00 +0000</pubDate>
+      <pubDate>2021-01-27</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2021-01-27-rfonts/img/binning_by.png" medium="image" type="image/png" width="1027" height="620"/>
     </item>
     <item>
@@ -681,7 +681,7 @@
       <description>한글 띄어쓰기는 정말 어려운 작업이다. 한글은 영어처럼 독립된 단어 기반의 언어가 아니라 조사, 접두어, 접미어 등이 결합되어 구현되기 때문에 정확한 띄어쓰기 구사를 장담하기 어렵다. 그래서 여러 맞춤법 검사 엔진이 개발되어 배포되거나, 포탈 등의 채널에서 서비스로 제공되고 있다.</description>
       <category>R Analytics</category>
       <guid>https://choonghyunryu.github.io/posts/2021-01-05-morpheme</guid>
-      <pubDate>Tue, 05 Jan 2021 00:00:00 +0000</pubDate>
+      <pubDate>2021-01-05</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2021-01-05-morpheme/img/naver_01.png" medium="image" type="image/png" width="1354" height="954"/>
     </item>
     <item>
@@ -691,7 +691,7 @@
       <description>고등학교 역사 시간에 조선시대 산수화가인 `겸제 정선`의 `진경산수화(眞景山水畵)`에 대해서 배운 적이 있다. 요즘은 인터넷 검색을 통해서 쉽게 겸제의 작품을 감상할 수 있지만 그 시절은 유면 화가의 작품을 교과서가 아닌 곳에서 쉽게 접할 수 없었다. 나는 아직도 그 시절 교과서에 실린 `인왕제색도`의 감동은 아직도 잊지 못한다.</description>
       <category>Gallery</category>
       <guid>https://choonghyunryu.github.io/posts/2020-12-31-woolsan</guid>
-      <pubDate>Thu, 31 Dec 2020 00:00:00 +0000</pubDate>
+      <pubDate>2020-12-31</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2020-12-31-woolsan/img/woolsan_title.png" medium="image" type="image/png" width="1000" height="350"/>
     </item>
     <item>
@@ -701,7 +701,7 @@
       <description>R에서 데이터를 조작할 때, 가장 까다로운 것이 범주형 데이터를 표현하는 factor다. 이번 이야기에서는 시각화를 위해서 factor를 다루는 방법과 몇몇 ggplot2 패키지를 사용할 때의 몇 가지 팁을 소개한다.</description>
       <category>Visualization</category>
       <guid>https://choonghyunryu.github.io/posts/2020-07-12-ggplot2_exam</guid>
-      <pubDate>Sun, 12 Jul 2020 00:00:00 +0000</pubDate>
+      <pubDate>2020-07-12</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2020-07-12-ggplot2_exam/2020-07-12-ggplot2_exam_files/figure-html5/box-1.png" medium="image" type="image/png" width="1248" height="768"/>
     </item>
     <item>
@@ -711,7 +711,7 @@
       <description>`alookr`은 이진분류 모델의 개발 과정에서 데이터 정제, 데이터의 traning set과 test set으로의 분리, 모델 적합, 적합된 모델의 평가 및 최적의 모델을 선정한다. 이 패키지는 `dplyr` 패키지와 협업하여 이진분류 데이터 분석 프로세스를 유연하게 처리해 준다.</description>
       <category>R Analytics</category>
       <guid>https://choonghyunryu.github.io/posts/2020-03-27-r-alookr</guid>
-      <pubDate>Fri, 27 Mar 2020 00:00:00 +0000</pubDate>
+      <pubDate>2020-03-27</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2020-03-27-r-alookr/2020-03-27-r-alookr_files/figure-html5/split_data7-1.png" medium="image" type="image/png" width="1344" height="768"/>
     </item>
     <item>
@@ -721,7 +721,7 @@
       <description>"데이터 분석의 중요성이 대두되면서 1990년대 말부터 많은 DBMS는 행과 행간의 관계를 정의하거나 행과 행간을 비교하고 연산하는 함수의 기능을 SQL에 추가하기 시작했다. 그리고 이들을 `window function`이라 불렀다."</description>
       <category>Tidyverse</category>
       <guid>https://choonghyunryu.github.io/posts/2020-03-22-window_function</guid>
-      <pubDate>Sun, 22 Mar 2020 00:00:00 +0000</pubDate>
+      <pubDate>2020-03-22</pubDate>
     </item>
     <item>
       <title>R 웹 어플리케이션 개발에 대한 연구</title>
@@ -730,7 +730,7 @@
       <description>"RSS(R StatServer)란 R의 RServe 라이브러리를 이용해서 Java/JSP 기반의 웹 어플리케이션 구축을 위해서 개발한 서버 환경이다."</description>
       <category>R Analytics</category>
       <guid>https://choonghyunryu.github.io/posts/2020-02-26-R_web_application</guid>
-      <pubDate>Wed, 26 Feb 2020 00:00:00 +0000</pubDate>
+      <pubDate>2020-02-26</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2020-02-26-R_web_application/img/rweb.gif" medium="image" type="image/gif"/>
     </item>
     <item>
@@ -740,7 +740,7 @@
       <description>`dbplyr` 패키지는 `DBMS`를 위한 `dplyr` 패키지의 `Backend`다. `dplyr` 패키지의 R 환경에서 data.frame  객체에서 상속된 데이터 객체를 조작해서 데이터 분석을 수행하는 패키지라면, `dbplyr` 패키지는 `dplyr` 패키지의 문법으로 DBMS 환경의 `Tables` 자원을 액세스하여 데이터 분석을 수행하게 도와 준다.</description>
       <category>Tidyverse</category>
       <guid>https://choonghyunryu.github.io/posts/2020-01-28-introduce_dbplyr</guid>
-      <pubDate>Tue, 28 Jan 2020 00:00:00 +0000</pubDate>
+      <pubDate>2020-01-28</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2020-01-28-introduce_dbplyr/img/logo.png" medium="image" type="image/png" width="240" height="277"/>
     </item>
     <item>
@@ -750,7 +750,7 @@
       <description>`복소수 함수(complex function)`를 이용한 시각화의 대표적인 것에 `망델브로 세트`가 있다. 이번에 소개할 이미지도 몇 개의 복소수 함수를 좌표에 출력한 이미지다.</description>
       <category>Gallery</category>
       <guid>https://choonghyunryu.github.io/posts/2020-01-08-complex_function</guid>
-      <pubDate>Wed, 08 Jan 2020 00:00:00 +0000</pubDate>
+      <pubDate>2020-01-08</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2020-01-08-complex_function/img/complex_01.png" medium="image" type="image/png" width="800" height="800"/>
     </item>
     <item>
@@ -760,7 +760,7 @@
       <description>`finance` 분석을 위한 여러 R 패키지의 설치 및 `finance data`를 수집하기 위한 몇 가지의 방법에 대해서 살펴 본다.</description>
       <category>R Analytics</category>
       <guid>https://choonghyunryu.github.io/posts/2020-01-06-finance_analytics</guid>
-      <pubDate>Mon, 06 Jan 2020 00:00:00 +0000</pubDate>
+      <pubDate>2020-01-06</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2020-01-06-finance_analytics/img/quandl.png" medium="image" type="image/png" width="1454" height="642"/>
     </item>
     <item>
@@ -770,7 +770,7 @@
       <description>`벡터`의 조작과 `행렬`의 조작은 기본적인 데이터 조작의 방법이다. 일차원으로서의 벡터와 이차원으로서의 행렬의 조작에 익숙하면 데이터 프레임이나 여기서 상속된 `tibble` 객체의 데이터 조작을 쉽게 수행할 수 있을 것이다. 물론 `tibble`이나 여기서 파생된 `data_df`는 `dplyr` 패키지로 또 다른 방법에 의한 데이터 조작을 지원하기도 한다.</description>
       <category>Tidyverse</category>
       <guid>https://choonghyunryu.github.io/posts/2020-01-05- manipulation_extract</guid>
-      <pubDate>Sun, 05 Jan 2020 00:00:00 +0000</pubDate>
+      <pubDate>2020-01-05</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2020-01-05- manipulation_extract/img/logical.png" medium="image" type="image/png" width="1406" height="1040"/>
     </item>
     <item>
@@ -780,7 +780,7 @@
       <description>`Documents Taxonomy`는 `문서(텍스트)들을 분류체계 기준으로 분류`하는 것으로, 대표적인 것에 콜센터의 상담 내용을 상담 분류 체계로 분류하는 것이 있다. 엄밀하게 구분하면 Taxonomy와 Classification은 다른 개념이지만, 여기서는 `Classification Model로 Documents Taxonomy의 가능성을 진단`해 본다.</description>
       <category>R Analytics</category>
       <guid>https://choonghyunryu.github.io/posts/2019-12-31-documents_taxonomy</guid>
-      <pubDate>Tue, 31 Dec 2019 00:00:00 +0000</pubDate>
+      <pubDate>2019-12-31</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2019-12-31-documents_taxonomy/img/lasso.png" medium="image" type="image/png" width="1402" height="1034"/>
     </item>
     <item>
@@ -790,7 +790,7 @@
       <description>비정형 텍스트 데이터를 조작할 경우에 종종 발생하는 요건으로, `character 벡터의 개별 원소`를 특정 구분자로 나누어서 `여러 개의 원소로 만들거나`, 데이터 프레임에서 상속된 객체에서 특정 `character 변수`를 동일한 방법으로 나누어서 `여러 관측치로 만들 필요성` 있다.</description>
       <category>R Analytics</category>
       <guid>https://choonghyunryu.github.io/posts/2019-12-29-president_speech</guid>
-      <pubDate>Sun, 29 Dec 2019 00:00:00 +0000</pubDate>
+      <pubDate>2019-12-29</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2019-12-29-president_speech/img/TA.png" medium="image" type="image/png" width="1398" height="1024"/>
     </item>
     <item>
@@ -800,7 +800,7 @@
       <description>비정형 텍스트 데이터를 조작할 경우에 종종 발생하는 요건으로, `character 벡터의 개별 원소`를 특정 구분자로 나누어서 `여러 개의 원소로 만들거나`, 데이터 프레임에서 상속된 객체에서 특정 `character 변수`를 동일한 방법으로 나누어서 `여러 관측치로 만들 필요성` 있다.</description>
       <category>Tidyverse</category>
       <guid>https://choonghyunryu.github.io/posts/2019-12-28-multi_derived</guid>
-      <pubDate>Sat, 28 Dec 2019 00:00:00 +0000</pubDate>
+      <pubDate>2019-12-28</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2019-12-28-multi_derived/2019-12-28-multi_derived_files/figure-html5/unnamed-chunk-7-1.png" medium="image" type="image/png" width="960" height="960"/>
     </item>
     <item>
@@ -810,7 +810,7 @@
       <description>`외부 데이터`를 읽어들여 `데이터 프레임`을 만들고, 이를 조작하여 데이터 분석을 위한 데이터 셋을 생성하는 것은 데이터 분석 과정에서 대단히 중요한 과정이다.</description>
       <category>Tidyverse</category>
       <guid>https://choonghyunryu.github.io/posts/2019-12-26-manipulation_data</guid>
-      <pubDate>Thu, 26 Dec 2019 00:00:00 +0000</pubDate>
+      <pubDate>2019-12-26</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2019-12-26-manipulation_data/img/HA.png" medium="image" type="image/png" width="1404" height="1020"/>
     </item>
     <item>
@@ -820,7 +820,7 @@
       <description>UNIX나 Linux의 쉘 스크립트에서의 파이프의 기능은 필수 불가결하다. 마치 파이프라인을 엮어서 물을 원하는 방향으로 흘려보내는 듯한 자유로운 파이프의 구사는 스크립트의 성능을 배가시켜 준다.</description>
       <category>Tidyverse</category>
       <guid>https://choonghyunryu.github.io/posts/2019-12-19-func_operator</guid>
-      <pubDate>Thu, 19 Dec 2019 00:00:00 +0000</pubDate>
+      <pubDate>2019-12-19</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2019-12-19-func_operator/img/function.png" medium="image" type="image/png" width="1610" height="598"/>
     </item>
     <item>
@@ -830,7 +830,7 @@
       <description>스도쿠에서 각 셀에 할당된 숫자에 색상을 적용하면 제법 보기 좋은 그림이 그려진다. 그리고 각 셀에 중복으로 숫자를 할당하면 더 멋진 그림을 그릴 수 있다. 각 셀에 세개의 숫자를 할당한 `트라이도쿠스(tridokus)`를 중심으로 스도쿠의 그림에 빠져 보자.</description>
       <category>Gallery</category>
       <guid>https://choonghyunryu.github.io/posts/2019-04-13-tridokus</guid>
-      <pubDate>Sat, 13 Apr 2019 00:00:00 +0000</pubDate>
+      <pubDate>2019-04-13</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2019-04-13-tridokus/img/tridoku_1930_3.png" medium="image" type="image/png" width="2400" height="2400"/>
     </item>
     <item>
@@ -840,7 +840,7 @@
       <description>`Neural Network` 알고리즘으로 사진이나 그림을 변형시키는 기법에 대한 `A Neural Algorithm of Artistic Style`이라는 논문이 히트친 적이 있다. 고호의 화풍으로 사진의 변형하여 예술적인 이미지를 만들어내는 것이다.</description>
       <category>Gallery</category>
       <guid>https://choonghyunryu.github.io/posts/2019-04-09-neural_style_transfer</guid>
-      <pubDate>Tue, 09 Apr 2019 00:00:00 +0000</pubDate>
+      <pubDate>2019-04-09</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2019-04-09-neural_style_transfer/img/neural_style_transfer.png" medium="image" type="image/png" width="2000" height="700"/>
     </item>
     <item>
@@ -850,7 +850,7 @@
       <description>고교 시절에 일본의 과학 잡지인 `Newton`을 번역해서 만든 `월간과학`이라는 잡지를 열독한 적이 있다. 그 잡지에서 본  망델브로 세트라는 Fractal 이미지에 매료되었었다. 마치 미술 작품처럼 아름다운 색채의 기하학적 무늬는 아직도 잊지 못하고 있다.</description>
       <category>Gallery</category>
       <guid>https://choonghyunryu.github.io/posts/2019-04-04-mandelbrot</guid>
-      <pubDate>Thu, 04 Apr 2019 00:00:00 +0000</pubDate>
+      <pubDate>2019-04-04</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2019-04-04-mandelbrot/img/mandelbrot.png" medium="image" type="image/png" width="2000" height="700"/>
     </item>
     <item>
@@ -860,7 +860,7 @@
       <description>강원도 홍천의 본가는 변두리 시골 마을에 있다. 아무 생각없이 아침 마실길에 카메라에 식물들을 담아 보았다.</description>
       <category>Gallery</category>
       <guid>https://choonghyunryu.github.io/posts/2018-09-23-hongchun</guid>
-      <pubDate>Sun, 23 Sep 2018 00:00:00 +0000</pubDate>
+      <pubDate>2018-09-23</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2018-09-23-hongchun/img/hongchun.png" medium="image" type="image/png" width="2000" height="700"/>
     </item>
     <item>
@@ -870,7 +870,7 @@
       <description>이번에 개선된 0.3.2 버전에서는 DBMS의 테이블로 존재하는 데이터의 진단과 EDA를 지원한다. 본 포스트는 DBMS의 테이블에 대한 품질진단과 EDA를 수행하는 방법을 제시한다.</description>
       <category>R Analytics</category>
       <guid>https://choonghyunryu.github.io/posts/2018-07-22-dlookr</guid>
-      <pubDate>Sun, 22 Jul 2018 00:00:00 +0000</pubDate>
+      <pubDate>2018-07-22</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2018-07-22-dlookr/2018-07-22-dlookr_files/figure-html5/plot_outlier_pipe-1.png" medium="image" type="image/png" width="1344" height="768"/>
     </item>
     <item>
@@ -880,7 +880,7 @@
       <description>오늘 소개할 포스트는 수십분에서 수 시간의 run-time을 요구하는 작업을 대기 상태없이 수행하여, 바로 다른 작업을 수행할 수 있는 방법을 제시한다.</description>
       <category>R Analytics</category>
       <guid>https://choonghyunryu.github.io/posts/2018-05-13-Asynchronous</guid>
-      <pubDate>Sun, 13 May 2018 00:00:00 +0000</pubDate>
+      <pubDate>2018-05-13</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2018-05-13-Asynchronous/img/R_Async.png" medium="image" type="image/png" width="931" height="529"/>
     </item>
     <item>
@@ -890,7 +890,7 @@
       <description>`dlookr`은 데이터 분석과정에서 데이터 품질진단, EDA 및 변수변환을 지원하는 신규 패키지다. 이 패키지는 `dplyr` 패키지와 협업하여 데이터를 탐색하고 조작할 수있는 유연한 기능을 제공한다. 특히 자동화된 3종의 보고서는 `데이터 품질진단`, `탐색적 데이터분석(EDA)`, `데이터 변환`을 수행하는데 훌륭한 가이드를 제공한다.</description>
       <category>R Analytics</category>
       <guid>https://choonghyunryu.github.io/posts/2018-05-12-r-dlookr</guid>
-      <pubDate>Sat, 12 May 2018 00:00:00 +0000</pubDate>
+      <pubDate>2018-05-12</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2018-05-12-r-dlookr/2018-05-12-r-dlookr_files/figure-html5/plot_outlier_pipe-1.png" medium="image" type="image/png" width="1344" height="768"/>
     </item>
     <item>
@@ -900,7 +900,7 @@
       <description>이 문서는 dlookr 기능 중에서 **데이터 품질 진단** 기능을 소개한다. 여러분은 dlookr에서 제공하는 함수로 데이터 프레임과 데이터 프레임을 상속한 tbl_df 데이터의 품질을 진단하는 방법을 일힐 수 있을 것이다.</description>
       <category>R Analytics</category>
       <guid>https://choonghyunryu.github.io/posts/2018-05-07-r-vignette01.ko</guid>
-      <pubDate>Mon, 07 May 2018 00:00:00 +0000</pubDate>
+      <pubDate>2018-05-07</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2018-05-07-r-vignette01.ko/2018-05-07-r-vignette01.ko_files/figure-html5/plot_outlier-1.png" medium="image" type="image/png" width="1344" height="768"/>
     </item>
     <item>
@@ -910,7 +910,7 @@
       <description>이 문서는 dlookr 기능 중에서 **탐색적 데이터 분석** 기능을 소개한다. 여러분은 dlookr에서 제공하는 함수로 데이터 프레임과 데이터 프레임을 상속한 tbl_df 데이터의 탐색적 데이터 분석을 수행하는 방법을 일힐 수 있을 것이다.</description>
       <category>R Analytics</category>
       <guid>https://choonghyunryu.github.io/posts/2018-05-07-r-vignette02.ko</guid>
-      <pubDate>Mon, 07 May 2018 00:00:00 +0000</pubDate>
+      <pubDate>2018-05-07</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2018-05-07-r-vignette02.ko/2018-05-07-r-vignette02.ko_files/figure-html5/plot_normality-1.png" medium="image" type="image/png" width="1344" height="768"/>
     </item>
     <item>
@@ -920,7 +920,7 @@
       <description>이 문서는 dlookr 기능 중에서 **데이터 변환** 기능을 소개한다. 여러분은 dlookr에서 제공하는 함수로 데이터 프레임과 데이터 프레임을 상속한 tbl_df 데이터의 데이터 변환을 수행하는 방법을 일힐 수 있을 것이다.</description>
       <category>R Analytics</category>
       <guid>https://choonghyunryu.github.io/posts/2018-05-07-r-vignette03.ko</guid>
-      <pubDate>Mon, 07 May 2018 00:00:00 +0000</pubDate>
+      <pubDate>2018-05-07</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2018-05-07-r-vignette03.ko/2018-05-07-r-vignette03.ko_files/figure-html5/imputate_na-1.png" medium="image" type="image/png" width="1344" height="768"/>
     </item>
     <item>
@@ -930,7 +930,7 @@
       <description>R에서 `Google Trends API`를 이용해서 관심 검색어의 traffic과 traffic 추이를 분석하는 방법을 실 사례로 따라가면서 학습할 수 있도로 정리한 학습자료다.</description>
       <category>R Analytics</category>
       <guid>https://choonghyunryu.github.io/posts/2018-01-12-google_trends</guid>
-      <pubDate>Fri, 12 Jan 2018 00:00:00 +0000</pubDate>
+      <pubDate>2018-01-12</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2018-01-12-google_trends/img/google_trends.png" medium="image" type="image/png" width="649" height="328"/>
     </item>
     <item>
@@ -940,7 +940,7 @@
       <description>text2vec 패키지로 text를 vector 구조로 변환한 다음, Lasso and Elastic-Net Regularized Generalized Linear Models을 지원하는 glmnet 패키지를 이용해서 모델을 생성한다.</description>
       <category>R Analytics</category>
       <guid>https://choonghyunryu.github.io/posts/2017-11-13-taxonomy</guid>
-      <pubDate>Wed, 08 Nov 2017 00:00:00 +0000</pubDate>
+      <pubDate>2017-11-08</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2017-11-13-taxonomy/img/homepage.png" medium="image" type="image/png" width="1127" height="792"/>
     </item>
     <item>
@@ -950,7 +950,7 @@
       <description>주가 데이터를 수집하는 방법을 알아본다.</description>
       <category>R Analytics</category>
       <guid>https://choonghyunryu.github.io/posts/2016-04-08-Stock</guid>
-      <pubDate>Fri, 08 Apr 2016 00:00:00 +0000</pubDate>
+      <pubDate>2016-04-08</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2016-04-08-Stock/2016-04-08-Stock_files/figure-html5/samsung-1.png" medium="image" type="image/png" width="1728" height="1152"/>
     </item>
     <item>
@@ -960,7 +960,7 @@
       <description>자료의 분포를 설명하는 통계량에 자료의 중심을 설명하는 대표치와 자료의 퍼짐을 설명하는 산포도(분산)가 있다. 대표치로는 평균, 중위수, 최빈수 등이 있고, 퍼진 정도를 표현하는 분산, 분산의 제곱근인 표준편차 등이 있다. 또한 자료가 어느쪽으로 편중되었는지의 기울기를 나타내는 왜도, 대표치 부근에 자료가 밀집한 정도를 나타내는 첨도 등이 있다.</description>
       <category>R Analytics</category>
       <guid>https://choonghyunryu.github.io/posts/2016-01-03-distribution</guid>
-      <pubDate>Sun, 03 Jan 2016 00:00:00 +0000</pubDate>
+      <pubDate>2016-01-03</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2016-01-03-distribution/2016-01-03-distribution_files/figure-html5/unnamed-chunk-1-1.png" medium="image" type="image/png" width="1248" height="1728"/>
     </item>
     <item>
@@ -970,7 +970,7 @@
       <description>가상의 한 점에서 같은 거리 만큼 떨어진 점들의 집합을 원이라 할수 있다. 한 점(원점)에서 1의 거리 만큼 떨어진 점들의 모임인 단위원을 생각해 보자. \\( x^2 + y^2 = 1^2 \\)인 원의 공식을 기억할지 모르겠다.</description>
       <category>Visualization</category>
       <guid>https://choonghyunryu.github.io/posts/2016-01-02-circle</guid>
-      <pubDate>Sat, 02 Jan 2016 00:00:00 +0000</pubDate>
+      <pubDate>2016-01-02</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2016-01-02-circle/2016-01-02-circle_files/figure-html5/unnamed-chunk-1-1.png" medium="image" type="image/png" width="2600" height="1600"/>
     </item>
     <item>
@@ -980,7 +980,7 @@
       <description>R로 야경을 그려보고, 한 낮의 풍경을 그려보겠다. 동심으로 돌아가 하얀 스케치북에 그레파스를 이용해서 산도 그리고, 달고 그리고, 별과 해도 그려보자. 밤의 그림은 Paul Murrell가 그렸고, 필자가  Paul Murrell의 스케치북과 그레파스를 빌려서 모사해보겠다. 해가 중천에 걸린 여름 산은 녹음이 우거져 있다.</description>
       <category>Gallery</category>
       <guid>https://choonghyunryu.github.io/posts/2016-01-02-grid_picture</guid>
-      <pubDate>Sat, 02 Jan 2016 00:00:00 +0000</pubDate>
+      <pubDate>2016-01-02</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2016-01-02-grid_picture/2016-01-02-grid_picture_files/figure-html5/unnamed-chunk-1-1.png" medium="image" type="image/png" width="2600" height="1600"/>
     </item>
     <item>
@@ -990,7 +990,7 @@
       <description>R Graphics Device에 플롯을 출력하는 영역의 구분에 대해서 알아보자.</description>
       <category>Visualization</category>
       <guid>https://choonghyunryu.github.io/posts/2016-01-01-outside_plotregion_legend</guid>
-      <pubDate>Fri, 01 Jan 2016 00:00:00 +0000</pubDate>
+      <pubDate>2016-01-01</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2016-01-01-outside_plotregion_legend/2016-01-01-outside_plotregion_legend_files/figure-html5/unnamed-chunk-1-1.png" medium="image" type="image/png" width="2600" height="1600"/>
     </item>
     <item>
@@ -1000,7 +1000,7 @@
       <description>반송과 바오밥 나무, 그리고 가을에 방문하면 잘 익은 몇 개의 모과도 얻어올 수 있는 곳, 메이다이닝</description>
       <category>Gallery</category>
       <guid>https://choonghyunryu.github.io/posts/2014-10-24-secret</guid>
-      <pubDate>Fri, 24 Oct 2014 00:00:00 +0000</pubDate>
+      <pubDate>2014-10-24</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2014-10-24-secret/img/secret.png" medium="image" type="image/png" width="2000" height="700"/>
     </item>
     <item>
@@ -1010,7 +1010,7 @@
       <description>행렬의 원소중에 최대값의 위치를 알아내는 방법을 알아본다.</description>
       <category>R Analytics</category>
       <guid>https://choonghyunryu.github.io/posts/2006-12-13-matrix-tip</guid>
-      <pubDate>Wed, 13 Dec 2006 00:00:00 +0000</pubDate>
+      <pubDate>2006-12-13</pubDate>
     </item>
     <item>
       <title>이항분포의 포아송분포 근사</title>
@@ -1019,7 +1019,7 @@
       <description>샘플의 수가 커질수록 이항분포가 포아송분포로 근사하는 것을 시각화를 통해서 확인해 보자.</description>
       <category>R Analytics</category>
       <guid>https://choonghyunryu.github.io/posts/2005-07-17-poss</guid>
-      <pubDate>Sun, 17 Jul 2005 00:00:00 +0000</pubDate>
+      <pubDate>2005-07-17</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2005-07-17-poss/2005-07-17-poss_files/figure-html5/unnamed-chunk-1-1.png" medium="image" type="image/png" width="2600" height="1600"/>
     </item>
     <item>
@@ -1029,7 +1029,7 @@
       <description>샘플의 수가 커질수록 이항분포가 정규분포로 근사하는 것을 시각화를 통해서 확인해 보자.</description>
       <category>R Analytics</category>
       <guid>https://choonghyunryu.github.io/posts/2005-07-06-binomial</guid>
-      <pubDate>Wed, 06 Jul 2005 00:00:00 +0000</pubDate>
+      <pubDate>2005-07-06</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2005-07-06-binomial/2005-07-06-binomial_files/figure-html5/unnamed-chunk-1-1.png" medium="image" type="image/png" width="2600" height="1600"/>
     </item>
     <item>
@@ -1039,7 +1039,7 @@
       <description>R에서도 집합연산을 수행할 수 있는 여러 유용한 함수를 제공한다.</description>
       <category>R Analytics</category>
       <guid>https://choonghyunryu.github.io/posts/2005-06-22-operation-sets</guid>
-      <pubDate>Wed, 22 Jun 2005 00:00:00 +0000</pubDate>
+      <pubDate>2005-06-22</pubDate>
     </item>
     <item>
       <title>color</title>
@@ -1048,7 +1048,7 @@
       <description>데이터 시각화에서 색상의 선택은 중요한 작업 중의 하나다.</description>
       <category>Visualization</category>
       <guid>https://choonghyunryu.github.io/posts/2005-04-25-color</guid>
-      <pubDate>Mon, 25 Apr 2005 00:00:00 +0000</pubDate>
+      <pubDate>2005-04-25</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2005-04-25-color/2005-04-25-color_files/figure-html5/unnamed-chunk-3-1.png" medium="image" type="image/png" width="2600" height="1600"/>
     </item>
     <item>
@@ -1058,7 +1058,7 @@
       <description>삼각함수를 이용해서 원을 그릴 수 있고, 이를 이용하면 RADAR Plot을 그릴 수 있다.</description>
       <category>Visualization</category>
       <guid>https://choonghyunryu.github.io/posts/2005-04-19-radar</guid>
-      <pubDate>Tue, 19 Apr 2005 00:00:00 +0000</pubDate>
+      <pubDate>2005-04-19</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2005-04-19-radar/2005-04-19-radar_files/figure-html5/unnamed-chunk-1-1.png" medium="image" type="image/png" width="2600" height="1600"/>
     </item>
     <item>
@@ -1068,7 +1068,7 @@
       <description>Barchart는 일변량 범주형 자료에서 Class의 돗수의 비율을 막대의 길이로 표현한 것인 반면 Spine Plot은 막대의 길이는 동일하게 하고 Class의 돗수의 비율을 막대의 폭으로 표현한 것이다.</description>
       <category>Visualization</category>
       <guid>https://choonghyunryu.github.io/posts/2005-04-17-spine</guid>
-      <pubDate>Sun, 17 Apr 2005 00:00:00 +0000</pubDate>
+      <pubDate>2005-04-17</pubDate>
       <media:content url="https://choonghyunryu.github.io/posts/2005-04-17-spine/2005-04-17-spine_files/figure-html5/unnamed-chunk-2-1.png" medium="image" type="image/png" width="2600" height="1600"/>
     </item>
   </channel>
